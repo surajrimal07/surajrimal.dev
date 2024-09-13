@@ -1,8 +1,9 @@
 import { map } from 'lodash';
 
-import popularTags from '@/data/popularTags';
 import Link from '@/components/Link';
+import popularTags from '@/data/popularTags';
 
+import { Twemoji } from '@/components/Twemoji';
 import BrandIcon from '../BrandIcon';
 
 const PopularTags = () => {
@@ -13,7 +14,8 @@ const PopularTags = () => {
           Popular Tags
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Popular tags feature the most widely favored topics.
+          <Twemoji emoji="rocket" />
+          Popular tags feature the most widely dicussed topics.
         </p>
       </div>
 

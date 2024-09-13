@@ -3,26 +3,24 @@ import Snowfall from 'react-snowfall';
 
 import { formatDate } from 'pliny/utils/formatDate';
 // import { NewsletterForm } from 'pliny/ui/NewsletterForm';
-import { sortedBlogPost, allCoreContent } from 'pliny/utils/contentlayer';
 import { allBlogs } from 'contentlayer/generated';
+import { allCoreContent, sortedBlogPost } from 'pliny/utils/contentlayer';
 
 import type { Blog } from 'contentlayer/generated';
 
 import siteMetadata from '@/data/siteMetadata';
 
-import Tag from '@/components/Tag';
 import Link from '@/components/Link';
-import Twemoji from '@/components/Twemoji';
 import { PageSEO } from '@/components/SEO';
-import Image from '@/components/Image';
+import Tag from '@/components/Tag';
+import Twemoji from '@/components/Twemoji';
+import Avatar from '@/components/homepage/Avatar';
+import BlogLinks from '@/components/homepage/BlogLinks';
 import Greeting from '@/components/homepage/Greeting';
 import Heading from '@/components/homepage/Heading';
-import TypedBios from '@/components/homepage/TypedBios';
-import ShortDescription from '@/components/homepage/ShortDescription';
-import BlogLinks from '@/components/homepage/BlogLinks';
-import SpotifyNowPlaying from '@/components/homepage/SpotifyNowPlaying';
 import PopularTags from '@/components/homepage/PopularTags';
-import Avatar from '@/components/homepage/Avatar';
+import ShortDescription from '@/components/homepage/ShortDescription';
+import TypedBios from '@/components/homepage/TypedBios';
 
 const MAX_DISPLAY = 3;
 
@@ -63,7 +61,6 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
             <TypedBios />
             <ShortDescription />
             <BlogLinks />
-            <SpotifyNowPlaying />
             <p className="flex">
               <span className="mr-2">Happy reading</span>
               <Twemoji emoji="clinking-beer-mugs" />

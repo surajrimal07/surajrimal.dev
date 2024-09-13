@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Image from '@/components/Image';
 import ProfileInfo from '@/components/homepage/ProfileInfo';
-import SpotifyNowPlaying from '@/components/homepage/SpotifyNowPlaying';
 
 const ProfileCard = () => {
   const ref = useRef(null);
@@ -72,7 +71,6 @@ const ProfileCard = () => {
             aspectRatio: '20/16',
           }}
         />
-        <SpotifyNowPlaying />
         <ProfileInfo />
         <div className="h-1.5 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></div>
       </div>
