@@ -5,7 +5,7 @@ const siteMetadata = {
   title: "Suraj's Personal Blog",
   author: 'Trong Khanh',
   fullName: 'Suraj Rimal',
-  headerTitle: "Suraj's Blog",
+  headerTitle: "Suraj's About",
   description: 'My desire to practice my skills and share my acquired knowledge fuels my endeavors.',
   language: 'en-us',
   theme: 'system',

@@ -76,7 +76,7 @@ module.exports = {
         primary: '#7aa2f7',
         sky: colors.sky,
         gray: colors.neutral,
-        dark: '#1A1B26',
+        dark: '#000000',
         spotify: '#1DB954',
         coral: '#EF596F',
       },

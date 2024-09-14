@@ -6,7 +6,7 @@ const BlogLinks = () => {
     <div className="flex justify-between ">
       <div className="flex flex-col space-y-1.5">
         <Link href="/blog" className="hover:underline">
-          <Twemoji emoji="memo" />
+          <Twemoji emoji="writing-hand" />
           <span data-umami-event="home-link-blog" className="ml-1.5">
             My writings
           </span>

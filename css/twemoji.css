@@ -19,6 +19,16 @@
   background-size: 1.33em 1.33em;
 }
 
+.twa-xs {
+  height: 0.8em;
+  width: 0.8em;
+  margin: 0 0.0615em 0 0.103em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  vertical-align: -0.133em;
+  background-size: 0.8em 0.8em;
+}
+
 .twa-2x {
   height: 2em;
   width: 2em;
@@ -53,6 +63,12 @@
 
 .twa-grinning-face {
   background-image: url(https://twitter.github.io/twemoji/v/latest/svg/1f600.svg);
+}
+.twa-the-flash {
+  background-image: url(https://pub-0fb2cc5723aa406f8c35f850e27e5cc8.r2.dev/flash.svg);
+}
+.twa-superman {
+  background-image: url(https://pub-0fb2cc5723aa406f8c35f850e27e5cc8.r2.dev/superman.svg);
 }
 .twa-grinning-face-with-big-eyes {
   background-image: url(https://twitter.github.io/twemoji/v/latest/svg/1f603.svg);

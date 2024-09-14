@@ -16,6 +16,7 @@ import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
 import Avatar from '@/components/homepage/Avatar';
 import BlogLinks from '@/components/homepage/BlogLinks';
+import GithubContributions from '@/components/homepage/GithubContributions';
 import Greeting from '@/components/homepage/Greeting';
 import Heading from '@/components/homepage/Heading';
 import PopularTags from '@/components/homepage/PopularTags';
@@ -70,12 +71,14 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
       </div>
 
       <PopularTags />
+      <GithubContributions />
 
       {/* List all post */}
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 py-6 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
             Recent Posts
+            <Twemoji size="twa-sm" emoji="writing-hand" />
           </h1>
           <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">{siteMetadata.description}</p>
         </div>

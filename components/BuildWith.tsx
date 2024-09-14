@@ -23,6 +23,9 @@ const BuildWith = () => (
       <Link href="https://supabase.com?ref=surajr.com.np" className="pl-px">
         <BrandIcon type="Supabase" className="h-5 w-5" />
       </Link>
+      <Link href="https://www.postgresql.org?ref=surajr.com.np" className="pl-px">
+        <BrandIcon type="Postgres" className="h-5 w-5" />
+      </Link>
     </div>
     <span className="px-1 text-gray-400 dark:text-gray-500">-</span>
     <Link href={siteMetadata.siteRepo} className="text-gray-500 underline underline-offset-4 dark:text-gray-300">

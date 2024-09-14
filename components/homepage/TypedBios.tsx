@@ -43,18 +43,18 @@ const TypedBios = () => {
           I work mostly with <b className="font-medium">Javascript/Typescript</b> technologies.
         </li>
         <li>
-          I'm a dog-person <Twemoji emoji="dog" />.
+          I'm a <b className="font-medium"> pet-person </b> and i own a <Twemoji emoji="dog" />.
         </li>
         <li>
           I'm a comics-guy. I love
           <span className="ml-1">
-            <Twemoji emoji="superhero" />
-            ,and <Twemoji emoji="technologist" />
+            <Twemoji emoji="the-flash" />
+            ,and <Twemoji emoji="superman" />
           </span>
           .
         </li>
         <li>
-          I love listening <Twemoji emoji="musical-notes" /> and rap music.
+          I love listening <Twemoji emoji="musical-notes" /> music and watching si-fi <Twemoji emoji="movie-camera" />.
         </li>
         <li>
           I love traveling <Twemoji emoji="sunrise" />, new places.
