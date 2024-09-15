@@ -80,14 +80,15 @@ module.exports = {
         spotify: '#1DB954',
         coral: '#EF596F',
       },
-      typography: (theme) => ({
+      typography: ({ theme }) => ({
         DEFAULT: {
           css: {
             color: theme('colors.gray.700'),
             a: {
               color: theme('colors.primary'),
               '&:hover': {
-                color: `${theme('colors.sky.600')} !important`,
+                //color: `${theme('colors.sky.600')} !important`,
+                color: `${theme('colors.primary.600')}`,
               },
               code: { color: theme('colors.sky.400') },
             },
