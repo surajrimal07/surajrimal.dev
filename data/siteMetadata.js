@@ -2,10 +2,10 @@
 /** @type {import("pliny/config").PlinyConfig } */
 
 const siteMetadata = {
-  title: "Suraj's Personal Blog",
-  author: 'Trong Khanh',
+  title: "Suraj's personal blog",
+  author: 'Suraj Rimal',
   fullName: 'Suraj Rimal',
-  headerTitle: "Suraj's About",
+  headerTitle: "Suraj's Blog",
   description: 'My desire to practice my skills and share my acquired knowledge fuels my endeavors.',
   language: 'en-us',
   theme: 'system',
@@ -22,16 +22,26 @@ const siteMetadata = {
   twitter: 'https://twitter.com',
   youtube: 'https://youtube.com',
   locale: 'en-US',
+  stickyNav: false,
   socialAccounts: {
     github: 'https://github.com/surajrimal07',
     linkedin: 'karhdo',
     facebook: 'fb.com/meettheflash',
   },
   analytics: {
-    umamiWebsiteId: 'a9231fe5-24d1-4134-a8dc-467c6f13b901',
+    umamiAnalytics: {
+      // @ts-ignore
+      umamiWebsiteId: process.env.NEXT_UMAMI_ID,
+    },
   },
   newsletter: {
     provider: 'buttondown',
+  },
+  search: {
+    provider: 'kbar',
+    kbarConfig: {
+      searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`,
+    },
   },
 };
 

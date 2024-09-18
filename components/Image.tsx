@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import NextImage from 'next/image';
 import clsx from 'clsx';

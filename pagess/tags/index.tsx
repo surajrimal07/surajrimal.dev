@@ -1,12 +1,12 @@
-import { kebabCase } from 'lodash';
 import { allBlogs } from 'contentlayer/generated';
-import { getAllTags } from 'pliny/utils/contentlayer';
+import { getAllTags } from 'pliny/utils/contentlayer2';
 
 import siteMetadata from '@/data/siteMetadata';
 import { TagCounts } from '@/types/server';
+import  kebabCase  from '@/utils/kebabCase';
 
-import { PageSEO } from '@/components/SEO';
 import Link from '@/components/Link';
+import { PageSEO } from '@/components/SEO';
 import Tag from '@/components/Tag';
 
 export const getStaticProps = async () => {

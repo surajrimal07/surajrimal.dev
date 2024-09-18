@@ -1,75 +1,82 @@
-import clsx from 'clsx';
-import { useRouter } from 'next/router';
-
+'use client';
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
 
-import EndDarkLogo from 'public/static/images/end_dark_mode.svg';
-import StartDarkLogo from 'public/static/images/start_dark_mode.svg';
-
-import EndLightLogo from 'public/static/images/end_light_mode.svg';
-import StartLightLogo from 'public/static/images/start_light_mode.svg';
-
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
+import Typewriter from 'typewriter-effect';
+import AnalyticsLink from './AnalyticsLink';
 import Link from './Link';
 import MobileNav from './MobileNav';
+import SearchButton from './SearchButton';
 import ThemeSwitch from './ThemeSwitch';
 
+//to add hover block back add  // hover:text-red-800 dark:hover:text-red-800'
+
 const Header = () => {
-  const router = useRouter();
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
+  let headerClass = 'flex items-center w-full bg-white/75 dark:bg-dark/75 backdrop-blur justify-between py-8'; //make header up or down change py
+  if (siteMetadata.stickyNav) {
+    headerClass += ' sticky top-0 z-5';
   }
-
-  const StartLogo = resolvedTheme === 'dark' ? StartDarkLogo : StartLightLogo;
-  const EndLogo = resolvedTheme === 'dark' ? EndDarkLogo : EndLightLogo;
-
   return (
-    <header className="supports-backdrop-blur fixed left-0 right-0 top-0 z-40 bg-white/75 py-4 backdrop-blur dark:bg-dark/75">
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-3 xl:max-w-5xl xl:px-0">
-        <Link href="/" aria-label={siteMetadata.headerTitle} className="flex items-center">
-          <StartLogo className="fill-dark dark:fill-white" />
-          <div className="group ml-1 text-xl font-bold transition duration-300">
+    <header className={headerClass}>
+      <Link href="/" aria-label={siteMetadata.headerTitle} className="flex items-center justify-between ">
+        <span className="text-3xl font-bold">{'{ '}</span>
+        {pathname === '/' ? (
+          <div className="group ml-1 mr-1 hidden h-7 text-2xl font-semibold sm:block transition duration-300">
             {siteMetadata.headerTitle}
-            <span className="block h-0.5 max-w-0 bg-red-300 transition-all duration-500 group-hover:max-w-[85%] dark:bg-red-700"></span>
+            <span className="block h-0.5 max-w-0 bg-red-300 transition-all duration-500 group-hover:max-w-[97%] dark:bg-red-700"></span>
           </div>
-          <EndLogo className="fill-dark dark:fill-white" />
-          <span className="ml-2 mr-2 rounded-full bg-red-200 px-2.5 py-0.5 text-xs font-medium text-red-700 dark:bg-red-800 dark:text-white">
+        ) : (
+          <div className="text-primary-color dark:text-primary-color-dark flex items-center text-2xl font-semibold">
+            {`~${pathname}`}{' '}
+            <Typewriter
+              options={{
+                strings: [],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </div>
+        )}
+        <span className="text-3xl font-bold mr-2">{' }'}</span>
+
+        <div className="flex items-center">
+          <span className="ml-1 mr-1 rounded-full bg-red-600 px-1 py-1 text-xs font-medium text-white">
             Open to work
           </span>
-        </Link>
-        <div className="flex items-center text-base leading-5">
-          <div className="hidden sm:block">
-            {headerNavLinks.map((link) => (
+        </div>
+      </Link>
+      <div className="flex items-center space-x-4 leading-5 sm:space-x-3">
+        <div className="no-scrollbar hidden max-w-40 items-center space-x-4 overflow-x-auto sm:flex sm:space-x-1 md:max-w-72 lg:max-w-96">
+          {headerNavLinks
+            .filter((link) => link.href !== '/')
+            .map((link) => (
               <Link
                 key={link.title}
                 href={link.href}
                 className={clsx(
-                  'mx-1 rounded px-2 py-1 font-medium text-gray-900 dark:text-gray-100 sm:px-3 sm:py-2',
-                  router.pathname.startsWith(link.href)
-                    ? 'bg-red-300 dark:bg-red-800'
-                    : 'hover:bg-red-300 dark:hover:bg-red-800'
+                  'link-underline rounded py-1 px-1 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-700 sm:py-2 sm:px-3 ',
+                  pathname?.startsWith(link.href)
+                    ? 'bg-red-300 dark:bg-red-800 '
+                    : 'hover:bg-gray-200 dark:hover:bg-gray-700'
                 )}
-                data-umami-event={`nav-${link.href.replace('/', '')}`}
               >
                 {link.title}
               </Link>
             ))}
-          </div>
-          <ThemeSwitch />
-          <MobileNav />
         </div>
+        <AnalyticsLink />
+        <SearchButton />
+        <ThemeSwitch />
+        <MobileNav />
       </div>
     </header>
   );
 };
 
 export default Header;
+
+//{ href: siteMetadata.analyticsURL, title: 'Analytics' },

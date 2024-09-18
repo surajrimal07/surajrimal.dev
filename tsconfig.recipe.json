@@ -4,12 +4,16 @@
   "compilerOptions": {
     "incremental": true,
     "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "composite": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -19,13 +23,31 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/data/*": ["data/*"],
-      "@/layouts/*": ["layouts/*"],
-      "@/lib/*": ["lib/*"],
-      "@/css/*": ["css/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
-    }
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/data/*": [
+        "data/*"
+      ],
+      "@/layouts/*": [
+        "layouts/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/css/*": [
+        "css/*"
+      ],
+      "contentlayer/generated": [
+        "./.contentlayer/generated"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -33,7 +55,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".contentlayer/generated",
-    ".contentlayer/generated/**/*.json"
+    ".contentlayer/generated/**/*.json",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

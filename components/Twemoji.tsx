@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash';
+import  kebabCase  from '@/utils/kebabCase';
 
 import type { TwemojiProps } from '@/types/index';
 

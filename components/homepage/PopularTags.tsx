@@ -1,5 +1,3 @@
-import { map } from 'lodash';
-
 import Link from '@/components/Link';
 import popularTags from '@/data/popularTags';
 
@@ -14,12 +12,12 @@ const PopularTags = () => {
           Popular Tags <Twemoji size="twa-xs" emoji="rocket" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Popular tags feature the most widely dicussed topics.
+          Popular tags feature the most widely discussed topics.
         </p>
       </div>
 
       <div className="popular-tags grid grid-cols-3 gap-4 py-6 xl:grid-cols-6">
-        {map(popularTags, (popularTag) => {
+        {popularTags.map((popularTag) => {
           const { slug, iconType, href, title } = popularTag;
 
           const className = `${slug} flex w-[128px] justify-center space-x-2 rounded-lg p-3`;

@@ -27,7 +27,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <Script async data-website-id={siteMetadata.analytics.umamiWebsiteId} src="https://us.umami.is/script.js" />
       {/* <Analytics analyticsConfig={siteMetadata.analytics} /> */}
       <LayoutWrapper>
         <SearchProvider searchConfig={siteMetadata.search}>

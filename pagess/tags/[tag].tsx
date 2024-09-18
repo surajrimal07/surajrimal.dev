@@ -1,10 +1,11 @@
-import { map, kebabCase, capitalize } from 'lodash';
-import { getAllTags } from 'pliny/utils/contentlayer';
-import { allBlogs } from 'contentlayer/generated';
+import  kebabCase  from '@/utils/kebabCase';
 import type { Blog } from 'contentlayer/generated';
+import { allBlogs } from 'contentlayer/generated';
+import { getAllTags } from 'pliny/utils/contentlayer2';
+import { capitalize } from '@/utils/capitalize';
 
-import siteMetadata from '@/data/siteMetadata';
 import { PageSEO } from '@/components/SEO';
+import siteMetadata from '@/data/siteMetadata';
 import ListLayoutWithTags from '@/layouts/ListLayoutWithTags';
 import { TagCounts } from '@/types/server';
 
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
 
   const tagNames = Object.keys(tags);
 
-  const paths = map(tagNames, (tag) => ({
+  const paths = tagNames.map((tag) => ({
     params: { tag },
   }));
 

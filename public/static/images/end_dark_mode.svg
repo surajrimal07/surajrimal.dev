@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10pt" height="22pt" viewBox="0 0 400 1080" xml:space="preserve">
-<g transform="matrix(1 0 0 1 200 540)" id="a1ab9112-0dfd-4065-b43f-f59d050469a6"  >
-<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-200" y="-540" rx="0" ry="0" width="400" height="1080" />
-</g>
 <g transform="matrix(19.89 0 0 18.43 200.47 537.42)"  >
 <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-50, -1002.36)" d="M 44 973.36218 C 48.9341 973.36218 53 977.42808 53 982.36218 L 53 996.36218 C 53 998.0760799999999 54.2861 999.36218 56 999.36218 L 60 999.36218 L 60 1005.3621999999999 L 56 1005.3621999999999 C 54.2861 1005.3621999999999 53 1006.6483 53 1008.3621999999999 L 53 1022.3621999999999 C 53 1027.2963 48.9341 1031.3622 44 1031.3622 L 40 1031.3622 L 40 1025.3622 L 44 1025.3622 C 45.7139 1025.3622 47 1024.0761 47 1022.3622 L 47 1008.3622 C 47 1006.057 47.8949 1003.9623 49.3438 1002.3622 C 47.9039 1000.7641 47 998.65928 47 996.36218 L 47 982.36218 C 47 980.6483 45.7139 979.36218 44 979.36218 L 40 979.36218 L 40 973.36218 L 44 973.36218 z" stroke-linecap="round" />
 </g>

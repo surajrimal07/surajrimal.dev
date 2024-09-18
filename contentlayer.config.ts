@@ -4,7 +4,12 @@ import path from 'path';
 // Remark packages
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import { remarkExtractFrontmatter, remarkCodeTitles, remarkImgToJsx, extractTocHeadings } from 'pliny/mdx-plugins/index.js'
+import {
+  remarkExtractFrontmatter,
+  remarkCodeTitles,
+  remarkImgToJsx,
+  extractTocHeadings,
+} from 'pliny/mdx-plugins/index.js';
 // Rehype packages
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';

@@ -1,77 +1,44 @@
-import { InferGetStaticPropsType } from 'next';
-import Snowfall from 'react-snowfall';
-
 import { formatDate } from 'pliny/utils/formatDate';
-// import { NewsletterForm } from 'pliny/ui/NewsletterForm';
-import { allBlogs } from 'contentlayer/generated';
-import { allCoreContent, sortedBlogPost } from 'pliny/utils/contentlayer';
-
-import type { Blog } from 'contentlayer/generated';
 
 import siteMetadata from '@/data/siteMetadata';
 
-import Link from '@/components/Link';
-import { PageSEO } from '@/components/SEO';
-import Tag from '@/components/Tag';
-import Twemoji from '@/components/Twemoji';
 import Avatar from '@/components/homepage/Avatar';
 import BlogLinks from '@/components/homepage/BlogLinks';
 import GithubContributions from '@/components/homepage/GithubContributions';
 import Greeting from '@/components/homepage/Greeting';
 import Heading from '@/components/homepage/Heading';
 import PopularTags from '@/components/homepage/PopularTags';
+import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import TypedBios from '@/components/homepage/TypedBios';
+import Link from '@/components/Link';
+import Tag from '@/components/Tag';
+import Twemoji from '@/components/Twemoji';
 
-const MAX_DISPLAY = 3;
+const MAX_DISPLAY = 1;
+//  <div className="relative">
 
-export const getStaticProps = async () => {
-  const sortedPosts = sortedBlogPost(allBlogs) as Blog[];
-  const posts = allCoreContent(sortedPosts);
-
-  return { props: { posts } };
-};
-
-export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { headerTitle, title, description } = siteMetadata;
-
+export default function Home({ posts }) {
   return (
-    <div className="relative">
-      <Snowfall
-        snowflakeCount={60}
-        style={{
-          zIndex: -1,
-          position: 'fixed',
-          width: '100vw',
-          height: '100vh',
-        }}
-      />
-
-      <PageSEO title={`${headerTitle} - ${title}`} description={description} />
-
-      {/* Introduce myself */}
-      <div className="mt-8 dark:divide-gray-700 md:mt-8">
-        <Greeting />
-        <div className="flex flex-col justify-between md:my-4 md:pb-8 xl:flex-row">
-          <Avatar />
-          {/* <div className="max-h-[430px] overflow-hidden rounded-md">
-            <Image src={'/static/images/avatar.jpg'} alt="avatar" width={430} height={350} />
-          </div> */}
-          <div className="my-auto flex flex-col text-lg leading-8 text-gray-600 dark:text-gray-400">
-            <Heading />
-            <TypedBios />
-            <ShortDescription />
-            <BlogLinks />
-            <p className="flex">
-              <span className="mr-2">Happy reading</span>
-              <Twemoji emoji="clinking-beer-mugs" />
-            </p>
-          </div>
+    <div className=" dark:divide-gray-700 ">
+      <Greeting />
+      <div className="flex flex-col justify-between md:my-4 md:pb-5 xl:flex-row">
+        <Avatar />
+        <div className="my-auto flex flex-col text-lg leading-8 text-gray-600 dark:text-gray-400">
+          <Heading />
+          <TypedBios />
+          <ShortDescription />
+          <BlogLinks />
+          <p className="flex">
+            <span className="mr-2">Happy reading</span>
+            <Twemoji emoji="clinking-beer-mugs" />
+          </p>
         </div>
       </div>
 
       <PopularTags />
       <GithubContributions />
+      <PrivateContributions />
 
       {/* List all post */}
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -116,7 +83,7 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
                       <div className="text-base font-medium leading-6">
                         <Link
                           href={`/blog/${slug}`}
-                          className="text-primary hover:text-sky-600 dark:hover:text-sky-400"
+                          className="text-primary hover:text-red-400 dark:hover:text-red-400"
                           aria-label={`Read "${title}"`}
                         >
                           Read more &rarr;
@@ -132,7 +99,7 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
       </div>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
-          <Link href="/blog" className="text-primary hover:text-sky-600 dark:hover:text-sky-400" aria-label="All posts">
+          <Link href="/blog" className="text-primary hover:text-red-400 dark:hover:text-red-400" aria-label="All posts">
             All Posts &rarr;
           </Link>
         </div>

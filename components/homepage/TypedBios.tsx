@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Typed from 'typed.js';
 
@@ -5,7 +7,7 @@ import Twemoji from '@/components/Twemoji';
 
 const TypedBios = () => {
   const el = React.useRef(null);
-  const typed = React.useRef(null);
+  const typed = React.useRef<Typed | null>(null);
 
   React.useEffect(() => {
     typed.current = new Typed(el.current, {
@@ -15,7 +17,11 @@ const TypedBios = () => {
       loop: true,
       backDelay: 1000,
     });
-    return () => typed.current.destroy();
+    return () => {
+      if (typed.current) {
+        typed.current.destroy();
+      }
+    };
   }, []);
 
   return (

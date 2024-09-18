@@ -10,10 +10,12 @@ const GithubContributions = () => {
           <Twemoji size="twa-sm" emoji="keyboard" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          My Github contributions calendar throught the year.
+          My Github contributions calendar throughout the year.
         </p>
       </div>
-      <GitHubCalendar blockSize={15} username="surajrimal07" />
+      <div className="pt-5">
+        <GitHubCalendar blockSize={15} username="surajrimal07" />
+      </div>
     </div>
   );
 };
