@@ -1,6 +1,6 @@
 'use client';
 
-import { updatePageViews } from '@/libs/pageView';
+import { updatePageViews } from '@/lib/pageView';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

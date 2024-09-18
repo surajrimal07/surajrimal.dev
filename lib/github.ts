@@ -1,16 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { GraphqlResponseError, graphql, type GraphQlQueryResponseData } from '@octokit/graphql';
 
 import siteMetadata from '@/data/siteMetadata';
+import { GithubRepository } from '../types';
 
-export default async function fetchGithubRepo(req: NextApiRequest, res: NextApiResponse) {
-  let repo = req.query.repo as string;
+export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
   if (!repo) {
-    return res.status(400).json({ message: 'Missing repo query param' });
+    throw new Error('Missing repo parameter');
   }
 
   if (!process.env.GITHUB_API_TOKEN) {
-    return res.status(500).json({ message: 'Missing `GITHUB_API_TOKEN` env variable' });
+    throw new Error('Missing `GITHUB_API_TOKEN` env variable');
   }
 
   let owner = siteMetadata.socialAccounts.github;
@@ -59,21 +58,20 @@ export default async function fetchGithubRepo(req: NextApiRequest, res: NextApiR
       }
     );
 
-    repository.languages = repository.languages.edges.map((edge) => {
-      return {
-        color: edge.node.color,
-        name: edge.node.name,
-      };
-    });
+    repository.languages = repository.languages.edges.map((edge) => ({
+      color: edge.node.color,
+      name: edge.node.name,
+    }));
 
     repository.repositoryTopics = repository.repositoryTopics.edges.map((edge) => edge.node.topic.name);
 
-    return res.status(200).json({ message: 'ok', repository });
+    return repository;
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
-      return res.status(500).json({ message: error.errors[0].message });
+      const errorMessage = error.errors?.[0]?.message || 'Unknown GraphQL error';
+      throw new Error(errorMessage);
     }
 
-    return res.status(500).json({ message: 'Unable to fetch repo data' + error?.toString() });
+    throw new Error('Unable to fetch repo data: ' + error?.toString());
   }
 }

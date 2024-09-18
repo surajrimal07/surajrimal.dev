@@ -16,7 +16,6 @@ import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
 
 const MAX_DISPLAY = 1;
-//  <div className="relative">
 
 export default function Home({ posts }) {
   return (

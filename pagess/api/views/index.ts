@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import prisma from '@/libs/prisma.server';
+import prisma from '@/lib/prisma.server';
 
 export default async function handler(_: NextApiRequest, res: NextApiResponse) {
   try {

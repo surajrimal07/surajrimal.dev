@@ -7,11 +7,14 @@ import { fetcher } from '@/utils/fetcher';
 import GithubRepo from './GithubRepo';
 import Image from './Image';
 import Link from './Link';
+import { fetchGithubRepo } from '@/lib/github';
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const { title, description, imgSrc, url, repo, builtWith } = project;
 
   const { data } = useSWR(`/api/github?repo=${repo}`, fetcher);
+
+  //const newdata = fetchGithubRepo(repo);
 
   const repository: GithubRepository = data?.repository;
 
