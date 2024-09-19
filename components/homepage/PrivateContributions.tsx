@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import { TfiArrowTopRight } from 'react-icons/tfi';
+import Link from '../Link';
 import Twemoji from '../Twemoji';
 
 const fetchSvg = async (): Promise<string> => {
@@ -42,38 +44,46 @@ const PrivateContributions = async () => {
           Private Contributions
           <Twemoji size="twa-sm" emoji="keyboard" />
         </h1>
-        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          My Private hours contributions calendar throughout the year.
+        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400 flex items-center">
+          My Private hours contributions calendar throughout the year, fetched from&nbsp;
+          <Link
+            href={'https://wakapi.dev'}
+            className="text-primary hover:text-red-400 dark:hover:text-red-400 inline-flex items-center"
+          >
+            Wakapi <TfiArrowTopRight className="ml-1" />
+          </Link>
+          .
         </p>
       </div>
+
       <div className="pt-5">
         <div dangerouslySetInnerHTML={{ __html: svgData }} />
-        <div className="flex space-x-4 mt-5">
+        <div className="flex space-x-4 mt-5 justify-center">
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:today?label=Today"
             alt="Today contributions"
-            className="h-7 w-15"
+            className="h-6 w-15"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:week?label=Week"
             alt="This week contributions"
-            className="h-7 w-15"
+            className="h-6 w-15"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:30_days?label=Month"
             alt="Last 30 days contributions"
-            className="h-7 w-15"
+            className="h-6 w-15"
           />
 
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:last_12_months?label=Year"
             alt="Year contributions"
-            className="h-7 w-15"
+            className="h-6 w-15"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:all_time?label=All Time"
             alt="All contributions"
-            className="h-7 w-15"
+            className="h-6 w-15"
           />
         </div>
       </div>

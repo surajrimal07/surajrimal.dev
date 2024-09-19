@@ -1,22 +1,33 @@
-import useSWR from 'swr';
-
-import type { GithubRepository } from '@/types/server';
+'use client';
 import type { ProjectCardProps } from '@/types/components';
-import { fetcher } from '@/utils/fetcher';
+import type { GithubRepository } from '@/types/server';
 
+import { fetchGithubRepo } from '@/lib/github';
+import { useEffect, useState } from 'react';
 import GithubRepo from './GithubRepo';
 import Image from './Image';
 import Link from './Link';
-import { fetchGithubRepo } from '@/lib/github';
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const { title, description, imgSrc, url, repo, builtWith } = project;
 
-  const { data } = useSWR(`/api/github?repo=${repo}`, fetcher);
+  const [repository, setRepository] = useState<GithubRepository | null>(null);
 
-  //const newdata = fetchGithubRepo(repo);
+  useEffect(() => {
+    const getRepoData = async () => {
+      if (repo) {
+        try {
+          const data = await fetchGithubRepo(repo);
+          console.log('data:', data);
+          setRepository(data);
+        } catch (error) {
+          console.error('Error fetching repository data:', error);
+        }
+      }
+    };
 
-  const repository: GithubRepository = data?.repository;
+    getRepoData();
+  }, [repo]);
 
   const href = repository?.url || url;
 

@@ -1,6 +1,7 @@
 import { GraphqlResponseError, graphql, type GraphQlQueryResponseData } from '@octokit/graphql';
 
 import siteMetadata from '@/data/siteMetadata';
+import { Repository, UserData } from '@/types/github';
 import { GithubRepository } from '../types';
 
 export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
@@ -8,7 +9,7 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
     throw new Error('Missing repo parameter');
   }
 
-  if (!process.env.GITHUB_API_TOKEN) {
+  if (!process.env.NEXT_PUBLIC_GITHUB_API_TOKEN) {
     throw new Error('Missing `GITHUB_API_TOKEN` env variable');
   }
 
@@ -53,7 +54,7 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
         owner,
         repo,
         headers: {
-          authorization: `token ${process.env.GITHUB_API_TOKEN}`,
+          authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_API_TOKEN}`,
         },
       }
     );
@@ -73,5 +74,48 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
     }
 
     throw new Error('Unable to fetch repo data: ' + error?.toString());
+  }
+}
+
+export async function getUserData() {
+  if (!process.env.NEXT_PUBLIC_GITHUB_API_TOKEN) {
+    throw new Error('Missing `GITHUB_API_TOKEN` env variable');
+  }
+
+  try {
+    const userResponse = await fetch(`https://api.github.com/user`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_API_TOKEN}`,
+      },
+    });
+
+    if (!userResponse.ok) {
+      throw new Error(`Error fetching user data: ${userResponse.statusText}`);
+    }
+
+    const userData: UserData = await userResponse.json();
+    return userData;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+}
+
+export async function getRepoData() {
+  if (!process.env.NEXT_PUBLIC_GITHUB_API_TOKEN) {
+    throw new Error('Missing `GITHUB_API_TOKEN` env variable');
+  }
+
+  try {
+    const reposResponse = await fetch(`https://api.github.com/user/repos?per_page=200`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_API_TOKEN}`,
+      },
+    });
+    const reposData: Repository[] = await reposResponse.json();
+    return reposData;
+  } catch (error) {
+    console.error('Error fetching repository data:', error);
+    throw error;
   }
 }

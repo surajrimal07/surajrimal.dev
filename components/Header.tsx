@@ -16,7 +16,7 @@ import ThemeSwitch from './ThemeSwitch';
 const Header = () => {
   const pathname = usePathname();
 
-  let headerClass = 'flex items-center w-full bg-white/75 dark:bg-dark/75 backdrop-blur justify-between py-8'; //make header up or down change py
+  let headerClass = 'flex items-center w-full backdrop-blur justify-between py-7'; //make header up or down change py
   if (siteMetadata.stickyNav) {
     headerClass += ' sticky top-0 z-5';
   }

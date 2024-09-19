@@ -1,11 +1,8 @@
 import projectsData from '@/data/projectsData';
-//import siteMetadata from '@/data/siteMetadata';
 
 import ProjectCard from '@/components/ProjectCard';
 
 export default function Projects() {
-  //const { title, headerTitle } = siteMetadata;
-
   const description = 'My open-source side projects and stuff that I built with my colleagues at work';
 
   const workProjects = projectsData.filter(({ type }) => type === 'work');

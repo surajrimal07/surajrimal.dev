@@ -12,7 +12,7 @@ const TypedBios = () => {
   React.useEffect(() => {
     typed.current = new Typed(el.current, {
       stringsElement: '#bios',
-      typeSpeed: 40,
+      typeSpeed: 5,
       backSpeed: 10,
       loop: true,
       backDelay: 1000,

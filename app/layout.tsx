@@ -1,10 +1,10 @@
 import '@/css/about.css';
+import '@/css/extra.css';
 import '@/css/prism.css';
 import '@/css/resume.css';
 import '@/css/tailwind.css';
 import '@/css/twemoji.css';
 import 'katex/dist/katex.css';
-import '@/css/extra.css';
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';

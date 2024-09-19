@@ -3,6 +3,7 @@
 import { updatePageViews } from '@/lib/pageView';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import AnimatedCounter from '../animata/text/counter';
 
 const PageView = () => {
   const pathname = usePathname();
@@ -21,7 +22,12 @@ const PageView = () => {
     fetchPageViews();
   }, [pathname]);
 
-  return <p>Views {pageView} </p>;
+  return (
+    <p>
+      {' '}
+      Page View <AnimatedCounter targetValue={pageView} />
+    </p>
+  );
 };
 
 export default PageView;

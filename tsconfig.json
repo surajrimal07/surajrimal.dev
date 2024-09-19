@@ -24,6 +24,9 @@
       "@/types/*": [
         "types/*"
       ],
+      "@/app/*": [
+        "app/*"
+      ],
       "@/utils/*": [
         "utils/*"
       ],

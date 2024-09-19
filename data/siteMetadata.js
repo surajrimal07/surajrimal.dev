@@ -31,7 +31,7 @@ const siteMetadata = {
   analytics: {
     umamiAnalytics: {
       // @ts-ignore
-      umamiWebsiteId: process.env.NEXT_UMAMI_ID,
+      umamiWebsiteId: process.env.NEXT_PUBLIC_UMAMI_ID,
     },
   },
   newsletter: {
