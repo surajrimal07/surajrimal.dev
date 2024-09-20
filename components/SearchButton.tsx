@@ -8,17 +8,17 @@ import { IoMdSearch } from 'react-icons/io';
 import usePlaySound from './PlaySound';
 
 const SearchButton = () => {
+  const { playSound } = usePlaySound({
+    filePath: '/static/sounds/open.mp3',
+    volume: 0.7,
+  });
+
+  const handleClick = () => {
+    playSound();
+  };
+
   if (siteMetadata.search && (siteMetadata.search.provider === 'algolia' || siteMetadata.search.provider === 'kbar')) {
     const SearchButtonWrapper = siteMetadata.search.provider === 'algolia' ? AlgoliaButton : KBarButton;
-
-    const { playSound } = usePlaySound({
-      filePath: '/static/sounds/open.mp3',
-      volume: 0.7,
-    });
-
-    const handleClick = () => {
-      playSound();
-    };
 
     return (
       <SearchButtonWrapper aria-label="Search">

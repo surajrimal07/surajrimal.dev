@@ -1,10 +1,9 @@
 'use client';
-import { useTheme } from 'next-themes';
 import { useEffect } from 'react';
 
 export default function Loader() {
-  const { theme } = useTheme();
-  //const color = theme === 'light' ? '#000000FF' : '#D4E7F7';
+  // const { theme } = useTheme();
+  // //const color = theme === 'light' ? '#000000FF' : '#D4E7F7';
 
   useEffect(() => {
     async function getLoader() {

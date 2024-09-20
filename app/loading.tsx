@@ -1,4 +1,4 @@
-import Loader from '@/components/Loader'
+import Loader from '@/components/Loader';
 export default function LoadingPage() {
   return (
     <div className="-mt-20 flex h-screen w-full items-center justify-center">
@@ -6,5 +6,5 @@ export default function LoadingPage() {
         <Loader />
       </div>
     </div>
-  )
+  );
 }

@@ -39,7 +39,7 @@ const Monitor = () => (
   </svg>
 );
 
-const Blank = () => <svg className="h-6 w-6" />;
+//const Blank = () => <svg className="h-6 w-6" />;
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
@@ -117,8 +117,5 @@ const ThemeSwitch = () => {
 };
 
 export default ThemeSwitch;
-
-
-
 
 //hover:text-red-500 dark:text-gray-400 dark:hover:text-red-500

@@ -78,7 +78,7 @@ export function Technologies() {
                     {filteredSkillsData[category].map((skill) => (
                       <Tooltip key={skill.id} content={skill.name}>
                         <Button
-                          className={`h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : '' }`}
+                          className={`h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
                           variant="outline"
                         >
                           <IconsBundle kind={skill.id} size={8} iconType="icon" />

@@ -4,7 +4,7 @@ import Image from '@/components/Image';
 import ProfileInfo from '@/components/homepage/ProfileInfo';
 
 const ProfileCard = () => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const [style, setStyle] = useState<React.CSSProperties>({});
 

@@ -6070,7 +6070,7 @@ export function Stripe(svgProps: SVGProps<SVGSVGElement>) {
   );
 }
 
-function BellIcon(props) {
+export function BellIcon(props) {
   return (
     <svg
       {...props}
@@ -6090,7 +6090,7 @@ function BellIcon(props) {
   );
 }
 
-function CircleUserIcon(props) {
+export function CircleUserIcon(props) {
   return (
     <svg
       {...props}
@@ -6111,7 +6111,7 @@ function CircleUserIcon(props) {
   );
 }
 
-function HomeIcon(props) {
+export function HomeIcon(props) {
   return (
     <svg
       {...props}
@@ -6131,7 +6131,7 @@ function HomeIcon(props) {
   );
 }
 
-function LineChartIcon(props) {
+export function LineChartIcon(props) {
   return (
     <svg
       {...props}
@@ -6151,7 +6151,7 @@ function LineChartIcon(props) {
   );
 }
 
-function MenuIcon(props) {
+export function MenuIcon(props) {
   return (
     <svg
       {...props}
@@ -6172,7 +6172,7 @@ function MenuIcon(props) {
   );
 }
 
-function Package2Icon(props) {
+export function Package2Icon(props) {
   return (
     <svg
       {...props}
@@ -6193,7 +6193,7 @@ function Package2Icon(props) {
   );
 }
 
-function PackageIcon(props) {
+export function PackageIcon(props) {
   return (
     <svg
       {...props}
@@ -6215,7 +6215,7 @@ function PackageIcon(props) {
   );
 }
 
-function SearchIcon(props) {
+export function SearchIcon(props) {
   return (
     <svg
       {...props}
@@ -6235,7 +6235,7 @@ function SearchIcon(props) {
   );
 }
 
-function ShoppingCartIcon(props) {
+export function ShoppingCartIcon(props) {
   return (
     <svg
       {...props}
@@ -6256,7 +6256,7 @@ function ShoppingCartIcon(props) {
   );
 }
 
-function UsersIcon(props) {
+export function UsersIcon(props) {
   return (
     <svg
       {...props}
@@ -6278,7 +6278,7 @@ function UsersIcon(props) {
   );
 }
 
-function BirdIcon(props) {
+export function BirdIcon(props) {
   return (
     <svg
       {...props}
@@ -6302,7 +6302,7 @@ function BirdIcon(props) {
   );
 }
 
-function BookIcon(props) {
+export function BookIcon(props) {
   return (
     <svg
       {...props}
@@ -6321,7 +6321,7 @@ function BookIcon(props) {
   );
 }
 
-function BotIcon(props) {
+export function BotIcon(props) {
   return (
     <svg
       {...props}
@@ -6345,7 +6345,7 @@ function BotIcon(props) {
   );
 }
 
-function CornerDownLeftIcon(props) {
+export function CornerDownLeftIcon(props) {
   return (
     <svg
       {...props}
@@ -6365,7 +6365,7 @@ function CornerDownLeftIcon(props) {
   );
 }
 
-function FileCode2Icon(props) {
+export function FileCode2Icon(props) {
   return (
     <svg
       {...props}
@@ -6387,7 +6387,7 @@ function FileCode2Icon(props) {
   );
 }
 
-function LifeBuoyIcon(props) {
+export function LifeBuoyIcon(props) {
   return (
     <svg
       {...props}
@@ -6411,7 +6411,7 @@ function LifeBuoyIcon(props) {
   );
 }
 
-function MicIcon(props) {
+export function MicIcon(props) {
   return (
     <svg
       {...props}
@@ -6432,7 +6432,7 @@ function MicIcon(props) {
   );
 }
 
-function PaperclipIcon(props) {
+export function PaperclipIcon(props) {
   return (
     <svg
       {...props}
@@ -6451,7 +6451,7 @@ function PaperclipIcon(props) {
   );
 }
 
-function RabbitIcon(props) {
+export function RabbitIcon(props) {
   return (
     <svg
       {...props}
@@ -6474,7 +6474,7 @@ function RabbitIcon(props) {
   );
 }
 
-function Settings2Icon(props) {
+export function Settings2Icon(props) {
   return (
     <svg
       {...props}
@@ -6496,7 +6496,7 @@ function Settings2Icon(props) {
   );
 }
 
-function SettingsIcon(props) {
+export function SettingsIcon(props) {
   return (
     <svg
       {...props}
@@ -6516,7 +6516,7 @@ function SettingsIcon(props) {
   );
 }
 
-function ShareIcon(props) {
+export function ShareIcon(props) {
   return (
     <svg
       {...props}
@@ -6537,7 +6537,7 @@ function ShareIcon(props) {
   );
 }
 
-function SquareTerminalIcon(props) {
+export function SquareTerminalIcon(props) {
   return (
     <svg
       {...props}
@@ -6558,7 +6558,7 @@ function SquareTerminalIcon(props) {
   );
 }
 
-function SquareUserIcon(props) {
+export function SquareUserIcon(props) {
   return (
     <svg
       {...props}
@@ -6579,7 +6579,7 @@ function SquareUserIcon(props) {
   );
 }
 
-function TriangleIcon(props) {
+export function TriangleIcon(props) {
   return (
     <svg
       {...props}
@@ -6598,7 +6598,7 @@ function TriangleIcon(props) {
   );
 }
 
-function TurtleIcon(props) {
+export function TurtleIcon(props) {
   return (
     <svg
       {...props}

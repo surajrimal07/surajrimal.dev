@@ -105,7 +105,6 @@ import {
   AiFillYoutube,
   AiOutlineTwitter,
 } from 'react-icons/ai';
-import { RiSupabaseFill } from "react-icons/ri";
 import { BsSearchHeartFill } from 'react-icons/bs';
 import { IoIosMail } from 'react-icons/io';
 import {
@@ -120,7 +119,14 @@ import {
   LuStar,
 } from 'react-icons/lu';
 import { MdAdminPanelSettings } from 'react-icons/md';
-import { RiMastodonFill, RiOpenaiFill, RiThreadsFill, RiToolsFill, RiTwitterXFill } from 'react-icons/ri';
+import {
+  RiMastodonFill,
+  RiOpenaiFill,
+  RiSupabaseFill,
+  RiThreadsFill,
+  RiToolsFill,
+  RiTwitterXFill,
+} from 'react-icons/ri';
 import { SiBuymeacoffee } from 'react-icons/si';
 
 const components = {
@@ -137,7 +143,7 @@ const components = {
   github: AiFillGithub,
   facebook: AiFillFacebook,
   youtube: AiFillYoutube,
-  supabase:RiSupabaseFill,
+  supabase: RiSupabaseFill,
   linkedin: AiFillLinkedin,
   twitter: AiOutlineTwitter,
   x: RiTwitterXFill,
@@ -319,7 +325,7 @@ const IconsBundle = ({
   }
 
   if (iconType === 'icon') {
-    return <SocialSvg className={cn(`h-${size} w-${size}`, className)} strokeWidth={strokeWidth} />
+    return <SocialSvg className={cn(`h-${size} w-${size}`, className)} strokeWidth={strokeWidth} />;
   }
 
   if (iconType === 'linkButton' && href) {

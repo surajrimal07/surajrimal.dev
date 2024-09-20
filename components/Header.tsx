@@ -31,7 +31,7 @@ const Header = () => {
           </div>
         ) : (
           <div className="text-primary-color dark:text-primary-color-dark flex items-center text-2xl font-semibold">
-            {`~${pathname}`}{' '}
+            {`~${pathname.startsWith('/blog') ? '/blog' : pathname}`}{' '}
             <Typewriter
               options={{
                 strings: [],
