@@ -82,7 +82,7 @@ const ThemeSwitch = () => {
   );
 
   return (
-    <div className="mr-5 flex items-center z-50">
+    <div className="mr-5 flex items-center">
       <Menu as="div" className="relative inline-block text-left">
         <motion.div
           className="flex items-center justify-center hover:text-red-500 dark:hover:text-red-500"

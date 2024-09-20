@@ -23,7 +23,6 @@ const Header = () => {
   return (
     <header className={headerClass}>
       <Link href="/" aria-label={siteMetadata.headerTitle} className="flex items-center justify-between ">
-        <span className="text-3xl font-bold">{'{ '}</span>
         {pathname === '/' ? (
           <div className="group ml-1 mr-1 hidden h-7 text-2xl font-semibold sm:block transition duration-300">
             {siteMetadata.headerTitle}
@@ -41,8 +40,6 @@ const Header = () => {
             />
           </div>
         )}
-        <span className="text-3xl font-bold mr-2">{' }'}</span>
-
         <div className="flex items-center">
           <span className="ml-1 mr-1 rounded-full bg-red-600 px-1 py-1 text-xs font-medium text-white">
             Open to work

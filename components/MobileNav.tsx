@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import clsx from 'clsx';
+import { useState } from 'react';
 
 import headerNavLinks from '@/data/headerNavLinks';
 
@@ -9,7 +9,7 @@ const MobileNav = () => {
   const [navShow, setNavShow] = useState(false);
 
   const className = clsx(
-    `sm:hidden fixed w-full h-screen inset-0 bg-gray-200 dark:bg-dark opacity-95 z-50 transition-transform transform ease-in-out duration-300`,
+    `sm:hidden fixed w-full h-screen inset-0 bg-gray-200 dark:bg-dark opacity-95 z-99 transition-transform transform ease-in-out duration-300`,
     navShow ? 'translate-x-0' : 'translate-x-full'
   );
 
@@ -18,7 +18,6 @@ const MobileNav = () => {
       if (status) {
         document.body.style.overflow = 'auto';
       } else {
-        // Prevent scrolling
         document.body.style.overflow = 'hidden';
       }
       return !status;

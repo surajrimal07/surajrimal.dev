@@ -49,8 +49,6 @@ export function Technologies() {
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400 flex items-center">
           Tools and technologies that i am familiar with and use on a daily basis.
         </p>
-      </div>
-      <div>
         <Tabs value={categories[tabIndex]} onValueChange={onTabChange} defaultValue={categories[0]} className="">
           <TabsList className="h-27 grid w-full grid-cols-2 gap-2 md:h-9 md:grid-cols-5 md:gap-1 lg:grid-cols-5 xl:gap-2">
             {categories.map((category, index) => (

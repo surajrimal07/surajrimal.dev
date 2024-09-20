@@ -5,14 +5,15 @@ import Image from 'next/image';
 
 const Avatar = () => {
   return (
-    <div className="max-h-[430px] overflow-hidden rounded-md">
+    <div className="overflow-hidden rounded-md">
       <Image
         blurDataURL={BLUR_IMAGE_DATA_URL}
         placeholder="blur"
         src={LOGO_IMAGE_PATH}
         alt="author avatar"
-        width={430}
         height={430}
+        width={430}
+        style={{ width: '430px', height: '430px' }}
       />
     </div>
   );
