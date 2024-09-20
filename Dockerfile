@@ -15,7 +15,6 @@ LABEL author="karhdo <karhdo.trong@gmail.com>"
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
 COPY . .
-RUN npx prisma generate
 RUN apk add --no-cache git curl \
     && yarn add sharp \
     && yarn build \
