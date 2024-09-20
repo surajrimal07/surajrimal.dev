@@ -6,8 +6,8 @@ import BrandIcon from '../BrandIcon';
 
 const PopularTags = () => {
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 md:space-y-5">
+    <>
+      <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
           Popular Tags <Twemoji size="twa-xs" emoji="rocket" />
         </h1>
@@ -15,7 +15,6 @@ const PopularTags = () => {
           Popular tags feature the most widely discussed topics.
         </p>
       </div>
-
       <div className="popular-tags grid grid-cols-3 gap-4 py-6 xl:grid-cols-6">
         {popularTags.map((popularTag) => {
           const { slug, iconType, href, title } = popularTag;
@@ -30,7 +29,7 @@ const PopularTags = () => {
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

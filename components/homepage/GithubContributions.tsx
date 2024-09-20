@@ -5,8 +5,8 @@ import Twemoji from '../Twemoji';
 
 const GithubContributions = () => {
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 py-6 md:space-y-5">
+    <>
+      <div className="w-full space-y-2 py-2 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
           Github Contributions
           <Twemoji size="twa-sm" emoji="keyboard" />
@@ -17,7 +17,7 @@ const GithubContributions = () => {
             href={'https://github.com/surajrimal07'}
             className="text-primary hover:text-red-400 dark:hover:text-red-400 inline-flex items-center"
           >
-            Github <TfiArrowTopRight className="ml-1" />
+            Github <TfiArrowTopRight />
           </Link>
           .
         </p>
@@ -25,7 +25,7 @@ const GithubContributions = () => {
       <div className="pt-5">
         <GitHubCalendar blockSize={15} username="surajrimal07" />
       </div>
-    </div>
+    </>
   );
 };
 

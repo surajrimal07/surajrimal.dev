@@ -38,8 +38,8 @@ const PrivateContributions = async () => {
   }
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 py-6 md:space-y-5">
+    <>
+      <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
           Private Contributions
           <Twemoji size="twa-sm" emoji="keyboard" />
@@ -55,7 +55,6 @@ const PrivateContributions = async () => {
           .
         </p>
       </div>
-
       <div className="pt-3">
         <div dangerouslySetInnerHTML={{ __html: svgData }} />
         <div className="flex space-x-4 mt-5 justify-center">
@@ -87,7 +86,7 @@ const PrivateContributions = async () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
