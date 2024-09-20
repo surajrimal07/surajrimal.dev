@@ -11,7 +11,7 @@ export interface Repository {
   updated_at: string;
   pushed_at: string;
   git_url: string;
-  has_issues: boolean
+  has_issues: boolean;
   forks_count: number;
   open_issues_count: number;
   watchers: number;

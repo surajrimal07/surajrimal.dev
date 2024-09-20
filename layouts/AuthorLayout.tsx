@@ -1,4 +1,4 @@
-import { ProfileCard } from '@/components/profilecard';
+import ProfileCard from '@/components/profilecard';
 import type { Authors } from 'contentlayer/generated';
 import { ReactNode } from 'react';
 

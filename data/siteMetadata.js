@@ -17,16 +17,16 @@ const siteMetadata = {
   socialBanner: '/static/images/projects/karhdo-blog.png',
   email: 'davidparkedme@gmail.com',
   github: 'https://github.com/surajrimal07',
-  facebook: 'fb.com/meettheflash',
-  linkedin: 'https://www.linkedin.com/in/surajrimal/',
-  twitter: 'https://twitter.com',
-  youtube: 'https://youtube.com',
   locale: 'en-US',
   stickyNav: false,
   socialAccounts: {
+    twitter: 'https://twitter.com',
+    youtube: 'https://youtube.com',
     github: 'https://github.com/surajrimal07',
-    linkedin: 'karhdo',
     facebook: 'fb.com/meettheflash',
+    linkedin: 'https://www.linkedin.com/in/surajrimal/',
+    instagram: 'https://www.instagram.com/weiggegg/',
+    threads: 'https://www.threads.net/@weiggegg',
   },
   analytics: {
     umamiAnalytics: {
@@ -35,7 +35,7 @@ const siteMetadata = {
     },
   },
   newsletter: {
-    provider: 'buttondown',
+    provider: 'convertkit',
   },
   search: {
     provider: 'kbar',

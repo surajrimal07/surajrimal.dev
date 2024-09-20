@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
@@ -19,11 +20,14 @@ const ScrollTopAndComment = ({ showScrollToComment = true }: { showScrollToComme
     window.scrollTo({ top: 0 });
   };
   const handleScrollToComment = () => {
-    document.getElementById('comment').scrollIntoView();
+    const commentElement = document.getElementById('comment');
+    if (commentElement) {
+      commentElement.scrollIntoView();
+    }
   };
   return (
     <div className={`fixed bottom-8 right-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}>
-      {showScrollToComment && siteMetadata.comments.provider && (
+      {showScrollToComment && siteMetadata.comments?.provider && (
         <button
           aria-label="Scroll To Comment"
           onClick={handleScrollToComment}

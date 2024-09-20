@@ -1,17 +1,15 @@
-'use client';
-
 import { Authors, allAuthors } from 'contentlayer/generated';
 import Image from 'next/image';
 import { coreContent } from 'pliny/utils/contentlayer';
-import { useEffect, useState } from 'react';
 import { FaRegStar, FaUserFriends, FaUserPlus } from 'react-icons/fa';
 import { RiGitRepositoryLine, RiGitRepositoryPrivateLine } from 'react-icons/ri';
 
-import { getRepoData, getUserData } from '@/lib/github';
+import { useRepoData, useUserData } from '@/lib/github';
 import { Repository, UserData } from '@/types/github';
 import { formatCommitDate } from '@/utils/formatDate';
 import { LOGO_IMAGE_PATH } from '../constants';
-import SocialIcon from './social-icons';
+import IconsBundle from './social-icons';
+import siteMetadata from '@/data/siteMetadata';
 
 interface LanguageStats {
   [key: string]: string;
@@ -23,45 +21,30 @@ interface GithubStats {
   lastCommitDate: string;
 }
 
-export const ProfileCard = () => {
+export default async function ProfileCard() {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors;
-  const { name, occupation, company, email, twitter, linkedin, github } = coreContent(author);
+  const { name, occupation, company } = coreContent(author);
 
-  const [languages, setLanguages] = useState<string[]>([]);
-  const [languagePercentages, setLanguagePercentages] = useState<LanguageStats>({});
-  const [githubStats, setGithubStats] = useState<GithubStats>({
+  let languages: string[] = [];
+  let languagePercentages: LanguageStats = {};
+  let githubStats: GithubStats = {
     totalStars: 0,
     privateRepos: 0,
     lastCommitDate: '',
-  });
-  const [userData, setUserData] = useState<UserData | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await getUserData();
-        setUserData(user);
-
-        const repos = await getRepoData();
-        processRepoData(repos);
-      } catch (error) {
-        console.error('Error fetching github data');
-      }
-    };
-
-    fetchData();
-  }, []);
+  };
+  const userData: UserData = await useUserData();
+  const repos: Repository[] = await useRepoData();
 
   const processRepoData = (repos: Repository[]) => {
     const privateRepos = repos.filter((repo) => repo.private).length;
     const lastCommit = repos.reduce((acc, repo) => (repo.pushed_at > acc ? repo.pushed_at : acc), '');
     const totalStars = repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
 
-    setGithubStats({
+    githubStats = {
       totalStars,
       privateRepos,
       lastCommitDate: formatCommitDate(lastCommit),
-    });
+    };
 
     const languageCount: { [key: string]: number } = {};
     repos.forEach((repo) => {
@@ -71,17 +54,16 @@ export const ProfileCard = () => {
     });
 
     const totalRepos = repos.length;
-    const percentages = Object.fromEntries(
+    languagePercentages = Object.fromEntries(
       Object.entries(languageCount).map(([lang, count]) => [lang, `${((count / totalRepos) * 100).toFixed(2)}%`])
     );
 
-    setLanguagePercentages(percentages);
-    setLanguages(
-      Object.keys(percentages)
-        .sort((a, b) => parseFloat(percentages[b]) - parseFloat(percentages[a]))
-        .slice(0, 6)
-    );
+    languages = Object.keys(languagePercentages)
+      .sort((a, b) => parseFloat(languagePercentages[b]) - parseFloat(languagePercentages[a]))
+      .slice(0, 6);
   };
+
+  processRepoData(repos);
 
   const renderLanguages = () => (
     <div className="w-full">
@@ -128,10 +110,10 @@ export const ProfileCard = () => {
       <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
       <div className="text-gray-500 dark:text-gray-400">{company}</div>
       <div className="flex space-x-3">
-        <SocialIcon kind="mail" href={`mailto:${email}`} />
-        <SocialIcon kind="github" href={github} />
-        <SocialIcon kind="linkedin" href={linkedin} />
-        <SocialIcon kind="x" href={twitter} />
+        <IconsBundle kind="mail" href={`mailto:${siteMetadata.email}`} />
+        <IconsBundle kind="github" href={siteMetadata.github} />
+        <IconsBundle kind="linkedin" href={siteMetadata.socialAccounts.linkedin} />
+        <IconsBundle kind="x" href={siteMetadata.socialAccounts.twitter} />
       </div>
       {userData && (
         <>
@@ -141,7 +123,7 @@ export const ProfileCard = () => {
       )}
     </div>
   );
-};
+}
 
 const StatItem = ({ icon, value }: { icon: React.ReactNode; value: number }) => (
   <div className="flex flex-col items-center">

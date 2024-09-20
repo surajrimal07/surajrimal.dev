@@ -1,27 +1,19 @@
 import { ReactNode } from 'react';
-import type { Authors } from 'contentlayer/generated';
-import { TOCInline } from 'pliny/ui/TOCInline';
-import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 
-import siteMetadata from '@/data/siteMetadata';
-import { PageSEO } from '@/components/SEO';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
+import { ToC } from '@/components/ToC';
+import type { TOC } from '@/types/toc';
 
 interface Props {
   children: ReactNode;
-  toc: Toc;
-  content: Omit<Authors, '_id' | '_raw' | 'body'>;
+  toc: TOC[] | never;
 }
 
-export default function AuthorLayout({ children, content, toc }: Props) {
-  const { title, headerTitle } = siteMetadata;
-
+export default function AuthorLayout({ children, toc }: Props) {
   const description = 'My professional career, experiences, and skills.';
 
   return (
     <>
-      <PageSEO title={`Resume - ${headerTitle} - ${title}`} description={description} />
-
       <ScrollTopAndComment showScrollToComment={false} />
 
       <div className="resume">
@@ -36,7 +28,7 @@ export default function AuthorLayout({ children, content, toc }: Props) {
 
         <main className="mx-auto my-12 max-w-screen-xl gap-12 space-y-12 rounded-md bg-gray-100 p-3 md:flex md:space-y-0 md:p-8">
           <div className="table-of-content top-20 self-start pl-0 text-gray-500 md:sticky">
-            <TOCInline toc={toc} toHeading={2} />
+            <ToC toc={toc} />
           </div>
 
           <div className="hidden border-l border-gray-300 md:block" />

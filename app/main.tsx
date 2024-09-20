@@ -10,10 +10,12 @@ import Heading from '@/components/homepage/Heading';
 import PopularTags from '@/components/homepage/PopularTags';
 import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
+import { Technologies } from '@/components/homepage/Technologies';
 import TypedBios from '@/components/homepage/TypedBios';
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
+import NewsletterForm from 'pliny/ui/NewsletterForm';
 
 const MAX_DISPLAY = 1;
 
@@ -36,11 +38,12 @@ export default function Home({ posts }) {
       </div>
 
       <PopularTags />
+      <Technologies />
       <GithubContributions />
       <PrivateContributions />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 py-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+          <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
             Recent Posts
             <Twemoji size="twa-sm" emoji="writing-hand" />
           </h1>
@@ -101,11 +104,11 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
-      {/* {siteMetadata.newsletter.provider && (
-        <div className="flex items-center justify-center pt-4">
+      {siteMetadata.newsletter?.provider && (
+        <div className="flex items-center justify-center pt-2">
           <NewsletterForm />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

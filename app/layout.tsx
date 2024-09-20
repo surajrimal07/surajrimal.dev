@@ -17,6 +17,7 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics';
 import { SearchConfig, SearchProvider } from 'pliny/search';
 import { ThemeProviders } from './theme-providers';
 
+import VercelAnalytics from '@/components/VercelAnalytics';
 import NextTopLoader from 'nextjs-toploader';
 
 const space_grotesk = Space_Grotesk({
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="relative pl-[calc(100vw-100%)] bg-white text-black antialiased dark:bg-dark dark:text-white">
         <NextTopLoader color="#DC2626" height={2} />
         <ThemeProviders>
+          <VercelAnalytics />
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
