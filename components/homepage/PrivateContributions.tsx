@@ -57,32 +57,31 @@ const PrivateContributions = async () => {
       </div>
       <div className="pt-3">
         <div dangerouslySetInnerHTML={{ __html: svgData }} />
-        <div className="flex space-x-4 mt-5 justify-center">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-3">
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:today?label=Today"
             alt="Today contributions"
-            className="h-6 w-15"
+            className="h-auto w-auto max-w-[80px] sm:max-w-none"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:week?label=Week"
             alt="This week contributions"
-            className="h-6 w-15"
+            className="h-auto w-auto max-w-[80px] sm:max-w-none"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:30_days?label=Month"
             alt="Last 30 days contributions"
-            className="h-6 w-15"
+            className="h-auto w-auto max-w-[80px] sm:max-w-none"
           />
-
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:last_12_months?label=Year"
             alt="Year contributions"
-            className="h-6 w-15"
+            className="h-auto w-auto max-w-[80px] sm:max-w-none"
           />
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:all_time?label=All Time"
             alt="All contributions"
-            className="h-6 w-15"
+            className="h-auto w-auto max-h-6 max-w-[80px] sm:max-w-none"
           />
         </div>
       </div>

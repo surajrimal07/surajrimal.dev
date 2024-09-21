@@ -1,32 +1,11 @@
 import { useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+
 interface CounterProps {
-  /**
-   * A function to format the counter value. By default, it will format the
-   * number with commas.
-   */
   format?: (value: number) => string;
-
-  /**
-   * The target value of the counter.
-   */
   targetValue: number;
-
-  /**
-   * The direction of the counter. If "up", the counter will start from 0 and
-   * go up to the target value. If "down", the counter will start from the target
-   * value and go down to 0.
-   */
   direction?: 'up' | 'down';
-
-  /**
-   * The delay in milliseconds before the counter starts counting.
-   */
   delay?: number;
-
-  /**
-   * Additional classes for the counter.
-   */
   className?: string;
 }
 
@@ -43,27 +22,30 @@ export default function AnimatedCounter({
   delay = 0,
   className,
 }: CounterProps) {
+  // Use ref and hooks unconditionally
   const ref = useRef<HTMLSpanElement>(null);
   const isGoingUp = direction === 'up';
   const motionValue = useMotionValue(isGoingUp ? 0 : targetValue);
-
-  const springValue = useSpring(motionValue, {
-    damping: 10,
-    stiffness: 80,
-  });
+  const springValue = useSpring(motionValue, { damping: 10, stiffness: 80 });
   const isInView = useInView(ref, { margin: '0px', once: true });
 
+  // Early return for targetValue 0
   useEffect(() => {
-    if (!isInView) {
-      return;
+    if (targetValue === 0) {
+      if (ref.current) {
+        ref.current.textContent = format ? format(0) : '0';
+      }
+      return; // Exit early if targetValue is 0
     }
 
     const timer = setTimeout(() => {
-      motionValue.set(isGoingUp ? targetValue : 0);
+      if (isInView) {
+        motionValue.set(isGoingUp ? targetValue : 0);
+      }
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [isInView, delay, isGoingUp, targetValue, motionValue]);
+  }, [isInView, delay, isGoingUp, targetValue, motionValue, format]);
 
   useEffect(() => {
     springValue.on('change', (value) => {

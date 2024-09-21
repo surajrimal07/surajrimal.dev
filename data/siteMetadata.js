@@ -18,7 +18,7 @@ const siteMetadata = {
   email: 'davidparkedme@gmail.com',
   github: 'https://github.com/surajrimal07',
   locale: 'en-US',
-  stickyNav: false,
+  stickyNav: true,
   socialAccounts: {
     twitter: 'https://twitter.com',
     youtube: 'https://youtube.com',

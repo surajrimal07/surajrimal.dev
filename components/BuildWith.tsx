@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata';
 
-import { TfiArrowTopRight } from 'react-icons/tfi';
+import { GoRepoForked } from 'react-icons/go';
+
 import Link from './Link';
 import IconsBundle from './social-icons';
 
@@ -23,7 +24,7 @@ const BuildWith = () => (
     <Link href={siteMetadata.siteRepo} className="text-gray-500 underline underline-offset-4 dark:text-gray-300">
       <span data-umami-event="view-source" className="flex items-center">
         View source
-        <TfiArrowTopRight size={12} />
+        <GoRepoForked size={15} />
       </span>
     </Link>
   </div>

@@ -16,15 +16,16 @@ import ThemeSwitch from './ThemeSwitch';
 const Header = () => {
   const pathname = usePathname();
 
-  let headerClass = 'flex items-center w-full backdrop-blur justify-between py-7'; //make header up or down change py
+  let headerClass =
+    'flex inset-x-0 top-4 items-center h-[70px] w-full backdrop-blur bg-white/50 dark:bg-black/50 justify-between py-7 mb-6'; //make header up or down change py
   if (siteMetadata.stickyNav) {
-    headerClass += ' sticky top-0 z-5';
+    headerClass += ' sticky top-0 z-40'; //5
   }
   return (
     <header className={headerClass}>
       <Link href="/" aria-label={siteMetadata.headerTitle} className="flex items-center justify-between ">
         {pathname === '/' ? (
-          <div className="group ml-1 mr-1 hidden h-7 text-2xl font-semibold sm:block transition duration-300">
+          <div className="group ml-1 mr-1 h-7 text-2xl font-semibold sm:block transition duration-300">
             {siteMetadata.headerTitle}
             <span className="block h-0.5 max-w-0 bg-red-300 transition-all duration-500 group-hover:max-w-[97%] dark:bg-red-700"></span>
           </div>
@@ -55,9 +56,9 @@ const Header = () => {
                 key={link.title}
                 href={link.href}
                 className={clsx(
-                  'link-underline rounded py-1 px-1 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-700 sm:py-2 sm:px-3 ',
+                  'link-underline rounded-lg py-1 px-1 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-700 sm:py-2 sm:px-3 ',
                   pathname?.startsWith(link.href)
-                    ? 'bg-red-300 dark:bg-red-800 '
+                    ? 'bg-red-300 dark:bg-red-600 '
                     : 'hover:bg-gray-200 dark:hover:bg-gray-700'
                 )}
               >
