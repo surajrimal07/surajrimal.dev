@@ -11,11 +11,12 @@ import { slug } from 'github-slugger';
 import { LuArrowRightCircle } from 'react-icons/lu';
 
 import AnimatedCounter from '@/components/animata/text/counter';
+import ShareButton from '@/components/blog/ShareButton';
 import { getBlogShares, getBlogView } from '@/lib/pageView';
 import { usePathname } from 'next/navigation';
 import { CoreContent } from 'pliny/utils/contentlayer';
 import { formatDate } from 'pliny/utils/formatDate';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoMdShare } from 'react-icons/io';
 import { MdInsights } from 'react-icons/md';
 
@@ -28,6 +29,7 @@ interface ListLayoutProps {
   title: string;
   initialDisplayPosts?: CoreContent<Blog>[];
   pagination?: PaginationProps;
+  ipaddress: string;
 }
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
@@ -67,11 +69,19 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   );
 }
 
-export default function ListLayoutWithTags({ posts, title, initialDisplayPosts = [], pagination }: ListLayoutProps) {
+export default function ListLayoutWithTags({
+  posts,
+  title,
+  initialDisplayPosts = [],
+  pagination,
+  ipaddress,
+}: ListLayoutProps) {
   const pathname = usePathname();
   const [searchValue, setSearchValue] = useState('');
   const [viewCounts, setViewCounts] = useState(new Map());
   const [shareCounts, setShareCounts] = useState(new Map());
+  const [openShareMenuSlug, setOpenShareMenuSlug] = useState<string | null>(null);
+  const shareMenuRef = useRef<HTMLDivElement | null>(null);
 
   const filteredBlogPosts = posts.filter((post) => {
     const searchContent = post.title + post.summary + post.tags.join(' ');
@@ -87,9 +97,9 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
   useEffect(() => {
     const fetchCounts = async (slug) => {
       const views = await getBlogView(slug);
-      const shares = await getBlogShares(slug);
+      const { total } = await getBlogShares(slug);
       setViewCounts((prev) => new Map(prev).set(slug, views));
-      setShareCounts((prev) => new Map(prev).set(slug, shares));
+      setShareCounts((prev) => new Map(prev).set(slug, total));
     };
 
     displayPosts.forEach((post) => {
@@ -97,10 +107,18 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
     });
   }, [displayPosts]);
 
-  // const handleShareClick = async (slug) => {
-  //   const updatedShares = await updateBlogShares(slug);
-  //   setShareCounts((prev) => new Map(prev).set(slug, updatedShares));
-  // };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (shareMenuRef.current && !shareMenuRef.current.contains(event.target as Node)) {
+        setOpenShareMenuSlug(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -206,12 +224,27 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
 
                     <div className="mt-2 text-slate-400 dark:text-slate-400 flex items-center gap-2">
                       <MdInsights className="h-4 w-4" />
-                      <span className="flex items-center gap-1.5" title="Number of view(s)">
+                      <span className="flex items-center gap-1.5 text-sm" title="Number of view(s)">
                         <AnimatedCounter targetValue={views} /> Views
                       </span>
                       <span>&middot;</span>
-                      <IoMdShare className="h-4 w-4" />
-                      <span className="flex items-center gap-1.5" title="Number of share(s)">
+                      <div className="relative">
+                        <IoMdShare
+                          className="h-4 w-4 cursor-pointer"
+                          onClick={() => setOpenShareMenuSlug(openShareMenuSlug === path ? null : path)}
+                        />
+                        {openShareMenuSlug === path && (
+                          <div ref={shareMenuRef}>
+                            <ShareButton
+                              ip={ipaddress}
+                              slug={path}
+                              url={process.env.NEXT_PUBLIC_URL + `/${path}`}
+                              onShareComplete={() => setOpenShareMenuSlug(null)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <span className="flex items-center gap-1.5 text-sm" title="Number of share(s)">
                         <AnimatedCounter targetValue={shares} /> Shares
                       </span>
                     </div>

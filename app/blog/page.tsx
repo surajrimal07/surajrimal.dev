@@ -1,6 +1,7 @@
 import ListLayout from '@/layouts/ListLayoutWithTags';
 import { genPageMetadata } from 'app/seo';
 import { allBlogs } from 'contentlayer/generated';
+import { headers } from 'next/headers';
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer';
 
 const POSTS_PER_PAGE = 5;
@@ -8,6 +9,9 @@ const POSTS_PER_PAGE = 5;
 export const metadata = genPageMetadata({ title: 'Blog' });
 
 export default function BlogPage() {
+  const headersList = headers();
+  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
+
   const posts = allCoreContent(sortPosts(allBlogs));
   const pageNumber = 1;
   const initialDisplayPosts = posts.slice(POSTS_PER_PAGE * (pageNumber - 1), POSTS_PER_PAGE * pageNumber);
@@ -17,6 +21,12 @@ export default function BlogPage() {
   };
 
   return (
-    <ListLayout posts={posts} initialDisplayPosts={initialDisplayPosts} pagination={pagination} title="All Posts" />
+    <ListLayout
+      posts={posts}
+      initialDisplayPosts={initialDisplayPosts}
+      pagination={pagination}
+      title="All Posts"
+      ipaddress={ip}
+    />
   );
 }

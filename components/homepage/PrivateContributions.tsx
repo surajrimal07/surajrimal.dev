@@ -34,6 +34,7 @@ const PrivateContributions = async () => {
     const svgString = await fetchSvg();
     svgData = modifySvg(svgString);
   } catch (error) {
+    console.error('Failed to fetch contribution data:', error);
     return <p>Failed to load contribution data. Please try again later.</p>;
   }
 

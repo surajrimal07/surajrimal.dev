@@ -16,6 +16,7 @@ import { Metadata } from 'next';
 import { Analytics, AnalyticsConfig } from 'pliny/analytics';
 import { SearchConfig, SearchProvider } from 'pliny/search';
 import { ThemeProviders } from './theme-providers';
+import { Toaster } from 'react-hot-toast';
 
 import VercelAnalytics from '@/components/VercelAnalytics';
 import NextTopLoader from 'nextjs-toploader';
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body className="relative pl-[calc(100vw-100%)] bg-white text-black antialiased dark:bg-dark dark:text-white">
         <NextTopLoader color="#DC2626" height={2} />
+        <Toaster position="top-center" reverseOrder={false} />
         <ThemeProviders>
           <VercelAnalytics />
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />

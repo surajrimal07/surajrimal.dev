@@ -13,7 +13,6 @@ const BuildWith = () => (
       <IconsBundle kind="nextjs" href="https://nextjs.org?ref=surajr.com.np" size={6} className="h-5 w-5" />
 
       <IconsBundle kind="tailwind" href="https://tailwindcss.com?ref=surajr.com.np" size={6} className="h-5 w-5" />
-      <IconsBundle kind="x" href={siteMetadata.x} size={6} />
       <IconsBundle kind="typescript" href="https://www.typescriptlang.org?ref=surajr.com.np" size={4} />
 
       <IconsBundle kind="umami" href="https://umami.is?ref=surajr.com.np" size={6} className="h-5 w-5" />

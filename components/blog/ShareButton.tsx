@@ -1,153 +1,97 @@
 'use client';
 
-import { Menu } from '@headlessui/react';
+import { updateBlogShares } from '@/lib/pageView';
+import { ShareType } from '@/types/share';
 import clsx from 'clsx';
-import { m } from 'framer-motion';
-import { forwardRef } from 'react';
-
-import { CiShare2, CiStickyNote } from 'react-icons/ci';
-import { FaXTwitter } from 'react-icons/fa6';
+import React from 'react';
+import { FaFacebookF, FaXTwitter } from 'react-icons/fa6';
 import { LuExternalLink } from 'react-icons/lu';
 
-import { usePathname } from 'next/navigation';
-
-import type { PropsWithChildren } from 'react';
-
-interface ShareItemProps extends PropsWithChildren {
-  active: boolean;
-}
-
-type ShareType = 'TWITTER' | 'CLIPBOARD' | 'OTHERS';
-
-interface ShareItemButtonProps extends ShareItemProps {
-  onClick: () => void;
-}
-
-const ShareItemButton = forwardRef<HTMLButtonElement, ShareItemButtonProps>(({ active, children, onClick }, ref) => (
-  <button
-    type="button"
-    ref={ref}
-    className={clsx(
-      'flex w-full items-center gap-3 px-4 py-2 text-[13px]',
-      ['hover:bg-slate-100', 'hover:dark:bg-[#1d263a]'],
-      [active && ['bg-slate-100', 'dark:bg-[#1d263a]']]
-    )}
-    onClick={onClick}
-  >
-    {children}
-  </button>
-));
-
-ShareItemButton.displayName = 'ShareItemButton';
-
-interface ShareItemLinkProps extends ShareItemProps {
-  href: string;
-  onClick: () => void;
-}
-
-const ShareItemLink = forwardRef<HTMLAnchorElement, ShareItemLinkProps>(({ href, active, onClick, children }, ref) => (
-  <a
-    ref={ref}
-    href={href}
-    onClick={onClick}
-    target="_blank"
-    rel="noreferrer nofollow"
-    className={clsx(
-      'flex w-full items-center gap-3 px-4 py-2 text-[13px]',
-      ['hover:bg-slate-100', 'hover:dark:bg-[#1d263a]'],
-      [active && ['bg-slate-100', 'dark:bg-[#1d263a]']]
-    )}
-  >
-    {children}
-  </a>
-));
-
-ShareItemLink.displayName = 'ShareItemLink';
-
-const animation = {
-  hide: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.18 } },
-};
+import toast from 'react-hot-toast';
+import { FaRegClipboard } from 'react-icons/fa';
 
 interface ShareButtonProps {
+  url: string;
+  slug: string;
+  ip: string;
   onItemClick?: (type: ShareType) => void;
+  onShareComplete?: () => void;
 }
 
-function ShareButton({ onItemClick = () => {} }: ShareButtonProps) {
-  const currentUrl = usePathname();
+const toastOptions = {
+  style: {
+    borderRadius: '10px',
+    background: '#333',
+    color: '#fff',
+  },
+  duration: 2000,
+};
 
-  const handleCopy = async () => {
+const ShareButton: React.FC<ShareButtonProps> = ({
+  url,
+  slug,
+  ip,
+  onItemClick = () => {},
+  onShareComplete = () => {},
+}) => {
+  const handleShareClick = async (type: ShareType, shareFunction: () => void) => {
     try {
-      const content = currentUrl;
-      await navigator.clipboard.writeText(content);
-
-      onItemClick('CLIPBOARD');
-    } catch (err) {
-      //
+      await updateBlogShares(slug, ip, type);
+      onItemClick(type);
+      shareFunction();
+      onShareComplete();
+    } catch (error) {
+      if (error.message === 'Max shares limit reached') {
+        toast.error('Maximum shares limit reached', {
+          ...toastOptions,
+        });
+      } else {
+        console.error(`Failed to update shares for ${slug}:`, error);
+      }
     }
   };
 
+  const handleCopy = () => {
+    toast.success('Link copied to clipboard', {
+      ...toastOptions,
+    });
+    handleShareClick('clipboardshare', () => {
+      navigator.clipboard.writeText(url);
+    });
+  };
+
   const handleTwitter = () => {
-    onItemClick('TWITTER');
+    handleShareClick('twittershare', () => {
+      window.open(`https://twitter.com/intent/tweet?url=${url}`, '_blank');
+    });
+  };
+
+  const handleFacebook = () => {
+    handleShareClick('facebookshare', () => {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    });
   };
 
   return (
-    <Menu>
-      {({ open }) => (
-        <>
-          <Menu.Button
-            title="Share"
-            aria-label="Share"
-            className={clsx(
-              'relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-slate-200',
-              'dark:bg-[#1d263a]'
-            )}
-          >
-            <CiShare2 className={clsx('h-5 w-5')} />
-          </Menu.Button>
-          {open && (
-            <Menu.Items
-              static
-              as={m.div}
-              variants={animation}
-              initial="hide"
-              animate="show"
-              className={clsx(
-                'border-divider-light absolute bottom-24 right-2 z-[902] flex w-56 flex-col overflow-hidden rounded-2xl border bg-white/70 pb-2 pt-1 backdrop-blur',
-                'dark:border-divider-dark dark:bg-slate-900/80'
-              )}
-            >
-              <div className={clsx('py-3 px-4 text-center text-[13px] text-lg font-bold')}>Share this on</div>
-              <Menu.Item>
-                {({ active }) => (
-                  <ShareItemLink
-                    active={active}
-                    href={`https://twitter.com/intent/tweet?via=enjidev&url=${currentUrl}`}
-                    onClick={handleTwitter}
-                  >
-                    <FaXTwitter className={clsx('h-4 w-4')} />
-                    <span className={clsx('flex items-center gap-2')}>
-                      Twitter
-                      <LuExternalLink className={clsx('h-3 w-3')} />
-                    </span>
-                  </ShareItemLink>
-                )}
-              </Menu.Item>
-              <div className={clsx('border-divider-light my-2 border-t', 'dark:border-divider-dark')} />
-              <Menu.Item>
-                {({ active }) => (
-                  <ShareItemButton active={active} onClick={handleCopy}>
-                    <CiStickyNote className={clsx('h-4 w-4')} />
-                    Copy link
-                  </ShareItemButton>
-                )}
-              </Menu.Item>
-            </Menu.Items>
-          )}
-        </>
-      )}
-    </Menu>
+    <div className="absolute left-0 mt-2 w-42 bg-gray-900 rounded-md shadow-lg z-10">
+      <div className={clsx('py-2 px-2 text-center text-lg text-gray-300')}>Share this on</div>
+      <div className="h-px bg-gray-600 my-1"></div>
+      <button onClick={handleTwitter} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+        <FaXTwitter className="mr-2 h-4 w-4" />
+        Twitter
+        <LuExternalLink className="ml-1 h-3 w-3" />
+      </button>
+      <button onClick={handleFacebook} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+        <FaFacebookF className="mr-2 h-4 w-4" />
+        Facebook
+        <LuExternalLink className="ml-1 h-3 w-3" />
+      </button>
+      <button onClick={handleCopy} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+        <FaRegClipboard className="mr-2 h-4 w-4" />
+        Copy link
+      </button>
+    </div>
   );
-}
+};
 
 export default ShareButton;
