@@ -1,9 +1,13 @@
-import clsx from 'clsx';
+'use client';
+
 import { useState } from 'react';
+
+import clsx from 'clsx';
 
 import headerNavLinks from '@/data/headerNavLinks';
 
 import Link from './Link';
+import usePlaySound from './PlaySound';
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false);
@@ -13,8 +17,14 @@ const MobileNav = () => {
     navShow ? 'translate-x-0' : 'translate-x-full'
   );
 
+  const { playSound } = usePlaySound({
+    filePath: '/static/sounds/page-change.mp3',
+    volume: 0.7,
+  });
+
   const onToggleNav = () => {
     setNavShow((status) => {
+      playSound();
       if (status) {
         document.body.style.overflow = 'auto';
       } else {
@@ -26,7 +36,11 @@ const MobileNav = () => {
 
   return (
     <div className="sm:hidden">
-      <button className="ml-1 mr-1 h-8 w-7 rounded py-1" aria-label="Toggle Menu" onClick={onToggleNav}>
+      <button
+        className="ml-1 mr-1 h-8 w-7 rounded py-1"
+        aria-label="Toggle Menu"
+        onClick={onToggleNav}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -42,7 +56,11 @@ const MobileNav = () => {
       </button>
       <div className={className}>
         <div className="flex justify-end">
-          <button className="mr-1 mt-5 h-8 w-8 rounded" aria-label="Toggle Menu" onClick={onToggleNav}>
+          <button
+            className="mr-1 mt-5 h-8 w-8 rounded"
+            aria-label="Toggle Menu"
+            onClick={onToggleNav}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"

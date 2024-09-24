@@ -1,6 +1,8 @@
 'use client';
+
+import { type MouseEvent, useEffect, useRef } from 'react';
+
 import type { TOC } from '@/types/toc';
-import { useEffect, useRef, type MouseEvent } from 'react';
 
 export function ToC({ toc }: { toc: TOC[] }) {
   const modifiedToc = toc.map((item) => {
@@ -31,7 +33,9 @@ export function ToC({ toc }: { toc: TOC[] }) {
         if (entry.intersectionRatio > 0) {
           if (
             !firstActiveId ||
-            (firstElement && entry.target.getBoundingClientRect().top < firstElement.getBoundingClientRect().top)
+            (firstElement &&
+              entry.target.getBoundingClientRect().top <
+                firstElement.getBoundingClientRect().top)
           ) {
             firstActiveId = entry.target.getAttribute('id');
           }
@@ -40,14 +44,18 @@ export function ToC({ toc }: { toc: TOC[] }) {
 
       if (firstActiveId && activeIdRef.current !== firstActiveId) {
         if (activeIdRef.current && navRef.current) {
-          const previousActiveAnchor = navRef.current.querySelector(`li a[href="#${activeIdRef.current}"]`);
+          const previousActiveAnchor = navRef.current.querySelector(
+            `li a[href="#${activeIdRef.current}"]`
+          );
           if (previousActiveAnchor) {
             previousActiveAnchor.classList.remove('text-gray-600');
           }
         }
 
         if (navRef.current) {
-          const currentActiveAnchor = navRef.current.querySelector(`li a[href="#${firstActiveId}"]`);
+          const currentActiveAnchor = navRef.current.querySelector(
+            `li a[href="#${firstActiveId}"]`
+          );
           if (currentActiveAnchor) {
             currentActiveAnchor.classList.add('text-gray-600');
           }

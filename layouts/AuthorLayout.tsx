@@ -1,6 +1,8 @@
-import ProfileCard from '@/components/profilecard';
-import type { Authors } from 'contentlayer/generated';
 import { ReactNode } from 'react';
+
+import type { Authors } from 'contentlayer/generated';
+
+import ProfileCard from '@/components/profilecard';
 
 interface Props {
   children: ReactNode;
@@ -23,7 +25,9 @@ export default function AuthorLayout({ children }: Props) {
           <div className="flex flex-col items-center space-x-2 pt-8">
             <ProfileCard />
           </div>
-          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert  xl:col-span-2">{children}</div>
+          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
+            {children}
+          </div>
         </div>
       </div>
     </>

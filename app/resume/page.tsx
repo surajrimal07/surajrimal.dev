@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { genPageMetadata } from 'app/seo';
+import { allAuthors } from 'contentlayer/generated';
+import { MDXLayoutRenderer } from 'pliny/mdx-components';
+
 import { components } from '@/components/MDXComponents';
 import SectionContainer from '@/components/SectionContainer';
 import ResumeLayout from '@/layouts/ResumeLayout';
 import { TOC } from '@/types/toc';
-import { allAuthors } from 'contentlayer/generated';
-import { MDXLayoutRenderer } from 'pliny/mdx-components';
 
-import { genPageMetadata } from 'app/seo';
 export const metadata = genPageMetadata({ title: 'About' });
 
 export default function Page() {
@@ -27,7 +28,11 @@ export default function Page() {
     <>
       <SectionContainer>
         <ResumeLayout toc={resumeTOC}>
-          <MDXLayoutRenderer code={author!.body.code} components={components} toc={resumeTOC} />
+          <MDXLayoutRenderer
+            code={author!.body.code}
+            components={components}
+            toc={resumeTOC}
+          />
         </ResumeLayout>
       </SectionContainer>
     </>

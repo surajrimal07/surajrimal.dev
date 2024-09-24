@@ -1,9 +1,14 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
 
-const ScrollTopAndComment = ({ showScrollToComment = true }: { showScrollToComment?: boolean }) => {
+const ScrollTopAndComment = ({
+  showScrollToComment = true,
+}: {
+  showScrollToComment?: boolean;
+}) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -26,7 +31,9 @@ const ScrollTopAndComment = ({ showScrollToComment = true }: { showScrollToComme
     }
   };
   return (
-    <div className={`fixed bottom-8 right-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}>
+    <div
+      className={`fixed bottom-8 right-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}
+    >
       {showScrollToComment && siteMetadata.comments?.provider && (
         <button
           aria-label="Scroll To Comment"

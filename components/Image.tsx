@@ -1,12 +1,14 @@
 'use client';
-import { useState } from 'react';
+
 import NextImage from 'next/image';
+import { useState } from 'react';
+
 import clsx from 'clsx';
 
-import type { ImageProps } from '@/types/components';
 import ImageLightbox from '@/components/ImageLightbox';
+import { BLUR_IMAGE_DATA_URL, LOGO_IMAGE_PATH } from '@/constants/index';
+import type { ImageProps } from '@/types/components';
 
-import { LOGO_IMAGE_PATH, BLUR_IMAGE_DATA_URL } from '@/constants/index';
 const Image = ({ shouldOpenLightbox = true, ...rest }: ImageProps) => {
   let blurDataURL = '';
 
@@ -28,14 +30,32 @@ const Image = ({ shouldOpenLightbox = true, ...rest }: ImageProps) => {
 
   const isThumb = rest.id === 'thumbnail-image';
 
-  const className = clsx('flex justify-center', isThumb && 'thumbnail-image', shouldOpenLightbox && 'cursor-zoom-in');
+  const className = clsx(
+    'flex justify-center',
+    isThumb && 'thumbnail-image',
+    shouldOpenLightbox && 'cursor-zoom-in'
+  );
 
   return (
     <>
-      <div className={className} data-umami-event={isThumb ? 'view-post-thumbnail' : 'view-image-in-lightbox'}>
-        <NextImage {...rest} blurDataURL={blurDataURL} onClick={handleOpenLightbox} />
+      <div
+        className={className}
+        data-umami-event={
+          isThumb ? 'view-post-thumbnail' : 'view-image-in-lightbox'
+        }
+      >
+        <NextImage
+          {...rest}
+          blurDataURL={blurDataURL}
+          onClick={handleOpenLightbox}
+        />
       </div>
-      {openLightbox && <ImageLightbox closeLightbox={() => setOpenLightbox(false)} src={rest.src} />}
+      {openLightbox && (
+        <ImageLightbox
+          closeLightbox={() => setOpenLightbox(false)}
+          src={rest.src}
+        />
+      )}
     </>
   );
 };

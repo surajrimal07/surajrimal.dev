@@ -1,5 +1,6 @@
-import { useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+
+import { useInView, useMotionValue, useSpring } from 'framer-motion';
 
 interface CounterProps {
   format?: (value: number) => string;
@@ -10,9 +11,12 @@ interface CounterProps {
 }
 
 export const Formatter = {
-  number: (value: number) => Intl.NumberFormat('en-US').format(+value.toFixed(0)),
+  number: (value: number) =>
+    Intl.NumberFormat('en-US').format(+value.toFixed(0)),
   currency: (value: number) =>
-    Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(+value.toFixed(0)),
+    Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+      +value.toFixed(0)
+    ),
 };
 
 export default function AnimatedCounter({

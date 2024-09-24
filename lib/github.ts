@@ -1,6 +1,12 @@
+import {
+  type GraphQlQueryResponseData,
+  GraphqlResponseError,
+  graphql,
+} from '@octokit/graphql';
+
 import siteMetadata from '@/data/siteMetadata';
 import { Repository, UserData } from '@/types/github';
-import { GraphqlResponseError, graphql, type GraphQlQueryResponseData } from '@octokit/graphql';
+
 import { GithubRepository } from '../types';
 
 export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
@@ -63,12 +69,15 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
       name: edge.node.name,
     }));
 
-    repository.repositoryTopics = repository.repositoryTopics.edges.map((edge) => edge.node.topic.name);
+    repository.repositoryTopics = repository.repositoryTopics.edges.map(
+      (edge) => edge.node.topic.name
+    );
 
     return repository;
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
-      const errorMessage = error.errors?.[0]?.message || 'Unknown GraphQL error';
+      const errorMessage =
+        error.errors?.[0]?.message || 'Unknown GraphQL error';
       throw new Error(errorMessage);
     }
 
@@ -107,9 +116,12 @@ export async function useUserData() {
 
 export async function useRepoData() {
   try {
-    const reposData: Repository[] = await fetch(`https://api.github.com/user/repos?per_page=200`, {
-      headers: getHeaders(),
-    })
+    const reposData: Repository[] = await fetch(
+      `https://api.github.com/user/repos?per_page=200`,
+      {
+        headers: getHeaders(),
+      }
+    )
       .then((res) => res.json())
       .catch((error) => {
         console.error('Error fetching repository data:', error);

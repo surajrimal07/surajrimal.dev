@@ -3419,7 +3419,15 @@ export function Docker(svgProps: SVGProps<SVGSVGElement>) {
 export function VsCode(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 128 128" {...svgProps}>
-      <mask id="avs" width="128" height="128" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: 'alpha' }}>
+      <mask
+        id="avs"
+        width="128"
+        height="128"
+        x="0"
+        y="0"
+        maskUnits="userSpaceOnUse"
+        style={{ maskType: 'alpha' }}
+      >
         <path
           fill="#fff"
           fillRule="evenodd"
@@ -3473,8 +3481,16 @@ export function VsCode(svgProps: SVGProps<SVGSVGElement>) {
           <feOffset></feOffset>
           <feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
-          <feBlend in2="BackgroundImageFix" mode="overlay" result="effect1_dropShadow_1_36"></feBlend>
-          <feBlend in="SourceGraphic" in2="effect1_dropShadow_1_36" result="shape"></feBlend>
+          <feBlend
+            in2="BackgroundImageFix"
+            mode="overlay"
+            result="effect1_dropShadow_1_36"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_1_36"
+            result="shape"
+          ></feBlend>
         </filter>
         <filter
           id="cvs"
@@ -3494,10 +3510,25 @@ export function VsCode(svgProps: SVGProps<SVGSVGElement>) {
           <feOffset></feOffset>
           <feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
-          <feBlend in2="BackgroundImageFix" mode="overlay" result="effect1_dropShadow_1_36"></feBlend>
-          <feBlend in="SourceGraphic" in2="effect1_dropShadow_1_36" result="shape"></feBlend>
+          <feBlend
+            in2="BackgroundImageFix"
+            mode="overlay"
+            result="effect1_dropShadow_1_36"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_1_36"
+            result="shape"
+          ></feBlend>
         </filter>
-        <linearGradient id="dvs" x1="63.9222" x2="63.9222" y1="0.329902" y2="127.67" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="dvs"
+          x1="63.9222"
+          x2="63.9222"
+          y1="0.329902"
+          y2="127.67"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#fff"></stop>
           <stop offset="1" stopColor="#fff" stopOpacity="0"></stop>
         </linearGradient>
@@ -3628,8 +3659,14 @@ export function CLang(svgProps: SVGProps<SVGSVGElement>) {
 export function CSS(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 128 128" {...svgProps}>
-      <path fill="#1572B6" d="M18.814 114.123L8.76 1.352h110.48l-10.064 112.754-45.243 12.543-45.119-12.526z"></path>
-      <path fill="#33A9DC" d="M64.001 117.062l36.559-10.136 8.601-96.354h-45.16v106.49z"></path>
+      <path
+        fill="#1572B6"
+        d="M18.814 114.123L8.76 1.352h110.48l-10.064 112.754-45.243 12.543-45.119-12.526z"
+      ></path>
+      <path
+        fill="#33A9DC"
+        d="M64.001 117.062l36.559-10.136 8.601-96.354h-45.16v106.49z"
+      ></path>
       <path
         fill="#fff"
         d="M64.001 51.429h18.302l1.264-14.163H64.001V23.435h34.682l-.332 3.711-3.4 38.114h-30.95V51.429z"
@@ -3736,7 +3773,10 @@ export function GraphQL(svgProps: SVGProps<SVGSVGElement>) {
 export function HTML(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 128 128" {...svgProps}>
-      <path fill="#E44D26" d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z"></path>
+      <path
+        fill="#E44D26"
+        d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z"
+      ></path>
       <path fill="#F16529" d="M64 116.8l36.378-10.086 8.559-95.878H64z"></path>
       <path
         fill="#EBEBEB"
@@ -3887,10 +3927,21 @@ export function NGINX(svgProps: SVGProps<SVGSVGElement>) {
 
 export function NodeJs(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 292" version="1.1" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 292"
+      version="1.1"
+      {...svgProps}
+    >
       <title>Node.js</title>
       <defs>
-        <linearGradient x1="68.1884411%" y1="17.4868311%" x2="27.8226935%" y2="89.7551419%" id="linearGradient-1">
+        <linearGradient
+          x1="68.1884411%"
+          y1="17.4868311%"
+          x2="27.8226935%"
+          y2="89.7551419%"
+          id="linearGradient-1"
+        >
           <stop stopColor="#41873F" offset="0%" />
           <stop stopColor="#418B3D" offset="32.88%" />
           <stop stopColor="#419637" offset="63.52%" />
@@ -3901,7 +3952,13 @@ export function NodeJs(svgProps: SVGProps<SVGSVGElement>) {
           d="M134.922587,1.83244962 C130.579003,-0.610816541 125.420997,-0.610816541 121.077412,1.83244962 L6.78685046,67.8006362 C2.44326617,70.2439024 0,74.8589606 0,79.745493 L0,211.95334 C0,216.839873 2.71474019,221.454931 6.78685046,223.898197 L121.077412,289.866385 C125.420997,292.309649 130.579003,292.309649 134.922587,289.866385 L249.213148,223.898197 C253.556733,221.454931 256,216.839873 256,211.95334 L256,79.745493 C256,74.8589606 253.28526,70.2439024 249.213148,67.8006362 L134.922587,1.83244962 L134.922587,1.83244962 Z"
           id="path-2"
         />
-        <linearGradient x1="43.2765472%" y1="55.168777%" x2="159.245277%" y2="-18.3061379%" id="linearGradient-4">
+        <linearGradient
+          x1="43.2765472%"
+          y1="55.168777%"
+          x2="159.245277%"
+          y2="-18.3061379%"
+          id="linearGradient-4"
+        >
           <stop stopColor="#41873F" offset="13.76%" />
           <stop stopColor="#54A044" offset="40.32%" />
           <stop stopColor="#66B848" offset="71.36%" />
@@ -3911,7 +3968,13 @@ export function NodeJs(svgProps: SVGProps<SVGSVGElement>) {
           d="M134.922587,1.83244962 C130.579003,-0.610816541 125.420997,-0.610816541 121.077412,1.83244962 L6.78685046,67.8006362 C2.44326617,70.2439024 0,74.8589606 0,79.745493 L0,211.95334 C0,216.839873 2.71474019,221.454931 6.78685046,223.898197 L121.077412,289.866385 C125.420997,292.309649 130.579003,292.309649 134.922587,289.866385 L249.213148,223.898197 C253.556733,221.454931 256,216.839873 256,211.95334 L256,79.745493 C256,74.8589606 253.28526,70.2439024 249.213148,67.8006362 L134.922587,1.83244962 L134.922587,1.83244962 Z"
           id="path-5"
         />
-        <linearGradient x1="-4.38880435%" y1="49.9972065%" x2="101.499239%" y2="49.9972065%" id="linearGradient-7">
+        <linearGradient
+          x1="-4.38880435%"
+          y1="49.9972065%"
+          x2="101.499239%"
+          y2="49.9972065%"
+          id="linearGradient-7"
+        >
           <stop stopColor="#6CC04A" offset="9.191646%" />
           <stop stopColor="#66B848" offset="28.64%" />
           <stop stopColor="#54A044" offset="59.68%" />
@@ -3968,7 +4031,10 @@ export function Notion(svgProps: SVGProps<SVGSVGElement>) {
 export function Pandas(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 128 128" {...svgProps}>
-      <path fill="#130754" d="M46.236 7.567h13.99v29.047h-13.99Zm0 59.668h13.99V96.28h-13.99Z"></path>
+      <path
+        fill="#130754"
+        d="M46.236 7.567h13.99v29.047h-13.99Zm0 59.668h13.99V96.28h-13.99Z"
+      ></path>
       <path fill="#ffca00" d="M46.236 45.092h13.99v13.705h-13.99Z"></path>
       <path
         fill="#130754"
@@ -4235,7 +4301,10 @@ export function Pytest(svgProps: SVGProps<SVGSVGElement>) {
       <path d="M32.047 24.32H44.37v2.844H32.047zm0 0" fill="#009fe3"></path>
       <path d="M48.168 24.32h12.324v2.844H48.168zm0 0" fill="#c7d302"></path>
       <path d="M64.07 24.32h12.328v2.844H64.07zm0 0" fill="#f07e16"></path>
-      <path d="M79.91 24.32h12.324v2.844H79.91zm0 15.22h12.324v20.835H79.91zm0 0" fill="#df2815"></path>
+      <path
+        d="M79.91 24.32h12.324v2.844H79.91zm0 15.22h12.324v20.835H79.91zm0 0"
+        fill="#df2815"
+      ></path>
       <path d="M64.07 39.54h12.352v33.847H64.07zm0 0" fill="#f07e16"></path>
       <path d="M48.168 39.54h12.324v50.698H48.168zm0 0" fill="#c7d302"></path>
       <path d="M32.047 39.54H44.37v61.792H32.047zm0 0" fill="#009fe3"></path>
@@ -4439,7 +4508,14 @@ export function Vite(svgProps: SVGProps<SVGSVGElement>) {
         fill="url(#paint1_linear)"
       />
       <defs>
-        <linearGradient id="paint0_linear" x1="6.00017" y1="32.9999" x2="235" y2="344" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear"
+          x1="6.00017"
+          y1="32.9999"
+          x2="235"
+          y2="344"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#41D1FF" />
           <stop offset="1" stopColor="#BD34FE" />
         </linearGradient>
@@ -4596,7 +4672,11 @@ export function ShadCn(svgProps: SVGProps<SVGSVGElement>) {
 }
 export function Umami(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 428 389.11" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 428 389.11"
+      {...svgProps}
+    >
       <g data-name="Layer 2">
         <g data-name="Layer 4">
           <circle
@@ -4711,7 +4791,14 @@ export function BootStrap(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" {...svgProps}>
       <defs>
-        <linearGradient id="bs-logo-a" x1="76.079" x2="523.48" y1="10.798" y2="365.945" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="bs-logo-a"
+          x1="76.079"
+          x2="523.48"
+          y1="10.798"
+          y2="365.945"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#9013fe" />
           <stop offset="1" stopColor="#6610f2" />
         </linearGradient>
@@ -4737,7 +4824,10 @@ export function BootStrap(svgProps: SVGProps<SVGSVGElement>) {
           filterUnits="userSpaceOnUse"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+          <feColorMatrix
+            in="SourceAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
           <feOffset dy="4" />
           <feGaussianBlur stdDeviation="8" />
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
@@ -4907,15 +4997,33 @@ export function Gradio(svgProps: SVGProps<SVGSVGElement>) {
     <svg viewBox="0 0 256 224" {...svgProps}>
       <title>{'gradio'}</title>
       <defs>
-        <linearGradient id="agg" x1="-6.452%" x2="85.236%" y1="49.784%" y2="49.784%">
+        <linearGradient
+          id="agg"
+          x1="-6.452%"
+          x2="85.236%"
+          y1="49.784%"
+          y2="49.784%"
+        >
           <stop offset="0%" stopColor="#F9D100" />
           <stop offset="100%" stopColor="#F97700" />
         </linearGradient>
-        <linearGradient id="bgg" x1="106.079%" x2="14.268%" y1="49.784%" y2="49.784%">
+        <linearGradient
+          id="bgg"
+          x1="106.079%"
+          x2="14.268%"
+          y1="49.784%"
+          y2="49.784%"
+        >
           <stop offset="0%" stopColor="#F9D100" />
           <stop offset="100%" stopColor="#F97700" />
         </linearGradient>
-        <linearGradient id="cgg" x1="-12.871%" x2="169.796%" y1="75.863%" y2="74.878%">
+        <linearGradient
+          id="cgg"
+          x1="-12.871%"
+          x2="169.796%"
+          y1="75.863%"
+          y2="74.878%"
+        >
           <stop offset="0%" stopColor="#F9D100" />
           <stop offset="100%" stopColor="#F97700" />
         </linearGradient>
@@ -4928,7 +5036,10 @@ export function Gradio(svgProps: SVGProps<SVGSVGElement>) {
         fill="url(#bgg)"
         d="M119.871 2.165a16.346 16.346 0 0 1 16.258 0l111.654 64c10.956 6.28 10.956 22.083 0 28.363l-111.654 64a16.346 16.346 0 0 1-16.258 0l-111.654-64c-10.956-6.28-10.956-22.083 0-28.363l111.654-64Zm8.126 33.015L49.214 80.343l78.783 45.156 78.784-45.156-78.784-45.163Z"
       />
-      <path fill="url(#cgg)" d="m120.19 64.755 16.174 28.412-111.93 63.723-16.175-28.412z" />
+      <path
+        fill="url(#cgg)"
+        d="m120.19 64.755 16.174 28.412-111.93 63.723-16.175-28.412z"
+      />
     </svg>
   );
 }
@@ -4984,7 +5095,10 @@ export function Celery(svgProps: SVGProps<SVGSVGElement>) {
           clipPath: 'url(#SVGID_2_)',
         }}
       >
-        <path d="M-23.16 55.58H428.5v51.1H-23.16zM-23.16 157.59h530.98v72.35H-23.16z" className="st2" />
+        <path
+          d="M-23.16 55.58H428.5v51.1H-23.16zM-23.16 157.59h530.98v72.35H-23.16z"
+          className="st2"
+        />
       </g>
       <path
         d="M493.54 184.23c-43.94 0-79.56-33.62-79.56-77.56s35.62-76.56 79.56-76.56"
@@ -5018,7 +5132,13 @@ export function TestRail(svgProps: SVGProps<SVGSVGElement>) {
 
 export function LangChain(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 77 39" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      aria-hidden="true"
+      viewBox="0 0 77 39"
+      {...svgProps}
+    >
       <path
         fill="currentColor"
         d="M58.984 10.548a3.792 3.792 0 0 0-2.692 1.109l-2.893 2.885a3.78 3.78 0 0 0-1.1 2.966c.008.06.012.122.019.182.105.85.478 1.616 1.081 2.218.418.416.931.732 1.488.915.029.167.044.338.044.507a2.83 2.83 0 0 1-.837 2.02l-.179.178a6.628 6.628 0 0 1-2.556-1.59 6.599 6.599 0 0 1-1.847-3.515l-.034-.187-.147.12c-.098.08-.194.167-.281.254l-2.895 2.885a3.79 3.79 0 0 0 2.691 6.474c.974 0 1.95-.37 2.692-1.109l2.895-2.885a3.788 3.788 0 0 0 0-5.363 3.77 3.77 0 0 0-1.4-.882 3.147 3.147 0 0 1-.045-.516c0-.83.33-1.619.931-2.22.97.33 1.828.864 2.554 1.588a6.612 6.612 0 0 1 1.847 3.515l.034.187.147-.12c.099-.08.195-.167.284-.256l2.895-2.883a3.79 3.79 0 0 0-2.692-6.474l-.004-.003Z"
@@ -5087,15 +5207,32 @@ export function Seaborn(svgProps: SVGProps<SVGSVGElement>) {
 
 export function PowerBi(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 630" version="1.1" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 630 630"
+      version="1.1"
+      {...svgProps}
+    >
       <title>PBI Logo</title>
       <desc>Created with Sketch.</desc>
       <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+        <linearGradient
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+          id="linearGradient-1"
+        >
           <stop stopColor="#EBBB14" offset="0%" />
           <stop stopColor="#B25400" offset="100%" />
         </linearGradient>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+        <linearGradient
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+          id="linearGradient-2"
+        >
           <stop stopColor="#F9E583" offset="0%" />
           <stop stopColor="#DE9800" offset="100%" />
         </linearGradient>
@@ -5103,26 +5240,71 @@ export function PowerBi(svgProps: SVGProps<SVGSVGElement>) {
           d="M346,604 L346,630 L320,630 L153,630 C138.640597,630 127,618.359403 127,604 L127,183 C127,168.640597 138.640597,157 153,157 L320,157 C334.359403,157 346,168.640597 346,183 L346,604 Z"
           id="path-3"
         />
-        <filter x="-9.1%" y="-6.3%" width="136.5%" height="116.9%" filterUnits="objectBoundingBox" id="filter-4">
-          <feOffset dx="20" dy="10" in="SourceAlpha" result="shadowOffsetOuter1" />
-          <feGaussianBlur stdDeviation="10" in="shadowOffsetOuter1" result="shadowBlurOuter1" />
+        <filter
+          x="-9.1%"
+          y="-6.3%"
+          width="136.5%"
+          height="116.9%"
+          filterUnits="objectBoundingBox"
+          id="filter-4"
+        >
+          <feOffset
+            dx="20"
+            dy="10"
+            in="SourceAlpha"
+            result="shadowOffsetOuter1"
+          />
+          <feGaussianBlur
+            stdDeviation="10"
+            in="shadowOffsetOuter1"
+            result="shadowBlurOuter1"
+          />
           <feColorMatrix
             values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0530211976 0"
             type="matrix"
             in="shadowBlurOuter1"
           />
         </filter>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+        <linearGradient
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+          id="linearGradient-5"
+        >
           <stop stopColor="#F9E68B" offset="0%" />
           <stop stopColor="#F3CD32" offset="100%" />
         </linearGradient>
       </defs>
-      <g id="PBI-Logo" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+      <g
+        id="PBI-Logo"
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+      >
         <g id="Group" transform="translate(77.500000, 0.000000)">
-          <rect id="Rectangle" fill="url(#linearGradient-1)" x="256" y="0" width="219" height="630" rx="26" />
+          <rect
+            id="Rectangle"
+            fill="url(#linearGradient-1)"
+            x="256"
+            y="0"
+            width="219"
+            height="630"
+            rx="26"
+          />
           <g id="Combined-Shape">
-            <use fill="black" fillOpacity="1" filter="url(#filter-4)" xlinkHref="#path-3" />
-            <use fill="url(#linearGradient-2)" fillRule="evenodd" xlinkHref="#path-3" />
+            <use
+              fill="black"
+              fillOpacity="1"
+              filter="url(#filter-4)"
+              xlinkHref="#path-3"
+            />
+            <use
+              fill="url(#linearGradient-2)"
+              fillRule="evenodd"
+              xlinkHref="#path-3"
+            />
           </g>
           <path
             d="M219,604 L219,630 L193,630 L26,630 C11.6405965,630 1.75851975e-15,618.359403 0,604 L0,341 C-1.75851975e-15,326.640597 11.6405965,315 26,315 L193,315 C207.359403,315 219,326.640597 219,341 L219,604 Z"
@@ -5178,7 +5360,11 @@ export function HuggingFace(svgProps: SVGProps<SVGSVGElement>) {
 
 export function DataDog(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox=".27 .27 800.01 858.98" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox=".27 .27 800.01 858.98"
+      {...svgProps}
+    >
       <path
         d="m670.38 608.27-71.24-46.99-59.43 99.27-69.12-20.21-60.86 92.89 3.12 29.24 330.9-60.97-19.22-206.75zm-308.59-89.14 53.09-7.3c8.59 3.86 14.57 5.33 24.87 7.95 16.04 4.18 34.61 8.19 62.11-5.67 6.4-3.17 19.73-15.36 25.12-22.31l217.52-39.46 22.19 268.56-372.65 67.16zm404.06-96.77-21.47 4.09-41.25-426.18-702.86 81.5 86.59 702.68 82.27-11.94c-6.57-9.38-16.8-20.73-34.27-35.26-24.23-20.13-15.66-54.32-1.37-75.91 18.91-36.48 116.34-82.84 110.82-141.15-1.98-21.2-5.35-48.8-25.03-67.71-.74 7.85.59 15.41.59 15.41s-8.08-10.31-12.11-24.37c-4-5.39-7.14-7.11-11.39-14.31-3.03 8.33-2.63 17.99-2.63 17.99s-6.61-15.62-7.68-28.8c-3.92 5.9-4.91 17.11-4.91 17.11s-8.59-24.62-6.63-37.88c-3.92-11.54-15.54-34.44-12.25-86.49 21.45 15.03 68.67 11.46 87.07-15.66 6.11-8.98 10.29-33.5-3.05-81.81-8.57-30.98-29.79-77.11-38.06-94.61l-.99.71c4.36 14.1 13.35 43.66 16.8 57.99 10.44 43.47 13.24 58.6 8.34 78.64-4.17 17.42-14.17 28.82-39.52 41.56-25.35 12.78-58.99-18.32-61.12-20.04-24.63-19.62-43.68-51.63-45.81-67.18-2.21-17.02 9.81-27.24 15.87-41.16-8.67 2.48-18.34 6.88-18.34 6.88s11.54-11.94 25.77-22.27c5.89-3.9 9.35-6.38 15.56-11.54-8.99-.15-16.29.11-16.29.11s14.99-8.1 30.53-14c-11.37-.5-22.25-.08-22.25-.08s33.45-14.96 59.87-25.94c18.17-7.45 35.92-5.25 45.89 9.17 13.09 18.89 26.84 29.15 55.98 35.51 17.89-7.93 23.33-12.01 45.81-18.13 19.79-21.76 35.33-24.58 35.33-24.58s-7.71 7.07-9.77 18.18c11.22-8.84 23.52-16.22 23.52-16.22s-4.76 5.88-9.2 15.22l1.03 1.53c13.09-7.85 28.48-14.04 28.48-14.04s-4.4 5.56-9.56 12.76c9.87-.08 29.89.42 37.66 1.3 45.87 1.01 55.39-48.99 72.99-55.26 22.04-7.87 31.89-12.63 69.45 24.26 32.23 31.67 57.41 88.36 44.91 101.06-10.48 10.54-31.16-4.11-54.08-32.68-12.11-15.13-21.27-33.01-25.56-55.74-3.62-19.18-17.71-30.31-17.71-30.31s8.18 18.18 8.18 34.24c0 8.77 1.1 41.56 15.16 59.96-1.39 2.69-2.04 13.31-3.58 15.34-16.36-19.77-51.49-33.92-57.22-38.09 19.39 15.89 63.96 52.39 81.08 87.37 16.19 33.08 6.65 63.4 14.84 71.25 2.33 2.25 34.82 42.73 41.07 63.07 10.9 35.45.65 72.7-13.62 95.81l-39.85 6.21c-5.83-1.62-9.76-2.43-14.99-5.46 2.88-5.1 8.61-17.82 8.67-20.44l-2.25-3.95c-12.4 17.57-33.18 34.63-50.44 44.43-22.59 12.8-48.63 10.83-65.58 5.58-48.11-14.84-93.6-47.35-104.57-55.89 0 0-.34 6.82 1.73 8.35 12.13 13.68 39.92 38.43 66.78 55.68l-57.26 6.3 27.07 210.78c-12 1.72-13.87 2.56-27.01 4.43-11.58-40.91-33.73-67.62-57.94-83.18-21.35-13.72-50.8-16.81-78.99-11.23l-1.81 2.1c19.6-2.04 42.74.8 66.51 15.85 23.33 14.75 42.13 52.85 49.05 75.79 8.86 29.32 14.99 60.68-8.86 93.92-16.97 23.63-66.51 36.69-106.53 8.44 10.69 17.19 25.14 31.25 44.59 33.9 28.88 3.92 56.29-1.09 75.16-20.46 16.11-16.56 24.65-51.19 22.4-87.66l25.49-3.7 9.2 65.46 421.98-50.81zm-256.73-177.77c-1.18 2.69-3.03 4.45-.25 13.2l.17.5.44 1.13 1.16 2.62c5.01 10.24 10.51 19.9 19.7 24.83 2.38-.4 4.84-.67 7.39-.8 8.63-.38 14.08.99 17.54 2.85.31-1.72.38-4.24.19-7.95-.67-12.97 2.57-35.03-22.36-46.64-9.41-4.37-22.61-3.02-27.01 2.43.8.1 1.52.27 2.08.46 6.65 2.33 2.14 4.62.95 7.37m69.87 121.02c-3.27-1.8-18.55-1.09-29.29.19-20.46 2.41-42.55 9.51-47.39 13.29-8.8 6.8-4.8 18.66 1.7 23.53 18.23 13.62 34.21 22.75 51.08 20.53 10.36-1.36 19.49-17.76 25.96-32.64 4.43-10.25 4.43-21.31-2.06-24.9m-181.14-104.96c5.77-5.48-28.74-12.68-55.52 5.58-19.75 13.47-20.38 42.35-1.47 58.72 1.89 1.62 3.45 2.77 4.91 3.71 5.52-2.6 11.81-5.23 19.05-7.58 12.23-3.97 22.4-6.02 30.76-7.11 4-4.47 8.65-12.34 7.49-26.59-1.58-19.33-16.23-16.26-5.22-26.73"
         fill="#632ca6"
@@ -5610,8 +5796,14 @@ export function Poetry(svgProps: SVGProps<SVGSVGElement>) {
           />
         </linearGradient>
       </defs>
-      <path fill="url(#app)" d="M40.07 124.8a121.72 121.72 0 0 0 62.242-33.366L16.216 5.332v95.61Zm0 0"></path>
-      <path fill="url(#bpp)" d="M16.215 100.941c52.805 0 95.61-42.804 95.61-95.609h-95.61Zm0 0"></path>
+      <path
+        fill="url(#app)"
+        d="M40.07 124.8a121.72 121.72 0 0 0 62.242-33.366L16.216 5.332v95.61Zm0 0"
+      ></path>
+      <path
+        fill="url(#bpp)"
+        d="M16.215 100.941c52.805 0 95.61-42.804 95.61-95.609h-95.61Zm0 0"
+      ></path>
       <path
         fill="url(#cpp)"
         style={{
@@ -5710,13 +5902,35 @@ export function Node(svgProps: SVGProps<SVGSVGElement>) {
 
 export function Tableau(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60.3 59.5" {...svgProps}>
-      <path d="M28.5 40.2h3.3v-9h8.3V28h-8.3v-9h-3.3v9h-8.2v3.2h8.2z" fill="#e8762d" />
-      <path d="M13.2 53.2H16v-8h7.4v-2.5H16v-8.1h-2.8v8.1H5.8v2.5h7.4z" fill="#c72037" />
-      <path d="M44.3 24.3h2.8v-8h7.5v-2.4h-7.5V5.8h-2.8v8.1h-7.4v2.4h7.4z" fill="#5b879b" />
-      <path d="M29 59.5h2.4v-5.7h5.1v-2.1h-5.1V46H29v5.7h-5v2.1h5z" fill="#5c6692" />
-      <path d="M13.3 24.3h2.6v-8.1h7.5v-2.3h-7.5V5.8h-2.6v8.1H5.8v2.3h7.5z" fill="#eb9129" />
-      <path d="M52.8 36.3h2.4v-5.6h5.1v-2.2h-5.1v-5.6h-2.4v5.6h-5v2.2h5z" fill="#5c6692" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60.3 59.5"
+      {...svgProps}
+    >
+      <path
+        d="M28.5 40.2h3.3v-9h8.3V28h-8.3v-9h-3.3v9h-8.2v3.2h8.2z"
+        fill="#e8762d"
+      />
+      <path
+        d="M13.2 53.2H16v-8h7.4v-2.5H16v-8.1h-2.8v8.1H5.8v2.5h7.4z"
+        fill="#c72037"
+      />
+      <path
+        d="M44.3 24.3h2.8v-8h7.5v-2.4h-7.5V5.8h-2.8v8.1h-7.4v2.4h7.4z"
+        fill="#5b879b"
+      />
+      <path
+        d="M29 59.5h2.4v-5.7h5.1v-2.1h-5.1V46H29v5.7h-5v2.1h5z"
+        fill="#5c6692"
+      />
+      <path
+        d="M13.3 24.3h2.6v-8.1h7.5v-2.3h-7.5V5.8h-2.6v8.1H5.8v2.3h7.5z"
+        fill="#eb9129"
+      />
+      <path
+        d="M52.8 36.3h2.4v-5.6h5.1v-2.2h-5.1v-5.6h-2.4v5.6h-5v2.2h5z"
+        fill="#5c6692"
+      />
       <path
         clipRule="evenodd"
         d="M44.3 53.2h2.8v-8h7.5v-2.5h-7.5v-8.1h-2.8v8.1h-7.4v2.5h7.4z"
@@ -5732,7 +5946,12 @@ export function Tableau(svgProps: SVGProps<SVGSVGElement>) {
 }
 export function MeiliSearch(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.2 25" fill="none" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 41.2 25"
+      fill="none"
+      {...svgProps}
+    >
       <path
         d="M0 24.4968L7.60256 5.04523C8.67392 2.30411 11.3161 0.5 14.2591 0.5H18.8426L11.24 19.9516C10.1687 22.6927 7.52653 24.4968 4.58348 24.4968H0Z"
         fill="url(#paint0_linear_2735_3490)"
@@ -5790,21 +6009,33 @@ export function Mistral(svgProps: SVGProps<SVGSVGElement>) {
       <path fill="#F7D046" d="M209.455 0H256v46.545h-46.545z" />
       <path d="M0 0h46.545v46.545H0zm0 46.545h46.545V93.09H0zm0 46.546h46.545v46.545H0zm0 46.545h46.545v46.545H0zm0 46.546h46.545v46.545H0z" />
       <path fill="#F7D046" d="M23.273 0h46.545v46.545H23.273z" />
-      <path fill="#F2A73B" d="M209.455 46.545H256V93.09h-46.545zm-186.182 0h46.545V93.09H23.273z" />
+      <path
+        fill="#F2A73B"
+        d="M209.455 46.545H256V93.09h-46.545zm-186.182 0h46.545V93.09H23.273z"
+      />
       <path d="M139.636 46.545h46.545V93.09h-46.545z" />
-      <path fill="#F2A73B" d="M162.909 46.545h46.545V93.09h-46.545zm-93.091 0h46.545V93.09H69.818z" />
+      <path
+        fill="#F2A73B"
+        d="M162.909 46.545h46.545V93.09h-46.545zm-93.091 0h46.545V93.09H69.818z"
+      />
       <path
         fill="#EE792F"
         d="M116.364 93.091h46.545v46.545h-46.545zm46.545 0h46.545v46.545h-46.545zm-93.091 0h46.545v46.545H69.818z"
       />
       <path d="M93.091 139.636h46.545v46.545H93.091z" />
       <path fill="#EB5829" d="M116.364 139.636h46.545v46.545h-46.545z" />
-      <path fill="#EE792F" d="M209.455 93.091H256v46.545h-46.545zm-186.182 0h46.545v46.545H23.273z" />
+      <path
+        fill="#EE792F"
+        d="M209.455 93.091H256v46.545h-46.545zm-186.182 0h46.545v46.545H23.273z"
+      />
       <path d="M186.182 139.636h46.545v46.545h-46.545z" />
       <path fill="#EB5829" d="M209.455 139.636H256v46.545h-46.545z" />
       <path d="M186.182 186.182h46.545v46.545h-46.545z" />
       <path fill="#EB5829" d="M23.273 139.636h46.545v46.545H23.273z" />
-      <path fill="#EA3326" d="M209.455 186.182H256v46.545h-46.545zm-186.182 0h46.545v46.545H23.273z" />
+      <path
+        fill="#EA3326"
+        d="M209.455 186.182H256v46.545h-46.545zm-186.182 0h46.545v46.545H23.273z"
+      />
     </svg>
   );
 }
@@ -5824,7 +6055,11 @@ export function Opensource(svgProps: SVGProps<SVGSVGElement>) {
 }
 export function VLLM(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 111.72255 116.01564" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 111.72255 116.01564"
+      {...svgProps}
+    >
       <defs id="defs1" />
       <g id="layer1v" transform="translate(208.45138,115.14045)">
         <path
@@ -5857,8 +6092,14 @@ export function Fiber(svgProps: SVGProps<SVGSVGElement>) {
         <path d="m538.79 178c6.65-40.12 36.32-66.92 75.35-66.92 36.75 0 58.67 23.51 51.59 66.08l-1.61 10.28h-86.22l-.26 1.52c-2.61 16.44 5.14 26 21.24 26 10.71 0 20-4.55 24.7-13.23l37.59 1.09c-9.18 25.46-33.88 41.89-68 41.89-40.65-.06-61.38-25.34-54.38-66.71zm90.86-14.5c2.11-13.23-5.82-22.67-19.3-22.67-13.32 0-25.12 9.86-28.07 22.67z" />
         <path d="m685.8 112.74h40l-4 23.6h1.35c7.67-17.11 20.39-25.34 34.55-25.34a49 49 0 0 1 11.3 1.4l-6.07 35.91c-3.79-1.43-10.79-2.19-15.93-2.19-14.58 0-27.23 10.37-29.92 25.79l-11.64 70.3h-41.21z" />
       </g>
-      <path d="m213.77 115.41h-134.51l-10.76 15.27 142.78-.08z" fill="#00acd7" />
-      <path d="m209.02 147.06h-174.07l-11.07 15.21 182.65-.13z" fill="#00acd7" />
+      <path
+        d="m213.77 115.41h-134.51l-10.76 15.27 142.78-.08z"
+        fill="#00acd7"
+      />
+      <path
+        d="m209.02 147.06h-174.07l-11.07 15.21 182.65-.13z"
+        fill="#00acd7"
+      />
       <path d="m204.27 178.7h-74.37l-10 15.27 81.88-.06z" fill="#00acd7" />
     </svg>
   );
@@ -5866,7 +6107,11 @@ export function Fiber(svgProps: SVGProps<SVGSVGElement>) {
 
 export function Locust(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 78.000015 78" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 78.000015 78"
+      {...svgProps}
+    >
       <defs id="defs1" />
       <g id="layer1" transform="translate(-329.58436,-16.734256)">
         <circle
@@ -6049,7 +6294,11 @@ export function Locust(svgProps: SVGProps<SVGSVGElement>) {
 
 export function Stripe(svgProps: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="30 30 390 150" {...svgProps}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="30 30 390 150"
+      {...svgProps}
+    >
       <g>
         <path
           fill="#635BFF"
@@ -6059,7 +6308,10 @@ export function Stripe(svgProps: SVGProps<SVGSVGElement>) {
           fill="#635BFF"
           d="M301.1,67.6c-9.8,0-16.1,4.6-19.6,7.8l-1.3-6.2h-22v116.6l25-5.3l0.1-28.3c3.6,2.6,8.9,6.3,17.7,6.3   c17.9,0,34.2-14.4,34.2-46.1C335.1,83.4,318.6,67.6,301.1,67.6z M295.1,136.5c-5.9,0-9.4-2.1-11.8-4.7l-0.1-37.1   c2.6-2.9,6.2-4.9,11.9-4.9c9.1,0,15.4,10.2,15.4,23.3C310.5,126.5,304.3,136.5,295.1,136.5z"
         />
-        <polygon fill="#635BFF" points="223.8,61.7 248.9,56.3 248.9,36 223.8,41.3  " />
+        <polygon
+          fill="#635BFF"
+          points="223.8,61.7 248.9,56.3 248.9,36 223.8,41.3  "
+        />
         <rect fill="#635BFF" x="223.8" y="69.3" width="25.1" height="87.5" />
         <path
           fill="#635BFF"

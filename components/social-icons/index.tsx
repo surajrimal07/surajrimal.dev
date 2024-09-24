@@ -1,10 +1,47 @@
+import Link from 'next/link';
+
+import {
+  AiFillFacebook,
+  AiFillGithub,
+  AiFillInstagram,
+  AiFillLinkedin,
+  AiFillSpotify,
+  AiFillYoutube,
+  AiOutlineTwitter,
+} from 'react-icons/ai';
+import { BsSearchHeartFill } from 'react-icons/bs';
+import { IoIosMail } from 'react-icons/io';
+import {
+  LuCandy,
+  LuExternalLink,
+  LuGitFork,
+  LuLayoutDashboard,
+  LuLogOut,
+  LuPizza,
+  LuSearch,
+  LuSettings,
+  LuStar,
+} from 'react-icons/lu';
+import { MdAdminPanelSettings } from 'react-icons/md';
+import {
+  RiMastodonFill,
+  RiOpenaiFill,
+  RiSupabaseFill,
+  RiThreadsFill,
+  RiToolsFill,
+  RiTwitterXFill,
+} from 'react-icons/ri';
+import { SiBuymeacoffee } from 'react-icons/si';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 import {
   AWS,
   Anaconda,
   Arduino,
   Azure,
-  AzureDevOps,
-  // Pinecone,
+  AzureDevOps, // Pinecone,
   Bash,
   BootStrap,
   CLang,
@@ -92,43 +129,6 @@ import {
   Yaml,
   Yarn,
 } from './icons';
-
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-
-import {
-  AiFillFacebook,
-  AiFillGithub,
-  AiFillInstagram,
-  AiFillLinkedin,
-  AiFillSpotify,
-  AiFillYoutube,
-  AiOutlineTwitter,
-} from 'react-icons/ai';
-import { BsSearchHeartFill } from 'react-icons/bs';
-import { IoIosMail } from 'react-icons/io';
-import {
-  LuCandy,
-  LuExternalLink,
-  LuGitFork,
-  LuLayoutDashboard,
-  LuLogOut,
-  LuPizza,
-  LuSearch,
-  LuSettings,
-  LuStar,
-} from 'react-icons/lu';
-import { MdAdminPanelSettings } from 'react-icons/md';
-import {
-  RiMastodonFill,
-  RiOpenaiFill,
-  RiSupabaseFill,
-  RiThreadsFill,
-  RiToolsFill,
-  RiTwitterXFill,
-} from 'react-icons/ri';
-import { SiBuymeacoffee } from 'react-icons/si';
 
 const components = {
   candy: LuCandy,
@@ -256,7 +256,13 @@ type IconsBundleProps = {
   size?: number;
   hover?: boolean;
   iconType?: 'linkButton' | 'link' | 'icon' | 'Link' | 'LinkButton';
-  variant?: 'link' | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost';
+  variant?:
+    | 'link'
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost';
   className?: string;
   parentClassName?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
@@ -297,7 +303,10 @@ const IconsBundle = ({
   //   )
   // convert tailwind size to px
 
-  const combinedClass = cn(`${text ? 'mr-2' : ''}  h-${size} w-${size}`, className);
+  const combinedClass = cn(
+    `${text ? 'mr-2' : ''}  h-${size} w-${size}`,
+    className
+  );
 
   const combinedParentClass = cn(
     'flex items-center justify-center transition-transform duration-200',
@@ -307,7 +316,12 @@ const IconsBundle = ({
 
   if (iconType === 'LinkButton' && href) {
     return (
-      <Button variant={variant} size={!text ? 'icon' : 'default'} className={combinedParentClass} asChild>
+      <Button
+        variant={variant}
+        size={!text ? 'icon' : 'default'}
+        className={combinedParentClass}
+        asChild
+      >
         <Link href={href} target={target}>
           <span className="sr-only">{kind}</span>
           <SocialSvg className={combinedClass} strokeWidth={strokeWidth} />
@@ -327,12 +341,22 @@ const IconsBundle = ({
   }
 
   if (iconType === 'icon') {
-    return <SocialSvg className={cn(`h-${size} w-${size}`, className)} strokeWidth={strokeWidth} />;
+    return (
+      <SocialSvg
+        className={cn(`h-${size} w-${size}`, className)}
+        strokeWidth={strokeWidth}
+      />
+    );
   }
 
   if (iconType === 'linkButton' && href) {
     return (
-      <Button variant={variant} size={!text ? 'icon' : 'default'} className={parentClassName} asChild>
+      <Button
+        variant={variant}
+        size={!text ? 'icon' : 'default'}
+        className={parentClassName}
+        asChild
+      >
         <a
           className={cn('text-sm transition', combinedParentClass)}
           target={'_blank'}

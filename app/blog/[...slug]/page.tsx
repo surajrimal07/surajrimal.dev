@@ -1,17 +1,22 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import type { Authors, Blog } from 'contentlayer/generated';
+import { allAuthors, allBlogs } from 'contentlayer/generated';
 import 'css/prism.css';
 import 'katex/dist/katex.css';
+import { MDXLayoutRenderer } from 'pliny/mdx-components';
+import {
+  allCoreContent,
+  coreContent,
+  sortPosts,
+} from 'pliny/utils/contentlayer';
 
 import { components } from '@/components/MDXComponents';
 import siteMetadata from '@/data/siteMetadata';
 import PostBanner from '@/layouts/PostBanner';
 import PostLayout from '@/layouts/PostLayout';
 import PostSimple from '@/layouts/PostSimple';
-import type { Authors, Blog } from 'contentlayer/generated';
-import { allAuthors, allBlogs } from 'contentlayer/generated';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { MDXLayoutRenderer } from 'pliny/mdx-components';
-import { allCoreContent, coreContent, sortPosts } from 'pliny/utils/contentlayer';
 
 const defaultLayout = 'PostLayout';
 const layouts = {
@@ -20,7 +25,11 @@ const layouts = {
   PostBanner,
 };
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata | undefined> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string[] };
+}): Promise<Metadata | undefined> {
   const slug = decodeURI(params.slug.join('/'));
   const post = allBlogs.find((p) => p.slug === slug);
   const authorList = post?.authors || ['default'];
@@ -70,7 +79,9 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
 }
 
 export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }));
+  return allBlogs.map((p) => ({
+    slug: p.slug.split('/').map((name) => decodeURI(name)),
+  }));
 };
 
 export default async function Page({ params }: { params: { slug: string[] } }) {
@@ -103,9 +114,21 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
-        <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Layout
+        content={mainContent}
+        authorDetails={authorDetails}
+        next={next}
+        prev={prev}
+      >
+        <MDXLayoutRenderer
+          code={post.body.code}
+          components={components}
+          toc={post.toc}
+        />
       </Layout>
     </>
   );

@@ -1,8 +1,10 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 import { useEffect, useState } from 'react';
+
+import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
+
+import { cn } from '@/lib/utils';
 
 type TocItem = {
   value: string;
@@ -81,12 +83,16 @@ const TOCInline = ({
     };
   });
   const filteredToc = modifiedToc.filter(
-    (heading) => heading.depth >= fromHeading && heading.depth <= toHeading && !re.test(heading.value)
+    (heading) =>
+      heading.depth >= fromHeading &&
+      heading.depth <= toHeading &&
+      !re.test(heading.value)
   );
 
   const handleScroll = () => {
     const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollPosition =
+      window.pageYOffset || document.documentElement.scrollTop;
 
     let currentId = '';
     headings.forEach((heading) => {
@@ -118,7 +124,8 @@ const TOCInline = ({
       <ul
         className={ulClassName}
         style={{
-          [rightAlign ? 'marginRight' : 'marginLeft']: `${level == 0 ? level + 1.5 : level}rem`,
+          [rightAlign ? 'marginRight' : 'marginLeft']:
+            `${level == 0 ? level + 1.5 : level}rem`,
         }}
       >
         {items.map((item, index) => (
@@ -127,7 +134,9 @@ const TOCInline = ({
               href={item.url}
               className={cn(
                 'mb-1 inline-block',
-                (item.url.substring(1, item.url.length) === activeId || item.active) && 'active-header'
+                (item.url.substring(1, item.url.length) === activeId ||
+                  item.active) &&
+                  'active-header'
               )}
             >
               {item.value}
@@ -144,14 +153,22 @@ const TOCInline = ({
   return (
     <>
       {!asDisclosure && (
-        <div className={`pb-2 pt-2 text-base font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}>{title}</div>
+        <div
+          className={`pb-2 pt-2 text-base font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}
+        >
+          {title}
+        </div>
       )}
       {asDisclosure ? (
         <details open={!collapse}>
-          <summary className={`pb-2 pt-2 text-xl font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}>
+          <summary
+            className={`pb-2 pt-2 text-xl font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}
+          >
             Table of Contents
           </summary>
-          <div className={rightAlign ? 'mr-6' : 'ml-6'}>{createList(nestedList)}</div>
+          <div className={rightAlign ? 'mr-6' : 'ml-6'}>
+            {createList(nestedList)}
+          </div>
         </details>
       ) : (
         createList(nestedList)

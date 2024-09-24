@@ -1,6 +1,8 @@
-import siteMetadata from '@/data/siteMetadata';
-import { allBlogs } from 'contentlayer/generated';
 import { MetadataRoute } from 'next';
+
+import { allBlogs } from 'contentlayer/generated';
+
+import siteMetadata from '@/data/siteMetadata';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = siteMetadata.siteUrl;

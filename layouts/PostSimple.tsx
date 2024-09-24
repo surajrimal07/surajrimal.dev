@@ -1,13 +1,15 @@
+import { ReactNode } from 'react';
+
+import type { Blog } from 'contentlayer/generated';
+import { CoreContent } from 'pliny/utils/contentlayer';
+import { formatDate } from 'pliny/utils/formatDate';
+
 import Comments from '@/components/Comments';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
 import siteMetadata from '@/data/siteMetadata';
-import type { Blog } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
-import { formatDate } from 'pliny/utils/formatDate';
-import { ReactNode } from 'react';
 
 interface LayoutProps {
   content: CoreContent<Blog>;
@@ -16,7 +18,12 @@ interface LayoutProps {
   prev?: { path: string; title: string };
 }
 
-export default function PostLayout({ content, next, prev, children }: LayoutProps) {
+export default function PostLayout({
+  content,
+  next,
+  prev,
+  children,
+}: LayoutProps) {
   const { slug, date, title } = content;
 
   return (
@@ -30,7 +37,9 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                 <div>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                    <time dateTime={date}>
+                      {formatDate(date, siteMetadata.locale)}
+                    </time>
                   </dd>
                 </div>
               </dl>
@@ -41,10 +50,15 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0">
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
+              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">
+                {children}
+              </div>
             </div>
             {siteMetadata.comments && (
-              <div className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300" id="comment">
+              <div
+                className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
+                id="comment"
+              >
                 <Comments slug={slug} />
               </div>
             )}

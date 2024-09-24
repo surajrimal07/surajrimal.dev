@@ -1,14 +1,15 @@
 'use client';
 
-import { updateBlogShares } from '@/lib/pageView';
-import { ShareType } from '@/types/share';
-import clsx from 'clsx';
 import React from 'react';
+
+import clsx from 'clsx';
+import toast from 'react-hot-toast';
+import { FaRegClipboard } from 'react-icons/fa';
 import { FaFacebookF, FaXTwitter } from 'react-icons/fa6';
 import { LuExternalLink } from 'react-icons/lu';
 
-import toast from 'react-hot-toast';
-import { FaRegClipboard } from 'react-icons/fa';
+import { updateBlogShares } from '@/lib/pageView';
+import { ShareType } from '@/types/share';
 
 interface ShareButtonProps {
   url: string;
@@ -34,7 +35,10 @@ const ShareButton: React.FC<ShareButtonProps> = ({
   onItemClick = () => {},
   onShareComplete = () => {},
 }) => {
-  const handleShareClick = async (type: ShareType, shareFunction: () => void) => {
+  const handleShareClick = async (
+    type: ShareType,
+    shareFunction: () => void
+  ) => {
     try {
       await updateBlogShares(slug, ip, type);
       onItemClick(type);
@@ -68,25 +72,39 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
   const handleFacebook = () => {
     handleShareClick('facebookshare', () => {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+        '_blank'
+      );
     });
   };
 
   return (
-    <div className="absolute left-0 mt-2 w-42 bg-gray-900 rounded-md shadow-lg z-10">
-      <div className={clsx('py-2 px-2 text-center text-lg text-gray-300')}>Share this on</div>
-      <div className="h-px bg-gray-600 my-1"></div>
-      <button onClick={handleTwitter} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+    <div className="w-42 absolute left-0 z-10 mt-2 rounded-md bg-gray-900 shadow-lg">
+      <div className={clsx('px-2 py-2 text-center text-lg text-gray-300')}>
+        Share this on
+      </div>
+      <div className="my-1 h-px bg-gray-600"></div>
+      <button
+        onClick={handleTwitter}
+        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
+      >
         <FaXTwitter className="mr-2 h-4 w-4" />
         Twitter
         <LuExternalLink className="ml-1 h-3 w-3" />
       </button>
-      <button onClick={handleFacebook} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+      <button
+        onClick={handleFacebook}
+        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
+      >
         <FaFacebookF className="mr-2 h-4 w-4" />
         Facebook
         <LuExternalLink className="ml-1 h-3 w-3" />
       </button>
-      <button onClick={handleCopy} className="flex items-center w-full px-6 py-3 text-white hover:bg-gray-700">
+      <button
+        onClick={handleCopy}
+        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
+      >
         <FaRegClipboard className="mr-2 h-4 w-4" />
         Copy link
       </button>

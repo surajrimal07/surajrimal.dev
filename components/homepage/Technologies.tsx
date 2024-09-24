@@ -1,13 +1,22 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { skillsData } from '@/data/skills';
 import { type Skill } from '@/types/skills';
-import { useState } from 'react';
-import IconsBundle from '../social-icons';
+
 import Twemoji from '../Twemoji';
+import IconsBundle from '../social-icons';
 import Tooltip from '../ui/tooltip';
 
 function filterSkillsData(skillsData: Skill[]) {
@@ -41,23 +50,25 @@ export function Technologies() {
 
   return (
     <div className="w-full space-y-2 py-1 md:space-y-5">
-      <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
+      <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
         Technologies i work with {''}
         <Twemoji size="twa-sm" emoji="hammer-and-wrench" />
       </h1>
-      <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400 flex items-center">
+      <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">
         Tools and technologies that i am familiar with and use on a daily basis.
       </p>
-      <Tabs value={categories[tabIndex]} onValueChange={onTabChange} defaultValue={categories[0]} className="">
+      <Tabs
+        value={categories[tabIndex]}
+        onValueChange={onTabChange}
+        defaultValue={categories[0]}
+        className=""
+      >
         <TabsList className="h-27 grid w-full grid-cols-2 gap-2 md:h-9 md:grid-cols-5 md:gap-1 lg:grid-cols-5 xl:gap-2">
           {categories.map((category, index) => (
             <TabsTrigger
               key={`trigger-${category}`}
               value={category}
-              className={`
-        ${index === tabIndex ? 'bg-red-500 text-white dark:bg-red-500' : 'bg-gray text-white-900'}
-        hover:bg-gray-700 hover:dark:bg-gray-700 hover:text-white
-      `}
+              className={` ${index === tabIndex ? 'bg-red-500 text-white dark:bg-red-500' : 'bg-gray text-white-900'} hover:bg-gray-700 hover:text-white hover:dark:bg-gray-700`}
             >
               {category}
             </TabsTrigger>
@@ -68,7 +79,11 @@ export function Technologies() {
             <Card key={category} className="w-full">
               <CardHeader>
                 <CardTitle>{category}</CardTitle>
-                {category === 'Most Used' && <CardDescription>These are my most used technologies.</CardDescription>}
+                {category === 'Most Used' && (
+                  <CardDescription>
+                    These are my most used technologies.
+                  </CardDescription>
+                )}
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-5 gap-4 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-10">
@@ -80,7 +95,10 @@ export function Technologies() {
                       >
                         <IconsBundle kind={skill.id} size={8} iconType="icon" />
                         {skill.level === 'advanced' && (
-                          <span className="absolute top-0 right-8 text-xs" aria-label="Advanced skill">
+                          <span
+                            className="absolute right-8 top-0 text-xs"
+                            aria-label="Advanced skill"
+                          >
                             🔥
                           </span>
                         )}

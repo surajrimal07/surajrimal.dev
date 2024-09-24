@@ -21,7 +21,9 @@ export default function AuthorLayout({ children, toc }: Props) {
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Resume
           </h1>
-          <p className="text-base text-gray-500 dark:text-gray-400 md:text-lg md:leading-7">{description}</p>
+          <p className="text-base text-gray-500 dark:text-gray-400 md:text-lg md:leading-7">
+            {description}
+          </p>
         </header>
 
         <div className="border border-t border-gray-200 dark:border-gray-700" />

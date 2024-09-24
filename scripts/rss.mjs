@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { mkdirSync, writeFileSync } from 'fs'
 import { slug } from 'github-slugger'
 import path from 'path'

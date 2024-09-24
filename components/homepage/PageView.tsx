@@ -1,12 +1,14 @@
 'use client';
 
-import { updatePageViews } from '@/lib/pageView';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { updatePageViews } from '@/lib/pageView';
+
+import { useCurrentPath } from '../PathProvider';
 import AnimatedCounter from '../animata/text/counter';
 
 const PageView = () => {
-  const pathname = usePathname();
+  const pathname = useCurrentPath();
   const [pageView, setPageView] = useState<number>(0);
 
   useEffect(() => {

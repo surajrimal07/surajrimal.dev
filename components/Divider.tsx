@@ -5,7 +5,15 @@ interface DividerProps {
 }
 
 const Divider = ({ marginTop = '0' }: DividerProps) => {
-  return <hr className={cn('border-gray-300 dark:border-gray-600 w-full', `mt-${marginTop}`, 'mb-0')} />;
+  return (
+    <hr
+      className={cn(
+        'w-full border-gray-300 dark:border-gray-600',
+        `mt-${marginTop}`,
+        'mb-0'
+      )}
+    />
+  );
 };
 
 export default Divider;

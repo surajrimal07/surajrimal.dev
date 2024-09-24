@@ -1,23 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
 import { TfiArrowTopRight } from 'react-icons/tfi';
+
 import Link from '../Link';
 import Twemoji from '../Twemoji';
 
 const fetchSvg = async (): Promise<string> => {
-  const res = await fetch('https://wakapi.dev/api/activity/chart/surajrimal.svg');
+  const res = await fetch(
+    'https://wakapi.dev/api/activity/chart/surajrimal.svg'
+  );
   return res.text();
 };
 
 const modifySvg = (svgString: string): string => {
   if (!svgString) return '';
 
-  svgString = svgString.replace(/<image[^>]+xlink:href="[^"]*logo-gh\.svg"[^>]*>/, '');
+  svgString = svgString.replace(
+    /<image[^>]+xlink:href="[^"]*logo-gh\.svg"[^>]*>/,
+    ''
+  );
 
-  svgString = svgString.replace(/(<style[^>]*>[\s\S]*?<\/style>)/, (styleBlock) =>
-    styleBlock.replace(
-      /text\s?{([^}]*)}/,
-      (textMatch, properties) => `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`
-    )
+  svgString = svgString.replace(
+    /(<style[^>]*>[\s\S]*?<\/style>)/,
+    (styleBlock) =>
+      styleBlock.replace(
+        /text\s?{([^}]*)}/,
+        (textMatch, properties) =>
+          `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`
+      )
   );
 
   svgString = svgString.replace(
@@ -25,7 +34,10 @@ const modifySvg = (svgString: string): string => {
     (match, color) => `fill: ${color === 'DCE3E1' ? '#171b21' : `#${color}`}`
   );
 
-  return svgString.replace(/<svg /, '<svg viewBox="0 0 1219 186" width="100%" height="100%" ');
+  return svgString.replace(
+    /<svg /,
+    '<svg viewBox="0 0 1219 186" width="100%" height="100%" '
+  );
 };
 
 const PrivateContributions = async () => {
@@ -41,15 +53,16 @@ const PrivateContributions = async () => {
   return (
     <>
       <div className="space-y-2 py-1 md:space-y-5">
-        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
+        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Private Contributions
           <Twemoji size="twa-sm" emoji="keyboard" />
         </h1>
-        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400 flex items-center">
-          My Private hours contributions calendar throughout the year, fetched from&nbsp;
+        <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">
+          My Private hours contributions calendar throughout the year, fetched
+          from&nbsp;
           <Link
             href={'https://wakapi.dev'}
-            className="text-primary hover:text-red-400 dark:hover:text-red-400 inline-flex items-center"
+            className="inline-flex items-center text-primary hover:text-red-400 dark:hover:text-red-400"
           >
             Wakapi <TfiArrowTopRight className="ml-1" />
           </Link>
@@ -58,7 +71,7 @@ const PrivateContributions = async () => {
       </div>
       <div className="pt-3">
         <div dangerouslySetInnerHTML={{ __html: svgData }} />
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-3">
+        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:today?label=Today"
             alt="Today contributions"
@@ -82,7 +95,7 @@ const PrivateContributions = async () => {
           <img
             src="https://wakapi.dev/api/badge/surajrimal/interval:all_time?label=All Time"
             alt="All contributions"
-            className="h-auto w-auto max-h-6 max-w-[80px] sm:max-w-none"
+            className="h-auto max-h-6 w-auto max-w-[80px] sm:max-w-none"
           />
         </div>
       </div>

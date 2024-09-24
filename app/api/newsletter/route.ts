@@ -1,5 +1,6 @@
-import siteMetadata from '@/data/siteMetadata';
 import { NewsletterAPI } from 'pliny/newsletter';
+
+import siteMetadata from '@/data/siteMetadata';
 
 const handler = NewsletterAPI({
   // @ts-ignore

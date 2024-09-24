@@ -1,6 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
+import React, {
+  type KeyboardEvent as ReactKeyboardEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+
 import { useTheme } from 'next-themes';
-import React, { useState, useEffect, useCallback, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 import { Twemoji } from '@/components/Twemoji';
 import type { ImageLightBoxProps } from '@/types/components';
@@ -14,7 +20,10 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
   const handleClose = useCallback(() => {
     setClose(true);
 
-    document.documentElement.classList.remove('prevent-scroll', 'lightbox-loading');
+    document.documentElement.classList.remove(
+      'prevent-scroll',
+      'lightbox-loading'
+    );
 
     setTimeout(() => closeLightbox(), 400);
   }, [closeLightbox]);

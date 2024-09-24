@@ -1,9 +1,11 @@
 'use client';
+
+import { useEffect, useState } from 'react';
+
+import { fetchGithubRepo } from '@/lib/github';
 import type { ProjectCardProps } from '@/types/components';
 import type { GithubRepository } from '@/types/server';
 
-import { fetchGithubRepo } from '@/lib/github';
-import { useEffect, useState } from 'react';
 import GithubRepo from './GithubRepo';
 import Image from './Image';
 import Link from './Link';
@@ -36,7 +38,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <div
         className={`${
           imgSrc && 'h-full'
-        }  flex h-full flex-col overflow-hidden rounded-lg border border-transparent shadow-nextjs dark:shadow-nextjs-dark`}
+        } flex h-full flex-col overflow-hidden rounded-lg border border-transparent shadow-nextjs dark:shadow-nextjs-dark`}
       >
         <Image
           alt={title}
@@ -64,7 +66,10 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <span className="shrink-0">Built with: </span>
             {builtWith?.map((tool, index) => {
               return (
-                <span key={index} className="font-semibold text-gray-600 dark:text-gray-300">
+                <span
+                  key={index}
+                  className="font-semibold text-gray-600 dark:text-gray-300"
+                >
                   {tool}
                   {index !== builtWith.length - 1 && ','}
                 </span>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { withContentlayer } = require('next-contentlayer2');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -56,7 +57,15 @@ module.exports = () => {
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     transpilePackages: ['lucide-react'],
     eslint: {
-      dirs: ['app', 'components', 'lib', 'layouts', 'scripts'],
+      dirs: [
+        'app',
+        'components',
+        'lib',
+        'layouts',
+        'scripts',
+        'types',
+        'utils',
+      ],
     },
     images: {
       remotePatterns: [
@@ -96,7 +105,6 @@ module.exports = () => {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
       });
-
       return config;
     },
   });

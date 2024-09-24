@@ -1,5 +1,6 @@
-import type readingTime from 'reading-time';
 import type { ImageProps as NextImageProps } from 'next/image';
+
+import type readingTime from 'reading-time';
 
 import type projectsData from '@/data/projectsData';
 

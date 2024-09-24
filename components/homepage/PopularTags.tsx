@@ -1,14 +1,14 @@
 import Link from '@/components/Link';
+import { Twemoji } from '@/components/Twemoji';
 import popularTags from '@/data/popularTags';
 
-import { Twemoji } from '@/components/Twemoji';
 import BrandIcon from '../BrandIcon';
 
 const PopularTags = () => {
   return (
     <>
       <div className="space-y-2 py-1 md:space-y-5">
-        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
+        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Popular Tags <Twemoji size="twa-xs" emoji="rocket" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">

@@ -1,9 +1,9 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { useCurrentPath } from '@/components/PathProvider';
 
 export const useCurrentSlug = () => {
-  const pathname = usePathname();
+  const pathname = useCurrentPath();
   const slug = pathname.split('/').pop() || '';
   return slug;
 };

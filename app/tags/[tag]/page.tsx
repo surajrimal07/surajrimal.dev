@@ -1,15 +1,21 @@
-import siteMetadata from '@/data/siteMetadata';
-import ListLayout from '@/layouts/ListLayoutWithTags';
+import { Metadata } from 'next';
+import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
+
 import { genPageMetadata } from 'app/seo';
 import tagData from 'app/tag-data.json';
 import { allBlogs } from 'contentlayer/generated';
 import { slug } from 'github-slugger';
-import { Metadata } from 'next';
-import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer';
 
-export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {
+import siteMetadata from '@/data/siteMetadata';
+import ListLayout from '@/layouts/ListLayoutWithTags';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { tag: string };
+}): Promise<Metadata> {
   const tag = decodeURI(params.tag);
   return genPageMetadata({
     title: tag,
@@ -39,7 +45,11 @@ export default function TagPage({ params }: { params: { tag: string } }) {
   const tag = decodeURI(params.tag);
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1);
   const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
+    sortPosts(
+      allBlogs.filter(
+        (post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)
+      )
+    )
   );
   if (filteredPosts.length === 0) {
     return notFound();

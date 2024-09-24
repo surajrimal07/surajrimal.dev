@@ -1,5 +1,6 @@
-import { BLUR_IMAGE_DATA_URL, LOGO_IMAGE_PATH } from '@/constants/index';
 import Image from 'next/image';
+
+import { BLUR_IMAGE_DATA_URL, LOGO_IMAGE_PATH } from '@/constants/index';
 
 //removing z-[-1]  makes page so smooth, else it makes page janky, not sure why
 

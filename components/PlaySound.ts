@@ -6,7 +6,11 @@ interface PlaySoundProps {
   loop?: boolean;
 }
 
-const usePlaySound = ({ filePath, volume = 1.0, loop = false }: PlaySoundProps) => {
+const usePlaySound = ({
+  filePath,
+  volume = 1.0,
+  loop = false,
+}: PlaySoundProps) => {
   const playSound = useCallback(() => {
     const audio = new Audio(filePath);
     audio.volume = volume;

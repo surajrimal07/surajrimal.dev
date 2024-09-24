@@ -1,7 +1,7 @@
-import siteMetadata from '@/data/siteMetadata';
+import { RoughNotation } from 'react-rough-notation';
 
 import { Twemoji } from '@/components/Twemoji';
-import { RoughNotation } from 'react-rough-notation';
+import siteMetadata from '@/data/siteMetadata';
 
 const Heading = () => {
   return (
@@ -22,7 +22,7 @@ const Heading = () => {
         </RoughNotation>
       </span>{' '}
       from <span>Kathmandu, Nepal </span>
-      <span className="absolute inline-flex pt-[3px] z-[-1]">
+      <span className="absolute z-[-1] inline-flex pt-[3px]">
         <Twemoji emoji="flag-nepal" />
       </span>
     </h1>

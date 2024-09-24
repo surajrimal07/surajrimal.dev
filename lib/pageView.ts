@@ -1,11 +1,16 @@
 import { BlogShares, ShareType } from '@/types/share';
+
 import { MAX_SHARES_PER_SESSION } from '../constants';
 import { supabase } from './supabaseClient';
 
 export async function getBlogView(slug: string): Promise<number> {
   const normalizedSlug = `/${slug}`;
 
-  const { data, error } = await supabase.from('page_views').select('views').eq('slug', normalizedSlug).maybeSingle();
+  const { data, error } = await supabase
+    .from('page_views')
+    .select('views')
+    .eq('slug', normalizedSlug)
+    .maybeSingle();
 
   if (error) {
     console.error(`Error fetching blog view for ${normalizedSlug}:`, error);
@@ -18,7 +23,11 @@ export async function getBlogView(slug: string): Promise<number> {
 export async function updatePageViews(slug: string): Promise<number> {
   const normalizedSlug = slug === '/' ? 'home' : slug;
 
-  const { data, error } = await supabase.from('page_views').select('views').eq('slug', normalizedSlug).maybeSingle();
+  const { data, error } = await supabase
+    .from('page_views')
+    .select('views')
+    .eq('slug', normalizedSlug)
+    .maybeSingle();
 
   if (error) {
     console.error(`Error fetching page views for ${normalizedSlug}:`, error);
@@ -31,7 +40,10 @@ export async function updatePageViews(slug: string): Promise<number> {
     .upsert({ slug: normalizedSlug, views: newViews }, { onConflict: 'slug' });
 
   if (upsertError) {
-    console.error(`Error updating page views for ${normalizedSlug}:`, upsertError);
+    console.error(
+      `Error updating page views for ${normalizedSlug}:`,
+      upsertError
+    );
   }
 
   return newViews;
@@ -64,7 +76,11 @@ export async function getBlogShares(slug: string): Promise<BlogShares> {
   };
 }
 
-export async function updateBlogShares(slug: string, ip: string, shareType: ShareType): Promise<number> {
+export async function updateBlogShares(
+  slug: string,
+  ip: string,
+  shareType: ShareType
+): Promise<number> {
   const normalizedSlug = `/${slug}`;
 
   const { data: ipData, error: ipError } = await supabase
@@ -100,7 +116,10 @@ export async function updateBlogShares(slug: string, ip: string, shareType: Shar
 
   const { error: updateError } = await supabase
     .from('page_views')
-    .upsert({ slug: normalizedSlug, [shareType]: newShares }, { onConflict: 'slug' });
+    .upsert(
+      { slug: normalizedSlug, [shareType]: newShares },
+      { onConflict: 'slug' }
+    );
 
   if (updateError) {
     console.error(`Error updating shares for ${normalizedSlug}:`, updateError);
@@ -109,7 +128,10 @@ export async function updateBlogShares(slug: string, ip: string, shareType: Shar
 
   const { error: updateIpError } = await supabase
     .from('iprecord')
-    .upsert({ ipaddress: ip, shares: currentSharesCount + 1 }, { onConflict: 'ipaddress' });
+    .upsert(
+      { ipaddress: ip, shares: currentSharesCount + 1 },
+      { onConflict: 'ipaddress' }
+    );
 
   if (updateIpError) {
     console.error(`Error updating shares count for IP ${ip}:`, updateIpError);

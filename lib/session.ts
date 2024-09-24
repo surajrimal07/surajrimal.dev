@@ -1,6 +1,6 @@
-import { createHash } from 'crypto';
-
 import type { NextApiRequest } from 'next';
+
+import { createHash } from 'crypto';
 
 export const getSessionId = (req: NextApiRequest) => {
   const ipAddress = req.headers['x-forwarded-for'] || 'localhost';

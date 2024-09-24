@@ -1,8 +1,10 @@
+import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
 
-import siteMetadata from '@/data/siteMetadata';
-
 import Divider from '@/components/Divider';
+import Link from '@/components/Link';
+import Tag from '@/components/Tag';
+import Twemoji from '@/components/Twemoji';
 import Avatar from '@/components/homepage/Avatar';
 import BlogLinks from '@/components/homepage/BlogLinks';
 import GithubContributions from '@/components/homepage/GithubContributions';
@@ -13,10 +15,7 @@ import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import { Technologies } from '@/components/homepage/Technologies';
 import TypedBios from '@/components/homepage/TypedBios';
-import Link from '@/components/Link';
-import Tag from '@/components/Tag';
-import Twemoji from '@/components/Twemoji';
-import NewsletterForm from 'pliny/ui/NewsletterForm';
+import siteMetadata from '@/data/siteMetadata';
 
 const MAX_DISPLAY = 1;
 
@@ -48,11 +47,13 @@ export default function Home({ posts }) {
       <PrivateContributions />
       <Divider marginTop="4" />
       <div className="space-y-2 py-1 md:space-y-5">
-        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14 ">
+        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Recent Posts
           <Twemoji size="twa-sm" emoji="writing-hand" />
         </h1>
-        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">{siteMetadata.description}</p>
+        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
+          {siteMetadata.description}
+        </p>
       </div>
 
       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -66,14 +67,19 @@ export default function Home({ posts }) {
                   <dl>
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                      <time dateTime={date}>
+                        {formatDate(date, siteMetadata.locale)}
+                      </time>
                     </dd>
                   </dl>
                   <div className="space-y-5 xl:col-span-3">
                     <div className="space-y-4">
                       <div>
                         <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                          <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
+                          <Link
+                            href={`/blog/${slug}`}
+                            className="text-gray-900 dark:text-gray-100"
+                          >
                             {title}
                           </Link>
                         </h2>
@@ -83,7 +89,9 @@ export default function Home({ posts }) {
                           ))}
                         </div>
                       </div>
-                      <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
+                      <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        {summary}
+                      </div>
                     </div>
                     <div className="text-base font-medium leading-6">
                       <Link
@@ -103,7 +111,11 @@ export default function Home({ posts }) {
       </ul>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
-          <Link href="/blog" className="text-primary hover:text-red-400 dark:hover:text-red-400" aria-label="All posts">
+          <Link
+            href="/blog"
+            className="text-primary hover:text-red-400 dark:hover:text-red-400"
+            aria-label="All posts"
+          >
             All Posts &rarr;
           </Link>
         </div>
