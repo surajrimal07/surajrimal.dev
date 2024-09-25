@@ -6,9 +6,8 @@ import siteMetadata from '@/data/siteMetadata';
 const Heading = () => {
   return (
     <h1 className="font-medium text-neutral-900 dark:text-neutral-200">
-      I'm{' '}
-      <span>
-        {siteMetadata.fullName},
+      I'm {siteMetadata.fullName},{' '}
+      <span className="text-white">
         <RoughNotation
           animate={true}
           type="highlight"

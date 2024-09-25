@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
+import GithubRepo from '@/components/GithubRepo';
+import Image from '@/components/Image';
+import Link from '@/components/Link';
 import { fetchGithubRepo } from '@/lib/github';
 import type { ProjectCardProps } from '@/types/components';
 import type { GithubRepository } from '@/types/server';
-
-import GithubRepo from './GithubRepo';
-import Image from './Image';
-import Link from './Link';
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const { title, description, imgSrc, url, repo, builtWith } = project;

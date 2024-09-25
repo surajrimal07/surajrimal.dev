@@ -120,7 +120,7 @@ export default function RootLayout({
         href={`${basePath}/feed.xml`}
       />
 
-      <body className="relative bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-dark dark:text-white">
+      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-black dark:text-white">
         <NextTopLoader color="#DC2626" height={2} />
         <Toaster position="top-center" reverseOrder={false} />
         <ThemeProviders>
@@ -134,7 +134,7 @@ export default function RootLayout({
                 searchConfig={siteMetadata.search as SearchConfig}
               >
                 <Header />
-                <main className="mb-0">{children}</main>
+                <main className="mb-auto">{children}</main>
                 <Footer />
               </SearchProvider>
             </SectionContainer>

@@ -35,6 +35,30 @@ import { getBlogShares, getBlogView } from '@/lib/pageView';
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 /* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface PaginationProps {
@@ -177,7 +201,7 @@ export default function ListLayoutWithTags({
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
                 placeholder="Search articles"
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
+                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
               />
             </label>
             <motion.svg
@@ -203,7 +227,7 @@ export default function ListLayoutWithTags({
         </div>
       </div>
       <div className="flex sm:space-x-10">
-        <div className="hidden h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded bg-gray-50 pt-5 shadow-md dark:bg-gray-900/70 dark:shadow-gray-800/40 sm:flex">
+        <div className="hidden h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex">
           <div className="px-10 py-2">
             {pathname.startsWith('/blog') ? (
               <h3 className="text-primary-500 font-bold uppercase">
@@ -228,7 +252,7 @@ export default function ListLayoutWithTags({
                     ) : (
                       <Link
                         href={`/tags/${slug(t)}`}
-                        className="hover:text-red-500 dark:hover:text-red-500 px-3 py-2 text-sm font-medium uppercase text-gray-500 dark:text-gray-300"
+                        className="px-3 py-2 text-sm font-medium uppercase text-gray-500 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500"
                         aria-label={`View posts tagged ${t}`}
                       >
                         {`${t} (${tagCounts[t]})`}
@@ -248,8 +272,8 @@ export default function ListLayoutWithTags({
             const shares = shareCounts.get(path) || 0;
 
             return (
-              <li key={path} className="py-3">
-                <article className=" py-2 px-1 flex flex-col space-y-2 transition duration-100 hover:scale-105 hover:rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 xl:space-y-0">
+              <li key={path} className="py-2">
+                <article className="flex flex-col space-y-2 px-2 py-2 transition duration-200 hover:scale-105 hover:rounded-xl hover:border hover:border-red-500 dark:hover:border-red-500 xl:space-y-0">
                   <dl>
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
@@ -324,6 +348,7 @@ export default function ListLayoutWithTags({
                     </Link> */}
                   </div>
                 </article>
+                <div className="my-2 border-t border-gray-300 dark:border-gray-700" />
               </li>
             );
           })}

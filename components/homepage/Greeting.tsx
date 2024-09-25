@@ -3,7 +3,7 @@ import { RoughNotation } from 'react-rough-notation';
 
 const Greeting = () => {
   const textClassName = clsx(
-    'bg-gradient-to-l from-red-600 to-primary ',
+    'bg-gradient-to-l from-gray-500 to-rose-600 ',
     'mb-0 mt-0 bg-clip-text text-4xl font-extrabold leading-[60px] tracking-tight text-transparent md:text-6xl md:leading-[78px]'
   );
 
@@ -14,7 +14,7 @@ const Greeting = () => {
         Discover about me and my {}
         <RoughNotation
           animate={true}
-          type="box"
+          type="circle"
           show={true}
           color="#FDE68A"
           animationDelay={1000}

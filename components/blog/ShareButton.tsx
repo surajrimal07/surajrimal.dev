@@ -10,6 +10,7 @@ import { LuExternalLink } from 'react-icons/lu';
 
 import { updateBlogShares } from '@/lib/pageView';
 import { ShareType } from '@/types/share';
+import { toastOptions } from '@/utils/toast';
 
 interface ShareButtonProps {
   url: string;
@@ -18,15 +19,6 @@ interface ShareButtonProps {
   onItemClick?: (type: ShareType) => void;
   onShareComplete?: () => void;
 }
-
-const toastOptions = {
-  style: {
-    borderRadius: '10px',
-    background: '#333',
-    color: '#fff',
-  },
-  duration: 2000,
-};
 
 const ShareButton: React.FC<ShareButtonProps> = ({
   url,

@@ -1,7 +1,6 @@
 'use client';
 
 import clsx from 'clsx';
-import Typewriter from 'typewriter-effect';
 
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
@@ -15,8 +14,6 @@ import SearchButton from './SearchButton';
 import ThemeSwitch from './ThemeSwitch';
 import Tooltip from './ui/tooltip';
 
-//to add hover block back add  // hover:text-red-800 dark:hover:text-red-800'
-
 const Header = () => {
   const currentPath = useCurrentPath();
 
@@ -27,39 +24,50 @@ const Header = () => {
   }
   return (
     <header className={headerClass}>
-      <Link
-        href="/"
-        aria-label={siteMetadata.headerTitle}
-        className="flex items-center justify-between"
-      >
-        {currentPath === '/' ? (
-          <div className="group ml-1 mr-1 h-7 text-2xl font-semibold transition duration-300 sm:block">
-            {siteMetadata.headerTitle}
-            <span className="block h-0.5 max-w-0 bg-red-300 transition-all duration-500 group-hover:max-w-[97%] dark:bg-red-700"></span>
+      <div className="flex items-center gap-0">
+        <Link
+          href="/"
+          aria-label={siteMetadata.headerTitle}
+          className="flex items-center"
+        >
+          <div className="link-underline group relative ml-1 mr-1 h-7 text-2xl sm:block">
+            <span className="typewriter-text">
+              ~
+              <span className="font-bold">
+                {currentPath === '/'
+                  ? `/${siteMetadata.headerTitle}`
+                  : currentPath.startsWith('/blog')
+                    ? '/blog'
+                    : currentPath}
+              </span>
+              <span
+                className="blinking-cursor"
+                style={{
+                  fontWeight: 100,
+                  fontSize: '1em',
+                  animation: 'blink 1s step-start infinite',
+                }}
+              >
+                |
+              </span>
+            </span>
           </div>
-        ) : (
-          <div className="text-primary-color dark:text-primary-color-dark flex items-center text-2xl font-semibold">
-            <Typewriter
-              options={{
-                strings: [
-                  `~${currentPath.startsWith('/blog') ? '/blog' : currentPath}`,
-                ],
-                autoStart: true,
-                loop: false,
-                deleteSpeed: 100000,
-              }}
-            />
-          </div>
-        )}
-        <div className="flex items-center">
-          <span className="ml-1 mr-0 hidden rounded-full bg-red-600 px-1 py-1 text-xs font-thin text-white md:block">
+        </Link>
+
+        <Link
+          href="/"
+          aria-label={siteMetadata.headerTitle}
+          className="flex items-center"
+        >
+          <span className="mt-2 rounded-full bg-red-600 px-2 py-1 text-xs font-thin text-white md:block">
             Open to work
           </span>
           <Tooltip content="Open to work">
-            <span className="ml-1 mr-0 mt-2 block h-2 w-2 rounded-full bg-red-600 md:hidden" />
+            <span className="ml-1 mt-2 block h-2 w-2 rounded-full bg-red-600 md:hidden" />
           </Tooltip>
-        </div>
-      </Link>
+        </Link>
+      </div>
+
       <div className="flex items-center text-base leading-5">
         <div className="no-scrollbar hidden max-w-40 items-center space-x-4 overflow-x-auto sm:flex sm:space-x-1 md:max-w-72 lg:max-w-96">
           {headerNavLinks
@@ -83,6 +91,7 @@ const Header = () => {
         <SearchButton />
         <ThemeSwitch />
         <DropMenu />
+
         <MobileNav />
       </div>
     </header>
@@ -90,5 +99,3 @@ const Header = () => {
 };
 
 export default Header;
-
-//{ href: siteMetadata.analyticsURL, title: 'Analytics' },

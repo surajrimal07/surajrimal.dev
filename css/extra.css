@@ -10,14 +10,31 @@
   display: block;
   margin-top: 5px;
   right: 0;
-  background: linear-gradient(to right, #ef4444, #dc2626);
+  left: 6%;
+  background: linear-gradient(to right, #ff512f, #dd2476);
   transition: width 0.25s ease;
   -webkit-transition: width 0.25s ease;
+  border-radius: 1px;
 }
 
 .link-underline:hover:after {
-  width: 100%;
-  left: 0;
-  background: linear-gradient(to right, #ef4444, #dc2626);
+  width: 87%;
+  left: 6%;
+  height: 2px;
+  transition: width 0.25s ease;
+  -webkit-transition: width 0.25s ease;
+  background: linear-gradient(to right, #ff512f, #dd2476);
+  border-radius: 1px;
 }
 
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

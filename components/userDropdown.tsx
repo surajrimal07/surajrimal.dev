@@ -1,11 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { User } from '@supabase/supabase-js';
-import { motion } from 'framer-motion';
 import {
   Archive,
   Code,
@@ -33,7 +31,6 @@ import usePlaySound from './PlaySound';
 export function DropdownMenuDemo() {
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
-  const router = useRouter();
 
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
@@ -57,19 +54,6 @@ export function DropdownMenuDemo() {
     checkUserSession();
   }, [supabase]);
 
-  const handleSignOut = async () => {
-    if (user) {
-      const { error } = await supabase.auth.signOut();
-      if (!error) {
-        router.push('/auth');
-      } else {
-        console.error('Error signing out:', error.message);
-      }
-    } else {
-      router.push('/auth');
-    }
-  };
-
   const handleDropdownChange = (open: boolean) => {
     if (open) {
       playSound();
@@ -77,50 +61,33 @@ export function DropdownMenuDemo() {
   };
 
   return (
-    <DropdownMenu modal={false} onOpenChange={handleDropdownChange}>
+    <DropdownMenu onOpenChange={handleDropdownChange}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="relative ml-2 h-10 w-10 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
-        >
-          <motion.div
-            whileHover={{ scale: 0.99 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.1, ease: 'easeIn' }}
-          >
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="User avatar"
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+          <Avatar>
+            <AvatarImage
+              src="https://github.com/shadcn.png"
+              alt="User avatar"
+            />
+            <AvatarFallback>
+              <img
+                src="/static/images/user.png"
+                alt="Default profile"
+                className="h-10 w-10 rounded-full"
               />
-              <AvatarFallback>
-                <img
-                  src="/static/images/user.png"
-                  alt="Default profile"
-                  className="h-10 w-10 rounded-full"
-                />
-              </AvatarFallback>
-            </Avatar>
-          </motion.div>
+            </AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-56"
-        align="end"
-        sideOffset={10}
-        forceMount
-      >
+      <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <button
-              onClick={handleSignOut}
-              className="flex w-full items-center"
-            >
+            <Link href="/auth" className="flex items-center">
               <LogOut className="mr-2 h-4 w-4" />
-              <span>{user ? 'Sign Out' : 'Sign In'}</span>
-            </button>
+              <span>{user !== null ? 'Sign Out' : 'Sign In'}</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

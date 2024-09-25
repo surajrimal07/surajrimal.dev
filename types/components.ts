@@ -1,5 +1,7 @@
 import type { ImageProps as NextImageProps } from 'next/image';
 
+import { Authors } from 'contentlayer/generated';
+import { CoreContent } from 'pliny/utils/contentlayer';
 import type readingTime from 'reading-time';
 
 import type projectsData from '@/data/projectsData';
@@ -27,6 +29,7 @@ export interface ProjectCardProps {
 export type ReadingTime = ReturnType<typeof readingTime>;
 
 export interface BlogMetaProps {
+  authorDetails: CoreContent<Authors>[];
   date: string;
   slug: string;
   readingTime: ReadingTime;
