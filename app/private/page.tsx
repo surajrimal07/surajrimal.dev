@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { User } from '@supabase/supabase-js';
 
+import { getUser } from '@/utils/supabase/auth/client';
 import { createClient } from '@/utils/supabase/client';
 
 export default function PrivatePage() {
@@ -16,15 +17,7 @@ export default function PrivatePage() {
 
   useEffect(() => {
     const checkUserSession = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-      if (error || !session) {
-        router.push('/login'); // Redirect if no session is found
-      } else {
-        setUser(session.user); // Set user from session
-      }
+      setUser(await getUser());
       setLoading(false);
     };
 

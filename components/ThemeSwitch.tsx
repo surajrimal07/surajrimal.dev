@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 
 import { motion } from 'framer-motion';
+import { Monitor } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { BsMoonStarsFill } from 'react-icons/bs';
-import { CiMonitor } from 'react-icons/ci';
 import { HiSun } from 'react-icons/hi';
 
 import { Button } from '@/components/ui/button';
@@ -85,7 +85,7 @@ const ThemeSwitch = () => {
                 <HiSun />
               )
             ) : (
-              <CiMonitor />
+              <Monitor />
             )}
             <span className="sr-only">Toggle theme</span>
           </motion.div>
@@ -98,7 +98,7 @@ const ThemeSwitch = () => {
         <DropdownMenuGroup>
           <ThemeOption value="light" icon={<HiSun />} label="Light" />
           <ThemeOption value="dark" icon={<BsMoonStarsFill />} label="Dark" />
-          <ThemeOption value="system" icon={<CiMonitor />} label="System" />
+          <ThemeOption value="system" icon={<Monitor />} label="System" />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

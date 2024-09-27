@@ -12,6 +12,7 @@ import MobileNav from './MobileNav';
 import { useCurrentPath } from './PathProvider';
 import SearchButton from './SearchButton';
 import ThemeSwitch from './ThemeSwitch';
+import { HoverBorderGradient } from './ui/shimmer-button';
 import Tooltip from './ui/tooltip';
 
 const Header = () => {
@@ -59,11 +60,35 @@ const Header = () => {
           aria-label={siteMetadata.headerTitle}
           className="flex items-center"
         >
-          <span className="mt-2 rounded-full bg-red-600 px-2 py-1 text-xs font-thin text-white md:block">
+          {/* <span className="absolute inset-[-1000%] mt-2 hidden animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_50%_50%,#000_0%,#fff_5%)] group-hover:bg-none dark:bg-[conic-gradient(from_90deg_at_50%_50%,#fff_0%,#09090B_7%)]">
             Open to work
-          </span>
+          </span> */}
+
+          {/* <EyeCatchingButton_v1 size={'sm'}>
+            <span className="h-2 w-2 w-full rounded-full bg-zinc-50 px-8 font-semibold text-zinc-800 backdrop-blur-xl dark:bg-zinc-900 dark:text-zinc-200">
+              Open to work
+            </span>
+          </EyeCatchingButton_v1> */}
+
+          <div className="m-0 hidden justify-center p-0.5 text-center md:block">
+            <HoverBorderGradient
+              containerClassName="rounded-full"
+              as="button"
+              className="flex items-center space-x-2 bg-white text-black dark:bg-black/90 dark:text-white/90"
+            >
+              <span className="text-xs"> Open to work</span>
+            </HoverBorderGradient>
+          </div>
+
+          {/* <div className="group relative hidden overflow-hidden rounded-full border border-zinc-400 bg-white p-0.5 shadow dark:border-zinc-800 dark:bg-zinc-900 md:block">
+            <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_50%_50%,#000_0%,#fff_5%)] group-hover:bg-none dark:bg-[conic-gradient(from_90deg_at_50%_50%,#fff_0%,#09090B_7%)]" />
+            <span className="rounded-full bg-zinc-50 px-1 pb-1 pt-1.5 text-xs font-semibold text-zinc-800 backdrop-blur-xl dark:bg-zinc-900 dark:text-zinc-200">
+              Open to work
+            </span>
+          </div> */}
+
           <Tooltip content="Open to work">
-            <span className="ml-1 mt-2 block h-2 w-2 rounded-full bg-red-600 md:hidden" />
+            <span className="ml-1 mt-2 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
           </Tooltip>
         </Link>
       </div>

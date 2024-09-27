@@ -2,20 +2,23 @@ import Image from 'next/image';
 
 import { BLUR_IMAGE_DATA_URL, LOGO_IMAGE_PATH } from '@/constants/index';
 
-//removing z-[-1]  makes page so smooth, else it makes page janky, not sure why
+import { BorderBeam } from '../ui/border-beam';
 
 const Avatar = () => {
   return (
-    <div className="overflow-hidden rounded-md">
-      <Image
-        blurDataURL={BLUR_IMAGE_DATA_URL}
-        placeholder="blur"
-        src={LOGO_IMAGE_PATH}
-        alt="author avatar"
-        height={430}
-        width={430}
-        style={{ width: '430px', height: '430px' }}
-      />
+    <div className="relative inline-block">
+      <BorderBeam />
+      <div className="h-[430px] w-[430px] overflow-hidden rounded-md">
+        <Image
+          blurDataURL={BLUR_IMAGE_DATA_URL}
+          placeholder="blur"
+          src={LOGO_IMAGE_PATH}
+          alt="author avatar"
+          height={428}
+          width={428}
+          className="h-[428px] w-[428px] rounded-md object-cover"
+        />
+      </div>
     </div>
   );
 };

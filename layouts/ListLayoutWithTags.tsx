@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
 import type { Blog } from 'contentlayer/generated';
-import { motion } from 'framer-motion';
 import { slug } from 'github-slugger';
 import { CoreContent } from 'pliny/utils/contentlayer';
 import { formatDate } from 'pliny/utils/formatDate';
@@ -19,8 +18,34 @@ import { useCurrentPath } from '@/components/PathProvider';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
 import ShareButton from '@/components/blog/ShareButton';
+import { Separator } from '@/components/ui/cool-separator';
+import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import siteMetadata from '@/data/siteMetadata';
 import { getBlogShares, getBlogView } from '@/lib/pageView';
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 /* eslint-disable prettier/prettier */
 
@@ -182,6 +207,19 @@ export default function ListLayoutWithTags({
     };
   }, []);
 
+  const placeholders = [
+    "What's the first rule of Fight Club?",
+    'Who is Tyler Durden?',
+    'Where is Andrew Laeddis Hiding?',
+    'Write a Javascript method to reverse a string',
+    'How to assemble your own PC?',
+  ];
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchValue('');
+  };
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -193,7 +231,12 @@ export default function ListLayoutWithTags({
             I primarily cover web development and tech topics, occasionally
             sharing insights into my personal life.
           </p>
-          <div className="relative mx-auto max-w-prose">
+          <PlaceholdersAndVanishInput
+            placeholders={placeholders}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onSubmit={onSubmit}
+          />
+          {/* <div className="relative mx-auto max-w-prose">
             <label>
               <span className="sr-only">Search articles</span>
               <input
@@ -223,20 +266,20 @@ export default function ListLayoutWithTags({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </motion.svg>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex sm:space-x-10">
         <div className="hidden h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex">
           <div className="px-10 py-2">
             {pathname.startsWith('/blog') ? (
-              <h3 className="text-primary-500 font-bold uppercase">
+              <h3 className="font-bold uppercase text-primary-500">
                 All Posts
               </h3>
             ) : (
               <Link
                 href={`/blog`}
-                className="hover:text-primary-500 dark:hover:text-primary-500 font-bold uppercase text-gray-700 dark:text-gray-300"
+                className="font-bold uppercase text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
               >
                 All Posts
               </Link>
@@ -246,7 +289,7 @@ export default function ListLayoutWithTags({
                 return (
                   <li key={t} className="my-3">
                     {decodeURI(pathname.split('/tags/')[1]) === slug(t) ? (
-                      <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
+                      <h3 className="inline px-3 py-2 text-sm font-bold uppercase text-primary-500">
                         {`${t} (${tagCounts[t]})`}
                       </h3>
                     ) : (
@@ -348,7 +391,7 @@ export default function ListLayoutWithTags({
                     </Link> */}
                   </div>
                 </article>
-                <div className="my-2 border-t border-gray-300 dark:border-gray-700" />
+                <Separator gradient />
               </li>
             );
           })}

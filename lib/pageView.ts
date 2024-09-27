@@ -1,7 +1,7 @@
 import { BlogShares, ShareType } from '@/types/share';
 
 import { MAX_SHARES_PER_SESSION } from '../constants';
-import { supabase } from '../utils/supabase/supabase';
+import { supabase } from '../utils/supabase/client';
 
 export async function getBlogView(slug: string): Promise<number> {
   const normalizedSlug = `/${slug}`;

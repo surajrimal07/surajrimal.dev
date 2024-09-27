@@ -10,12 +10,15 @@ import {
   Archive,
   Code,
   Home,
+  LayoutDashboard,
   LogOut,
   Pen,
   User as UserIcon,
+  UserRoundPen,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,7 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { createClient } from '@/utils/supabase/component';
+import { createClient } from '@/utils/supabase/client';
+import { toastOptions } from '@/utils/toast';
 
 import usePlaySound from './PlaySound';
 
@@ -60,10 +64,19 @@ export function DropdownMenuDemo() {
   const handleSignOut = async () => {
     if (user) {
       const { error } = await supabase.auth.signOut();
+
       if (!error) {
         router.push('/auth');
+
+        toast.success('Successfully signed out', {
+          ...toastOptions,
+        });
+
+
       } else {
-        console.error('Error signing out:', error.message);
+        toast.error('Something went wrong, please try again', {
+          ...toastOptions,
+        });
       }
     } else {
       router.push('/auth');
@@ -75,31 +88,29 @@ export function DropdownMenuDemo() {
       playSound();
     }
   };
-
   return (
     <DropdownMenu modal={false} onOpenChange={handleDropdownChange}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative ml-2 h-10 w-10 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
+          className="relative ml-2 h-9 w-9 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
         >
           <motion.div
-            whileHover={{ scale: 0.99 }}
+            whileHover={{ scale: 0.9 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1, ease: 'easeIn' }}
           >
             <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="User avatar"
-              />
-              <AvatarFallback>
-                <img
-                  src="/static/images/user.png"
-                  alt="Default profile"
-                  className="h-10 w-10 rounded-full"
+              {user?.user_metadata?.avatar_url ? (
+                <AvatarImage
+                  src={user?.user_metadata?.avatar_url}
+                  alt="User avatar"
                 />
-              </AvatarFallback>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <UserIcon size={22} />
+                </div>
+              )}
             </Avatar>
           </motion.div>
         </Button>
@@ -110,9 +121,33 @@ export function DropdownMenuDemo() {
         sideOffset={10}
         forceMount
       >
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {user?.email ? user.email : 'My Account'}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user && (
+            <>
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="flex w-full items-center"
+                >
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  <span>Dashboard</span>
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="flex w-full items-center"
+                >
+                  <UserRoundPen className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </button>
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuItem asChild>
             <button
               onClick={handleSignOut}

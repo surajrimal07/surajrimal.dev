@@ -45,6 +45,7 @@
     "ldrs": "^1.0.2",
     "lucide-react": "^0.445.0",
     "mdx-bundler": "^10.0.3",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "^14.2.13",
     "next-contentlayer2": "0.5.1",
     "next-themes": "^0.3.0",

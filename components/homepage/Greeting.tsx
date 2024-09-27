@@ -1,30 +1,36 @@
-import clsx from 'clsx';
-import { RoughNotation } from 'react-rough-notation';
+'use client';
+
+import { motion } from 'framer-motion';
+
+import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
+
+import Twemoji from '../Twemoji';
 
 const Greeting = () => {
-  const textClassName = clsx(
-    'bg-gradient-to-l from-gray-500 to-rose-600 ',
-    'mb-0 mt-0 bg-clip-text text-4xl font-extrabold leading-[60px] tracking-tight text-transparent md:text-6xl md:leading-[78px]'
-  );
-
   return (
-    <div className={textClassName}>
-      Hey, there!{' '}
-      <span className="font-bold">
-        Discover about me and my {}
-        <RoughNotation
-          animate={true}
-          type="circle"
-          show={true}
-          color="#FDE68A"
-          animationDelay={1000}
-          animationDuration={2500}
-          padding={5}
-        >
+    <HeroHighlight>
+      <motion.h1
+        initial={{
+          opacity: 0,
+          y: 20,
+        }}
+        animate={{
+          opacity: 1,
+          y: [20, -5, 0],
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.4, 0.0, 0.2, 1],
+        }}
+        className="mb-0 mt-0 text-center text-4xl font-bold leading-relaxed text-neutral-700 dark:text-white md:text-4xl lg:text-5xl lg:leading-snug"
+      >
+        <Twemoji size="twa-sm" emoji="waving hand" />
+        Hey there! Discover about me and my{' '}
+        <Highlight className="text-black dark:text-white">
           creative ideas.
-        </RoughNotation>
-      </span>
-    </div>
+        </Highlight>
+      </motion.h1>
+    </HeroHighlight>
   );
 };
 

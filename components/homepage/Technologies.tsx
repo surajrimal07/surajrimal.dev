@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import Twemoji from '@/components/Twemoji';
+import IconsBundle from '@/components/social-icons';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,12 +14,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Tooltip from '@/components/ui/tooltip';
 import { skillsData } from '@/data/skills';
 import { type Skill } from '@/types/skills';
-
-import Twemoji from '../Twemoji';
-import IconsBundle from '../social-icons';
-import Tooltip from '../ui/tooltip';
 
 function filterSkillsData(skillsData: Skill[]) {
   const acc: Record<string, Skill[]> = { 'Most Used': [] };
@@ -99,7 +98,7 @@ export function Technologies() {
                             className="absolute right-8 top-0 text-xs"
                             aria-label="Advanced skill"
                           >
-                            🔥
+                            <Twemoji size="sm" emoji="fire" />
                           </span>
                         )}
                       </Button>

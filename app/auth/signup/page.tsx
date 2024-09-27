@@ -1,17 +1,14 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useCallback, useState } from 'react';
 
-import { Provider } from '@supabase/supabase-js';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FaGithub, FaTwitter } from 'react-icons/fa';
 import { GrGoogle } from 'react-icons/gr';
-import { PiMagicWandBold } from 'react-icons/pi';
 
-import { AuthSignIn, emaillogin } from '@/app/auth/actions';
+import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,91 +20,75 @@ import {
 import { Separator } from '@/components/ui/cool-separator';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from '@/components/ui/loading-button';
-import { createClient } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 
-const AuthScreen = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+import { emailsignup } from '../actions';
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const SignUpCard = () => {
+  const [formState, setFormState] = useState({
+    email: '',
+    name: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
-  const errorMessageRef = useRef<string | null>(null);
+  const router = useRouter();
 
-  const showErrorToast = useCallback((message: string) => {
-    toast.error(message, toastOptions);
-  }, []);
-
-  useEffect(() => {
-    const errorMessage = searchParams.get('message');
-
-    if (errorMessage && errorMessage !== errorMessageRef.current) {
-      errorMessageRef.current = errorMessage;
-      showErrorToast(errorMessage);
-    }
-  }, [searchParams, showErrorToast]);
-
-  const oAuthSignIn = async (provider: Provider) => {
-    setPending(true);
-    setError('');
-
-    try {
-      const { errorMessage, url } = await AuthSignIn(provider);
-
-      if (url) {
-        router.push(url);
-      } else {
-        throw new Error(errorMessage || 'Something went wrong');
-      }
-    } catch (err) {
-      const message = err.message || 'Something went wrong';
-      showErrorToast(message);
-      setError(message);
-    } finally {
-      setPending(false);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const onPasswordSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onPasswordSignUp = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    setPending(true);
-    setError('');
+      e.persist();
 
-    try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
+      const { email, password, confirmPassword } = formState;
 
-      await emaillogin(formData);
-
-      const {
-        data: { session },
-      } = await createClient().auth.getSession();
-
-      if (session?.user?.email) {
-        toast.success(`Logged in as ${session.user.email}`, toastOptions);
+      if (password !== confirmPassword) {
+        toast.error('Passwords do not match', toastOptions);
+        return;
       }
-    } catch (err) {
-      const errorMessage = err.message || 'Something went wrong';
-      showErrorToast(errorMessage);
-      setError(errorMessage);
-    } finally {
-      setPending(false);
-    }
-  };
+
+      try {
+        setPending(true);
+        setError('');
+
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+
+        await emailsignup(formData);
+
+        toast.success(
+          'Signup successful! Please check your email to verify your account.',
+          toastOptions
+        );
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'An error occurred';
+
+        setError(errorMessage);
+        toast.error(errorMessage, toastOptions);
+      } finally {
+        setPending(false);
+      }
+    },
+    [formState]
+  );
 
   return (
     <div className="flex h-full items-center justify-center">
       <div className="md:h-auto md:w-[420px]">
-        <Card className="h-full w-full p-8 shadow-lg">
+        <Card className="h-full w-full p-8">
           <CardHeader className="px-0 pt-0">
-            <CardTitle>Welcome back </CardTitle>
+            <CardTitle>Sign up to continue</CardTitle>
             <CardDescription>
-              Use your credentials to access your account
+              Use your credentials to create your account
             </CardDescription>
           </CardHeader>
           {!!error && (
@@ -117,22 +98,41 @@ const AuthScreen = () => {
             </div>
           )}
           <CardContent className="space-y-5 px-0 pb-0">
-            <form className="space-y-2.5" onSubmit={onPasswordSignIn}>
+            <form className="space-y-2.5" onSubmit={onPasswordSignUp}>
+              <Input
+                required
+                disabled={pending}
+                placeholder="Full name"
+                name="name"
+                value={formState.name}
+                onChange={handleChange}
+              />
               <Input
                 required
                 disabled={pending}
                 placeholder="Email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formState.email}
+                onChange={handleChange}
               />
               <Input
                 required
                 disabled={pending}
                 placeholder="Password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formState.password}
+                onChange={handleChange}
+              />
+              <Input
+                required
+                disabled={pending}
+                placeholder="Confirm password"
+                type="password"
+                name="confirmPassword"
+                value={formState.confirmPassword}
+                onChange={handleChange}
               />
               <LoadingButton
                 loading={pending}
@@ -159,28 +159,15 @@ const AuthScreen = () => {
                 disabled={pending}
                 size="lg"
                 variant="outline"
-                onClick={() => router.push('/auth/magiclink')}
-              >
-                <PiMagicWandBold className="absolute left-2.5 top-3 size-5" />
-                Continue with Magic Link
-              </Button>
-              <Button
-                className="relative w-full"
-                disabled={pending}
-                size="lg"
-                variant="outline"
-                onClick={() => oAuthSignIn('google')}
               >
                 <GrGoogle className="absolute left-2.5 top-3 size-5" />
                 Continue with Google
               </Button>
-
               <Button
                 className="relative w-full"
                 disabled={pending}
                 size="lg"
                 variant="outline"
-                onClick={() => oAuthSignIn('twitter')}
               >
                 <FaTwitter className="absolute left-2.5 top-3 size-5" />
                 Continue with Twitter
@@ -190,24 +177,23 @@ const AuthScreen = () => {
                 disabled={pending}
                 size="lg"
                 variant="outline"
-                onClick={() => oAuthSignIn('github')}
               >
                 <FaGithub className="absolute left-2.5 top-3 size-5" />
-                Continue with Github
+                Continue with GitHub
               </Button>
               <p className="text-center text-xs text-muted-foreground">
-                Don&apos;t have an account?{' '}
+                Already have an account?{' '}
                 <button
                   className="cursor-pointer border-none bg-transparent p-0 text-xs underline"
                   type="button"
-                  onClick={() => router.push('/auth/signup')}
+                  onClick={() => router.push('/auth')}
                 >
-                  Sign Up
+                  Sign In
                 </button>
               </p>
               <p className="text-center text-xs text-muted-foreground">
                 By signing in, you agree to our{' '}
-                <Link className="underline" href="/terms">
+                <Link className="underline" href="/terms-of-service">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
@@ -224,4 +210,4 @@ const AuthScreen = () => {
   );
 };
 
-export default AuthScreen;
+export default SignUpCard;

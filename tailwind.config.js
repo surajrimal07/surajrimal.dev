@@ -2,6 +2,11 @@
 // @ts-check
 const { fontFamily } = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
+const svgToDataUri = require('mini-svg-data-uri');
+
+const {
+  default: flattenColorPalette,
+} = require('tailwindcss/lib/util/flattenColorPalette');
 
 // ../node_modules/pliny/dist/**/*.mjs is needed for monorepo setup
 /** @type {import("tailwindcss/types").Config } */
@@ -46,13 +51,21 @@ module.exports = {
             transform: 'rotate(0deg)',
           },
         },
+        'border-beam': {
+          '100%': {
+            'offset-distance': '100%',
+          },
+        },
+        gradient: {
+          to: {
+            backgroundPosition: 'var(--bg-size) 0',
+          },
+        },
       },
       animation: {
         wave: 'wave-animation 2.5s linear infinite',
-        'music-bar-1': 'music-bar-1 .8s linear infinite',
-        'music-bar-2': 'music-bar-2 .8s linear infinite',
-        'music-bar-3': 'music-bar-3 .8s linear infinite',
-        'music-bar-4': 'music-bar-4 .8s linear infinite',
+        'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+        gradient: 'gradient 8s linear infinite',
       },
       boxShadow: {
         nextjs: '0 8px 20px rgb(0,0,0,0.12)',
@@ -214,5 +227,29 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('tailwindcss-animate'),
+    addVariablesForColors,
+    function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'bg-dot-thick': (value) => ({
+            backgroundImage: `url("${svgToDataUri(
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="2.5"></circle></svg>`
+            )}")`,
+          }),
+        },
+        { values: flattenColorPalette(theme('backgroundColor')), type: 'color' }
+      );
+    },
   ],
 };
+
+function addVariablesForColors({ addBase, theme }) {
+  let allColors = flattenColorPalette(theme('colors'));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ':root': newVars,
+  });
+}

@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { type NextRequest } from 'next/server';
 
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') as EmailOtpType | null;
   const next =
     searchParams.get('next') ??
-    '/dashboard?message=Email verified successfully';
+    `/dashboard?message=${type === 'magiclink' ? 'Logged in successfully' : 'Email verified successfully'}`;
 
   if (token_hash && type) {
     const supabase = createClient();
@@ -21,8 +22,16 @@ export async function GET(request: NextRequest) {
       token_hash,
     });
     if (!error) {
-      // redirect user to specified redirect URL or root of app
+      revalidatePath('/', 'layout');
       redirect(next);
+    }
+
+    if (error && type === 'magiclink') {
+      redirect(`/auth/magiclink?&message=${error.message}`);
+    }
+
+    if (error && type === 'signup') {
+      redirect(`/auth/signup?&message=${error.message}`);
     }
   }
 

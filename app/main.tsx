@@ -15,6 +15,7 @@ import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import { Technologies } from '@/components/homepage/Technologies';
 import TypedBios from '@/components/homepage/TypedBios';
+import { Separator } from '@/components/ui/cool-separator';
 import siteMetadata from '@/data/siteMetadata';
 
 const MAX_DISPLAY = 1;
@@ -37,15 +38,15 @@ export default function Home({ posts }) {
         </div>
       </div>
 
-      <Divider />
+      <Separator gradient />
       <PopularTags />
-      <Divider />
+      <Separator gradient />
       <Technologies />
-      <Divider marginTop="4" />
+      <Separator gradient marginTop={15} />
       <GithubContributions />
-      <Divider marginTop="4" />
+      <Separator gradient marginTop={15} />
       <PrivateContributions />
-      <Divider marginTop="4" />
+      <Separator gradient marginTop={15} />
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Recent Posts

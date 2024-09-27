@@ -83,7 +83,7 @@ export default function RootLayout({
     >
       <link
         rel="apple-touch-icon"
-        sizes="76x76"
+        sizes="180x180"
         href={`${basePath}/static/favicons/apple-touch-icon.png`}
       />
       <link
@@ -103,16 +103,16 @@ export default function RootLayout({
         href={`${basePath}/static/favicons/site.webmanifest`}
       />
 
-      <meta name="msapplication-TileColor" content="#000000" />
+      <meta name="msapplication-TileColor" content="#da532c" />
       <meta
         name="theme-color"
         media="(prefers-color-scheme: light)"
-        content="#fff"
+        content="#ffffff"
       />
       <meta
         name="theme-color"
         media="(prefers-color-scheme: dark)"
-        content="#000"
+        content="#ffffff"
       />
       <link
         rel="alternate"
@@ -129,6 +129,7 @@ export default function RootLayout({
             <Analytics
               analyticsConfig={siteMetadata.analytics as AnalyticsConfig}
             />
+
             <SectionContainer>
               <SearchProvider
                 searchConfig={siteMetadata.search as SearchConfig}
