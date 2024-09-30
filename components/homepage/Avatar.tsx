@@ -7,8 +7,8 @@ import { BorderBeam } from '../ui/border-beam';
 const Avatar = () => {
   return (
     <div className="relative inline-block">
-      <BorderBeam />
-      <div className="h-[430px] w-[430px] overflow-hidden rounded-md">
+      <div className="h-[430px] w-[430px] overflow-hidden rounded-full">
+        <BorderBeam />
         <Image
           blurDataURL={BLUR_IMAGE_DATA_URL}
           placeholder="blur"
@@ -16,7 +16,7 @@ const Avatar = () => {
           alt="author avatar"
           height={428}
           width={428}
-          className="h-[428px] w-[428px] rounded-md object-cover"
+          className="h-[428px] w-[428px] rounded-full object-cover"
         />
       </div>
     </div>

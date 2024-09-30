@@ -3,12 +3,14 @@ import type { Project } from '@/types/data';
 const projectsData: Project[] = [
   {
     type: 'work',
-    title: 'EcomHeat - Manage Market Share, Monitor Sales Performance, Optimize Store Operation',
+    title:
+      'EcomHeat - Manage Market Share, Monitor Sales Performance, Optimize Store Operation',
     description:
       'The pioneering E-commerce data intelligence platform in Vietnam for brands with the most granular data information.',
     imgSrc: '/static/images/projects/ecom-heat.png',
     url: 'https://youneteci.com/en/eci-ecomheat/?ref=karhdo.dev',
     builtWith: ['React', 'Bootstrap', 'FeathersJS', 'MySQL', 'RabbitMQ'],
+    repo: 'surajrimal07/surajr.com.np',
   },
   {
     type: 'work',
@@ -17,27 +19,29 @@ const projectsData: Project[] = [
       'Creating a web-based system designed for the efficient management of bidding packages related to medical supplies information.',
     imgSrc: '/static/images/projects/military-7a-bidding.png',
     builtWith: ['NestJS', 'PosgreSQL', 'JWT', 'VueJS', 'Tailwind'],
+    repo: 'surajrimal07/surajr.com.np',
   },
   {
     type: 'self',
     title: 'Personal website',
     imgSrc: '/static/images/projects/karhdo-blog.png',
-    repo: 'surajr.com.np',
+    repo: 'surajrimal07/surajr.com.np',
     builtWith: ['Next.js', 'Tailwind', 'Typescript', 'Prisma', 'Umami'],
   },
   {
     type: 'self',
     title: 'Website Selling Food',
     imgSrc: '/static/images/projects/website-selling-food.png',
-    repo: 'Website-Selling-Food',
+    repo: 'surajrimal07/10Paisa-Backend',
     builtWith: ['PHP', 'Laravel', 'MySQL', 'VueJS', 'Bootstrap'],
   },
   {
     type: 'self',
     title: 'Simulate Basic Geometry',
-    description: 'Explore the World of Basic 3D Modeling Simulations on Our Website.',
+    description:
+      'Explore the World of Basic 3D Modeling Simulations on Our Website.',
     imgSrc: '/static/images/projects/simulate-geometry.png',
-    repo: 'geometry-simulation',
+    repo: 'surajrimal07/venturelead',
     builtWith: ['Javascript', 'Jquery', 'ThreeJS'],
   },
 ];

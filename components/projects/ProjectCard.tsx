@@ -19,7 +19,6 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       if (repo) {
         try {
           const data = await fetchGithubRepo(repo);
-          console.log('data:', data);
           setRepository(data);
         } catch (error) {
           console.error('Error fetching repository data:', error);
@@ -82,7 +81,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             href && (
               <Link
                 href={href}
-                className="text-base font-medium leading-6 text-primary hover:text-sky-600 dark:hover:text-sky-400"
+                className="text-base font-medium leading-6 text-primary hover:text-primary-600 dark:hover:text-primary-400"
                 aria-label={`Link to ${title}`}
               >
                 Learn more &rarr;

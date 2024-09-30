@@ -18,7 +18,7 @@ const animation: Variants = {
 export default function HeaderImage() {
   return (
     <div className="pointer-events-none fixed inset-0">
-      <div className="absolute bottom-0 left-0 pl-1">
+      <div className="absolute right-0 top-0 pr-1">
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"

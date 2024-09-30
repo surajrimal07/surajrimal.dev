@@ -71,8 +71,6 @@ export function DropdownMenuDemo() {
         toast.success('Successfully signed out', {
           ...toastOptions,
         });
-
-
       } else {
         toast.error('Something went wrong, please try again', {
           ...toastOptions,

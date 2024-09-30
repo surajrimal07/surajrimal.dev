@@ -15,7 +15,7 @@ const PopularTags = () => {
           Popular tags feature the most widely discussed topics.
         </p>
       </div>
-      <div className="popular-tags grid grid-cols-3 gap-4 py-6 xl:grid-cols-6">
+      <div className="popular-tags grid grid-cols-3 gap-4 py-4 xl:grid-cols-6">
         {popularTags.map((popularTag) => {
           const { slug, iconType, href, title } = popularTag;
 

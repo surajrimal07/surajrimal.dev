@@ -37,9 +37,11 @@ const Header = () => {
               <span className="font-bold">
                 {currentPath === '/'
                   ? `/${siteMetadata.headerTitle}`
-                  : currentPath.startsWith('/blog')
-                    ? '/blog'
-                    : currentPath}
+                  : currentPath.startsWith('/admin/blog')
+                    ? '/admin/blog'
+                    : currentPath.startsWith('/blog')
+                      ? '/blog'
+                      : currentPath}
               </span>
               <span
                 className="blinking-cursor"
@@ -70,7 +72,7 @@ const Header = () => {
             </span>
           </EyeCatchingButton_v1> */}
 
-          <div className="m-0 hidden justify-center p-0.5 text-center md:block">
+          <div className="m-0 mt-2 hidden justify-center p-0.5 text-center md:block">
             <HoverBorderGradient
               containerClassName="rounded-full"
               as="button"

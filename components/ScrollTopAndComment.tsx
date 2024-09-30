@@ -1,35 +1,43 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
 
-const ScrollTopAndComment = ({
+export default function ScrollTopAndComment({
   showScrollToComment = true,
 }: {
   showScrollToComment?: boolean;
-}) => {
+}) {
   const [show, setShow] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const handleWindowScroll = () => {
-      if (window.scrollY > 50) setShow(true);
-      else setShow(false);
-    };
+  const handleWindowScroll = useCallback(() => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop > 50) setShow(true);
+    else setShow(false);
 
-    window.addEventListener('scroll', handleWindowScroll);
-    return () => window.removeEventListener('scroll', handleWindowScroll);
+    const windowHeight = scrollHeight - clientHeight;
+    const currentProgress = (scrollTop / windowHeight) * 100;
+    setProgress(currentProgress);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleWindowScroll);
+  }, [handleWindowScroll]);
+
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   const handleScrollToComment = () => {
     const commentElement = document.getElementById('comment');
     if (commentElement) {
-      commentElement.scrollIntoView();
+      commentElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
   return (
     <div
       className={`fixed bottom-8 right-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}
@@ -52,7 +60,7 @@ const ScrollTopAndComment = ({
       <button
         aria-label="Scroll To Top"
         onClick={handleScrollTop}
-        className="rounded-full bg-gray-200 p-2 text-gray-500 transition-all hover:bg-red-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
+        className="relative rounded-full p-2 text-black transition-all dark:text-white"
       >
         <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path
@@ -61,9 +69,33 @@ const ScrollTopAndComment = ({
             clipRule="evenodd"
           />
         </svg>
+        <svg
+          className="absolute inset-0 h-full w-full -rotate-90"
+          viewBox="0 0 100 100"
+        >
+          <circle
+            className="text-gray-300 dark:text-gray-600"
+            strokeWidth="8"
+            stroke="currentColor"
+            fill="transparent"
+            r="46"
+            cx="50"
+            cy="50"
+          />
+          <circle
+            className="text-black transition-all duration-200 ease-in-out dark:text-white"
+            strokeWidth="8"
+            strokeDasharray={290}
+            strokeDashoffset={290 - (290 * progress) / 100}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            r="46"
+            cx="50"
+            cy="50"
+          />
+        </svg>
       </button>
     </div>
   );
-};
-
-export default ScrollTopAndComment;
+}

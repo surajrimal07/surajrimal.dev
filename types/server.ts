@@ -2,6 +2,7 @@ export interface GithubRepository {
   stargazerCount: number;
   description: string;
   homepageUrl: string;
+  watch: number;
   languages: {
     color: string;
     name: string;

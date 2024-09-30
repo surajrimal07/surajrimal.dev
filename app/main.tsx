@@ -1,8 +1,8 @@
 import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
 
-import Divider from '@/components/Divider';
 import Link from '@/components/Link';
+import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
 import Avatar from '@/components/homepage/Avatar';
@@ -23,6 +23,7 @@ const MAX_DISPLAY = 1;
 export default function Home({ posts }) {
   return (
     <div>
+      <ScrollTopAndComment showScrollToComment={false} />
       <Greeting />
       <div className="flex flex-col justify-between md:my-4 md:pb-5 xl:flex-row">
         <Avatar />

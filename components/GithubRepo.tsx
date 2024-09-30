@@ -1,4 +1,4 @@
-import { ExternalLink, GitFork, Github, Star } from 'lucide-react';
+import { ExternalLink, Eye, GitFork, Github, Star } from 'lucide-react';
 
 import type { GithubRepository } from '@/types/server';
 
@@ -26,6 +26,10 @@ export default function GithubRepo({ repo }: { repo: GithubRepository }) {
         <div className="flex items-center space-x-1.5">
           <GitFork size={20} strokeWidth={1} />
           <span>{repo.forkCount}</span>
+        </div>
+        <div className="flex items-center space-x-1.5">
+          <Eye size={20} strokeWidth={1} />
+          <span>{repo.watch}</span>
         </div>
       </div>
       <div className="flex items-center space-x-2">

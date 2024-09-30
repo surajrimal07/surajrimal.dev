@@ -1,36 +1,18 @@
-import { RoughNotation } from 'react-rough-notation';
+import { Highlight } from '@/components/ui/hero-highlight';
 
 const ShortDescription = () => {
   return (
     <div className="mb-4 mt-4">
       <p>
         I started learning to code in{' '}
-        <RoughNotation
-          animate={true}
-          type="highlight"
-          show={true}
-          color="#AB2C2CFF"
-          animationDelay={1000}
-          animationDuration={2500}
-          padding={5}
-        >
-          2015
-        </RoughNotation>{' '}
+        <Highlight className="text-black dark:text-white">2015</Highlight>
         when I was in 8th grade.
       </p>
       <p>
         I landed my first job as a{' '}
-        <RoughNotation
-          animate={true}
-          type="highlight"
-          show={true}
-          color="#AB2C2CFF"
-          animationDelay={1000}
-          animationDuration={2500}
-          padding={5}
-        >
+        <Highlight className="text-black dark:text-white">
           Back-end Developer in 2019.
-        </RoughNotation>{' '}
+        </Highlight>
       </p>
       <p>I have a passion for system design and backend development.</p>
       <p>I started this blog to practice my skill and share my knowledge.</p>

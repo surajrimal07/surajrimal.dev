@@ -1,27 +1,26 @@
 /**
  * CSS Styles for code highlighting.
- * Feel free to customize token styles 
+ * Feel free to customize token styles
  * by copying from a prismjs compatible theme:
  * https://github.com/PrismJS/prism-themes
  */
 
 /* Code title styles */
 .remark-code-title {
-  @apply rounded-t bg-gray-700 px-5 py-3 font-mono text-sm font-bold text-gray-200;
+  @apply rounded-t bg-gray-700 px-3 py-3 font-mono text-sm font-bold text-gray-200 dark:bg-gray-900;
 }
 
 .remark-code-title + div > pre {
-  @apply mt-0 rounded-t-none;
+  @apply mt-2 rounded-t-none px-0 py-0;
 }
 
 /* Code block styles */
 .code-highlight {
-  background-color: #24283b;
   @apply float-left min-w-full;
 }
 
 .code-line {
-  @apply -mx-4 block border-l-4 border-transparent pl-4 pr-4 text-base;
+  @apply -mx-0 block border-l-4 border-transparent pl-6 pr-4;
 }
 
 .code-line.inserted {
@@ -33,11 +32,11 @@
 }
 
 .highlight-line {
-  @apply -mx-4 border-l-4 border-sky-500 bg-gray-700 bg-opacity-50;
+  @apply -mx-0 border-l-4 border-primary-500 bg-gray-700 bg-opacity-50;
 }
 
 .line-number::before {
-  @apply -ml-2 mr-4 inline-block w-4 text-right text-gray-400;
+  @apply -ml-6 mr-4 inline-block w-4 text-right text-gray-400;
   content: attr(line);
 }
 
@@ -57,7 +56,7 @@
 }
 
 .token.punctuation {
-  color: rgb(122, 162, 247);
+  color: rgb(199, 146, 234);
 }
 
 .namespace {
@@ -77,7 +76,7 @@
 .token.tag,
 .token.operator,
 .token.keyword {
-  color: rgb(125, 207, 255);
+  color: rgb(127, 219, 202);
 }
 
 .token.boolean {
@@ -115,13 +114,12 @@
   color: rgb(173, 219, 103);
 }
 
+.token.class-name,
 .token.atrule,
 .token.attr-value {
   color: rgb(255, 203, 139);
 }
 
-.token.class-name,
-.token.maybe-class-name,
 .token.regex,
 .token.important,
 .token.variable {

@@ -123,6 +123,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         authorDetails={authorDetails}
         next={next}
         prev={prev}
+        toc={post.toc}
       >
         <MDXLayoutRenderer
           code={post.body.code}

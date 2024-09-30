@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 'use client';
 
@@ -6,96 +9,6 @@ import * as React from 'react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-// Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}

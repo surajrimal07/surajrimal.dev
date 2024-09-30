@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 import clsx from 'clsx';
@@ -11,6 +12,7 @@ import usePlaySound from './PlaySound';
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false);
+  const pathname = usePathname();
 
   const className = clsx(
     `sm:hidden fixed w-full h-screen inset-0 bg-gray-200 dark:bg-dark opacity-95 z-99 transition-transform transform ease-in-out duration-300`,
@@ -80,7 +82,12 @@ const MobileNav = () => {
             <div key={link.title} className="px-12 py-4">
               <Link
                 href={link.href}
-                className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                className={clsx(
+                  'text-2xl font-bold tracking-widest',
+                  pathname === link.href
+                    ? 'text-red-500 dark:text-red-400'
+                    : 'text-gray-900 dark:text-gray-100'
+                )}
                 onClick={onToggleNav}
               >
                 {link.title}

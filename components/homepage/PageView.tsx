@@ -26,8 +26,7 @@ const PageView = () => {
 
   return (
     <p>
-      {' '}
-      Page Views <AnimatedCounter targetValue={pageView} />
+      <AnimatedCounter targetValue={pageView} /> views
     </p>
   );
 };

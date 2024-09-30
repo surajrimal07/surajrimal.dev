@@ -1,13 +1,33 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { Blog } from 'contentlayer/generated';
+import { slug as githubSlugger } from 'github-slugger';
 import { CoreContent } from 'pliny/utils/contentlayer';
 import { formatDate } from 'pliny/utils/formatDate';
+import { IoMdShare } from 'react-icons/io';
+import { MdInsights } from 'react-icons/md';
 
+import Image from '@/components/Image';
 import Link from '@/components/Link';
-import Tag from '@/components/Tag';
+import { useCurrentPath } from '@/components/PathProvider';
+import AnimatedCounter from '@/components/animata/text/counter';
+import ShareButton from '@/components/blog/ShareButton';
+import { Badge } from '@/components/ui/badge';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
+import { Separator } from '@/components/ui/separator';
 import siteMetadata from '@/data/siteMetadata';
+import { getBlogShares, getBlogView } from '@/lib/pageView';
 
 interface PaginationProps {
   totalPages: number;
@@ -18,55 +38,67 @@ interface ListLayoutProps {
   title: string;
   initialDisplayPosts?: CoreContent<Blog>[];
   pagination?: PaginationProps;
+  ipaddress: string;
 }
 
-function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const router = useRouter();
-  const basePath = router.pathname.split('/')[1];
+function Paginations({ totalPages, currentPage }: PaginationProps) {
+  const pathname = useCurrentPath();
+  const basePath = pathname.split('/')[1];
   const prevPage = currentPage - 1 > 0;
   const nextPage = currentPage + 1 <= totalPages;
 
   return (
-    <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!prevPage}
-          >
-            Previous
-          </button>
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          {!prevPage ? (
+            <PaginationPrevious
+              href="#"
+              aria-disabled="true"
+              className="pointer-events-none opacity-50"
+            />
+          ) : (
+            <PaginationPrevious
+              href={
+                currentPage - 1 === 1
+                  ? `/${basePath}/`
+                  : `/${basePath}/page/${currentPage - 1}`
+              }
+              rel="prev"
+            />
+          )}
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink isActive>{currentPage}</PaginationLink>
+        </PaginationItem>
+        {currentPage < totalPages - 1 && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
         )}
-        {prevPage && (
-          <Link
-            href={
-              currentPage - 1 === 1
-                ? `/${basePath}/`
-                : `/${basePath}/page/${currentPage - 1}`
-            }
-            rel="prev"
-          >
-            Previous
-          </Link>
+        {currentPage < totalPages && (
+          <PaginationItem>
+            <PaginationLink href={`/${basePath}/page/${totalPages}`}>
+              {totalPages}
+            </PaginationLink>
+          </PaginationItem>
         )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!nextPage}
-          >
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
-          </Link>
-        )}
-      </nav>
-    </div>
+        <PaginationItem>
+          {!nextPage ? (
+            <PaginationNext
+              href="#"
+              aria-disabled="true"
+              className="pointer-events-none opacity-50"
+            />
+          ) : (
+            <PaginationNext
+              href={`/${basePath}/page/${currentPage + 1}`}
+              rel="next"
+            />
+          )}
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }
 
@@ -75,10 +107,19 @@ export default function ListLayout({
   title,
   initialDisplayPosts = [],
   pagination,
+  ipaddress,
 }: ListLayoutProps) {
   const [searchValue, setSearchValue] = useState('');
+  const [viewCounts, setViewCounts] = useState(new Map());
+  const [shareCounts, setShareCounts] = useState(new Map());
+
+  const [openShareMenuSlug, setOpenShareMenuSlug] = useState<string | null>(
+    null
+  );
+  const shareMenuRef = useRef<HTMLDivElement | null>(null);
+
   const filteredBlogPosts = posts.filter((post) => {
-    const searchContent = post.title + post.summary + post.tags.join(' ');
+    const searchContent = post.title + post.summary + post.tags?.join(' ');
     return searchContent.toLowerCase().includes(searchValue.toLowerCase());
   });
 
@@ -88,90 +129,175 @@ export default function ListLayout({
       ? initialDisplayPosts
       : filteredBlogPosts;
 
+  useEffect(() => {
+    const fetchCounts = async (slug) => {
+      const views = await getBlogView(slug);
+      const { total } = await getBlogShares(slug);
+      setViewCounts((prev) => new Map(prev).set(slug, views));
+      setShareCounts((prev) => new Map(prev).set(slug, total));
+    };
+
+    displayPosts.forEach((post) => {
+      fetchCounts(post.path);
+    });
+  }, [displayPosts]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        shareMenuRef.current &&
+        !shareMenuRef.current.contains(event.target as Node)
+      ) {
+        setOpenShareMenuSlug(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchValue('');
+  };
+
+  const placeholders = [
+    "What's the first rule of Fight Club?",
+    'Who is Tyler Durden?',
+    'Where is Andrew Laeddis Hiding?',
+    'Write a Javascript method to reverse a string',
+    'How to assemble your own PC?',
+  ];
+
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+      <div className="divide-y divide-accent-foreground dark:divide-accent">
+        <div className="space-y-2 py-8 md:space-y-5">
+          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title}
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             I primarily cover web development and tech topics, occasionally
             sharing insights into my personal life.
           </p>
-          <div className="relative max-w-lg">
-            <label>
-              <span className="sr-only">Search articles</span>
-              <input
-                aria-label="Search articles"
-                type="text"
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search articles"
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
-              />
-            </label>
-            <svg
-              className="absolute right-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-300"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
+
+          <PlaceholdersAndVanishInput
+            placeholders={placeholders}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onSubmit={onSubmit}
+          />
         </div>
         <ul>
           {!filteredBlogPosts.length && 'No posts found.'}
           {displayPosts.map((post) => {
-            const { path, date, title, summary, tags } = post;
+            const { path, date, title, summary, tags, thumbnail } = post;
+            const views = viewCounts.get(path) || 0;
+            const shares = shareCounts.get(path) || 0;
             return (
               <li key={path} className="py-4">
-                <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>
-                        {formatDate(date, siteMetadata.locale)}
-                      </time>
-                    </dd>
-                  </dl>
+                <article className="space-y-2 xl:grid xl:grid-cols-5 xl:items-start xl:gap-4 xl:space-y-0">
+                  <div className="xl:col-span-2">
+                    <Link href={`/${path}`}>
+                      <Image
+                        src={thumbnail || ''}
+                        alt={`${title} thumbnail`}
+                        width={1200}
+                        height={630}
+                        className="mb-4 h-fit w-full rounded-md object-contain"
+                      />
+                    </Link>
+                  </div>
                   <div className="space-y-3 xl:col-span-3">
                     <div>
-                      <h3 className="text-2xl font-bold leading-8 tracking-tight">
-                        <Link
-                          href={`/${path}`}
-                          className="text-gray-900 dark:text-gray-100"
-                        >
+                      <h3 className="mb-2 text-2xl font-bold leading-8 tracking-tight">
+                        <Link href={`/${path}`} className="text-foreground">
                           {title}
                         </Link>
                       </h3>
                       <div className="flex flex-wrap">
-                        {tags.map((tag) => (
-                          <Tag key={tag} text={tag} />
+                        {tags?.map((tag) => (
+                          <Badge key={tag} className="mr-2" variant={'outline'}>
+                            <Link
+                              href={`/tags/${githubSlugger(tag)}`}
+                              className="text-sm font-medium uppercase text-primary hover:brightness-125 dark:hover:brightness-125"
+                            >
+                              {tag.split(' ').join('-')}
+                            </Link>
+                          </Badge>
                         ))}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                    <div className="prose prose-sm max-w-none text-muted-foreground">
                       {summary}
+                    </div>
+                    <div>
+                      <dl>
+                        <dt className="sr-only">Published on</dt>
+                        <dd className="flex gap-1 text-base font-medium leading-6 text-muted-foreground">
+                          <span className="flex items-center justify-center gap-2">
+                            <MdInsights className="h-4 w-4" />
+                            <span
+                              className="flex items-center gap-1.5 text-sm"
+                              title="Number of view(s)"
+                            >
+                              <AnimatedCounter targetValue={views} /> Views
+                            </span>
+                            <span>・</span>
+                            <div className="relative">
+                              <IoMdShare
+                                className="h-4 w-4 cursor-pointer"
+                                onClick={() =>
+                                  setOpenShareMenuSlug(
+                                    openShareMenuSlug === path ? null : path
+                                  )
+                                }
+                              />
+                              {openShareMenuSlug === path && (
+                                <div ref={shareMenuRef}>
+                                  <ShareButton
+                                    ip={ipaddress}
+                                    slug={path}
+                                    url={
+                                      process.env.NEXT_PUBLIC_URL + `/${path}`
+                                    }
+                                    onShareComplete={() =>
+                                      setOpenShareMenuSlug(null)
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <span
+                              className="flex items-center gap-1.5 text-sm"
+                              title="Number of share(s)"
+                            >
+                              <AnimatedCounter targetValue={shares} /> Shares
+                            </span>
+                            <span>・</span>
+                            <time dateTime={date}>
+                              {formatDate(date, siteMetadata.locale)}
+                            </time>
+                          </span>
+                        </dd>
+                      </dl>
                     </div>
                   </div>
                 </article>
+                <Separator />
               </li>
             );
           })}
         </ul>
       </div>
       {pagination && pagination.totalPages > 1 && !searchValue && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
-        />
+        <div className="mt-8">
+          <Paginations
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+          />
+        </div>
       )}
     </>
   );

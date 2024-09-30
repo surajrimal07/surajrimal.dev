@@ -31,6 +31,9 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
             stargazerCount
             description
             homepageUrl
+            watchers {
+              totalCount
+            }
             languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
               edges {
                 node {
@@ -73,7 +76,10 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
       (edge) => edge.node.topic.name
     );
 
-    return repository;
+    return {
+      ...repository,
+      watch: repository.watchers.totalCount,
+    };
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
       const errorMessage =

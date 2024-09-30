@@ -1,9 +1,6 @@
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
 import type { Blog } from 'contentlayer/generated';
@@ -13,78 +10,25 @@ import { formatDate } from 'pliny/utils/formatDate';
 import { IoMdShare } from 'react-icons/io';
 import { MdInsights } from 'react-icons/md';
 
+import Image from '@/components/Image';
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
 import ShareButton from '@/components/blog/ShareButton';
-import { Separator } from '@/components/ui/cool-separator';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
+import { Separator } from '@/components/ui/separator';
 import siteMetadata from '@/data/siteMetadata';
 import { getBlogShares, getBlogView } from '@/lib/pageView';
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-/* eslint-disable prettier/prettier */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface PaginationProps {
   totalPages: number;
@@ -98,53 +42,64 @@ interface ListLayoutProps {
   ipaddress: string;
 }
 
-function Pagination({ totalPages, currentPage }: PaginationProps) {
+function Paginations({ totalPages, currentPage }: PaginationProps) {
   const pathname = useCurrentPath();
   const basePath = pathname.split('/')[1];
   const prevPage = currentPage - 1 > 0;
   const nextPage = currentPage + 1 <= totalPages;
 
   return (
-    <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!prevPage}
-          >
-            Previous
-          </button>
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          {!prevPage ? (
+            <PaginationPrevious
+              href="#"
+              aria-disabled="true"
+              className="pointer-events-none opacity-50"
+            />
+          ) : (
+            <PaginationPrevious
+              href={
+                currentPage - 1 === 1
+                  ? `/${basePath}/`
+                  : `/${basePath}/page/${currentPage - 1}`
+              }
+              rel="prev"
+            />
+          )}
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink isActive>{currentPage}</PaginationLink>
+        </PaginationItem>
+        {currentPage < totalPages - 1 && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
         )}
-        {prevPage && (
-          <Link
-            href={
-              currentPage - 1 === 1
-                ? `/${basePath}/`
-                : `/${basePath}/page/${currentPage - 1}`
-            }
-            rel="prev"
-          >
-            Previous
-          </Link>
+        {currentPage < totalPages && (
+          <PaginationItem>
+            <PaginationLink href={`/${basePath}/page/${totalPages}`}>
+              {totalPages}
+            </PaginationLink>
+          </PaginationItem>
         )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!nextPage}
-          >
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
-          </Link>
-        )}
-      </nav>
-    </div>
+        <PaginationItem>
+          {!nextPage ? (
+            <PaginationNext
+              href="#"
+              aria-disabled="true"
+              className="pointer-events-none opacity-50"
+            />
+          ) : (
+            <PaginationNext
+              href={`/${basePath}/page/${currentPage + 1}`}
+              rel="next"
+            />
+          )}
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }
 
@@ -236,42 +191,11 @@ export default function ListLayoutWithTags({
             onChange={(e) => setSearchValue(e.target.value)}
             onSubmit={onSubmit}
           />
-          {/* <div className="relative mx-auto max-w-prose">
-            <label>
-              <span className="sr-only">Search articles</span>
-              <input
-                aria-label="Search articles"
-                type="text"
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search articles"
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
-              />
-            </label>
-            <motion.svg
-              className="absolute right-3 top-2 h-5 w-5 text-gray-400 dark:text-gray-300"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              whileHover={{
-                scale: 1.2,
-                stroke: '#ef4444',
-                transition: { duration: 0.2 },
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </motion.svg>
-          </div> */}
         </div>
       </div>
       <div className="flex sm:space-x-10">
-        <div className="hidden h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex">
-          <div className="px-10 py-2">
+        <div className="hidden h-full max-h-screen min-w-[195px] max-w-[210px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex">
+          <div className="px-3 py-1">
             {pathname.startsWith('/blog') ? (
               <h3 className="font-bold uppercase text-primary-500">
                 All Posts
@@ -310,38 +234,50 @@ export default function ListLayoutWithTags({
         <ul>
           {!filteredBlogPosts.length && 'No posts found.'}
           {displayPosts.map((post) => {
-            const { path, date, title, summary, tags } = post;
+            const { path, date, title, summary, tags, thumbnail } = post;
             const views = viewCounts.get(path) || 0;
             const shares = shareCounts.get(path) || 0;
-
             return (
-              <li key={path} className="py-2">
-                <article className="flex flex-col space-y-2 px-2 py-2 transition duration-200 hover:scale-105 hover:rounded-xl hover:border hover:border-red-500 dark:hover:border-red-500 xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date} suppressHydrationWarning>
-                        {formatDate(date, siteMetadata.locale)}
-                      </time>
-                    </dd>
-                  </dl>
-                  <div>
-                    <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                      <Link
-                        href={`/${path}`}
-                        className="text-gray-900 dark:text-gray-100"
-                      >
-                        {title}
-                      </Link>
-                    </h2>
-                    <div className="mt-2 flex flex-wrap">
-                      {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+              <li key={path} className="py-0">
+                <article className="duration-10 flex space-x-4 px-0 transition hover:scale-105 hover:rounded-xl hover:border hover:border-gray-600 dark:hover:border-gray-600">
+                  {thumbnail && (
+                    <div className="flex-shrink-0 p-0.5">
+                      <Image
+                        src={thumbnail}
+                        alt={`${title} thumbnail`}
+                        width={300}
+                        height={200}
+                        className="h-40 w-60 rounded-md object-cover"
+                      />
                     </div>
-                    <div className="prose mt-2 max-w-none text-gray-500 dark:text-gray-400">
-                      {summary}
+                  )}
+                  <div className="flex flex-col justify-between pl-2">
+                    <div>
+                      <h2 className="text-2xl font-bold leading-8 tracking-tight">
+                        <Link
+                          href={`/${path}`}
+                          className="text-gray-900 dark:text-gray-100"
+                        >
+                          {title}
+                        </Link>
+                      </h2>
+                      <div className="mt-2 flex flex-wrap">
+                        {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                      </div>
+                      <div className="prose mt-2 max-w-none text-gray-500 dark:text-gray-400">
+                        {summary}
+                      </div>
                     </div>
-
                     <div className="mt-2 flex items-center gap-2 text-slate-400 dark:text-slate-400">
+                      <dl>
+                        <dt className="sr-only">Published on</dt>
+                        <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                          <time dateTime={date} suppressHydrationWarning>
+                            {formatDate(date, siteMetadata.locale)}
+                          </time>
+                        </dd>
+                      </dl>
+                      <span>&middot;</span>
                       <MdInsights className="h-4 w-4" />
                       <span
                         className="flex items-center gap-1.5 text-sm"
@@ -364,7 +300,7 @@ export default function ListLayoutWithTags({
                             <ShareButton
                               ip={ipaddress}
                               slug={path}
-                              url={process.env.NEXT_PUBLIC_URL + `/${path}`}
+                              url={`${process.env.NEXT_PUBLIC_URL}/${path}`}
                               onShareComplete={() => setOpenShareMenuSlug(null)}
                             />
                           </div>
@@ -377,32 +313,22 @@ export default function ListLayoutWithTags({
                         <AnimatedCounter targetValue={shares} /> Shares
                       </span>
                     </div>
-                    {/* <Link
-                      href={`/${path}`}
-                      className="text-gray-900 dark:text-gray-100"
-                    >
-                      <div
-                        className={
-                          'mt-1 flex items-center gap-1 text-sm font-semibold text-primary hover:text-red-400 dark:hover:text-red-400'
-                        }
-                      >
-                        Read more <LuArrowRightCircle className="h-3 w-3" />
-                      </div>
-                    </Link> */}
                   </div>
                 </article>
-                <Separator gradient />
+                <Separator className="mb-2 mt-2" />
               </li>
             );
           })}
         </ul>
-        {pagination && pagination.totalPages > 1 && !searchValue && (
-          <Pagination
+      </div>
+      {pagination && pagination.totalPages > 1 && !searchValue && (
+        <div className="mt-8">
+          <Paginations
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}
           />
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }

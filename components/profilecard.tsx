@@ -137,7 +137,7 @@ export default async function ProfileCard() {
   return (
     <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 dark:border-gray-700 dark:bg-black">
       <Image
-        src={userData?.avatar_url || LOGO_IMAGE_PATH}
+        src={LOGO_IMAGE_PATH}
         alt="avatar"
         width={192}
         height={192}

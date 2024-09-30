@@ -56,49 +56,6 @@ html.lightbox-loading * {
   @apply my-5;
 }
 
-/* START: CSS Prose */
-.prose {
-  font-size: 18px;
-}
-
-.prose h2 {
-  font-size: 28px;
-}
-
-.prose h3 {
-  font-size: 24px;
-}
-
-.prose a {
-  @apply text-red-400;
-}
-
-.prose a:hover {
-  @apply text-red-300;
-}
-
-.dark .prose a {
-  @apply text-red-400;
-}
-
-.dark .prose a:hover {
-  @apply text-red-300;
-}
-
-.prose img {
-  margin: 0 auto;
-  border-radius: 12px;
-}
-
-.prose blockquote {
-  background: #ebebeb;
-}
-/* END: CSS Prose */
-
-.dark .dark\:prose-dark blockquote {
-  background: #5c6370;
-}
-
 /* START: CSS Github discussion */
 #comments-container .giscus-frame {
   @apply w-full;
@@ -106,30 +63,43 @@ html.lightbox-loading * {
 /* END: CSS Github discussion */
 
 /* START: CSS popular tags */
+
 .popular-tags .javascript {
-  @apply bg-amber-400;
+  @apply bg-amber-400/20;
 }
 
 .popular-tags .typescript {
-  @apply bg-blue-500;
+  @apply bg-blue-500/20;
 }
 
 .popular-tags .nestjs {
-  @apply bg-rose-500;
+  @apply bg-rose-500/20;
 }
 
 .popular-tags .react {
-  @apply bg-sky-500;
+  @apply bg-sky-500/20;
 }
 
 .popular-tags .devops {
-  @apply bg-sky-600;
+  @apply bg-sky-600/20;
 }
 
 .popular-tags .database {
-  @apply bg-green-900;
+  @apply bg-green-900/20;
 }
+
 /* END: CSS popular tags */
+
+/* START: Scrollbar hiding */
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: none;
+}
 
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
 input:-webkit-autofill,
@@ -180,8 +150,8 @@ input:-webkit-autofill:focus {
     --primary-700: 0 84% 44%;
     --primary-800: 0 84% 36%;
     --primary-900: 0 84% 28%;
-    --secondary: 110, 38%, 21%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 96.1%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -217,7 +187,7 @@ input:-webkit-autofill:focus {
     --primary-700: 0 50% 30%;
     --primary-800: 0 50% 20%;
     --primary-900: 0 50% 10%;
-    --secondary: 110, 38%, 21%;
+    --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;

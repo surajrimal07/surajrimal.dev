@@ -5,7 +5,9 @@ import 'katex/dist/katex.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Analytics, AnalyticsConfig } from 'pliny/analytics';
 import { SearchConfig, SearchProvider } from 'pliny/search';
+import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
+import 'remark-github-blockquote-alert/alert.css';
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
@@ -120,7 +122,10 @@ export default function RootLayout({
         href={`${basePath}/feed.xml`}
       />
 
-      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-black dark:text-white">
+      <body className="pl-[calc(100vw-100%)] text-black antialiased dark:text-white">
+        <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
+          <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50"></div>
+        </div>
         <NextTopLoader color="#DC2626" height={2} />
         <Toaster position="top-center" reverseOrder={false} />
         <ThemeProviders>

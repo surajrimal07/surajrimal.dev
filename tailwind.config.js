@@ -157,27 +157,34 @@ module.exports = {
             h1: {
               letterSpacing: theme('letterSpacing.tight'),
             },
+            code: {
+              color: theme('colors.red.600'),
+              backgroundColor: theme('colors.gray.900'),
+              paddingLeft: '14px',
+              paddingRight: '14px',
+              paddingTop: '2px',
+              fontSize: 'inherit',
+              fontWeight: '400',
+              paddingBottom: '2px',
+              borderWidth: '1px',
+              borderColor: theme('colors.border'),
+              fontFamily: 'inherit',
+              borderRadius: '0.25rem',
+              padding: '0.25rem 0.5rem',
+            },
+            'code:before': {
+              content: 'none',
+            },
+            'code:after': {
+              content: 'none',
+            },
+
             h2: {
               fontWeight: '700',
               letterSpacing: theme('letterSpacing.tight'),
             },
             h3: {
               fontWeight: '600',
-            },
-            code: {
-              color: '#f78c22',
-              backgroundColor: '#24283b',
-              paddingLeft: '4px',
-              paddingRight: '4px',
-              paddingTop: '2px',
-              paddingBottom: '2px',
-              borderRadius: '0.25rem',
-            },
-            'code::before': {
-              content: 'none',
-            },
-            'code::after': {
-              content: 'none',
             },
             details: {
               backgroundColor: theme('colors.gray.100'),
@@ -196,15 +203,17 @@ module.exports = {
               backgroundColor: theme('colors.gray.500'),
             },
             blockquote: {
-              color: theme('colors.gray.900'),
-              borderLeftColor: theme('colors.gray.200'),
+              color: theme('colors.muted.foreground'),
+              quotes: 'none',
+              fontStyle: 'normal',
+              borderLeftColor: theme('colors.border'),
             },
           },
         },
         invert: {
           css: {
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.primary.DEFAULT'),
               '&:hover': {
                 color: `${theme('colors.primary.400')}`,
               },
@@ -212,6 +221,10 @@ module.exports = {
             },
             'h1,h2,h3,h4,h5,h6': {
               color: theme('colors.gray.100'),
+            },
+            code: {
+              backgroundColor: theme('colors.gray.900'),
+              color: theme('colors.primary.DEFAULT'),
             },
           },
         },
