@@ -15,7 +15,7 @@ const animation: Variants = {
   }),
 };
 
-export default function TagsHeaderImage() {
+export default function AuthHeaderImage() {
   return (
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
@@ -33,16 +33,31 @@ export default function TagsHeaderImage() {
             'dark:opacity-40'
           )}
         >
+          {/* Lock body */}
           <motion.path
             variants={animation}
             custom={1}
-            d="M64 32v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160L288 32H64z"
+            d="M128 224h256v256H128zM256 320v64"
           />
-          <motion.path variants={animation} custom={2} d="M288 32v128h128" />
+          {/* Lock shackle */}
+          <motion.path
+            variants={animation}
+            custom={2}
+            d="M128 224c0-70.7 57.3-128 128-128s128 57.3 128 128"
+          />
+          {/* Digital elements */}
           <motion.path
             variants={animation}
             custom={3}
-            d="M128 224h256M128 288h256M128 352h192"
+            d="M176 288h32M304 288h32M176 368h32M304 368h32"
+          />
+          {/* Keyhole */}
+          <motion.circle
+            variants={animation}
+            custom={4}
+            cx="256"
+            cy="320"
+            r="16"
           />
         </motion.svg>
       </div>

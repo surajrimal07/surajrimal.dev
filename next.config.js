@@ -92,6 +92,7 @@ module.exports = () => {
       ],
     },
     output: 'standalone',
+    swcMinify: true,
     async headers() {
       return [
         {

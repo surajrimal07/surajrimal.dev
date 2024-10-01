@@ -15,7 +15,7 @@ const animation: Variants = {
   }),
 };
 
-export default function TagsHeaderImage() {
+export default function SnippetsHeaderImage() {
   return (
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
@@ -36,13 +36,12 @@ export default function TagsHeaderImage() {
           <motion.path
             variants={animation}
             custom={1}
-            d="M64 32v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160L288 32H64z"
+            d="M128 32v448M384 32v448M96 64h320M96 448h320M224 128h64M224 192h64M224 256h64M224 320h64M224 384h64"
           />
-          <motion.path variants={animation} custom={2} d="M288 32v128h128" />
           <motion.path
             variants={animation}
-            custom={3}
-            d="M128 224h256M128 288h256M128 352h192"
+            custom={2}
+            d="M96 160h64M352 160h64M96 224h64M352 224h64M96 288h64M352 288h64M96 352h64M352 352h64"
           />
         </motion.svg>
       </div>

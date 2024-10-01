@@ -20,7 +20,7 @@ const CustomLink = ({
 
   return (
     <a
-      className="break-words"
+      className="special-underline-new break-words"
       target="_blank"
       rel="noopener noreferrer"
       href={href}

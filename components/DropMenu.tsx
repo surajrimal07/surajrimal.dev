@@ -7,12 +7,10 @@ import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import {
-  Archive,
   Code,
-  Home,
+  Computer,
   LayoutDashboard,
   LogOut,
-  Pen,
   User as UserIcon,
   UserRoundPen,
 } from 'lucide-react';
@@ -159,33 +157,15 @@ export function DropdownMenuDemo() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/" className="flex items-center">
-              <Home className="mr-2 h-4 w-4" />
-              <span>Home</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/blog" className="flex items-center">
-              <Pen className="mr-2 h-4 w-4" />
-              <span>Blog</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link href="/snippets" className="flex items-center">
               <Code className="mr-2 h-4 w-4" />
               <span>Snippets</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/projects" className="flex items-center">
-              <Archive className="mr-2 h-4 w-4" />
-              <span>Projects</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/about" className="flex items-center">
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>About</span>
+            <Link href="/uses" className="flex items-center">
+              <Computer className="mr-2 h-4 w-4" />
+              <span>Uses</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
