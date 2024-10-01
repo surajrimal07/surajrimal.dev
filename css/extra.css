@@ -53,3 +53,19 @@
 .active-header {
   @apply font-bold brightness-150;
 }
+
+/* Timeline CSS */
+@keyframes slide-up {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}

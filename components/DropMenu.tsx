@@ -11,6 +11,7 @@ import {
   Computer,
   LayoutDashboard,
   LogOut,
+  Route,
   User as UserIcon,
   UserRoundPen,
 } from 'lucide-react';
@@ -166,6 +167,12 @@ export function DropdownMenuDemo() {
             <Link href="/uses" className="flex items-center">
               <Computer className="mr-2 h-4 w-4" />
               <span>Uses</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/journey" className="flex items-center">
+              <Route className="mr-2 h-4 w-4" />
+              <span>Journey</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
