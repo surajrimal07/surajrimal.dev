@@ -17,7 +17,7 @@ const GithubContributions = () => {
           from&nbsp;
           <Link
             href={'https://github.com/surajrimal07'}
-            className="inline-flex items-center text-primary hover:text-red-400 dark:hover:text-red-400"
+            className="special-underline-new inline-flex items-center"
           >
             Github <TfiArrowTopRight />
           </Link>

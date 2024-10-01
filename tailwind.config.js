@@ -99,7 +99,7 @@ module.exports = {
           900: 'hsl(var(--primary-900))',
         },
         sky: colors.sky,
-        gray: colors.gray,
+        gray: colors.neutral,
         dark: '#000000FF',
         coral: '#EF596F',
         background: 'hsl(var(--background))',

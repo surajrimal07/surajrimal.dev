@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import clsx from 'clsx';
 import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 
+import useOnScroll from '@/lib/hooks/useOnScroll';
+import useScrollSpy from '@/lib/hooks/useScrollSpy';
 import { cn } from '@/lib/utils';
 
 type TocItem = {
@@ -54,7 +57,6 @@ const createNestedList = (items: TocItem[]): NestedTocItem[] => {
 
 const TOCInline = ({
   toc,
-  title = 'Table of Contents',
   fromHeading = 1,
   toHeading = 6,
   asDisclosure = false,
@@ -65,115 +67,142 @@ const TOCInline = ({
   rightAlign = false,
 }: TOCInlineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const isScrolled = useOnScroll(1000);
+  const { currentVisibles } = useScrollSpy();
 
-  const re = Array.isArray(exclude)
-    ? new RegExp('^(' + exclude.join('|') + ')$', 'i')
-    : new RegExp('^(' + exclude + ')$', 'i');
-
-  const modifiedToc = toc.map((item) => {
-    const parts = item.url.split('-');
-    const lastPart = parts[parts.length - 1];
-    if (!isNaN(Number(lastPart))) {
-      // If the last part is a number, remove it
-      parts.pop();
-    }
-    return {
-      ...item,
-      url: parts.join('-'),
-    };
-  });
-  const filteredToc = modifiedToc.filter(
-    (heading) =>
-      heading.depth >= fromHeading &&
-      heading.depth <= toHeading &&
-      !re.test(heading.value)
+  // Memoize the regular expression
+  const re = useMemo(
+    () =>
+      new RegExp(
+        `^(${Array.isArray(exclude) ? exclude.join('|') : exclude})$`,
+        'i'
+      ),
+    [exclude]
   );
 
-  const handleScroll = () => {
-    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const scrollPosition =
-      window.pageYOffset || document.documentElement.scrollTop;
+  // Process TOC and filter
+  const filteredToc = useMemo(
+    () =>
+      toc
+        .map((item) => {
+          const parts = item.url.split('-');
+          if (!isNaN(Number(parts[parts.length - 1]))) parts.pop();
+          return { ...item, url: parts.join('-') };
+        })
+        .filter(
+          (heading) =>
+            heading.depth >= fromHeading &&
+            heading.depth <= toHeading &&
+            !re.test(heading.value)
+        ),
+    [toc, fromHeading, toHeading, re]
+  );
 
-    let currentId = '';
-    headings.forEach((heading) => {
-      const id = heading.getAttribute('id');
-      if (id) {
-        const rect = heading.getBoundingClientRect();
-        if (rect.top + window.pageYOffset - 300 <= scrollPosition) {
+  // Memoize nestedList
+  const nestedList = useMemo(
+    () => createNestedList(filteredToc),
+    [filteredToc]
+  );
+
+  // Scroll handler with debounce
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+      let currentId = '';
+      headings.forEach((heading) => {
+        const id = heading.getAttribute('id');
+        if (
+          id &&
+          heading.getBoundingClientRect().top + window.pageYOffset - 300 <=
+            scrollPosition
+        ) {
           currentId = id;
         }
-      }
-    });
+      });
 
-    setActiveId(currentId);
-  };
+      setActiveId(currentId);
+    };
 
-  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  const handleScrollToTopClick = () => {
+    window.scrollTo({ top: 0 });
+  };
+
   const createList = (items: NestedTocItem[] | undefined, level = 0) => {
-    if (!items || items.length === 0) {
-      return null;
-    }
+    if (!items || items.length === 0) return null;
 
     return (
       <ul
         className={ulClassName}
         style={{
           [rightAlign ? 'marginRight' : 'marginLeft']:
-            `${level == 0 ? level + 1.5 : level}rem`,
+            `${level === 0 ? 1.5 : level}rem`,
         }}
       >
-        {items.map((item, index) => (
-          <li key={index} className={liClassName}>
-            <a
-              href={item.url}
-              className={cn(
-                'mb-1 inline-block',
-                (item.url.substring(1, item.url.length) === activeId ||
-                  item.active) &&
-                  'active-header'
-              )}
-            >
-              {item.value}
-            </a>
-            {createList(item.children, level + 1)}
-          </li>
-        ))}
+        {items.map((item, index) => {
+          const itemId = item.url.substring(1);
+          //       const isActive = currentVisibles?.[itemId];
+          const isActiveHeader = itemId === activeId;
+
+          return (
+            <li key={index} className={liClassName}>
+              <a
+                href={item.url}
+                className={cn(
+                  'toc-link mb-0.5 inline-block rounded-lg px-0.5 py-0 transition-colors',
+                  // isActive ? 'bg-gray-600 ' : 'text-gray-600',
+                  isActiveHeader && 'active-header bg-gray-800'
+                )}
+              >
+                {item.value}
+              </a>
+              {createList(item.children, level + 1)}
+            </li>
+          );
+        })}
       </ul>
     );
   };
 
-  const nestedList = createNestedList(filteredToc);
-
   return (
-    <>
-      {!asDisclosure && (
-        <div
-          className={`pb-2 pt-2 text-base font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}
-        >
-          {title}
-        </div>
+    <div
+      className={clsx(
+        'border-divider-light hidden h-auto max-w-80 rounded-xl border bg-gray-900 sm:block',
+        'dark:border-divider-dark dark:bg-gray-900'
       )}
+    >
+      <div className="flex items-center justify-between border-b p-2">
+        <div className="ml-5 text-lg font-bold">Contents</div>
+        {isScrolled && (
+          <button
+            className={clsx(
+              'border-divider-light text-accent-700 flex h-6 cursor-pointer items-center rounded-full border px-2 text-xs font-normal',
+              'dark:border-divider-light bg-white text-black dark:bg-gray-800 dark:text-white'
+            )}
+            tabIndex={0}
+            onClick={handleScrollToTopClick}
+          >
+            Scroll to top
+          </button>
+        )}
+      </div>
+
       {asDisclosure ? (
         <details open={!collapse}>
-          <summary
-            className={`pb-2 pt-2 text-xl font-bold ${rightAlign ? 'mr-6 text-right' : 'ml-6'}`}
-          >
-            Table of Contents
-          </summary>
-          <div className={rightAlign ? 'mr-6' : 'ml-6'}>
-            {createList(nestedList)}
-          </div>
+          <div className="ml-6">{createList(nestedList)}</div>
         </details>
       ) : (
-        createList(nestedList)
+        <div className="ml-0">{createList(nestedList)}</div>
       )}
-    </>
+    </div>
   );
 };
 

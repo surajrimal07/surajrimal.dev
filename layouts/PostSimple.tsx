@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import type { Authors, Blog } from 'contentlayer/generated';
+import type { Authors, Blog, Snippets } from 'contentlayer/generated';
 import { Toc } from 'pliny/mdx-plugins';
 import { CoreContent } from 'pliny/utils/contentlayer';
 
@@ -16,10 +16,10 @@ import BlogTags from '@/components/blog/BlogTags';
 import siteMetadata from '@/data/siteMetadata';
 
 interface LayoutProps {
-  content: CoreContent<Blog>;
+  content: CoreContent<Blog> | CoreContent<Snippets>;
   authorDetails: CoreContent<Authors>[];
   children: ReactNode;
-  toc: Toc;
+  toc?: Toc;
   next?: { path: string; title: string };
   prev?: { path: string; title: string };
 }
@@ -73,9 +73,11 @@ export default function PostLayout({
         <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0">
           <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
             <div className="prose max-w-none pb-8 pt-0 dark:prose-invert">
-              <div className="toc -mt-8">
-                <TOCInline toc={toc} />
-              </div>
+              {toc && (
+                <div className="toc -mt-8">
+                  <TOCInline toc={toc} />
+                </div>
+              )}
               {children}
             </div>
           </div>

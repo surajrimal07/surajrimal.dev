@@ -28,13 +28,13 @@ export default function AuthorLayout({ children, toc }: Props) {
 
         <div className="border border-t border-gray-200 dark:border-gray-700" />
 
-        <main className="mx-auto my-12 max-w-screen-xl gap-12 space-y-12 rounded-md bg-gray-100 p-3 md:flex md:space-y-0 md:p-8">
-          <div className="table-of-content top-20 self-start pl-0 text-gray-500 md:sticky">
+        <main className="mx-auto my-12 max-w-screen-xl gap-12 space-y-12 rounded-md p-3 md:flex md:space-y-0 md:p-8">
+          <div className="table-of-content text-black dark:text-gray-200 top-20 self-start pl-0 md:sticky">
             <ToC toc={toc} />
           </div>
 
-          <div className="hidden border-l border-gray-300 md:block" />
-          <div className="content prose prose-slate grow table-auto border-collapse space-y-5 text-justify leading-6 text-gray-900">
+          <div className="hidden border-l border-gray-300 dark:border-gray-600 md:block" />
+          <div className="content prose prose-slate grow table-auto border-collapse space-y-5 text-justify leading-6 text-black dark:text-gray-200">
             {children}
           </div>
         </main>

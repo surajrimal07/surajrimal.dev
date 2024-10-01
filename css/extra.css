@@ -45,21 +45,11 @@
   transform: translateX(calc(-100% - 2em)) translateY(2em);
 }
 
-/* Right-aligned TOC */
-.tocr {
-  @apply sticky top-16 ml-auto hidden h-0 w-[calc(50vw-50%-4em)] break-words text-right text-base xl:block;
-  transform: translateX(calc(100% + 2em)) translateY(2em);
-}
-
 .toc ul li a {
-  @apply !text-muted-foreground !no-underline transition-all duration-200;
-}
-
-.tocr ul li a {
-  @apply !text-muted-foreground !no-underline transition-all duration-200;
+  @apply !text-muted-foreground !no-underline transition-all duration-300;
 }
 
 /* Highlights the current section in the viewport within the TOC */
 .active-header {
-  @apply font-bold brightness-200;
+  @apply font-bold brightness-150;
 }

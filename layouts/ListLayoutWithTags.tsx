@@ -184,7 +184,7 @@ export default function ListLayoutWithTags({
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             I primarily cover web development and tech topics, occasionally
-            sharing insights into my personal life.
+            sharing insights into my personal life and finance.
           </p>
           <PlaceholdersAndVanishInput
             placeholders={placeholders}
@@ -239,7 +239,7 @@ export default function ListLayoutWithTags({
             const shares = shareCounts.get(path) || 0;
             return (
               <li key={path} className="py-0">
-                <article className="duration-10 flex space-x-4 px-0 transition hover:scale-105 hover:rounded-xl hover:border hover:border-gray-600 dark:hover:border-gray-600">
+                <article className="flex space-x-4 px-0 transition duration-200 hover:scale-105 hover:rounded-xl hover:bg-gray-100 dark:hover:bg-gray-900">
                   {thumbnail && (
                     <div className="flex-shrink-0 p-0.5">
                       <Image
@@ -280,7 +280,7 @@ export default function ListLayoutWithTags({
                       <span>&middot;</span>
                       <MdInsights className="h-4 w-4" />
                       <span
-                        className="flex items-center gap-1.5 text-sm"
+                        className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400"
                         title="Number of view(s)"
                       >
                         <AnimatedCounter targetValue={views} /> Views
@@ -307,7 +307,7 @@ export default function ListLayoutWithTags({
                         )}
                       </div>
                       <span
-                        className="flex items-center gap-1.5 text-sm"
+                        className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400"
                         title="Number of share(s)"
                       >
                         <AnimatedCounter targetValue={shares} /> Shares
@@ -315,7 +315,7 @@ export default function ListLayoutWithTags({
                     </div>
                   </div>
                 </article>
-                <Separator className="mb-2 mt-2" />
+                <Separator className="mb-3 mt-3" />
               </li>
             );
           })}

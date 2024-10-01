@@ -1,3 +1,3 @@
 export * from './components';
+export * from './project';
 export * from './server';
-export * from './data';
