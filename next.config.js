@@ -47,6 +47,10 @@ const securityHeaders = [
   },
 ];
 
+const output = process.env.EXPORT ? 'export' : undefined;
+const basePath = process.env.BASE_PATH || undefined;
+const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
+
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
@@ -90,8 +94,10 @@ module.exports = () => {
           hostname: 'wakapi.dev',
         },
       ],
+      unoptimized,
     },
-    output: 'standalone',
+    output,
+    basePath,
     swcMinify: true,
     async headers() {
       return [

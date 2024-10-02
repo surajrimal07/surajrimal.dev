@@ -29,7 +29,7 @@ export default function AuthorLayout({ children, toc }: Props) {
         <div className="border border-t border-gray-200 dark:border-gray-700" />
 
         <main className="mx-auto my-12 max-w-screen-xl gap-12 space-y-12 rounded-md p-3 md:flex md:space-y-0 md:p-8">
-          <div className="table-of-content text-black dark:text-gray-200 top-20 self-start pl-0 md:sticky">
+          <div className="table-of-content top-20 self-start pl-0 text-black dark:text-gray-200 md:sticky">
             <ToC toc={toc} />
           </div>
 

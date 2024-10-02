@@ -40,7 +40,7 @@ export default function ScrollTopAndComment({
 
   return (
     <div
-      className={` z-10 fixed bottom-8 right-8 flex-col gap-3 md:flex ${show ? 'md:flex' : 'md:hidden'}`}
+      className={`fixed bottom-8 right-8 z-10 flex-col gap-3 md:flex ${show ? 'md:flex' : 'md:hidden'}`}
     >
       {showScrollToComment && siteMetadata.comments?.provider && (
         <button

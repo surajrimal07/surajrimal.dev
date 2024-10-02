@@ -4,6 +4,7 @@
 const siteMetadata = {
   title: "Suraj's personal blog",
   author: 'Suraj Rimal',
+  address: 'Kathmandu, Nepal',
   fullName: 'Suraj Rimal',
   headerTitle: "Suraj's Blog",
   description:
@@ -19,8 +20,10 @@ const siteMetadata = {
   email: 'davidparkedme@gmail.com',
   github: 'https://github.com/surajrimal07',
   locale: 'en-US',
+  timezone: 'GMT+5:45',
   stickyNav: true,
   socialAccounts: {
+    phone: '+977-9840220290',
     twitter: 'https://twitter.com',
     youtube: 'https://youtube.com',
     github: 'https://github.com/surajrimal07',

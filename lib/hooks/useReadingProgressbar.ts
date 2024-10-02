@@ -1,16 +1,20 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export function useReadingProgress() {
   const [completion, setCompletion] = useState(0);
-  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     function updateScrollCompletion() {
+      // Ensure we're in a browser environment
+      if (typeof window === 'undefined') return;
+
       const currentProgress = window.scrollY;
       const scrollHeight = document.body.scrollHeight - window.innerHeight;
+
       if (scrollHeight) {
         setCompletion(
           Number((currentProgress / scrollHeight).toFixed(2)) * 100
@@ -18,18 +22,19 @@ export function useReadingProgress() {
       }
     }
 
-    function handleRouteChange() {
-      setCompletion(0);
-    }
+    // Reset completion when route changes
+    setCompletion(0);
 
+    // Add scroll event listener
     window.addEventListener('scroll', updateScrollCompletion);
-    router.events.on('routeChangeStart', handleRouteChange);
+
+    // Initial calculation
+    updateScrollCompletion();
 
     return () => {
       window.removeEventListener('scroll', updateScrollCompletion);
-      router.events.off('routeChangeStart', handleRouteChange);
     };
-  }, [router]);
+  }, [pathname]); // Dependency on pathname instead of router
 
   return completion;
 }

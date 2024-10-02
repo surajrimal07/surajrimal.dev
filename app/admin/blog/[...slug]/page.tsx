@@ -1,8 +1,13 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import React from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import {
   BlockTypeSelect,

@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import {
   Code,
   Computer,
+  Contact,
   LayoutDashboard,
   LogOut,
   Route,
@@ -173,6 +174,12 @@ export function DropdownMenuDemo() {
             <Link href="/journey" className="flex items-center">
               <Route className="mr-2 h-4 w-4" />
               <span>Journey</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/contact" className="flex items-center">
+              <Contact className="mr-2 h-4 w-4" />
+              <span>Contact</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

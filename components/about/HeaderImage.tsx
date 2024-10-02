@@ -29,7 +29,7 @@ export default function AboutHeaderImage() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={clsx(
-            'h-[450px] w-[450px] stroke-red-500 opacity-60',
+            'h-[450px] w-[450px] stroke-purple-500 opacity-60',
             'dark:opacity-40'
           )}
         >

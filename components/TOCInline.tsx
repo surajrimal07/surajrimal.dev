@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 
 import useOnScroll from '@/lib/hooks/useOnScroll';
-import useScrollSpy from '@/lib/hooks/useScrollSpy';
 import { cn } from '@/lib/utils';
 
 type TocItem = {
@@ -68,7 +67,6 @@ const TOCInline = ({
 }: TOCInlineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const isScrolled = useOnScroll(1000);
-  const { currentVisibles } = useScrollSpy();
 
   // Memoize the regular expression
   const re = useMemo(
@@ -159,7 +157,7 @@ const TOCInline = ({
                 className={cn(
                   'toc-link mb-0.5 inline-block rounded-lg px-0.5 py-0 transition-colors',
                   // isActive ? 'bg-gray-600 ' : 'text-gray-600',
-                  isActiveHeader && 'active-header bg-gray-800'
+                  isActiveHeader && 'active-header bg-white dark:bg-gray-800'
                 )}
               >
                 {item.value}
@@ -175,12 +173,14 @@ const TOCInline = ({
   return (
     <div
       className={clsx(
-        'border-divider-light hidden h-auto max-w-80 rounded-xl border bg-gray-900 sm:block',
+        'border-divider-light hidden h-auto max-w-80 rounded-xl border bg-gray-300 sm:block',
         'dark:border-divider-dark dark:bg-gray-900'
       )}
     >
       <div className="flex items-center justify-between border-b p-2">
-        <div className="ml-5 text-lg font-bold">Contents</div>
+        <div className="ml-5 text-lg font-bold text-black dark:text-white">
+          Contents
+        </div>
         {isScrolled && (
           <button
             className={clsx(
