@@ -40,7 +40,7 @@ const Header = () => {
           aria-label={siteMetadata.headerTitle}
           className="flex items-center"
         >
-          <div className="link-underline group relative ml-1 mr-1 h-8 text-2xl sm:block">
+          <div className="link-underline group relative ml-1 mr-1 h-9 text-2xl sm:block">
             <span className="typewriter-text">
               ~
               <span className="font-bold">
@@ -71,7 +71,7 @@ const Header = () => {
           aria-label={siteMetadata.headerTitle}
           className="flex items-center"
         >
-          <div className="m-0 mt-1.5 hidden justify-center p-0.5 text-center md:block">
+          <div className="m-0 mt-1 hidden justify-center p-0.5 text-center md:block">
             <HoverBorderGradient
               containerClassName="rounded-full"
               as="button"
