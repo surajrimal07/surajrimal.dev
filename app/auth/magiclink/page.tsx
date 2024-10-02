@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';

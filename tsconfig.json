@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ES6",
+    "target": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
@@ -10,12 +10,18 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
+    "noImplicitAny": false,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "composite": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node", //Cannot find module 'pliny/mdx-components' or its corresponding type declarations.ts(2307) //bundler //esnext
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -53,7 +59,7 @@
       ],
       "@/*": [
         "./*"
-      ],
+      ]
     },
     "plugins": [
       {

@@ -6,7 +6,7 @@ const StartIcon: React.FC<LogoIconProps> = ({ fillColor = '#FFF' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="dark:hover:text-primary-400 h-5 w-4 hover:text-red-300 dark:text-gray-100 hover:dark:text-red-800"
+      className="h-5 w-4 hover:text-red-300 dark:text-gray-100 dark:hover:text-primary-400 hover:dark:text-red-800"
       viewBox="0 0 1 1080
 
     "
@@ -27,7 +27,7 @@ const EndIcon: React.FC<LogoIconProps> = ({ fillColor = '#FFF' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="dark:hover:text-primary-400 h-5 w-4 hover:text-red-300 dark:text-gray-100 hover:dark:text-red-800"
+      className="h-5 w-4 hover:text-red-300 dark:text-gray-100 dark:hover:text-primary-400 hover:dark:text-red-800"
       viewBox="0 0 500 1080"
     >
       <path

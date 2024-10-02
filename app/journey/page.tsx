@@ -11,7 +11,7 @@ import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
 import { getJourneyEvents } from '@/lib/journey';
 import { JourneyEvent } from '@/types/journey';
 
-const iconMap = {
+const iconMap: { [key: string]: JSX.Element } = {
   FaBlackTie: <FaBlackTie />,
   FaGraduationCap: <FaGraduationCap />,
   SiLeetcode: <SiLeetcode />,

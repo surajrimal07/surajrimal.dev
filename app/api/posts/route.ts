@@ -58,13 +58,15 @@ export async function GET(req: NextRequest) {
     const frontmatter = parts[1];
     const mdxContent = parts.slice(2).join('---').trim();
 
-    const data = frontmatter.split('\n').reduce((acc, line) => {
-      const [key, ...value] = line.split(':');
-      if (key && value.length) {
-        acc[key.trim()] = value.join(':').trim();
-      }
-      return acc;
-    }, {});
+    const data = frontmatter
+      .split('\n')
+      .reduce((acc: { [key: string]: string }, line) => {
+        const [key, ...value] = line.split(':');
+        if (key && value.length) {
+          acc[key.trim()] = value.join(':').trim();
+        }
+        return acc;
+      }, {});
 
     return NextResponse.json({ ...data, content: mdxContent });
   } catch (error) {
