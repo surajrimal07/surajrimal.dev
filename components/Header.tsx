@@ -43,15 +43,20 @@ const Header = () => {
             <span className="typewriter-text">
               ~
               <span className="font-bold">
-                {currentPath === '/'
-                  ? `/${siteMetadata.headerTitle}`
-                  : currentPath.startsWith('/admin/blog')
-                    ? '/admin/blog'
-                    : currentPath.startsWith('/blog')
-                      ? '/blog'
-                      : currentPath.startsWith('/snippets')
-                        ? '/snippets'
-                        : currentPath}
+                {currentPath === '/' ? (
+                  <span className="hidden sm:inline">
+                    {`/${siteMetadata.headerTitle}`}
+                  </span>
+                ) : currentPath.startsWith('/admin/blog') ? (
+                  '/admin/blog'
+                ) : currentPath.startsWith('/blog') ? (
+                  '/blog'
+                ) : currentPath.startsWith('/snippets') ? (
+                  '/snippets'
+                ) : (
+                  currentPath
+                )}
+                <span className="sm:hidden">/</span>
               </span>
               <span
                 className="blinking-cursor"

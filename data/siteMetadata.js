@@ -6,7 +6,7 @@ const siteMetadata = {
   author: 'Suraj Rimal',
   address: 'Kathmandu, Nepal',
   fullName: 'Suraj Rimal',
-  headerTitle: "Suraj's Blog",
+  headerTitle: 'Suraj',
   description:
     'My desire to practice my skills and share my acquired knowledge fuels my endeavors.',
   language: 'en-us',
