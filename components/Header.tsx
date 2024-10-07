@@ -19,14 +19,13 @@ import Tooltip from './ui/tooltip';
 const Header = () => {
   const currentPath = useCurrentPath();
   const completion = useReadingProgress();
-
-  let headerClass =
-    'flex inset-x-0 top-4 items-center h-[50px] w-full backdrop-blur bg-white/50 dark:bg-black/50 justify-between py-6 mb-6 rounded-lg'; //make header up or down change py
-  if (siteMetadata.stickyNav) {
-    headerClass += ' sticky top-0 z-40'; //5
-  }
   return (
-    <header className={headerClass}>
+    <header
+      className={clsx(
+        'inset-x-0 top-4 mb-6 flex h-[50px] w-full items-center justify-between rounded-lg bg-white/50 py-6 backdrop-blur dark:bg-black/50',
+        siteMetadata.stickyNav && 'sticky top-0 z-40'
+      )}
+    >
       <div
         className="absolute inset-0 rounded-lg transition-all duration-300"
         style={{
@@ -50,7 +49,9 @@ const Header = () => {
                     ? '/admin/blog'
                     : currentPath.startsWith('/blog')
                       ? '/blog'
-                      : currentPath}
+                      : currentPath.startsWith('/snippets')
+                        ? '/snippets'
+                        : currentPath}
               </span>
               <span
                 className="blinking-cursor"
@@ -82,13 +83,13 @@ const Header = () => {
           </div>
 
           <Tooltip content="Open to work">
-            <span className="ml-1 mt-2 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
+            <span className="m-0 mt-1 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
           </Tooltip>
         </Link>
       </div>
 
       <div className="z-10 flex items-center text-base leading-5">
-        <div className="no-scrollbar hidden max-w-40 items-center space-x-4 overflow-x-auto sm:flex sm:space-x-1 md:max-w-72 lg:max-w-96">
+        <div className="no-scrollbar md:max-w-82 hidden items-center space-x-4 overflow-x-auto sm:flex sm:space-x-1 lg:max-w-96">
           {headerNavLinks
             .filter((link) => link.href !== '/')
             .map((link) => (

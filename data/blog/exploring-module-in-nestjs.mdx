@@ -139,7 +139,7 @@ export class ProductModule {}
 
 - `@Global()` decorator make the module global, that you want to provide a set of providers which should be available everywhere:
 
-```javascript
+```javascript:contentlayer.config.ts
 // core/logger/logger.module.ts
 import { Module, Global } from '@nestjs/common';
 
@@ -228,7 +228,7 @@ export function createDatabaseProviders(options, entities): any[] {
 }
 ```
 
-```javascript
+```javascript:secondlast.js
 // core/database/database.module.ts
 import { Module, DynamicModule } from '@nestjs/common';
 
@@ -256,7 +256,7 @@ export class DatabaseModule {
 
 - The `DatabaseModule` can be imported and configured in the following manner:
 
-```javascript
+```javascript:last.ts
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from 'core/database/database.module';

@@ -7,11 +7,16 @@
 
 /* Code title styles */
 .remark-code-title {
-  @apply rounded-t bg-gray-700 px-3 py-3 font-mono text-sm font-bold text-gray-200 dark:bg-gray-900;
+  @apply border-[0.1px] border-gray-300 bg-black px-5 py-3 font-mono text-sm font-bold text-gray-200 dark:border-gray-600;
+  @apply rounded-t-md;
 }
 
 .remark-code-title + div > pre {
-  @apply mt-2 rounded-t-none px-0 py-0;
+  @apply mt-0 overflow-x-auto border-[0.1px] border-b border-l border-r border-gray-300 bg-neutral-950 dark:border-gray-600;
+  @apply rounded-b-md;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
 }
 
 /* Code block styles */
@@ -19,8 +24,22 @@
   @apply float-left min-w-full;
 }
 
+/* pre {
+  @apply mt-1 overflow-x-auto rounded-md border border-gray-300 bg-zinc-800 dark:border-gray-600 dark:bg-zinc-800;
+} */
+
 .code-line {
-  @apply -mx-0 block border-l-4 border-transparent pl-6 pr-4;
+  @apply -mx-4 block pl-2 pr-4;
+  counter-increment: line;
+}
+
+pre[class*='language-'] {
+  @apply p-4;
+}
+
+.code-line::before {
+  @apply mr-2 inline-block w-4 text-right text-gray-500;
+  content: counter(line);
 }
 
 .code-line.inserted {
@@ -32,11 +51,11 @@
 }
 
 .highlight-line {
-  @apply -mx-0 border-l-4 border-primary-500 bg-gray-700 bg-opacity-50;
+  @apply -mx-4 border-l-4 border-primary-500 bg-gray-700 bg-opacity-50;
 }
 
 .line-number::before {
-  @apply -ml-6 mr-4 inline-block w-4 text-right text-gray-400;
+  @apply -ml-2 mr-4 inline-block w-4 text-right text-gray-400;
   content: attr(line);
 }
 

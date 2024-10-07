@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable prettier/prettier */
 // @ts-check
 const { fontFamily } = require('tailwindcss/defaultTheme');
@@ -158,19 +159,7 @@ module.exports = {
               letterSpacing: theme('letterSpacing.tight'),
             },
             code: {
-              color: theme('colors.red.600'),
-              backgroundColor: theme('colors.gray.900'),
-              paddingLeft: '14px',
-              paddingRight: '14px',
-              paddingTop: '2px',
-              fontSize: 'inherit',
-              fontWeight: '400',
-              paddingBottom: '2px',
-              borderWidth: '1px',
-              borderColor: theme('colors.border'),
-              fontFamily: 'inherit',
-              borderRadius: '0.25rem',
-              padding: '0.25rem 0.5rem',
+              color: theme('colors.primary.500'),
             },
             'code:before': {
               content: 'none',
@@ -222,13 +211,9 @@ module.exports = {
             'h1,h2,h3,h4,h5,h6': {
               color: theme('colors.gray.100'),
             },
-            code: {
-              backgroundColor: theme('colors.gray.900'),
-              color: theme('colors.primary.DEFAULT'),
-            },
           },
         },
-      }),
+      }), 
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

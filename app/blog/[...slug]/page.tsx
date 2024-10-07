@@ -12,7 +12,7 @@ import {
   sortPosts,
 } from 'pliny/utils/contentlayer';
 
-import { components } from '@/components/MDXComponents';
+import { components } from '@/components/mdx/MDXComponents';
 import siteMetadata from '@/data/siteMetadata';
 import PostBanner from '@/layouts/PostBanner';
 import PostLayout from '@/layouts/PostLayout';

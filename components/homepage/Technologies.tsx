@@ -67,7 +67,7 @@ export function Technologies() {
             <TabsTrigger
               key={`trigger-${category}`}
               value={category}
-              className={` ${index === tabIndex ? 'bg-red-500/40 text-white dark:bg-red-500/40' : 'bg-gray text-white-900'} hover:bg-gray-700/40 hover:text-white hover:dark:bg-gray-700/40`}
+              className={` ${index === tabIndex ? 'bg-primary-500/60 text-white dark:bg-primary-500/60' : 'bg-gray text-white-900'} hover:bg-gray-700/40 hover:text-white hover:dark:bg-gray-700/40`}
             >
               {category}
             </TabsTrigger>

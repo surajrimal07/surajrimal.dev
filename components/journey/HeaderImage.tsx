@@ -57,7 +57,10 @@ export default function JourneyHeaderImage() {
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={clsx('h-[450px] w-[450px] opacity-60', 'dark:opacity-40')}
+          className={clsx(
+            'h-[450px] w-[450px] opacity-60 dark:opacity-40',
+            'hidden md:block'
+          )}
         >
           <motion.path
             variants={pathAnimation}

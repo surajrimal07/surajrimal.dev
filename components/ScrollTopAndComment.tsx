@@ -60,7 +60,7 @@ export default function ScrollTopAndComment({
       <button
         aria-label="Scroll To Top"
         onClick={handleScrollTop}
-        className="relative rounded-full p-2 text-black transition-all dark:text-white"
+        className="relative rounded-full bg-black p-2 text-white transition-all dark:bg-black dark:text-white"
       >
         <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path
@@ -75,7 +75,7 @@ export default function ScrollTopAndComment({
         >
           <circle
             className="text-gray-300 dark:text-gray-600"
-            strokeWidth="8"
+            strokeWidth="4"
             stroke="currentColor"
             fill="transparent"
             r="46"
@@ -83,8 +83,8 @@ export default function ScrollTopAndComment({
             cy="50"
           />
           <circle
-            className="text-black transition-all duration-200 ease-in-out dark:text-white"
-            strokeWidth="8"
+            className="text-white transition-all duration-200 ease-in-out dark:text-white"
+            strokeWidth="4"
             strokeDasharray={290}
             strokeDashoffset={290 - (290 * progress) / 100}
             strokeLinecap="round"

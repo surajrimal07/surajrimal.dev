@@ -13,7 +13,7 @@ import {
   sortPosts,
 } from 'pliny/utils/contentlayer';
 
-import { components } from '@/components/MDXComponents';
+import { components } from '@/components/mdx/MDXComponents';
 import PostLayout from '@/layouts/PostSimple';
 
 export const generateStaticParams = async () => {

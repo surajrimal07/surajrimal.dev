@@ -62,7 +62,7 @@ const PrivateContributions = async () => {
           from&nbsp;
           <Link
             href={'https://wakapi.dev'}
-            className="inline-flex items-center text-primary hover:text-red-400 dark:hover:text-red-400"
+            className="special-underline-new inline-flex items-center"
           >
             Wakapi <TfiArrowTopRight className="ml-1" />
           </Link>

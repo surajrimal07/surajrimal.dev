@@ -83,6 +83,26 @@ export function Tailwind(svgProps: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function ClipboardIcon(svgProps: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="currentColor"
+      fill="none"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...svgProps}
+    >
+      <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+      <rect x="9" y="3" width="6" height="4" rx="2" />
+      <path d="M9 12h6" />
+      <path d="M9 16h6" />
+    </svg>
+  );
+}
+
 export function Mongodb(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 128 128" {...svgProps}>

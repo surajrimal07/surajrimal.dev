@@ -3,8 +3,8 @@ import { genPageMetadata } from 'app/seo';
 import { allAuthors } from 'contentlayer/generated';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
 
-import { components } from '@/components/MDXComponents';
 import SectionContainer from '@/components/SectionContainer';
+import { components } from '@/components/mdx/MDXComponents';
 import ResumeLayout from '@/layouts/ResumeLayout';
 import { TOC } from '@/types/toc';
 

@@ -44,14 +44,17 @@
   @apply sticky top-16 hidden h-0 w-[calc(50vw-50%-4em)] break-words text-base xl:block;
   transform: translateX(calc(-100% - 2em)) translateY(2em);
 }
+.toc ul ul {
+  @apply ml-4;
+}
 
-.toc ul li a {
+.toc a {
   @apply !text-muted-foreground !no-underline transition-all duration-300;
 }
 
 /* Highlights the current section in the viewport within the TOC */
 .active-header {
-  @apply font-bold brightness-150;
+  @apply bg-primary-300 font-bold brightness-150 dark:bg-primary-700;
 }
 
 /* Timeline CSS */
@@ -69,3 +72,37 @@
 .animate-slide-up {
   animation: slide-up 0.5s ease-out forwards;
 }
+
+/* Scrollbar CSS */
+
+/* For Chrome, Safari, and Edge */
+/* ::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ef4444;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-button {
+  background-color: #ef4444;
+  display: block;
+}
+
+/* For Firefox */
+/* * {
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #f87171;
+} */
+

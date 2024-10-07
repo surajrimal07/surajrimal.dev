@@ -27,6 +27,7 @@ import remarkGfm from 'remark-gfm';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import remarkMath from 'remark-math';
 
+import { customRemarkCodeTitles } from './components/mdx/CustomRemarkTitle';
 import siteMetadata from './data/siteMetadata';
 
 const root = process.cwd();

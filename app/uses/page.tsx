@@ -1,7 +1,7 @@
 import { allAuthors } from 'contentlayer/generated';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
 
-import { components } from '@/components/MDXComponents';
+import { components } from '@/components/mdx/MDXComponents';
 import UsesLayout from '@/layouts/UsesLayout';
 
 export const metadata = {

@@ -3,30 +3,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
-import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 
 import useOnScroll from '@/lib/hooks/useOnScroll';
 import { cn } from '@/lib/utils';
-
-type TocItem = {
-  value: string;
-  url: string;
-  depth: number;
-  active?: boolean;
-};
-
-export interface TOCInlineProps {
-  toc: Toc;
-  title?: string;
-  fromHeading?: number;
-  toHeading?: number;
-  asDisclosure?: boolean;
-  exclude?: string | string[];
-  collapse?: boolean;
-  ulClassName?: string;
-  liClassName?: string;
-  rightAlign?: boolean;
-}
+import { TOCInlineProps, TocItem } from '@/types/toc';
 
 export interface NestedTocItem extends TocItem {
   children?: NestedTocItem[];
@@ -58,9 +38,7 @@ const TOCInline = ({
   toc,
   fromHeading = 1,
   toHeading = 6,
-  asDisclosure = false,
   exclude = '',
-  collapse = false,
   ulClassName = '',
   liClassName = '',
   rightAlign = false,
@@ -68,7 +46,6 @@ const TOCInline = ({
   const [activeId, setActiveId] = useState<string | null>(null);
   const isScrolled = useOnScroll(1000);
 
-  // Memoize the regular expression
   const re = useMemo(
     () =>
       new RegExp(
@@ -78,7 +55,6 @@ const TOCInline = ({
     [exclude]
   );
 
-  // Process TOC and filter
   const filteredToc = useMemo(
     () =>
       toc
@@ -96,13 +72,11 @@ const TOCInline = ({
     [toc, fromHeading, toHeading, re]
   );
 
-  // Memoize nestedList
   const nestedList = useMemo(
     () => createNestedList(filteredToc),
     [filteredToc]
   );
 
-  // Scroll handler with debounce
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition =
@@ -130,10 +104,6 @@ const TOCInline = ({
     };
   }, []);
 
-  const handleScrollToTopClick = () => {
-    window.scrollTo({ top: 0 });
-  };
-
   const createList = (items: NestedTocItem[] | undefined, level = 0) => {
     if (!items || items.length === 0) return null;
 
@@ -142,12 +112,11 @@ const TOCInline = ({
         className={ulClassName}
         style={{
           [rightAlign ? 'marginRight' : 'marginLeft']:
-            `${level === 0 ? 1.5 : level}rem`,
+            `${level === 0 ? 1.0 : level}rem`,
         }}
       >
         {items.map((item, index) => {
           const itemId = item.url.substring(1);
-          //       const isActive = currentVisibles?.[itemId];
           const isActiveHeader = itemId === activeId;
 
           return (
@@ -155,9 +124,9 @@ const TOCInline = ({
               <a
                 href={item.url}
                 className={cn(
-                  'toc-link mb-0.5 inline-block rounded-lg px-0.5 py-0 transition-colors',
-                  // isActive ? 'bg-gray-600 ' : 'text-gray-600',
-                  isActiveHeader && 'active-header bg-white dark:bg-gray-800'
+                  'block rounded-md px-1 pb-1.5 pt-2 text-sm transition-all',
+                  'text-muted-foreground hover:bg-slate-50 hover:dark:bg-[#242e45]',
+                  isActiveHeader && 'active-header'
                 )}
               >
                 {item.value}
@@ -173,13 +142,13 @@ const TOCInline = ({
   return (
     <div
       className={clsx(
-        'border-divider-light hidden h-auto max-w-80 rounded-xl border bg-gray-300 sm:block',
+        'border-divider-light hidden h-auto max-w-80 rounded-xl bg-gray-300 pb-1 sm:block',
         'dark:border-divider-dark dark:bg-gray-900'
       )}
     >
       <div className="flex items-center justify-between border-b p-2">
         <div className="ml-5 text-lg font-bold text-black dark:text-white">
-          Contents
+          Table of Contents
         </div>
         {isScrolled && (
           <button
@@ -188,20 +157,14 @@ const TOCInline = ({
               'dark:border-divider-light bg-white text-black dark:bg-gray-800 dark:text-white'
             )}
             tabIndex={0}
-            onClick={handleScrollToTopClick}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             Scroll to top
           </button>
         )}
       </div>
 
-      {asDisclosure ? (
-        <details open={!collapse}>
-          <div className="ml-6">{createList(nestedList)}</div>
-        </details>
-      ) : (
-        <div className="ml-0">{createList(nestedList)}</div>
-      )}
+      <div>{createList(nestedList)}</div>
     </div>
   );
 };

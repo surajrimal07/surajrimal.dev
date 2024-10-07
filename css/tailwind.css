@@ -90,17 +90,6 @@ html.lightbox-loading * {
 
 /* END: CSS popular tags */
 
-/* START: Scrollbar hiding */
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* For Firefox */
-html {
-  scrollbar-width: none;
-}
-
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {

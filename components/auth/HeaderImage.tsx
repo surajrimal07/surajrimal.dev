@@ -29,17 +29,16 @@ export default function AuthHeaderImage() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={clsx(
-            'h-[450px] w-[450px] stroke-indigo-500 opacity-60',
-            'dark:opacity-40'
+            'h-[450px] w-[450px] stroke-indigo-500 opacity-60 dark:opacity-40',
+            'hidden md:block'
           )}
         >
-          {/* Lock body */}
           <motion.path
             variants={animation}
             custom={1}
             d="M128 224h256v256H128zM256 320v64"
           />
-          {/* Lock shackle */}
+
           <motion.path
             variants={animation}
             custom={2}

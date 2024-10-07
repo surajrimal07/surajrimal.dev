@@ -29,8 +29,8 @@ export default function TagsHeaderImage() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={clsx(
-            'h-[400px] w-[400px] stroke-yellow-500 opacity-60',
-            'dark:opacity-40'
+            'h-[400px] w-[400px] stroke-yellow-500 opacity-60 dark:opacity-40',
+            'hidden md:block'
           )}
         >
           <motion.path
