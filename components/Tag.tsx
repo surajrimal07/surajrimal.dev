@@ -1,20 +1,25 @@
 import Link from 'next/link';
 
+import { Hash } from 'lucide-react';
+
 import kebabCase from '@/utils/kebabCase';
 
-interface Props {
+interface TagProps {
   text: string;
+  count?: number;
 }
 
-const Tag = ({ text }: Props) => {
+export default function Tag({ text, count }: TagProps) {
+  const formattedText =
+    `${text.split(' ').join('-')} ${count ? `(${count})` : ''}`.toUpperCase();
+
   return (
     <Link
       href={`/tags/${kebabCase(text)}`}
-      className="mr-3 mt-2 rounded-lg border border-primary-500 px-3 py-1 text-sm font-medium uppercase text-primary-500 transition duration-500 ease-in-out hover:bg-primary-500 hover:text-white dark:text-primary-200 dark:hover:text-white"
+      className="py-0.75 mr-2 mt-2 inline-flex items-center rounded-sm bg-secondary px-1 text-sm font-medium text-secondary-foreground transition-colors hover:bg-primary-400 dark:hover:bg-primary-500"
     >
-      {text.split(' ').join('-')}
+      <Hash className="h-4 w-4" />
+      {formattedText}
     </Link>
   );
-};
-
-export default Tag;
+}

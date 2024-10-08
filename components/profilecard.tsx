@@ -11,7 +11,7 @@ import {
 import siteMetadata from '@/data/siteMetadata';
 import { useRepoData, useUserData } from '@/lib/github';
 import { Repository, UserData } from '@/types/github';
-import { formatCommitDate } from '@/utils/formatDate';
+import { timeAgo } from '@/utils/timeAgo';
 
 import { LOGO_IMAGE_PATH } from '../constants';
 import IconsBundle from './social-icons';
@@ -54,7 +54,8 @@ export default async function ProfileCard() {
     githubStats = {
       totalStars,
       privateRepos,
-      lastCommitDate: formatCommitDate(lastCommit),
+      //lastCommitDate: formatCommitDate(lastCommit),
+      lastCommitDate: timeAgo(new Date(lastCommit)),
     };
 
     const languageCount: { [key: string]: number } = {};

@@ -15,7 +15,7 @@ import {
   remarkImgToJsx,
 } from 'pliny/mdx-plugins/index.js';
 // Rehype packages
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js';
+import { sortPosts } from 'pliny/utils/contentlayer.js';
 import readingTime from 'reading-time';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeCitation from 'rehype-citation';
@@ -27,7 +27,6 @@ import remarkGfm from 'remark-gfm';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import remarkMath from 'remark-math';
 
-import { customRemarkCodeTitles } from './components/mdx/CustomRemarkTitle';
 import siteMetadata from './data/siteMetadata';
 
 const root = process.cwd();
@@ -66,9 +65,11 @@ const computedFields: ComputedFields = {
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
-function createTagCount(allBlogs) {
+function createTagCount(allBlogs, allSnippets) {
   const tagCount: Record<string, number> = {};
-  allBlogs.forEach((file) => {
+  const allDocuments = [...allBlogs, ...allSnippets];
+
+  allDocuments.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
       file.tags.forEach((tag) => {
         const formattedTag = slug(tag);
@@ -83,14 +84,19 @@ function createTagCount(allBlogs) {
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount));
 }
 
-function createSearchIndex(allBlogs) {
+function createSearchIndex(allBlogs, allSnippets) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
+    const sortedBlogs = sortPosts(allBlogs);
+    const sortedSnippets = sortPosts(allSnippets);
+
+    const combinedIndex = [...sortedBlogs, ...sortedSnippets];
+
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
+      JSON.stringify(combinedIndex)
     );
     console.log('Local search index generated...');
   }
@@ -219,7 +225,9 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData();
-    createTagCount(allBlogs);
-    createSearchIndex(allBlogs);
+    const { allSnippets } = await importData();
+
+    createTagCount(allBlogs, allSnippets);
+    createSearchIndex(allBlogs, allSnippets);
   },
 });

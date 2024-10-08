@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { AlgoliaButton } from 'pliny/search/AlgoliaButton';
 import { KBarButton } from 'pliny/search/KBarButton';
+import 'pliny/search/algolia.css';
 import { FiCommand } from 'react-icons/fi';
 
 import siteMetadata from '@/data/siteMetadata';

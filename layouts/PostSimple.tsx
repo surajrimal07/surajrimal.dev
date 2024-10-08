@@ -13,6 +13,7 @@ import SectionContainer from '@/components/SectionContainer';
 import TOCInline from '@/components/TOCInline';
 import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
+import ReactionCounter from '@/components/blog/PageReactions';
 import siteMetadata from '@/data/siteMetadata';
 
 interface LayoutProps {
@@ -33,6 +34,8 @@ export default function PostLayout({
   children,
 }: LayoutProps) {
   const { slug, date, title, tags, readingTime, thumbnail } = content;
+
+  const slugNormalized = `blog/${slug}`;
 
   return (
     <SectionContainer>
@@ -61,7 +64,7 @@ export default function PostLayout({
                   <BlogMeta
                     authorDetails={authorDetails}
                     date={date}
-                    slug={slug}
+                    slug={slugNormalized}
                     readingTime={readingTime}
                   />
                 </div>
@@ -82,7 +85,6 @@ export default function PostLayout({
             </div>
           </div>
 
-          {/* Comments section */}
           {siteMetadata.comments && (
             <div
               className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
@@ -92,7 +94,6 @@ export default function PostLayout({
             </div>
           )}
 
-          {/* Footer with navigation links */}
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
               {prev && (
@@ -119,6 +120,9 @@ export default function PostLayout({
               )}
             </div>
           </footer>
+          <div className="fixed bottom-4 left-1/2 w-full max-w-md -translate-x-1/2 transform lg:sticky lg:bottom-0 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
+            <ReactionCounter slug={slugNormalized} />
+          </div>
         </div>
       </article>
     </SectionContainer>

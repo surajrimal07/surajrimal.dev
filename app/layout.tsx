@@ -4,7 +4,6 @@ import { Space_Grotesk } from 'next/font/google';
 import 'katex/dist/katex.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Analytics, AnalyticsConfig } from 'pliny/analytics';
-import { SearchConfig, SearchProvider } from 'pliny/search';
 import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
@@ -12,6 +11,7 @@ import 'remark-github-blockquote-alert/alert.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PathProvider } from '@/components/PathProvider';
+import { SearchProvider } from '@/components/SearchProvider';
 import SectionContainer from '@/components/SectionContainer';
 import VercelAnalytics from '@/components/VercelAnalytics';
 import '@/css/about.css';
@@ -136,9 +136,7 @@ export default function RootLayout({
             />
 
             <SectionContainer>
-              <SearchProvider
-                searchConfig={siteMetadata.search as SearchConfig}
-              >
+              <SearchProvider>
                 <Header />
                 <main className="mb-auto">{children}</main>
                 <Footer />
