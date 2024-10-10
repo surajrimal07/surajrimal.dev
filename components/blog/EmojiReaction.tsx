@@ -48,9 +48,11 @@ const emojiMotion = {
   },
   hover: {
     scale: 1.2,
+    transition: { duration: 0.3 },
   },
   tap: {
     scale: 0.8,
+    transition: { duration: 0.3 },
   },
 };
 
@@ -107,26 +109,12 @@ function EmojiReaction({
         ])}
         whileTap={disabled ? undefined : 'tap'}
         whileHover="hover"
-        onHoverStart={() => {
-          if (!disabled) {
-            setSrc(animatedImage);
-          } else {
-            setSrc(disabledImage);
-          }
-        }}
-        onHoverEnd={() => {
-          if (!disabled) {
-            setSrc(defaultImage);
-          } else {
-            setSrc(disabledImage);
-          }
-        }}
         onClick={handleClick}
       >
         {history.map(({ x, y, duration, key }) => (
           <m.div
             key={key}
-            className="pointer-events-none absolute h-10 w-10 select-none"
+            className="pointer-events-none absolute h-8 w-8 select-none"
             initial={{ y: 0, x: 0, opacity: 1 }}
             animate={{
               x,
@@ -155,7 +143,7 @@ function EmojiReaction({
           </m.div>
         ))}
 
-        <m.div className={clsx('h-10 w-10')} variants={emojiMotion}>
+        <m.div className={clsx('h-8 w-8')} variants={emojiMotion}>
           <Image
             className={clsx('pointer-events-none h-full w-full')}
             alt={title}

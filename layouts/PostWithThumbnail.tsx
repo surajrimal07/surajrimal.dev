@@ -10,7 +10,7 @@ import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
 import ShareButton from '@/components/blog/ShareButton';
-import { CalendarIcon } from '@/components/social-icons/icons';
+import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
 import { timeAgo } from '@/utils/timeAgo';
 
@@ -21,6 +21,7 @@ interface PostWithThumbnailProps {
   summary: string;
   tags: string[];
   thumbnail: string;
+  language;
   views: number;
   shares: number;
   setOpenShareMenuSlug: (slug: string | null) => void;
@@ -34,6 +35,7 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
   title,
   summary,
   tags,
+  language,
   thumbnail,
   views,
   shares,
@@ -49,7 +51,7 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
       <div className="absolute bottom-0 left-0 h-full w-[0.5px] origin-bottom scale-y-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-y-100" />
       <div className="absolute left-0 top-0 h-[0.5px] w-full origin-right scale-x-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-x-100" />
       <div className="absolute bottom-0 right-0 h-full w-[0.5px] origin-top scale-y-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-y-100" />
-      <article className="flex flex-col space-x-4 px-0 sm:flex-row">
+      <article className="flex flex-col space-x-2 px-0 sm:flex-row">
         <div className="flex-shrink-0 p-0.5 sm:w-[100px] md:w-[200px]">
           <Image
             src={thumbnail}
@@ -60,25 +62,24 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
           />
         </div>
         <div className="ml-0 flex flex-col justify-start">
-          <div>
-            <h2 className="text-2xl font-bold leading-8 tracking-tight">
-              <Link
-                href={`/${path}`}
-                className="text-gray-900 dark:text-gray-100"
-              >
-                {title}
-              </Link>
-            </h2>
-            <div className="mt-1 flex flex-wrap">
-              {tags.map((tag) => (
-                <Tag key={tag} text={tag} />
-              ))}
-            </div>
-            <div className="prose mt-2 max-w-none text-gray-500 dark:text-gray-400">
-              {summary}
-            </div>
+          <h2 className="text-2xl font-bold leading-8 tracking-tight">
+            <Link
+              href={`/${path}`}
+              className="text-gray-900 dark:text-gray-100"
+            >
+              {title}
+            </Link>
+          </h2>
+          <div className="flex flex-wrap">
+            {tags.map((tag) => (
+              <Tag key={tag} text={tag} />
+            ))}
           </div>
-          <div className="mt-2 flex items-center gap-2 text-gray-500 dark:text-gray-400">
+          <div className="prose mt-1 max-w-none text-gray-500 dark:text-gray-400">
+            {summary}
+          </div>
+
+          <div className="mt-1 flex items-center gap-2 text-gray-500 dark:text-gray-400">
             <dl className="flex items-center">
               <dt className="sr-only">Published on</dt>
               <dd className="flex items-center text-sm leading-6">
@@ -92,6 +93,11 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
                 </time>
               </dd>
             </dl>
+            <span>&middot;</span>
+            <div className="flex items-center">
+              <LanguageIcon className="h-4 w-4" />
+              <span className="ml-1">{language}</span>
+            </div>
             <span>&middot;</span>
             <div className="flex items-center">
               <MdInsights className="mr-1 h-4 w-4" />

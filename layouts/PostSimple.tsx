@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { ReactNode } from 'react';
 
 import type { Authors, Blog, Snippets } from 'contentlayer/generated';
@@ -13,7 +14,7 @@ import SectionContainer from '@/components/SectionContainer';
 import TOCInline from '@/components/TOCInline';
 import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
-import ReactionCounter from '@/components/blog/PageReactions';
+import Reactions from '@/components/blog/PageReactions';
 import siteMetadata from '@/data/siteMetadata';
 
 interface LayoutProps {
@@ -34,7 +35,8 @@ export default function PostLayout({
   children,
 }: LayoutProps) {
   const { slug, date, title, tags, readingTime, thumbnail } = content;
-
+  const headersList = headers();
+  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
   const slugNormalized = `blog/${slug}`;
 
   return (
@@ -66,6 +68,7 @@ export default function PostLayout({
                     date={date}
                     slug={slugNormalized}
                     readingTime={readingTime}
+                    language={content.language || 'English'}
                   />
                 </div>
               </dl>
@@ -121,7 +124,7 @@ export default function PostLayout({
             </div>
           </footer>
           <div className="fixed bottom-4 left-1/2 w-full max-w-md -translate-x-1/2 transform lg:sticky lg:bottom-0 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
-            <ReactionCounter slug={slugNormalized} />
+            <Reactions slug={slugNormalized} ip={ip} />
           </div>
         </div>
       </article>

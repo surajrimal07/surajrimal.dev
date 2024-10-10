@@ -1,3 +1,4 @@
+import { ReactionType } from '@/types/reaction';
 import { BlogShares, ShareType } from '@/types/share';
 
 import { MAX_SHARES_PER_SESSION } from '../constants';
@@ -139,4 +140,105 @@ export async function updateBlogShares(
   }
 
   return newShares;
+}
+
+export async function handleReaction(
+  slug: string,
+  userIdentifier: string,
+  reactionType: ReactionType
+) {
+  console.log('Handling Reaction:', { slug, userIdentifier, reactionType });
+
+  // Check if the user has already reacted to this post
+  const { data: existingReaction, error: checkError } = await supabase
+    .from('blog_reactions')
+    .select('*')
+    .eq('post_slug', slug)
+    .eq('user_identifier', userIdentifier)
+    .single();
+
+  if (checkError && checkError.code !== 'PGRST116') {
+    console.error('Error checking existing reaction:', checkError.message);
+    return { success: false, error: checkError.message };
+  }
+
+  // If no existing reaction, add a new one
+  if (!existingReaction) {
+    const { data, error } = await supabase
+      .from('blog_reactions')
+      .insert([
+        {
+          post_slug: slug,
+          user_identifier: userIdentifier,
+          reaction: reactionType,
+        },
+      ])
+      .single();
+
+    if (error) {
+      console.error('Error adding reaction:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+  }
+
+  // If the same reaction exists, remove it (toggle reaction off)
+  if (existingReaction.reaction === reactionType) {
+    const { data, error } = await supabase
+      .from('blog_reactions')
+      .delete()
+      .eq('post_slug', slug)
+      .eq('user_identifier', userIdentifier);
+
+    if (error) {
+      console.error('Error removing reaction:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data, message: 'Reaction removed' };
+  }
+
+  // If a different reaction exists, update it
+  const { data, error } = await supabase
+    .from('blog_reactions')
+    .update({ reaction: reactionType })
+    .eq('post_slug', slug)
+    .eq('user_identifier', userIdentifier);
+
+  if (error) {
+    console.error('Error updating reaction:', error.message);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, data, message: 'Reaction updated' };
+}
+
+export async function getReactionCount(slug: string) {
+  const { data, error } = await supabase
+    .from('blog_reactions')
+    .select('reaction')
+    .eq('post_slug', slug);
+
+  if (error) {
+    console.error('Error fetching reaction count:', error.message);
+    return { success: false, error: error.message };
+  }
+
+  const reactionCounts: Record<ReactionType, number> = {
+    CLAPPING: 0,
+    LOVE: 0,
+    THINK: 0,
+    CRY: 0,
+    VOMIT: 0,
+  };
+
+  data.forEach((reaction) => {
+    const reactionType = reaction.reaction as ReactionType;
+    if (reactionCounts[reactionType] !== undefined) {
+      reactionCounts[reactionType] += 1;
+    }
+  });
+
+  return { success: true, counts: reactionCounts };
 }

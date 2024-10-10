@@ -112,6 +112,7 @@ export const Blog = defineDocumentType(() => ({
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     lastmod: { type: 'date' },
     draft: { type: 'boolean' },
+    language: { type: 'string' },
     summary: { type: 'string' },
     hidden: { type: 'boolean' },
     images: { type: 'json' },
@@ -145,6 +146,7 @@ export const Authors = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     name: { type: 'string', required: true },
+    language: { type: 'string' },
     avatar: { type: 'string' },
     occupation: { type: 'string' },
     company: { type: 'string' },
@@ -166,6 +168,7 @@ export const Snippets = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     lastmod: { type: 'date' },
+    language: { type: 'string' },
     draft: { type: 'boolean' },
     thumbnail: { type: 'string' },
     summary: { type: 'string' },

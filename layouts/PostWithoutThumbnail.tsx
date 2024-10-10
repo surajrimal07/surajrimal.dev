@@ -9,7 +9,7 @@ import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
 import ShareButton from '@/components/blog/ShareButton';
-import { CalendarIcon } from '@/components/social-icons/icons';
+import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
 import { timeAgo } from '@/utils/timeAgo';
 
@@ -18,6 +18,7 @@ interface PostWithoutThumbnailProps {
   date: string;
   title: string;
   summary: string;
+  language: string;
   tags: string[];
   views: number;
   shares: number;
@@ -32,6 +33,7 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
   title,
   summary,
   tags,
+  language,
   views,
   shares,
   setOpenShareMenuSlug,
@@ -57,16 +59,16 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
                 {title}
               </Link>
             </h2>
-            <div className="mt-1 flex flex-wrap">
+            <div className="flex flex-wrap">
               {tags.map((tag) => (
                 <Tag key={tag} text={tag} />
               ))}
             </div>
-            <div className="prose mt-2 max-w-none text-gray-500 dark:text-gray-400">
+            <div className="prose mt-1 max-w-none text-gray-500 dark:text-gray-400">
               {summary}
             </div>
           </div>
-          <div className="mt-2 flex items-center gap-2 text-gray-500 dark:text-gray-400">
+          <div className="mt-1 flex items-center gap-2 text-gray-500 dark:text-gray-400">
             <dl className="flex items-center">
               <dt className="sr-only">Published on</dt>
               <dd className="flex items-center text-sm leading-6">
@@ -80,6 +82,11 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
                 </time>
               </dd>
             </dl>
+            <span>&middot;</span>
+            <div className="flex items-center">
+              <LanguageIcon className="h-4 w-4" />
+              <span className="ml-1">{language}</span>
+            </div>
             <span>&middot;</span>
             <div className="flex items-center">
               <MdInsights className="mr-1 h-4 w-4" />
