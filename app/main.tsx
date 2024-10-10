@@ -1,3 +1,4 @@
+import { ReaderIcon } from '@radix-ui/react-icons';
 import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
 
@@ -5,6 +6,7 @@ import Link from '@/components/Link';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
+import AnimatedCounter from '@/components/animata/text/counter';
 import Avatar from '@/components/homepage/Avatar';
 import BlogLinks from '@/components/homepage/BlogLinks';
 import GithubContributions from '@/components/homepage/GithubContributions';
@@ -15,10 +17,12 @@ import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import { Technologies } from '@/components/homepage/Technologies';
 import TypedBios from '@/components/homepage/TypedBios';
+import { LanguageIcon } from '@/components/social-icons/icons';
 import { Separator } from '@/components/ui/cool-separator';
 import siteMetadata from '@/data/siteMetadata';
+import { timeAgo } from '@/utils/timeAgo';
 
-const MAX_DISPLAY = 1;
+import { MAX_DISPLAY } from '../constants';
 
 export default function Home({ posts }) {
   return (
@@ -61,7 +65,8 @@ export default function Home({ posts }) {
       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
         {!posts.length && 'No posts found.'}
         {posts.slice(0, MAX_DISPLAY).map((post) => {
-          const { slug, date, title, summary, tags } = post;
+          const { slug, date, readingTime, title, summary, tags } = post;
+          const timeAgoText = timeAgo(new Date(date));
           return (
             <li key={slug} className="py-6">
               <article>
@@ -72,8 +77,12 @@ export default function Home({ posts }) {
                       <time dateTime={date}>
                         {formatDate(date, siteMetadata.locale)}
                       </time>
+                      <div className="ml-1 text-gray-500 dark:text-gray-400">
+                        {`(${timeAgoText})`}
+                      </div>
                     </dd>
                   </dl>
+
                   <div className="space-y-5 xl:col-span-3">
                     <div className="space-y-4">
                       <div>
@@ -93,6 +102,23 @@ export default function Home({ posts }) {
                       </div>
                       <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                         {summary}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-8">
+                      <div className="flex items-center">
+                        <ReaderIcon className="mr-1 h-4 w-4 sm:h-5 sm:w-5" />
+                        <AnimatedCounter
+                          targetValue={Math.ceil(readingTime.minutes)}
+                        />
+                        <span className="ml-1.5 whitespace-nowrap">
+                          mins read
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span className="ml-1.5">
+                          {post.language ?? 'English'}
+                        </span>
                       </div>
                     </div>
                     <div className="text-base font-medium leading-6">

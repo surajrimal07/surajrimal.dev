@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionId } from '@/lib/session';
 import { ContactForm } from '@/types/contact';
 import { createClient } from '@/utils/supabase/server';
-
-const MAX_SUBMISSIONS_PER_SESSION = 3;
+import { MAX_SUBMISSIONS_PER_SESSION } from '@/constants/index';
 
 export async function POST(req: NextRequest) {
   const supabase = createClient();
