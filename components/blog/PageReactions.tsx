@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import clsx from 'clsx';
 import { m, useAnimationControls } from 'framer-motion';
 import { ShareIcon } from 'lucide-react';
 
@@ -22,54 +21,6 @@ import EmojiReaction from './EmojiReaction';
 interface ReactionProps {
   slug: string;
   ip: string;
-}
-
-interface CounterProps {
-  count: number;
-}
-
-function Counter({ count }: CounterProps) {
-  const controls = useAnimationControls();
-
-  useEffect(() => {
-    const startMotion = async () => {
-      await controls.start({
-        y: [-20, 0],
-        transition: {
-          duration: 0.18,
-        },
-      });
-    };
-
-    if (count !== 0) {
-      startMotion();
-    }
-  }, [count, controls]);
-
-  return count === 0 ? (
-    <span className={clsx('flex flex-col font-mono text-sm')}>
-      <span
-        className={clsx(
-          'flex h-5 items-center font-mono text-sm font-bold text-slate-600',
-          'dark:text-slate-300'
-        )}
-      >
-        0
-      </span>
-    </span>
-  ) : (
-    <m.span
-      className={clsx(
-        'flex flex-col font-mono text-sm font-bold text-slate-600',
-        'dark:text-slate-300'
-      )}
-      animate={controls}
-    >
-      <span className={clsx('flex h-5 items-center')}>&nbsp;</span>
-      <span className={clsx('flex h-5 items-center')}>{count}</span>
-      <span className={clsx('flex h-5 items-center')}>{count - 1}</span>
-    </m.span>
-  );
 }
 
 export default function Reactions({ slug, ip }: ReactionProps) {

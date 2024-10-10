@@ -147,8 +147,6 @@ export async function handleReaction(
   userIdentifier: string,
   reactionType: ReactionType
 ) {
-  console.log('Handling Reaction:', { slug, userIdentifier, reactionType });
-
   // Check if the user has already reacted to this post
   const { data: existingReaction, error: checkError } = await supabase
     .from('blog_reactions')
