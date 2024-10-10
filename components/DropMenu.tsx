@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import {
+  BriefcaseBusiness,
   Code,
   Computer,
   Contact,
+  Cookie,
   LayoutDashboard,
   LogOut,
   Route,
@@ -180,6 +182,18 @@ export function DropdownMenuDemo() {
             <Link href="/contact" className="flex items-center">
               <Contact className="mr-2 h-4 w-4" />
               <span>Contact</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/available" className="flex items-center">
+              <BriefcaseBusiness className="mr-2 h-4 w-4" />
+              <span>Availablity</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/privacy" className="flex items-center">
+              <Cookie className="mr-2 h-4 w-4" />
+              <span>Privacy</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

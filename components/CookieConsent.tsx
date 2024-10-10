@@ -44,7 +44,7 @@ const CookieConsent = () => {
           </Link>{' '}
           for performance monitoring and rate-limiting features like collecting
           IP addresses. Read our{' '}
-          <Link href="/privacy-policy" className="special-underline-new">
+          <Link href="/privacy" className="special-underline-new">
             Privacy Policy
           </Link>
           .

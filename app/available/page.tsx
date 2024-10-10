@@ -26,6 +26,7 @@ import { toastOptions } from '@/utils/toast';
 export default function AvailabilityPage() {
   const router = useRouter();
   const [showHireMe, setShowHireMe] = useState(false);
+  
   const [email, setEmail] = useState('');
   const [availabilityData, setAvailabilityData] =
     useState<AvailabilityData | null>(null);
