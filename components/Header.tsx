@@ -1,10 +1,14 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import clsx from 'clsx';
 
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
+import { getAvailabilityData } from '@/lib/availablity';
 import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
+import { AvailabilityData } from '@/types/availablity';
 
 import AnalyticsLink from './AnalyticsLink';
 import DropMenu from './DropMenu';
@@ -19,6 +23,17 @@ import Tooltip from './ui/tooltip';
 const Header = () => {
   const currentPath = useCurrentPath();
   const completion = useReadingProgress();
+  const [availabilityData, setAvailabilityData] =
+    useState<AvailabilityData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAvailabilityData();
+      setAvailabilityData(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <header
       className={clsx(
@@ -72,25 +87,27 @@ const Header = () => {
           </div>
         </Link>
 
-        <Link
-          href="/"
-          aria-label={siteMetadata.headerTitle}
-          className="flex items-center"
-        >
-          <div className="m-0 mt-1 hidden justify-center p-0.5 text-center md:block">
-            <HoverBorderGradient
-              containerClassName="rounded-full"
-              as="button"
-              className="flex items-center space-x-2 bg-white text-black dark:bg-gray-600/70 dark:text-white"
-            >
-              <span className="text-xs"> Open to work</span>
-            </HoverBorderGradient>
-          </div>
+        {availabilityData?.is_available && (
+          <Link
+            href="/available"
+            aria-label={siteMetadata.headerTitle}
+            className="flex items-center"
+          >
+            <div className="m-0 mt-0 hidden justify-center p-0.5 text-center md:block">
+              <HoverBorderGradient
+                containerClassName="rounded-full"
+                as="button"
+                className="flex items-center space-x-2 bg-white text-black dark:bg-gray-600/70 dark:text-white"
+              >
+                <span className="text-xs"> Open to work</span>
+              </HoverBorderGradient>
+            </div>
 
-          <Tooltip content="Open to work">
-            <span className="m-0 mt-1 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
-          </Tooltip>
-        </Link>
+            <Tooltip content="Open to work">
+              <span className="m-0 mt-1 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
+            </Tooltip>
+          </Link>
+        )}
       </div>
 
       <div className="z-10 flex items-center text-base leading-5">
