@@ -8,6 +8,7 @@ import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
 
+import CookieConsent from '@/components/CookieConsent';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PathProvider } from '@/components/PathProvider';
@@ -141,6 +142,7 @@ export default function RootLayout({
                 <main className="mb-auto">{children}</main>
                 <Footer />
               </SearchProvider>
+              <CookieConsent />
             </SectionContainer>
           </PathProvider>
         </ThemeProviders>

@@ -87,6 +87,9 @@ export default function PostLayout({
               {children}
             </div>
           </div>
+          <div className="fixed bottom-4 left-1/2 w-full max-w-md -translate-x-1/2 transform lg:sticky lg:bottom-0 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
+            <Reactions slug={slugNormalized} ip={ip} />
+          </div>
 
           {siteMetadata.comments && (
             <div
@@ -123,9 +126,6 @@ export default function PostLayout({
               )}
             </div>
           </footer>
-          <div className="fixed bottom-4 left-1/2 w-full max-w-md -translate-x-1/2 transform lg:sticky lg:bottom-0 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
-            <Reactions slug={slugNormalized} ip={ip} />
-          </div>
         </div>
       </article>
     </SectionContainer>

@@ -1,5 +1,6 @@
 import { ReactionType } from '@/types/reaction';
 import { BlogShares, ShareType } from '@/types/share';
+import redis from '@/utils/redis';
 
 import { MAX_SHARES_PER_SESSION } from '../constants';
 import { supabase } from '../utils/supabase/client';
@@ -7,74 +8,81 @@ import { supabase } from '../utils/supabase/client';
 export async function getBlogView(slug: string): Promise<number> {
   const normalizedSlug = `/${slug}`;
 
-  const { data, error } = await supabase
-    .from('page_views')
-    .select('views')
-    .eq('slug', normalizedSlug)
-    .maybeSingle();
-
-  if (error) {
+  try {
+    const views = await redis.get(normalizedSlug);
+    return parseInt(views as string) || 0;
+  } catch (error) {
     console.error(`Error fetching blog view for ${normalizedSlug}:`, error);
     return 0;
   }
-
-  return data?.views ?? 0;
 }
 
 export async function updatePageViews(slug: string): Promise<number> {
   const normalizedSlug = slug === '/' ? 'home' : slug;
 
-  const { data, error } = await supabase
-    .from('page_views')
-    .select('views')
-    .eq('slug', normalizedSlug)
-    .maybeSingle();
-
-  if (error) {
-    console.error(`Error fetching page views for ${normalizedSlug}:`, error);
+  try {
+    const newViews = await redis.incr(normalizedSlug);
+    return newViews;
+  } catch (error) {
+    console.error(`Error updating page views for ${normalizedSlug}:`, error);
+    return 0;
   }
-
-  const newViews = (data?.views ?? 0) + 1;
-
-  const { error: upsertError } = await supabase
-    .from('page_views')
-    .upsert({ slug: normalizedSlug, views: newViews }, { onConflict: 'slug' });
-
-  if (upsertError) {
-    console.error(
-      `Error updating page views for ${normalizedSlug}:`,
-      upsertError
-    );
-  }
-
-  return newViews;
 }
+
+// export async function getBlogShares(slug: string): Promise<BlogShares> {
+//   const normalizedSlug = `/${slug}`;
+
+//   const { data, error } = await supabase
+//     .from('page_views')
+//     .select('twittershare, facebookshare, clipboardshare')
+//     .eq('slug', normalizedSlug)
+//     .maybeSingle();
+
+//   if (error) {
+//     console.error(`Error fetching shares for ${normalizedSlug}:`, error);
+//     return { twittershare: 0, facebookshare: 0, clipboardshare: 0, total: 0 };
+//   }
+
+//   const twittershare = data?.twittershare ?? 0;
+//   const facebookshare = data?.facebookshare ?? 0;
+//   const clipboardshare = data?.clipboardshare ?? 0;
+//   const total = twittershare + facebookshare + clipboardshare;
+
+//   return {
+//     twittershare,
+//     facebookshare,
+//     clipboardshare,
+//     total,
+//   };
+// }
 
 export async function getBlogShares(slug: string): Promise<BlogShares> {
   const normalizedSlug = `/${slug}`;
+  const sharesKey = `shares:${slug}`;
 
-  const { data, error } = await supabase
-    .from('page_views')
-    .select('twittershare, facebookshare, clipboardshare')
-    .eq('slug', normalizedSlug)
-    .maybeSingle();
+  try {
+    const shares = await redis.hgetall(sharesKey);
 
-  if (error) {
+    const twittershare = parseInt(shares?.twittershare as string) || 0;
+    const facebookshare = parseInt(shares?.facebookshare as string) || 0;
+    const clipboardshare = parseInt(shares?.clipboardshare as string) || 0;
+    const total = twittershare + facebookshare + clipboardshare;
+
+    return {
+      twittershare,
+      facebookshare,
+      clipboardshare,
+      total,
+    };
+  } catch (error) {
     console.error(`Error fetching shares for ${normalizedSlug}:`, error);
-    return { twittershare: 0, facebookshare: 0, clipboardshare: 0, total: 0 };
+    return {
+      twittershare: 0,
+      facebookshare: 0,
+      clipboardshare: 0,
+      total: 0,
+    };
   }
-
-  const twittershare = data?.twittershare ?? 0;
-  const facebookshare = data?.facebookshare ?? 0;
-  const clipboardshare = data?.clipboardshare ?? 0;
-  const total = twittershare + facebookshare + clipboardshare;
-
-  return {
-    twittershare,
-    facebookshare,
-    clipboardshare,
-    total,
-  };
 }
 
 export async function updateBlogShares(
@@ -83,63 +91,50 @@ export async function updateBlogShares(
   shareType: ShareType
 ): Promise<number> {
   const normalizedSlug = `/${slug}`;
+  const sharesKey = `shares:${slug}`;
+  const ipKey = `ip:${ip}:shares`;
 
-  const { data: ipData, error: ipError } = await supabase
-    .from('iprecord')
-    .select('shares')
-    .eq('ipaddress', ip)
-    .maybeSingle();
+  const multi = redis.multi();
 
-  if (ipError) {
-    throw new Error('Max shares limit reached');
-  }
+  try {
+    // Check IP shares limit
+    const currentSharesCount = parseInt((await redis.get(ipKey)) || '0');
 
-  const currentSharesCount = ipData ? ipData.shares : 0;
+    if (currentSharesCount >= MAX_SHARES_PER_SESSION) {
+      console.warn(`IP ${ip} has reached the maximum shares limit.`);
+      return -1;
+    }
 
-  if (currentSharesCount >= MAX_SHARES_PER_SESSION) {
-    console.warn(`IP ${ip} has reached the maximum shares limit.`);
-    return -1;
-  }
+    // Increment share count for the specific type
+    multi.hincrby(sharesKey, shareType, 1);
 
-  const { data: currentData, error: fetchError } = await supabase
-    .from('page_views')
-    .select(`${shareType}`)
-    .eq('slug', normalizedSlug)
-    .maybeSingle();
+    // Increment IP shares count
+    multi.incr(ipKey);
 
-  if (fetchError) {
-    console.error(`Error fetching shares for ${normalizedSlug}:`, fetchError);
+    // Set expiry for IP record (24 hours)
+    multi.expire(ipKey, 24 * 60 * 60);
+
+    const results = await multi.exec();
+
+    if (!results) {
+      throw new Error('Transaction failed');
+    }
+
+    // Type guard for the results
+    if (!Array.isArray(results[0]) || results[0].length < 2) {
+      throw new Error('Unexpected result format');
+    }
+    const newShares = Number(results[0][1]);
+
+    if (isNaN(newShares)) {
+      throw new Error('Invalid share count returned');
+    }
+
+    return newShares;
+  } catch (error) {
+    console.error(`Error updating shares for ${normalizedSlug}:`, error);
     return 0;
   }
-
-  const currentShares = currentData ? currentData[shareType] : 0;
-  const newShares = currentShares + 1;
-
-  const { error: updateError } = await supabase
-    .from('page_views')
-    .upsert(
-      { slug: normalizedSlug, [shareType]: newShares },
-      { onConflict: 'slug' }
-    );
-
-  if (updateError) {
-    console.error(`Error updating shares for ${normalizedSlug}:`, updateError);
-    return 0;
-  }
-
-  const { error: updateIpError } = await supabase
-    .from('iprecord')
-    .upsert(
-      { ipaddress: ip, shares: currentSharesCount + 1 },
-      { onConflict: 'ipaddress' }
-    );
-
-  if (updateIpError) {
-    console.error(`Error updating shares count for IP ${ip}:`, updateIpError);
-    return 0;
-  }
-
-  return newShares;
 }
 
 export async function handleReaction(
