@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
+import useChatStore from '@/lib/hooks/chatState';
 
 export default function ScrollTopAndComment({
   showScrollToComment = true,
@@ -11,6 +12,7 @@ export default function ScrollTopAndComment({
 }) {
   const [show, setShow] = useState(false);
   const [progress, setProgress] = useState(0);
+  const { chatEnabled } = useChatStore();
 
   const handleWindowScroll = useCallback(() => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -61,6 +63,7 @@ export default function ScrollTopAndComment({
         aria-label="Scroll To Top"
         onClick={handleScrollTop}
         className="relative rounded-full bg-black p-2 text-white transition-all dark:bg-black dark:text-white"
+        style={{ marginBottom: chatEnabled ? '60px' : '0px' }}
       >
         <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path

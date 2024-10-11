@@ -8,6 +8,7 @@ import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
 
+import Chatbox from '@/components/ChatBox';
 import CookieConsent from '@/components/CookieConsent';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
@@ -142,6 +143,7 @@ export default function RootLayout({
                 <main className="mb-auto">{children}</main>
                 <Footer />
               </SearchProvider>
+              <Chatbox />
               <CookieConsent />
             </SectionContainer>
           </PathProvider>

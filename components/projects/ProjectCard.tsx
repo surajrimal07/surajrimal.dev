@@ -5,12 +5,22 @@ import { useEffect, useState } from 'react';
 import GithubRepo from '@/components/GithubRepo';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
+import { Badge } from '@/components/ui/badge';
 import { fetchGithubRepo } from '@/lib/github';
 import type { ProjectCardProps } from '@/types/components';
 import type { GithubRepository } from '@/types/server';
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
-  const { title, description, imgSrc, url, repo, builtWith } = project;
+  const {
+    title,
+    description,
+    imgSrc,
+    isDarkBadgeNeeded,
+    url,
+    repo,
+    builtWith,
+    stack,
+  } = project;
 
   const [repository, setRepository] = useState<GithubRepository | null>(null);
 
@@ -29,8 +39,6 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
     getRepoData();
   }, [repo]);
 
-  const href = repository?.url || url;
-
   return (
     <div className="md max-w-[544px] p-4 md:w-1/2">
       <div
@@ -38,18 +46,27 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           imgSrc && 'h-full'
         } flex h-full flex-col overflow-hidden rounded-lg border border-transparent shadow-nextjs dark:shadow-nextjs-dark`}
       >
-        <Image
-          alt={title}
-          src={imgSrc}
-          className="object-cover object-center md:h-36 lg:h-60"
-          width={1088}
-          height={612}
-        />
+        <div className="relative">
+          <Image
+            alt={title}
+            src={imgSrc}
+            className="object-cover object-center md:h-36 lg:h-60"
+            width={1088}
+            height={612}
+          />
+          {stack && (
+            <div className="absolute right-2 top-2">
+              <Badge variant={isDarkBadgeNeeded ? 'neutralDark' : 'neutral'}>
+                {stack}
+              </Badge>
+            </div>
+          )}
+        </div>
 
         <div className="p-6">
           <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
-            {href ? (
-              <Link href={href} aria-label={`Link to ${title}`}>
+            {url ? (
+              <Link href={url} aria-label={`Link to ${title}`}>
                 {title}
               </Link>
             ) : (
@@ -76,11 +93,11 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             .
           </div>
           {repository ? (
-            <GithubRepo repo={repository} />
+            <GithubRepo repo={repository} projectUrl={url} />
           ) : (
-            href && (
+            url && (
               <Link
-                href={href}
+                href={url}
                 className="text-base font-medium leading-6 text-primary hover:text-primary-600 dark:hover:text-primary-400"
                 aria-label={`Link to ${title}`}
               >

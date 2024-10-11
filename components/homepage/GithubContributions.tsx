@@ -1,15 +1,15 @@
 import GitHubCalendar from 'react-github-calendar';
 import { TfiArrowTopRight } from 'react-icons/tfi';
 
-import Link from '../Link';
-import Twemoji from '../Twemoji';
+import Link from '@/components/Link';
+import Twemoji from '@/components/Twemoji';
 
 const GithubContributions = () => {
   return (
     <>
       <div className="w-full space-y-2 py-2 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
-          Github Contributions
+          Github Contributions {''}
           <Twemoji size="twa-sm" emoji="keyboard" />
         </h1>
         <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">

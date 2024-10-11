@@ -8,23 +8,13 @@ import {
   RiGitRepositoryPrivateLine,
 } from 'react-icons/ri';
 
+import IconsBundle from '@/components/social-icons';
+import { LOGO_IMAGE_PATH } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 import { useRepoData, useUserData } from '@/lib/github';
+import { GithubStats, LanguageStats } from '@/types/about';
 import { Repository, UserData } from '@/types/github';
 import { timeAgo } from '@/utils/timeAgo';
-
-import { LOGO_IMAGE_PATH } from '../constants';
-import IconsBundle from './social-icons';
-
-interface LanguageStats {
-  [key: string]: string;
-}
-
-interface GithubStats {
-  totalStars: number;
-  privateRepos: number;
-  lastCommitDate: string;
-}
 
 export default async function ProfileCard() {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors;
@@ -54,7 +44,6 @@ export default async function ProfileCard() {
     githubStats = {
       totalStars,
       privateRepos,
-      //lastCommitDate: formatCommitDate(lastCommit),
       lastCommitDate: timeAgo(new Date(lastCommit)),
     };
 
@@ -107,7 +96,7 @@ export default async function ProfileCard() {
   const renderGithubStats = () => (
     <>
       <h4 className="mb-2 w-full font-semibold">Github Stats</h4>
-      <div className="flex w-full justify-between">
+      <div className="flex w-full flex-wrap justify-between">
         <StatItem
           icon={<FaRegStar size={24} />}
           value={githubStats.totalStars}
@@ -136,7 +125,7 @@ export default async function ProfileCard() {
   );
 
   return (
-    <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 dark:border-gray-700 dark:bg-black">
+    <div className="mx-auto flex w-full max-w-full flex-col items-center space-y-4 rounded-lg border p-6 dark:border-gray-700 dark:bg-black sm:max-w-xs">
       <Image
         src={LOGO_IMAGE_PATH}
         alt="avatar"
@@ -144,11 +133,17 @@ export default async function ProfileCard() {
         height={192}
         className="h-48 w-48 rounded-full"
       />
-      <h3 className="text-2xl font-bold leading-8 tracking-tight">{name}</h3>
-      <p className="font-bold">@surajrimal07</p>
-      <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
-      <div className="text-gray-500 dark:text-gray-400">{company}</div>
-      <div className="flex space-x-3">
+      <h3 className="text-center text-2xl font-bold leading-8 tracking-tight">
+        {name}
+      </h3>
+      <p className="text-center font-bold">@surajrimal07</p>
+      <div className="text-center text-gray-500 dark:text-gray-400">
+        {occupation}
+      </div>
+      <div className="text-center text-gray-500 dark:text-gray-400">
+        {company}
+      </div>
+      <div className="flex flex-wrap justify-center space-x-3">
         <IconsBundle kind="mail" href={`mailto:${siteMetadata.email}`} />
         <IconsBundle kind="github" href={siteMetadata.github} />
         <IconsBundle
@@ -174,7 +169,7 @@ const StatItem = ({
   icon: React.ReactNode;
   value: number;
 }) => (
-  <div className="flex flex-col items-center">
+  <div className="mb-4 flex flex-col items-center md:mb-0">
     {icon}
     <span className="font-bold">{value}</span>
   </div>

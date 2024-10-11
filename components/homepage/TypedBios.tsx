@@ -13,15 +13,13 @@ const TypedBios = () => {
   React.useEffect(() => {
     typed.current = new Typed(el.current, {
       stringsElement: '#bios',
-      typeSpeed: 5,
-      backSpeed: 10,
+      typeSpeed: 50,
+      backSpeed: 25,
       loop: true,
       backDelay: 1000,
     });
     return () => {
-      if (typed.current) {
-        typed.current.destroy();
-      }
+      typed.current?.destroy();
     };
   }, []);
 
@@ -29,49 +27,45 @@ const TypedBios = () => {
     <div>
       <ul id="bios" className="hidden">
         <li>
-          I'm aliased as <b className="font-medium">Suraj</b> at work.
+          I go by <b className="font-medium">Suraj</b> professionally.
         </li>
         <li>
-          I live in <b className="font-medium">Kathmandu, Nepal</b>.
+          Currently based in <b className="font-medium">Kathmandu, Nepal</b>.
         </li>
         <li>
-          I was born in the beautiful city <b className="font-medium">Simara</b>
-          .
+          Originating from the picturesque city of{' '}
+          <b className="font-medium">Simara</b>.
         </li>
         <li>
-          My first programming language I learned was{' '}
-          <b className="font-medium">Java</b>.
+          My first programming language was <b className="font-medium">Java</b>.
         </li>
         <li>
-          I love <b className="font-medium">system design </b> and{' '}
-          <b className="font-medium"> backend development</b>.
+          I am passionate about <b className="font-medium">system design</b> and{' '}
+          <b className="font-medium">backend design</b>.
         </li>
         <li>
-          I'm focusing on building{' '}
-          <b className="font-medium">Realtime Stock Analytics Platform </b>.
+          Currently, I’m developing a{' '}
+          <b className="font-medium">Real-time Stock Analytics Platform</b>.
         </li>
         <li>
-          I work mostly with{' '}
-          <b className="font-medium">Javascript/Typescript</b> technologies.
+          I primarily work with <b className="font-medium">JavaScript</b> and{' '}
+          <b className="font-medium">TypeScript</b>.
         </li>
         <li>
-          I'm a <b className="font-medium"> pet-person </b> and i own a{' '}
+          A proud <b className="font-medium">pet owner</b>, I have a{' '}
           <Twemoji emoji="dog" />.
         </li>
         <li>
-          I'm a comics-guy. I love
-          <span className="ml-1">
-            <Twemoji emoji="the-flash" />
-            ,and <Twemoji emoji="superman" />
-          </span>
-          .
+          I enjoy comics, especially <Twemoji emoji="the-flash" /> and{' '}
+          <Twemoji emoji="superman" />.
         </li>
         <li>
-          I love listening <Twemoji emoji="musical-notes" /> music and watching
-          si-fi <Twemoji emoji="movie-camera" />.
+          Music is my passion, and I love watching sci-fi{' '}
+          <Twemoji emoji="movie-camera" /> films.
         </li>
         <li>
-          I love traveling <Twemoji emoji="sunrise" />, new places.
+          I have a strong desire for travel <Twemoji emoji="sunrise" /> and
+          adventure.
         </li>
       </ul>
       <span ref={el} className="text-neutral-900 dark:text-neutral-200" />

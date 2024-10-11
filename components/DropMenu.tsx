@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import usePlaySound from '@/components/PlaySound';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,10 +32,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import useChatStore from '@/lib/hooks/chatState';
 import { createClient } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
-
-import usePlaySound from './PlaySound';
 
 export function DropdownMenuDemo() {
   const [user, setUser] = useState<User | null>(null);
@@ -45,6 +47,8 @@ export function DropdownMenuDemo() {
     filePath: '/static/sounds/page-change.mp3',
     volume: 0.7,
   });
+
+  const { chatEnabled, setChatEnabled } = useChatStore();
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -88,6 +92,7 @@ export function DropdownMenuDemo() {
       playSound();
     }
   };
+
   return (
     <DropdownMenu modal={false} onOpenChange={handleDropdownChange}>
       <DropdownMenuTrigger asChild>
@@ -197,6 +202,19 @@ export function DropdownMenuDemo() {
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <div className="flex w-full items-center justify-between">
+            <Label htmlFor="chat-toggle" className="cursor-pointer">
+              Enable Chat
+            </Label>
+            <Switch
+              id="chat-toggle"
+              checked={chatEnabled}
+              onCheckedChange={setChatEnabled}
+            />
+          </div>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

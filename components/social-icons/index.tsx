@@ -290,19 +290,6 @@ const IconsBundle = ({
     return null;
   }
 
-  //not sure why this was added
-  // if ((iconType === 'link' || iconType === 'icon' || iconType === 'LinkButton') && !href) {
-  //   return null;
-  // }
-
-  // if (!href || (kind === 'mail' && !/^mailto:\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(href)))
-  //   return (
-  //     <SocialSvg
-  //       className={`${hover ? 'hover:text-red-500 dark:hover:text-red-400' : ''} h-${size} w-${size}`}
-  //     />
-  //   )
-  // convert tailwind size to px
-
   const combinedClass = cn(
     `${text ? 'mr-2' : ''}  h-${size} w-${size}`,
     className

@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// Ensure the path is correct
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, Briefcase, CheckCircle, Clock, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -26,7 +25,7 @@ import { toastOptions } from '@/utils/toast';
 export default function AvailabilityPage() {
   const router = useRouter();
   const [showHireMe, setShowHireMe] = useState(false);
-  
+
   const [email, setEmail] = useState('');
   const [availabilityData, setAvailabilityData] =
     useState<AvailabilityData | null>(null);

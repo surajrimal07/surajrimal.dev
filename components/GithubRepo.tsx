@@ -2,10 +2,17 @@ import { ExternalLink, Eye, GitFork, Github, Star } from 'lucide-react';
 
 import type { GithubRepository } from '@/types/server';
 
-export default function GithubRepo({ repo }: { repo: GithubRepository }) {
+interface GithubRepoProps {
+  repo: GithubRepository;
+  projectUrl?: string;
+}
+
+export default function GithubRepo({ repo, projectUrl }: GithubRepoProps) {
   const mainLanguage = repo.languages.find(
     (language) => language.name !== 'CSS'
   );
+
+  const url = projectUrl || repo.url;
 
   return (
     <div className="flex items-center justify-between">
@@ -33,10 +40,10 @@ export default function GithubRepo({ repo }: { repo: GithubRepository }) {
         </div>
       </div>
       <div className="flex items-center space-x-2">
-        {repo.homepageUrl && (
+        {url && (
           <>
             <a
-              href={repo.homepageUrl}
+              href={url}
               target="_blank"
               rel="noreferrer"
               className="flex items-center"

@@ -1,8 +1,7 @@
+import BrandIcon from '@/components/BrandIcon';
 import Link from '@/components/Link';
 import { Twemoji } from '@/components/Twemoji';
 import popularTags from '@/data/popularTags';
-
-import BrandIcon from '../BrandIcon';
 
 const PopularTags = () => {
   return (
@@ -16,18 +15,16 @@ const PopularTags = () => {
         </p>
       </div>
       <div className="popular-tags grid grid-cols-3 gap-4 py-4 xl:grid-cols-6">
-        {popularTags.map((popularTag) => {
-          const { slug, iconType, href, title } = popularTag;
-
-          const className = `${slug} flex w-[128px] justify-center space-x-2 rounded-lg p-3`;
-
-          return (
-            <Link key={slug} href={href} className={className}>
-              <BrandIcon type={iconType} className="h-6 w-6" />
-              <div className="my-auto text-white">{title}</div>
-            </Link>
-          );
-        })}
+        {popularTags.map(({ slug, iconType, href, title }) => (
+          <Link
+            key={slug}
+            href={href}
+            className={`${slug} flex w-[128px] justify-center space-x-2 rounded-lg p-3`}
+          >
+            <BrandIcon type={iconType} className="h-6 w-6" />
+            <span className="my-auto text-white">{title}</span>
+          </Link>
+        ))}
       </div>
     </>
   );
