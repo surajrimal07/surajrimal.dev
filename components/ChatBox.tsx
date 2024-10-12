@@ -1,85 +1,116 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { HelpCircle, Send, X } from 'lucide-react';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import usePlaySound from '@/components/PlaySound';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
-import { loadChat, saveChat } from '@/lib/chat';
+import { loadChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
+import { sendMessage } from '@/lib/telegram';
 import { Message } from '@/types/chat';
 
-import { Badge } from './ui/badge';
-
-export default function Chatbox() {
+const Chatbox: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [email, setEmail] = useState('');
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { chatEnabled, setChatEnabled } = useChatStore();
-  const [newMessage, setNewMessage] = useState<Message | null>(null);
+  const [newMessage, setNewMessage] = useState(false);
+  const [isAuthorOnline, setIsAuthorOnline] = useState(false);
 
-  const scrollToBottom = () => {
+  const { playSound } = usePlaySound({
+    filePath: '/static/sounds/message.mp3',
+    volume: 0.7,
+  });
+
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  }, []);
 
   useEffect(() => {
     if (!isCollapsed) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         scrollToBottom();
-      }, 1000);
+        setNewMessage(false);
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  }, [isCollapsed]);
+  }, [isCollapsed, messages, scrollToBottom]);
+
+  const listenSSE = useCallback(
+    (callback: (event: MessageEvent) => void, email: string) => {
+      const eventSource = new EventSource(
+        `/api/stream?clientId=${encodeURIComponent(email)}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      eventSource.onmessage = callback;
+
+      return () => {
+        eventSource.close();
+      };
+    },
+    []
+  );
 
   useEffect(() => {
-    async function fetchData() {
-      const savedEmail = localStorage.getItem('chatboxEmail');
-      if (savedEmail) {
-        setEmail(savedEmail);
-        setIsEmailSubmitted(true);
+    if (email) {
+      const cleanup = listenSSE((event) => {
+        setIsAuthorOnline(true);
+        const data = JSON.parse(event.data);
+        if (data.text) {
+          setMessages((prev) => [
+            ...prev,
+            { id: Date.now(), text: data.text, sender: 'bot' },
+          ]);
+          if (isCollapsed) {
+            playSound();
+            setNewMessage(true);
+          }
+        }
+      }, email);
 
-        await loadChat(email).then((loadedMessages) => {
-          setMessages(loadedMessages);
-        });
-      }
+      return cleanup;
     }
-    fetchData();
-  }, [email]);
+  }, [email, isCollapsed, listenSSE, playSound]);
 
   useEffect(() => {
-    if (!isCollapsed) return;
-
-    const unreadMessage = messages.find((message) => message.sender !== 'user');
-    setNewMessage(unreadMessage || null);
-  }, [messages, isCollapsed]);
+    const savedEmail = localStorage.getItem('chatboxEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsEmailSubmitted(true);
+      loadChat(savedEmail).then(setMessages);
+    }
+  }, []);
 
   useEffect(() => {
     if (isEmailSubmitted) {
       loadChat(email).then((loadedMessages) => {
-        if (loadedMessages.length > 0) {
-          setMessages(loadedMessages);
-        } else {
-          setMessages([
-            {
-              id: 1,
-              text: 'Hello! How can I help you with my blog today?',
-              sender: 'bot',
-            },
-          ]);
-        }
+        setMessages(
+          loadedMessages.length > 0
+            ? loadedMessages
+            : [
+                {
+                  id: 1,
+                  text: 'Hello! How can I help you with my blog today?',
+                  sender: 'bot',
+                },
+              ]
+        );
       });
     }
   }, [isEmailSubmitted, email]);
@@ -93,48 +124,31 @@ export default function Chatbox() {
   const handleSendMessage = async () => {
     if (inputMessage.trim()) {
       const userMessage: Message = {
-        id: messages.length + 1,
+        id: Date.now(),
         text: inputMessage.trim(),
         sender: 'user',
       };
-
       setMessages((prev) => [...prev, userMessage]);
       setInputMessage('');
-      setIsTyping(true);
-
-      await saveChat(email, userMessage);
-
-      setTimeout(async () => {
-        setIsTyping(false);
-
-        const botMessage: Message = {
-          id: messages.length + 2,
-          text: "Thank you for your message. Is there anything else you'd like to know about my blog?",
-          sender: 'bot',
-        };
-
-        setMessages((prev) => [...prev, botMessage]);
-        await saveChat(email, botMessage);
-      }, 1500);
+      await sendMessage(email, userMessage.text);
     }
   };
 
-  const handleFAQClick = (question: string, answer: string) => {
+  const handleFAQClick = useCallback((question: string, answer: string) => {
     setMessages((prev) => [
       ...prev,
       { id: Date.now(), text: question, sender: 'user' },
       { id: Date.now() + 1, text: answer, sender: 'bot' },
     ]);
     setShowFAQ(false);
-  };
+  }, []);
 
   const handleHide = () => {
     setChatEnabled(false);
   };
 
-  if (!chatEnabled) {
-    return null;
-  }
+  if (!chatEnabled) return null;
+
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <AnimatePresence mode="wait">
@@ -233,9 +247,10 @@ export default function Chatbox() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="mb-4"
                 />
-                <Button type="submit">Start Chatting</Button>
+                <Button className="mt-4" type="submit">
+                  Start Chatting
+                </Button>
               </form>
             ) : (
               <>
@@ -254,9 +269,21 @@ export default function Chatbox() {
                       )}
 
                       {message.sender === 'bot' && (
-                        <div className="mr-2 flex h-8 w-8 items-center justify-center">
-                          <span className="text-2xl">🤖</span>
-                        </div>
+                        <>
+                          {isAuthorOnline ? (
+                            <Avatar className="mr-2 h-8 w-8">
+                              <AvatarImage
+                                src={LOGO_IMAGE_PATH}
+                                alt="@author image"
+                              />
+                              <AvatarFallback>SR</AvatarFallback>
+                            </Avatar>
+                          ) : (
+                            <div className="mr-2 flex h-8 w-8 items-center justify-center">
+                              <span className="text-2xl">🤖</span>
+                            </div>
+                          )}
+                        </>
                       )}
 
                       <div
@@ -270,7 +297,7 @@ export default function Chatbox() {
                       </div>
                     </div>
                   ))}
-                  {isTyping && (
+                  {/* {isTyping && (
                     <div className="mb-4 flex justify-start">
                       <div className="mr-2 flex h-8 w-8 items-center justify-center">
                         <span className="text-2xl">🤖</span>
@@ -283,7 +310,7 @@ export default function Chatbox() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
                   <div ref={messagesEndRef} />
                 </ScrollArea>
                 <div className="border-t border-gray-200 p-2">
@@ -348,4 +375,6 @@ export default function Chatbox() {
       </AnimatePresence>
     </div>
   );
-}
+};
+
+export default Chatbox;

@@ -48,6 +48,7 @@
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "image-size": "1.1.1",
+    "ioredis": "^5.4.1",
     "ldrs": "^1.0.2",
     "lucide-react": "^0.447.0",
     "mdx-bundler": "^10.0.3",
@@ -83,6 +84,7 @@
     "tailwind-merge": "^2.5.3",
     "tailwindcss": "^3.4.13",
     "tailwindcss-animate": "^1.0.7",
+    "telegraf": "^4.16.3",
     "typed.js": "^2.1.0",
     "unist-util-visit": "^5.0.0",
     "zustand": "^5.0.0-rc.2"

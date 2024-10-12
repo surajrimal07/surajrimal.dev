@@ -35,11 +35,15 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import useChatStore from '@/lib/hooks/chatState';
+import { cacheAndServeImage } from '@/utils/cacheImage';
 import { createClient } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 
 export function DropdownMenuDemo() {
   const [user, setUser] = useState<User | null>(null);
+  const { chatEnabled, setChatEnabled } = useChatStore();
+  const [cachedAvatarUrl, setCachedAvatarUrl] = useState<string | null>(null);
+
   const supabase = createClient();
   const router = useRouter();
 
@@ -47,8 +51,6 @@ export function DropdownMenuDemo() {
     filePath: '/static/sounds/page-change.mp3',
     volume: 0.7,
   });
-
-  const { chatEnabled, setChatEnabled } = useChatStore();
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -61,6 +63,12 @@ export function DropdownMenuDemo() {
         setUser(null);
       } else {
         setUser(session.user);
+        if (session.user.user_metadata?.avatar_url) {
+          const cachedUrl = await cacheAndServeImage(
+            session.user.user_metadata.avatar_url
+          );
+          setCachedAvatarUrl(cachedUrl);
+        }
       }
     };
 
@@ -106,11 +114,8 @@ export function DropdownMenuDemo() {
             transition={{ duration: 0.1, ease: 'easeIn' }}
           >
             <Avatar>
-              {user?.user_metadata?.avatar_url ? (
-                <AvatarImage
-                  src={user?.user_metadata?.avatar_url}
-                  alt="User avatar"
-                />
+              {cachedAvatarUrl ? (
+                <AvatarImage src={cachedAvatarUrl} alt="User avatar" />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
                   <UserIcon size={22} />

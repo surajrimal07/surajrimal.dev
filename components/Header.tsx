@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import clsx from 'clsx';
 
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
-import { getAvailabilityData } from '@/lib/availablity';
+import { useAvailabilityStore } from '@/lib/hooks/availablityState';
 import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
-import { AvailabilityData } from '@/types/availablity';
 
 import AnalyticsLink from './AnalyticsLink';
 import DropMenu from './DropMenu';
@@ -23,16 +22,13 @@ import Tooltip from './ui/tooltip';
 const Header = () => {
   const currentPath = useCurrentPath();
   const completion = useReadingProgress();
-  const [availabilityData, setAvailabilityData] =
-    useState<AvailabilityData | null>(null);
+  const { availabilityData, fetchAvailabilityData } = useAvailabilityStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAvailabilityData();
-      setAvailabilityData(data);
-    };
-    fetchData();
-  }, []);
+    if (!availabilityData) {
+      fetchAvailabilityData();
+    }
+  }, [availabilityData, fetchAvailabilityData]);
 
   return (
     <header

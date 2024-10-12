@@ -17,9 +17,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { getAvailabilityData, saveSubscriberEmail } from '@/lib/availablity';
+import { saveSubscriberEmail } from '@/lib/availablity';
+import { useAvailabilityStore } from '@/lib/hooks/availablityState';
 import { validateEmail } from '@/lib/validation/email';
-import { AvailabilityData } from '@/types/availablity';
 import { toastOptions } from '@/utils/toast';
 
 export default function AvailabilityPage() {
@@ -27,23 +27,18 @@ export default function AvailabilityPage() {
   const [showHireMe, setShowHireMe] = useState(false);
 
   const [email, setEmail] = useState('');
-  const [availabilityData, setAvailabilityData] =
-    useState<AvailabilityData | null>(null);
+  const { availabilityData, fetchAvailabilityData } = useAvailabilityStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAvailabilityData();
+    if (!availabilityData) {
+      fetchAvailabilityData();
+    }
 
-      setAvailabilityData(data);
-
-      if (data?.is_available) {
-        const timer = setTimeout(() => setShowHireMe(true), 1000);
-        return () => clearTimeout(timer);
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (availabilityData?.is_available) {
+      const timer = setTimeout(() => setShowHireMe(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [availabilityData, fetchAvailabilityData]);
 
   const handleNotifyClick = async () => {
     if (validateEmail(email)) {
