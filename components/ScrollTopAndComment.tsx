@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { MessageCircleMore } from 'lucide-react';
+import { MessagesSquare } from 'lucide-react';
 
 import useChatStore from '@/lib/hooks/chatState';
 
@@ -49,15 +49,15 @@ export default function ScrollTopAndComment({
         <button
           aria-label="Scroll To Comment"
           onClick={handleScrollToComment}
-          className="rounded-full bg-black p-2 text-black transition-all hover:bg-gray-300 dark:bg-black dark:text-white dark:hover:bg-gray-600"
+          className="rounded-full bg-gray-500 p-2 text-black transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:text-red-500"
         >
-          <MessageCircleMore className="h-5 w-5" />
+          <MessagesSquare className="h-5 w-5" />
         </button>
       )}
       <button
         aria-label="Scroll To Top"
         onClick={handleScrollTop}
-        className="relative rounded-full bg-black p-2 text-white transition-all hover:bg-gray-300 dark:bg-black dark:text-white dark:hover:bg-gray-600"
+        className="relative rounded-full bg-black p-2 text-white transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:text-red-500"
         style={{ marginBottom: chatEnabled ? '60px' : '0px' }}
       >
         <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -81,7 +81,7 @@ export default function ScrollTopAndComment({
             cy="50"
           />
           <circle
-            className="text-white transition-all duration-200 ease-in-out dark:text-white"
+            className="text-white transition-all duration-200 ease-in-out dark:text-white dark:hover:text-red-500"
             strokeWidth="4"
             strokeDasharray={290}
             strokeDashoffset={290 - (290 * progress) / 100}
