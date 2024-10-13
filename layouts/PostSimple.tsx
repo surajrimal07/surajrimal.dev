@@ -5,17 +5,16 @@ import type { Authors, Blog, Snippets } from 'contentlayer/generated';
 import { Toc } from 'pliny/mdx-plugins';
 import { CoreContent } from 'pliny/utils/contentlayer';
 
-import Comments from '@/components/Comments';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
 import TOCInline from '@/components/TOCInline';
+import WalineComment from '@/components/WalineComment';
 import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
 import Reactions from '@/components/blog/PageReactions';
-import siteMetadata from '@/data/siteMetadata';
 
 interface LayoutProps {
   content: CoreContent<Blog> | CoreContent<Snippets>;
@@ -91,14 +90,14 @@ export default function PostLayout({
             <Reactions slug={slugNormalized} ip={ip} />
           </div>
 
-          {siteMetadata.comments && (
-            <div
-              className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
-              id="comment"
-            >
-              <Comments slug={slug} />
-            </div>
-          )}
+          <div
+            className="max-w-full pb-4 pt-8 text-center text-gray-700 dark:text-gray-300"
+            id="comment"
+          >
+            <WalineComment
+              serverURL={process.env.NEXT_PUBLIC_COMMENT_SERVER_URL!}
+            />
+          </div>
 
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">

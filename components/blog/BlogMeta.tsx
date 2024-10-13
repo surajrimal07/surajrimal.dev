@@ -1,10 +1,7 @@
 import Image from 'next/image';
 
-import { ReaderIcon } from '@radix-ui/react-icons';
-import clsx from 'clsx';
-import { formatDate } from 'pliny/utils/formatDate';
+import { FaFire, FaRegHourglassHalf } from 'react-icons/fa6';
 import { IoMdShare } from 'react-icons/io';
-import { MdInsights } from 'react-icons/md';
 
 import { getBlogShares } from '@/lib/pageView';
 import type { BlogMetaProps } from '@/types/index';
@@ -26,8 +23,8 @@ const BlogMeta = async ({
   const { total } = await getBlogShares(slug);
 
   return (
-    <div className="flex">
-      <div className="mr-8">
+    <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
+      <div className="flex items-center space-x-2">
         {authorDetails.map((author) => (
           <div className="flex items-center space-x-2" key={author.name}>
             {author.avatar && (
@@ -56,41 +53,34 @@ const BlogMeta = async ({
         ))}
       </div>
 
-      <div className="flex h-[40px] flex-col justify-around">
-        <div className="flex items-center space-x-16">
-          <div className="flex items-center">
-            <CalendarIcon className={clsx('h-4 w-4 sm:h-5 sm:w-5')} />
-            <time dateTime={date} className="ml-2 whitespace-nowrap">
-              {formatDate(date)}
-            </time>
-            <span className="ml-1">{`(${timeAgoText})`}</span>
-          </div>
-
-          <div className="flex items-center">
-            <ReaderIcon className="mr-1 h-4 w-4 sm:h-5 sm:w-5" />
-            <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
-            <span className="ml-1.5 whitespace-nowrap">mins read</span>
-          </div>
-
-          <div className="flex items-center">
-            <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="ml-1.5">{language}</span>
-          </div>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base">
+        <div className="flex items-center">
+          <CalendarIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="ml-1">{timeAgoText}</span>
         </div>
 
-        <div className="flex items-center space-x-64">
-          <div className="flex items-center">
-            <MdInsights className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="ml-1.5">
-              <PageView />
-            </span>
-          </div>
+        <div className="flex items-center">
+          <FaRegHourglassHalf className="h-4 w-4 sm:h-5 sm:w-5" />
+          <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
+          <span className="ml-1.5">Min</span>
+        </div>
 
-          <div className="flex items-center">
-            <IoMdShare className="mr-1 h-4 w-4 sm:h-5 sm:w-5" />
-            <AnimatedCounter targetValue={total} />
-            <span className="ml-1.5">Shares</span>
-          </div>
+        <div className="flex items-center">
+          <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="ml-1.5">{language}</span>
+        </div>
+
+        <div className="flex items-center">
+          <FaFire className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="ml-1.5">
+            <PageView />
+          </span>
+        </div>
+
+        <div className="flex items-center">
+          <IoMdShare className="h-4 w-4 sm:h-5 sm:w-5" />
+          <AnimatedCounter targetValue={total} />
+          <span className="ml-1.5">Shares</span>
         </div>
       </div>
     </div>

@@ -106,3 +106,15 @@
   background-color: #f87171;
 } */
 
+/* WL comment custom css to fix inputfield overflow */
+.wl-comment .wl-editor {
+  box-sizing: border-box;
+  width: 98%;
+  max-width: 100%;
+  resize: vertical;
+  overflow-x: hidden;
+}
+
+.wl-power {
+  display: none !important;
+}

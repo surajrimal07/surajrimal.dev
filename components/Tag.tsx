@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-import { Hash } from 'lucide-react';
-
 import kebabCase from '@/utils/kebabCase';
 
 interface TagProps {
@@ -16,9 +14,8 @@ export default function Tag({ text, count }: TagProps) {
   return (
     <Link
       href={`/tags/${kebabCase(text)}`}
-      className="py-0.75 mr-2 mt-2 inline-flex items-center rounded-sm bg-secondary px-1 text-sm font-medium text-secondary-foreground transition-colors hover:bg-primary-400 dark:hover:bg-primary-500"
+      className="py-0.75 mr-2 mt-2 inline-flex items-center rounded-lg bg-secondary px-1 text-sm font-medium text-secondary-foreground transition-colors hover:bg-gray-400 dark:hover:bg-gray-600"
     >
-      <Hash className="h-4 w-4" />
       {formattedText}
     </Link>
   );

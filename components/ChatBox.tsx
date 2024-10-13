@@ -23,6 +23,7 @@ import siteMetadata from '@/data/siteMetadata';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
 import { DatabaseChangePayload, Message } from '@/types/chat';
+import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 
 interface MessageTimeProps {
@@ -262,6 +263,7 @@ const Chatbox: React.FC = () => {
         >
           {message.sender === 'user' && (
             <Avatar className="mr-2 h-8 w-8">
+              <AvatarImage src={gravatarURL(email)} alt="@user image" />
               <AvatarFallback>{email.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
           )}
