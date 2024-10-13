@@ -1,11 +1,17 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HelpCircle, Send, X } from 'lucide-react';
 
-import usePlaySound from '@/components/PlaySound';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,13 +19,56 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
-import { loadChat } from '@/lib/chat';
+import siteMetadata from '@/data/siteMetadata';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
-import { Message } from '@/types/chat';
+import { DatabaseChangePayload, Message } from '@/types/chat';
+import { supabase } from '@/utils/supabase/client';
+
+interface MessageTimeProps {
+  time: string;
+  isVisible: boolean;
+}
+
+interface TimeSeparatorProps {
+  time: string;
+}
+
+const MessageTime: React.FC<MessageTimeProps> = React.memo(
+  ({ time, isVisible }) => (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          className="text-xs text-gray-500"
+        >
+          {time}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+);
+
+MessageTime.displayName = 'MessageTime';
+
+const TimeSeparator: React.FC<TimeSeparatorProps> = React.memo(({ time }) => (
+  <div className="my-2 flex items-center justify-center">
+    <div className="h-px flex-grow bg-gray-500"></div>
+    <span className="mx-2 text-xs text-gray-500">{time}</span>
+    <div className="h-px flex-grow bg-gray-500"></div>
+  </div>
+));
+
+TimeSeparator.displayName = 'TimeSeparator';
+
+const formatMessageTime = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
 
 const Chatbox: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const [email, setEmail] = useState('');
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -28,15 +77,79 @@ const Chatbox: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { chatEnabled, setChatEnabled } = useChatStore();
   const [newMessage, setNewMessage] = useState(false);
-  const [isAuthorOnline, setIsAuthorOnline] = useState(false);
-
-  const { playSound } = usePlaySound({
-    filePath: '/static/sounds/message.mp3',
-    volume: 0.7,
-  });
+  const {
+    isAuthorOnline,
+    setIsAuthorOnline,
+    lastAuthorOnline,
+    setLastOnline,
+    isCollapsed,
+    setIsCollapsed,
+  } = useChatStore();
+  const [selectedMessageId, setSelectedMessageId] = useState(null);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  const fetchInitialMessages = useCallback(async (email: string) => {
+    const { data, error } = await supabase
+      .from('chat_messages')
+      .select('messages')
+      .eq('email', email)
+      .single();
+
+    if ((data && data.messages) || !error) {
+      setMessages(data.messages);
+    } else {
+      setMessages([
+        {
+          id: Date.now(),
+          text: 'Hello! How can I help you with my blog today?',
+          sender: 'bot',
+        },
+      ]);
+    }
+  }, []);
+
+  const handleDatabaseChange = useCallback(
+    (payload: DatabaseChangePayload) => {
+      const newMessages = payload.new.messages as Message[];
+
+      if (newMessages && newMessages.length > 0) {
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage && lastMessage.sender === 'author') {
+          setIsAuthorOnline(true);
+          setLastOnline();
+          setMessages((prev) => {
+            if (!prev.some((msg) => msg.id === lastMessage.id)) {
+              if (isCollapsed) {
+                setNewMessage(true);
+              }
+              return [...prev, lastMessage];
+            }
+            return prev;
+          });
+        }
+      }
+    },
+    [isCollapsed, setIsAuthorOnline, setLastOnline]
+  );
+
+  const handleFAQClick = useCallback((question: string, answer: string) => {
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), text: question, sender: 'user' },
+      { id: Date.now() + 1, text: answer, sender: 'bot' },
+    ]);
+    setShowFAQ(false);
+  }, []);
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('chatboxEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsEmailSubmitted(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -49,79 +162,52 @@ const Chatbox: React.FC = () => {
     }
   }, [isCollapsed, messages, scrollToBottom]);
 
-  const listenSSE = useCallback(
-    (callback: (event: MessageEvent) => void, email: string) => {
-      const eventSource = new EventSource(
-        `/api/stream?clientId=${encodeURIComponent(email)}`,
-        {
-          withCredentials: true,
-        }
-      );
-
-      eventSource.onmessage = callback;
-
-      return () => {
-        eventSource.close();
-      };
-    },
-    []
-  );
-
   useEffect(() => {
     if (email) {
-      const cleanup = listenSSE((event) => {
-        setIsAuthorOnline(true);
-        const data = JSON.parse(event.data);
-        if (data.text) {
-          setMessages((prev) => [
-            ...prev,
-            { id: Date.now(), text: data.text, sender: 'bot' },
-          ]);
-          if (isCollapsed) {
-            playSound();
-            setNewMessage(true);
-          }
-        }
-      }, email);
+      fetchInitialMessages(email);
 
-      return cleanup;
+      const channel = supabase
+        .channel(`chat:${email}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'chat_messages',
+            filter: `email=eq.${email}`,
+          },
+          (payload) =>
+            handleDatabaseChange(payload as unknown as DatabaseChangePayload)
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'chat_messages',
+            filter: `email=eq.${email}`,
+          },
+          (payload) =>
+            handleDatabaseChange(payload as unknown as DatabaseChangePayload)
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
-  }, [email, isCollapsed, listenSSE, playSound]);
+  }, [email, fetchInitialMessages, handleDatabaseChange]);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem('chatboxEmail');
-    if (savedEmail) {
-      setEmail(savedEmail);
+  const handleEmailSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      localStorage.setItem('chatboxEmail', email);
       setIsEmailSubmitted(true);
-      loadChat(savedEmail).then(setMessages);
-    }
-  }, []);
+    },
+    [email]
+  );
 
-  useEffect(() => {
-    if (isEmailSubmitted) {
-      loadChat(email).then((loadedMessages) => {
-        setMessages(
-          loadedMessages.length > 0
-            ? loadedMessages
-            : [
-                {
-                  id: 1,
-                  text: 'Hello! How can I help you with my blog today?',
-                  sender: 'bot',
-                },
-              ]
-        );
-      });
-    }
-  }, [isEmailSubmitted, email]);
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem('chatboxEmail', email);
-    setIsEmailSubmitted(true);
-  };
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (inputMessage.trim()) {
       const userMessage: Message = {
         id: Date.now(),
@@ -130,22 +216,98 @@ const Chatbox: React.FC = () => {
       };
       setMessages((prev) => [...prev, userMessage]);
       setInputMessage('');
-      await sendMessage(email, userMessage.text);
-    }
-  };
 
-  const handleFAQClick = useCallback((question: string, answer: string) => {
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), text: question, sender: 'user' },
-      { id: Date.now() + 1, text: answer, sender: 'bot' },
-    ]);
-    setShowFAQ(false);
+      await sendMessage(email, userMessage.text);
+
+      if (!isAuthorOnline && !isCollapsed) {
+        const botMessage: Message = {
+          id: Date.now() + 1,
+          text: 'Author is currently offline. He will reply as soon as possible.',
+          sender: 'bot',
+        };
+        setMessages((prev) => [...prev, botMessage]);
+      }
+    }
+  }, [inputMessage, email, isAuthorOnline, isCollapsed]);
+
+  const handleHide = useCallback(() => {
+    setChatEnabled(false);
+  }, [setChatEnabled]);
+
+  const handleMessageClick = useCallback((id) => {
+    setSelectedMessageId((prevId) => (prevId === id ? null : id));
   }, []);
 
-  const handleHide = () => {
-    setChatEnabled(false);
-  };
+  const shouldShowTimeSeparator = useCallback((currentMessage, nextMessage) => {
+    if (!nextMessage) return false;
+    const timeDiff = nextMessage.id - currentMessage.id;
+    return timeDiff > 600000;
+  }, []);
+
+  const renderMessages = useMemo(() => {
+    return messages.map((message, index) => (
+      <React.Fragment key={message.id}>
+        <div
+          className={`flex ${
+            message.sender === 'user' ? 'justify-end' : 'justify-start'
+          } mb-4`}
+          role="button"
+          tabIndex={0}
+          onClick={() => handleMessageClick(message.id)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleMessageClick(message.id);
+            }
+          }}
+        >
+          {message.sender === 'user' && (
+            <Avatar className="mr-2 h-8 w-8">
+              <AvatarFallback>{email.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+          )}
+
+          {message.sender === 'author' && (
+            <Avatar className="mr-2 h-8 w-8">
+              <AvatarImage src={LOGO_IMAGE_PATH} alt="@author image" />
+              <AvatarFallback>SR</AvatarFallback>
+            </Avatar>
+          )}
+
+          {message.sender === 'bot' && (
+            <div className="mr-2 flex h-8 w-8 items-center justify-center">
+              <span className="text-2xl">🤖</span>
+            </div>
+          )}
+
+          <div className="flex max-w-[85%] flex-col">
+            <div
+              className={`break-words rounded-lg p-3 ${
+                message.sender === 'user'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-900 text-white'
+              }`}
+            >
+              {message.text}
+            </div>
+            <MessageTime
+              time={formatMessageTime(message.id)}
+              isVisible={selectedMessageId === message.id}
+            />
+          </div>
+        </div>
+
+        {shouldShowTimeSeparator(message, messages[index + 1]) && (
+          <TimeSeparator time={formatMessageTime(message.id)} />
+        )}
+      </React.Fragment>
+    ));
+  }, [
+    messages,
+    email,
+    handleMessageClick,
+    selectedMessageId,
+    shouldShowTimeSeparator,
+  ]);
 
   if (!chatEnabled) return null;
 
@@ -174,7 +336,15 @@ const Chatbox: React.FC = () => {
               }}
               className="absolute inset-0 rounded-lg"
             />
-            <div className="relative flex items-center justify-between rounded-lg bg-gradient-to-r from-rose-400 to-primary-500 px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div
+              className={clsx(
+                'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
+                {
+                  'bg-green-800': isAuthorOnline,
+                  'bg-primary-600': !isAuthorOnline,
+                }
+              )}
+            >
               <Button
                 onClick={() => setIsCollapsed(false)}
                 className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
@@ -182,7 +352,7 @@ const Chatbox: React.FC = () => {
                 <div className="flex flex-col items-start">
                   <div className="flex items-center">
                     <span className="font-semibold text-white">
-                      Chat with the Me
+                      Chat with {siteMetadata.headerTitle}
                     </span>
                     {newMessage && (
                       <Badge variant="neutral" className="ml-1 p-0 text-xs">
@@ -191,11 +361,10 @@ const Chatbox: React.FC = () => {
                     )}
                   </div>
                   <span className="text-xs text-white opacity-80">
-                    I am online now
+                    Active {lastAuthorOnline}
                   </span>
                 </div>
               </Button>
-
               <Button
                 variant="ghost"
                 size="sm"
@@ -216,10 +385,20 @@ const Chatbox: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="flex h-[32rem] w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-black shadow-2xl"
+            className="sm:max-w-70 flex h-[32rem] w-96 flex-col overflow-hidden rounded-lg border border-gray-200 bg-black shadow-2xl"
           >
-            <div className="flex items-center justify-between bg-gradient-to-r from-rose-400 to-primary-500 p-2">
-              <h2 className="font-bold text-white">Chat with the Me</h2>
+            <div
+              className={clsx('flex items-center justify-between p-2', {
+                'bg-green-800': isAuthorOnline,
+                'bg-primary-600': !isAuthorOnline,
+              })}
+            >
+              <div className="flex flex-col">
+                <h2 className="font-bold text-white">
+                  Chat with {siteMetadata.headerTitle}
+                </h2>
+                <p className="text-sm text-white">Active {lastAuthorOnline}</p>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -229,6 +408,7 @@ const Chatbox: React.FC = () => {
                 <X className="h-4 w-4 text-white" />
               </Button>
             </div>
+
             {!isEmailSubmitted ? (
               <form
                 onSubmit={handleEmailSubmit}
@@ -255,62 +435,7 @@ const Chatbox: React.FC = () => {
             ) : (
               <>
                 <ScrollArea className="h-[calc(100%-4rem)] flex-1 overflow-y-auto p-4">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
-                    >
-                      {message.sender === 'user' && (
-                        <Avatar className="mr-2 h-8 w-8">
-                          <AvatarFallback>
-                            {email.slice(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-
-                      {message.sender === 'bot' && (
-                        <>
-                          {isAuthorOnline ? (
-                            <Avatar className="mr-2 h-8 w-8">
-                              <AvatarImage
-                                src={LOGO_IMAGE_PATH}
-                                alt="@author image"
-                              />
-                              <AvatarFallback>SR</AvatarFallback>
-                            </Avatar>
-                          ) : (
-                            <div className="mr-2 flex h-8 w-8 items-center justify-center">
-                              <span className="text-2xl">🤖</span>
-                            </div>
-                          )}
-                        </>
-                      )}
-
-                      <div
-                        className={`max-w-[80%] rounded-lg p-3 ${
-                          message.sender === 'user'
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-gray-900 text-white'
-                        }`}
-                      >
-                        {message.text}
-                      </div>
-                    </div>
-                  ))}
-                  {/* {isTyping && (
-                    <div className="mb-4 flex justify-start">
-                      <div className="mr-2 flex h-8 w-8 items-center justify-center">
-                        <span className="text-2xl">🤖</span>
-                      </div>
-                      <div className="rounded-lg bg-gray-900 p-3 text-gray-800">
-                        <div className="flex space-x-2">
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500"></div>
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500 delay-100"></div>
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500 delay-200"></div>
-                        </div>
-                      </div>
-                    </div>
-                  )} */}
+                  {renderMessages}
                   <div ref={messagesEndRef} />
                 </ScrollArea>
                 <div className="border-t border-gray-200 p-2">

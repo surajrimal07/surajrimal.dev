@@ -2,8 +2,9 @@ import { Message } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
 type DatabaseMessage = {
+  id: number;
   text: string;
-  sender: 'user' | 'bot';
+  sender: 'user' | 'bot' | 'author';
 };
 
 export async function saveChat(
@@ -24,6 +25,7 @@ export async function saveChat(
         email,
         messages: [
           {
+            id: newMessage.id,
             text: newMessage.text,
             sender: newMessage.sender,
           },
@@ -45,6 +47,7 @@ export async function saveChat(
   }
 
   messages.push({
+    id: newMessage.id,
     text: newMessage.text,
     sender: newMessage.sender,
   });
@@ -79,8 +82,8 @@ export async function loadChat(email: string): Promise<Message[]> {
     return [];
   }
 
-  return data.messages.map((message: DatabaseMessage, index: number) => ({
-    id: index + 1,
+  return data.messages.map((message: DatabaseMessage) => ({
+    id: message.id,
     text: message.text,
     sender: message.sender,
   }));

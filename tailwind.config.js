@@ -57,6 +57,10 @@ module.exports = {
             'offset-distance': '100%',
           },
         },
+        shine: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
         gradient: {
           to: {
             backgroundPosition: 'var(--bg-size) 0',
@@ -213,7 +217,7 @@ module.exports = {
             },
           },
         },
-      }), 
+      }),
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

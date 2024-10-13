@@ -5,7 +5,6 @@ import { Message } from 'telegraf/typings/core/types/typegram';
 
 import { clearChat, loadChat, saveChat } from '@/lib/chat';
 import { Message as ChatMessage } from '@/types/chat';
-import redis from '@/utils/redis';
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 const channelId = process.env.TELEGRAM_CHANNEL_ID!;
@@ -15,6 +14,7 @@ let isRunning = false;
 function isTextMessage(message: any): message is Message.TextMessage {
   return 'text' in message;
 }
+
 bot.on('message', async (ctx) => {
   if (
     'reply_to_message' in ctx.message &&
@@ -24,10 +24,8 @@ bot.on('message', async (ctx) => {
     const newMessage: ChatMessage = {
       id: Date.now(),
       text: isTextMessage(ctx.message) ? ctx.message.text : '',
-      sender: 'bot',
+      sender: 'author',
     };
-
-    await redis.publish(`chat:${email}`, JSON.stringify(newMessage));
 
     await saveChat(email, newMessage);
   }

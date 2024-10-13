@@ -12,6 +12,7 @@ import {
   Computer,
   Contact,
   Cookie,
+  HeartHandshake,
   LayoutDashboard,
   LogOut,
   Route,
@@ -204,6 +205,12 @@ export function DropdownMenuDemo() {
             <Link href="/privacy" className="flex items-center">
               <Cookie className="mr-2 h-4 w-4" />
               <span>Privacy</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/terms" className="flex items-center">
+              <HeartHandshake className="mr-2 h-4 w-4" />
+              <span>Terms of service</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
