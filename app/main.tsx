@@ -1,6 +1,6 @@
-import { ReaderIcon } from '@radix-ui/react-icons';
 import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
+import { FaRegHourglassHalf } from 'react-icons/fa6';
 
 import Link from '@/components/Link';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
@@ -16,7 +16,6 @@ import PopularTags from '@/components/homepage/PopularTags';
 import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import { Technologies } from '@/components/homepage/Technologies';
-import TypedBios from '@/components/homepage/TypedBios';
 import { LanguageIcon } from '@/components/social-icons/icons';
 import { Separator } from '@/components/ui/cool-separator';
 import { MAX_DISPLAY } from '@/constants';
@@ -36,14 +35,11 @@ const renderPost = (post) => {
               <time dateTime={date}>
                 {formatDate(date, siteMetadata.locale)}
               </time>
-              <div className="ml-1 text-gray-500 dark:text-gray-400">
-                {`(${timeAgoText})`}
-              </div>
             </dd>
           </dl>
 
-          <div className="space-y-5 xl:col-span-3">
-            <div className="space-y-4">
+          <div className="space-y-1 xl:col-span-3">
+            <div className="space-y-2">
               <div>
                 <h2 className="text-2xl font-bold leading-8 tracking-tight">
                   <Link
@@ -65,9 +61,10 @@ const renderPost = (post) => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
-                <ReaderIcon className="mr-1 h-4 w-4 sm:h-5 sm:w-5" />
+                <FaRegHourglassHalf className="h-3 w-3" />
+
                 <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
-                <span className="ml-1.5 whitespace-nowrap">mins read</span>
+                <span className="ml-1.5 whitespace-nowrap">Min</span>
               </div>
               <div className="flex items-center">
                 <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -99,7 +96,6 @@ export default function Home({ posts }) {
         <Avatar />
         <div className="my-auto flex flex-col text-lg leading-8 text-gray-600 dark:text-gray-400">
           <Heading />
-          <TypedBios />
           <ShortDescription />
           <BlogLinks />
           <p className="flex">

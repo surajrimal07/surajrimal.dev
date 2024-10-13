@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { m, useAnimationControls } from 'framer-motion';
 import { ShareIcon } from 'lucide-react';
+import { FaFire } from 'react-icons/fa6';
 
 import { reactions } from '@/data/emojiIcons';
 import { debounce } from '@/lib/hooks/debounce';
@@ -15,7 +16,6 @@ import {
 } from '@/lib/pageView';
 import { ReactionType } from '@/types/reaction';
 
-import { InsightIcon } from '../social-icons/icons';
 import EmojiReaction from './EmojiReaction';
 
 interface ReactionProps {
@@ -125,7 +125,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
               <button className="p-1">
-                <InsightIcon className="h-5 w-5 text-gray-300" />
+                <FaFire className="h-5 w-5 text-gray-300" />
               </button>
             </div>
             <span className="mt-1 text-[11px] font-medium text-gray-300">

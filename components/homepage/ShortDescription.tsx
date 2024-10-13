@@ -1,12 +1,27 @@
+import Twemoji from '../Twemoji';
+
 const ShortDescription = () => {
   return (
-    <div className="mb-4 mt-4">
-      <p>I began my coding journey in 8th grade.</p>
-      <p>In 2019, I started my career as a Back-end Developer.</p>
-      <p>I'm passionate about system design and backend development.</p>
-      <p>This blog is my space to practice and share knowledge.</p>
-      <p>I am committed to continuous learning and growth.</p>
-      <p>With a strong work ethic, I pay great attention to detail.</p>
+    <div className="flex justify-center">
+      <p className="rounded-md p-2 text-justify shadow-md">
+        Originally from <b className="font-medium">Simara</b>, my journey began
+        with <b className="font-medium">Java</b> as my first programming
+        language, and I now specialize in{' '}
+        <b className="font-medium">system design</b> and{' '}
+        <b className="font-medium">backend development</b>. I’m currently
+        working on a{' '}
+        <b className="font-medium">Real-time Stock Analytics Platform</b> and
+        primarily use <b className="font-medium">JavaScript</b> and{' '}
+        <b className="font-medium">TypeScript</b>. As a proud{' '}
+        <b className="font-medium">pet owner</b> of a <Twemoji emoji="dog" />, I
+        also have a passion for comics like <Twemoji emoji="the-flash" /> and{' '}
+        <Twemoji emoji="superman" />. Additionally, I enjoy sci-fi{' '}
+        <Twemoji emoji="movie-camera" /> films and have a strong desire for
+        travel <Twemoji emoji="sunrise" /> and adventure. I am committed to
+        continuous learning and personal growth{' '}
+        <Twemoji emoji="flexed-biceps" />, with a strong work ethic and
+        meticulous attention to detail.
+      </p>
     </div>
   );
 };
