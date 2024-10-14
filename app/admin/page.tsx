@@ -1,61 +1,102 @@
 import Link from 'next/link';
 
-import { allBlogs } from 'contentlayer/generated';
-import { PlusCircle } from 'lucide-react';
-import { sortPosts } from 'pliny/utils/contentlayer';
-
-import { Button } from '@/components/ui/button';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  Briefcase,
+  Calendar,
+  Code,
+  Computer,
+  ContactRound,
+  FileSpreadsheet,
+  FileText,
+  Map,
+  User,
+} from 'lucide-react';
 
-export default function BlogPage() {
-  const sortedBlogs = sortPosts(allBlogs);
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { createClient } from '@/utils/supabase/server';
+
+export default async function AdminDashboard() {
+  const supabase = createClient();
+
+  const { data } = await supabase.auth.getUser();
+
+  const sections = [
+    {
+      name: 'Posts',
+      href: '/admin/blog',
+      icon: FileText,
+      description: 'Manage your blog posts',
+    },
+    {
+      name: 'Snippets',
+      href: '/admin/snippets',
+      icon: Code,
+      description: 'Organize code snippets',
+    },
+    {
+      name: 'Journey',
+      href: '/admin/journey',
+      icon: Map,
+      description: 'Update your professional journey',
+    },
+    {
+      name: 'Projects',
+      href: '/admin/projects',
+      icon: Briefcase,
+      description: 'Showcase your projects',
+    },
+    {
+      name: 'About',
+      href: '/admin/about',
+      icon: User,
+      description: 'Edit your about page',
+    },
+    {
+      name: 'Resume',
+      href: '/admin/resume',
+      icon: FileSpreadsheet,
+      description: 'Update your resume',
+    },
+    {
+      name: 'Uses',
+      href: '/admin/uses',
+      icon: Computer,
+      description: 'List your tech stack and tools',
+    },
+    {
+      name: 'Availability',
+      href: '/admin/availability',
+      icon: Calendar,
+      description: 'Set your availability',
+    },
+    {
+      name: 'Contacts',
+      href: '/admin/contacts',
+      icon: ContactRound,
+      description: 'Set your contact information',
+    },
+  ];
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Blog Posts</h1>
-        <Button asChild>
-          <Link href="/admin/blog/new">
-            <PlusCircle className="mr-2 h-4 w-4" /> Add New Post
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-center text-3xl font-bold">
+        Welcome, {data.user!.user_metadata.full_name}
+      </h1>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {sections.map((section) => (
+          <Link href={section.href} key={section.name}>
+            <Card className="transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:shadow-lg">
+              <CardHeader className="flex items-center space-x-2 text-lg font-semibold">
+                <section.icon className="h-5 w-5" />
+                <span>{section.name}</span>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">{section.description}</p>
+              </CardContent>
+            </Card>
           </Link>
-        </Button>
+        ))}
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Tags</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedBlogs.map((post) => (
-            <TableRow key={post._id}>
-              <TableCell className="font-medium">{post.title}</TableCell>
-              <TableCell>{post.tags.join(', ')}</TableCell>
-              <TableCell>{new Date(post.date).toLocaleDateString()}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex flex-col space-y-2">
-                  <Button variant="outline" asChild className="w-full">
-                    <Link href={`/admin/${post._raw.flattenedPath}`}>Edit</Link>
-                  </Button>
-                  <Button variant="destructive" className="w-full">
-                    Delete
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
     </div>
   );
 }

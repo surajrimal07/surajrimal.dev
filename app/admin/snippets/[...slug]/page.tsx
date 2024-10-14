@@ -4,14 +4,21 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import matter from 'gray-matter';
 import { ArrowLeft, LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import '@/css/mdx.css';
 import { toastOptions } from '@/utils/toast';
 
 interface PostData {
@@ -21,24 +28,15 @@ interface PostData {
   date: string;
   tags: string[];
   draft: boolean;
+  language: string;
 }
 
-const cleanData = (rawData: any): PostData => {
-  return {
-    title: rawData.title.replace(/^'|'$/g, ''),
-    date: rawData.date.replace(/^'|'$/g, ''),
-    summary: rawData.summary.replace(/^'|'$/g, ''),
-    tags: JSON.parse(rawData.tags.replace(/'/g, '"')),
-    content: rawData.content.replace(/^'|'$/g, ''),
-    draft: rawData.draft === 'true',
-  };
-};
+const LANGUAGES = ['English', 'Nepali'];
 
 export default function EditBlogPost() {
   const params = useParams();
   const router = useRouter();
 
-  // Extract the post ID from the URL
   const postId = useMemo(() => {
     if (typeof params.slug === 'string') {
       return params.slug;
@@ -58,6 +56,7 @@ export default function EditBlogPost() {
     date: '',
     tags: [],
     draft: false,
+    language: 'English',
   });
   const [newTag, setNewTag] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -65,24 +64,31 @@ export default function EditBlogPost() {
   useEffect(() => {
     if (!isNewPost && postId) {
       setIsLoading(true);
-      fetch(`/api/posts?id=${postId}`)
+      fetch(`/api/snippets?id=${postId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.json();
         })
-        .then((rawData) => {
-          const cleanedData = cleanData(rawData);
-          setPostData(cleanedData);
+        .then((rawContent) => {
+          setPostData({
+            title: rawContent.title || '',
+            content: rawContent.content || '',
+            summary: rawContent.summary || '',
+            date: rawContent.date || '',
+            tags: rawContent.tags || [],
+            draft: rawContent.draft || false,
+            language: rawContent.language || 'English',
+          });
         })
         .catch((error) => {
-          console.error('Failed to load post data:', error);
+          console.log(error);
           toast.error(
-            `Failed to load post data: ${error.message}`,
+            `Failed to load snippets data: ${error.message}`,
             toastOptions
           );
-          router.push('/admin'); // Redirect to admin page on error
+          router.push('/admin/snippets');
         })
         .finally(() => {
           setIsLoading(false);
@@ -103,6 +109,13 @@ export default function EditBlogPost() {
     },
     []
   );
+
+  const handleLanguageChange = useCallback((value: string) => {
+    setPostData((prev) => ({
+      ...prev,
+      language: value,
+    }));
+  }, []);
 
   const handleAddTag = useCallback(() => {
     if (newTag.trim() && !postData.tags.includes(newTag.trim())) {
@@ -140,24 +153,30 @@ export default function EditBlogPost() {
       }
 
       try {
-        const response = await fetch('/api/posts', {
+        const { content, ...frontmatter } = postData;
+        const fileContent = matter.stringify(content, frontmatter);
+
+        console.log('File content to be sent:', fileContent);
+
+        const response = await fetch('/api/snippets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...postData, id: postId }),
+          body: JSON.stringify({ content: fileContent, id: postId }),
         });
 
         if (response.ok) {
-          toast.success('Post saved successfully', toastOptions);
-          router.push('/admin');
+          toast.success('Snippet saved successfully', toastOptions);
+          router.push('/admin/snippets');
         } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'An unknown error occurred');
         }
       } catch (error) {
-        console.error('Failed to save post:', error);
+        console.error('Failed to save snippet:', error);
         toast.error(
-          `Failed to save post: ${error instanceof Error ? error.message : String(error)}`,
+          `Failed to save snippet: ${error instanceof Error ? error.message : String(error)}`,
           toastOptions
         );
       }
@@ -176,60 +195,99 @@ export default function EditBlogPost() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center space-x-4">
-        <Link href="/admin">
+        <Link href="/admin/snippets">
           <ArrowLeft className="h-6 w-6 cursor-pointer" />
         </Link>
         <h1 className="text-3xl font-bold">
-          {isNewPost ? 'Create New Post' : 'Edit Post'}
+          {isNewPost ? 'Create New Snippet' : 'Edit Snippet'}
         </h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {(['title', 'date', 'summary'] as const).map((field) => (
-          <div key={field} className="space-y-2">
-            <Label htmlFor={field}>
-              {field.charAt(0).toUpperCase() + field.slice(1)}
-            </Label>
-            <Input
-              id={field}
-              type={field === 'date' ? 'date' : 'text'}
-              value={postData[field]}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        ))}
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            type="text"
+            value={postData.title}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
         <div className="space-y-2">
-          <Label htmlFor="tags">Tags</Label>
-          <div className="flex items-center space-x-2">
-            <Input
-              id="tags"
-              value={newTag}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewTag(e.target.value)
-              }
-            />
-            <Button type="button" onClick={handleAddTag}>
-              Add Tag
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {postData.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center space-x-2 rounded bg-zinc-900 p-2"
-              >
-                {tag}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteTag(tag)}
-                  className="ml-2 rounded px-2 text-red-500 hover:bg-zinc-700 focus:outline-none"
+          <Label htmlFor="date">Date</Label>
+          <Input
+            id="date"
+            type="date"
+            value={postData.date}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="summary">Summary</Label>
+          <Input
+            id="summary"
+            type="text"
+            value={postData.summary}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="flex space-x-4">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="tags">Tags</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="tags"
+                value={newTag}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewTag(e.target.value)
+                }
+              />
+              <Button type="button" onClick={handleAddTag}>
+                Add Tag
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {postData.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center space-x-2 rounded bg-zinc-900 p-2"
                 >
-                  &times;
-                </button>
-              </span>
-            ))}
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteTag(tag)}
+                    className="ml-2 rounded px-2 text-red-500 hover:bg-zinc-700 focus:outline-none"
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <Select
+              value={postData.language}
+              onValueChange={handleLanguageChange}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a language" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map((lang) => (
+                  <SelectItem key={lang} value={lang}>
+                    {lang}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -243,6 +301,7 @@ export default function EditBlogPost() {
           />
           <Label htmlFor="draft">Draft</Label>
         </div>
+
         <div className="mt-5">
           <Label htmlFor="content">Content</Label>
         </div>
@@ -252,11 +311,11 @@ export default function EditBlogPost() {
             value={postData.content}
             onChange={handleInputChange}
             className="min-h-[500px] w-full resize-y"
-            placeholder="Write your post content here..."
+            placeholder="Write your snippet content here..."
           />
         </div>
         <Button type="submit">
-          {isNewPost ? 'Create Post' : 'Update Post'}
+          {isNewPost ? 'Create Snippet' : 'Update Snippet'}
         </Button>
       </form>
     </div>

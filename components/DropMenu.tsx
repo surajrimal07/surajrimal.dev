@@ -42,6 +42,7 @@ import useChatStore from '@/lib/hooks/chatState';
 import { cacheAndServeImage } from '@/utils/cacheImage';
 import { fetcher } from '@/utils/fetcher';
 import { createClient } from '@/utils/supabase/client';
+import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
 import { toastOptions } from '@/utils/toast';
 
 export function DropdownMenuDemo() {
@@ -56,6 +57,9 @@ export function DropdownMenuDemo() {
 
   const supabase = createClient();
   const router = useRouter();
+
+  const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
+    useSuperadminStatus(user);
 
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
@@ -148,18 +152,20 @@ export function DropdownMenuDemo() {
         <DropdownMenuGroup>
           {user && (
             <>
+              {isSuperadmin && !isLoadingSuperadminStatus && (
+                <DropdownMenuItem asChild>
+                  <button
+                    onClick={() => router.push('/admin')}
+                    className="flex w-full items-center"
+                  >
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <span>Dashboard</span>
+                  </button>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem asChild>
                 <button
-                  onClick={() => router.push('/dashboard')}
-                  className="flex w-full items-center"
-                >
-                  <LayoutDashboard className="mr-2 h-4 w-4" />
-                  <span>Dashboard</span>
-                </button>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <button
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push('/profile')}
                   className="flex w-full items-center"
                 >
                   <UserRoundPen className="mr-2 h-4 w-4" />
@@ -242,15 +248,16 @@ export function DropdownMenuDemo() {
           {weatherData && (
             <DropdownMenuItem className="cursor-default focus:bg-transparent">
               <div className="flex w-full items-center justify-between">
-                <Image
-                  src={`https:${weatherData.icon}`}
-                  alt={weatherData.condition}
-                  width={24}
-                  height={24}
-                  className="h-6 w-6"
-                />
-                <span className="font-medium">{weatherData.city}</span>
-
+                <div className="flex items-center space-x-2">
+                  <Image
+                    src={`https:${weatherData.icon}`}
+                    alt={weatherData.condition}
+                    width={24}
+                    height={24}
+                    className="h-6 w-6"
+                  />
+                  <span className="font-medium">{weatherData.city}</span>
+                </div>
                 <span className="font-bold">{weatherData.temperature}°C</span>
               </div>
             </DropdownMenuItem>

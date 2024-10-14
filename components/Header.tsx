@@ -69,12 +69,14 @@ const Header = () => {
                   <span className="hidden sm:inline">
                     {`/${siteMetadata.headerTitle}`}
                   </span>
-                ) : currentPath.startsWith('/admin/blog') ? (
-                  '/admin/blog'
                 ) : currentPath.startsWith('/blog') ? (
                   '/blog'
                 ) : currentPath.startsWith('/snippets') ? (
                   '/snippets'
+                ) : currentPath.startsWith('/admin/snippets') ? (
+                  '/admin/snippets'
+                ) : currentPath.startsWith('/admin/blog') ? (
+                  '/admin/blog'
                 ) : (
                   currentPath
                 )}

@@ -12,7 +12,7 @@ const ContentSecurityPolicy = `
   img-src * blob: data:;
   media-src 'self';
   connect-src * https://wakapi.dev;
-  font-src 'self';
+  font-src 'self' data:;
   frame-src giscus.app
 `;
 

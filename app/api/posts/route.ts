@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { readFile, writeFile } from 'fs/promises';
+import matter from 'gray-matter';
 import path from 'path';
 
 function generateFileName(title: string) {
@@ -52,26 +53,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const filePath = path.join(process.cwd(), 'data', 'blog', `${id}.mdx`);
-    const content = await readFile(filePath, 'utf8');
+    const fileContents = await readFile(filePath, 'utf8');
 
-    const parts = content.split('---');
-    const frontmatter = parts[1];
-    const mdxContent = parts.slice(2).join('---').trim();
+    const { data, content } = matter(fileContents);
 
-    const data = frontmatter
-      .split('\n')
-      .reduce((acc: { [key: string]: string }, line) => {
-        const [key, ...value] = line.split(':');
-        if (key && value.length) {
-          acc[key.trim()] = value.join(':').trim();
-        }
-        return acc;
-      }, {});
-
-    return NextResponse.json({ ...data, content: mdxContent });
+    return NextResponse.json({ ...data, content });
   } catch (error) {
     return NextResponse.json(
-      { error: `Failed to read the post ${error}` },
+      { error: `Failed to read the snippets: ${error}` },
       { status: 500 }
     );
   }
