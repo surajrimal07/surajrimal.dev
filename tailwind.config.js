@@ -52,6 +52,32 @@ module.exports = {
             transform: 'rotate(0deg)',
           },
         },
+        wave: {
+          '0%': {
+            transform: 'rotate(0deg)',
+          },
+          '10%': {
+            transform: 'rotate(14deg)',
+          },
+          '20%': {
+            transform: 'rotate(-8deg)',
+          },
+          '30%': {
+            transform: 'rotate(14deg)',
+          },
+          '40%': {
+            transform: 'rotate(-4deg)',
+          },
+          '50%': {
+            transform: 'rotate(10deg)',
+          },
+          '60%': {
+            transform: 'rotate(0deg)',
+          },
+          '100%': {
+            transform: 'rotate(0deg)',
+          },
+        },
         'border-beam': {
           '100%': {
             'offset-distance': '100%',
@@ -157,19 +183,9 @@ module.exports = {
               '&:hover': {
                 color: `${theme('colors.primary.600')}`,
               },
-              code: { color: theme('colors.primary.400') },
             },
             h1: {
               letterSpacing: theme('letterSpacing.tight'),
-            },
-            code: {
-              color: theme('colors.primary.500'),
-            },
-            'code:before': {
-              content: 'none',
-            },
-            'code:after': {
-              content: 'none',
             },
 
             h2: {
@@ -205,13 +221,6 @@ module.exports = {
         },
         invert: {
           css: {
-            a: {
-              color: theme('colors.primary.DEFAULT'),
-              '&:hover': {
-                color: `${theme('colors.primary.400')}`,
-              },
-              code: { color: theme('colors.primary.400') },
-            },
             'h1,h2,h3,h4,h5,h6': {
               color: theme('colors.gray.100'),
             },

@@ -130,7 +130,7 @@ export default function RootLayout({
         </div>
         <NextTopLoader color="#ef4444" height={1} showSpinner={false} />
 
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster position="top-right" reverseOrder={false} />
         <ThemeProviders>
           <PathProvider>
             <VercelAnalytics />

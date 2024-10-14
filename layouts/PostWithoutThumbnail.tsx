@@ -2,8 +2,8 @@ import React from 'react';
 
 import clsx from 'clsx';
 import { formatDate } from 'pliny/utils/formatDate';
+import { FaFire } from 'react-icons/fa6';
 import { IoMdShare } from 'react-icons/io';
-import { MdInsights } from 'react-icons/md';
 
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
@@ -11,7 +11,6 @@ import AnimatedCounter from '@/components/animata/text/counter';
 import ShareButton from '@/components/blog/ShareButton';
 import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
-import { timeAgo } from '@/utils/timeAgo';
 
 interface PostWithoutThumbnailProps {
   path: string;
@@ -40,14 +39,8 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
   openShareMenuSlug,
   ipaddress,
 }) => {
-  const timeAgoText = timeAgo(new Date(date));
-
   return (
-    <li className="group relative mb-3.5 flex transform cursor-pointer flex-wrap border border-gray-200 bg-opacity-50 p-px py-px transition-transform duration-300 hover:scale-105 hover:border-0 dark:border-gray-700 dark:bg-opacity-50 dark:hover:border-0">
-      <div className="absolute bottom-0 left-0 h-[0.5px] w-full origin-left scale-x-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-x-100" />
-      <div className="absolute bottom-0 left-0 h-full w-[0.5px] origin-bottom scale-y-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-y-100" />
-      <div className="absolute left-0 top-0 h-[0.5px] w-full origin-right scale-x-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-x-100" />
-      <div className="absolute bottom-0 right-0 h-full w-[0.5px] origin-top scale-y-0 transform bg-primary-500 transition-transform duration-300 group-hover:scale-y-100" />
+    <li className="group relative mb-3.5 flex transform cursor-pointer flex-wrap rounded-lg border border-gray-200 bg-opacity-50 p-px py-px hover:bg-zinc-200/50 dark:border-gray-700 dark:hover:bg-zinc-900/50">
       <article className="flex space-x-4 px-0">
         <div className="flex flex-col justify-between pl-2">
           <div>
@@ -78,7 +71,7 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
                   className="flex items-center"
                 >
                   <CalendarIcon className={clsx('mr-1 h-4 w-4')} />
-                  {formatDate(date, siteMetadata.locale)} ({timeAgoText})
+                  {formatDate(date, siteMetadata.locale)}
                 </time>
               </dd>
             </dl>
@@ -89,7 +82,7 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
             </div>
             <span>&middot;</span>
             <div className="flex items-center">
-              <MdInsights className="mr-1 h-4 w-4" />
+              <FaFire className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
               <span className="flex items-center gap-1.5 text-sm">
                 <AnimatedCounter targetValue={views} /> Views
               </span>

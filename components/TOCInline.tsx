@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import useOnScroll from '@/lib/hooks/useOnScroll';
 import { cn } from '@/lib/utils';
@@ -44,6 +45,7 @@ const TOCInline = ({
   rightAlign = false,
 }: TOCInlineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(true);
   const isScrolled = useOnScroll(1000);
 
   const re = useMemo(
@@ -109,10 +111,10 @@ const TOCInline = ({
 
     return (
       <ul
-        className={ulClassName}
+        className={cn(ulClassName, level === 0 && 'space-y-1')}
         style={{
           [rightAlign ? 'marginRight' : 'marginLeft']:
-            `${level === 0 ? 1.0 : level}rem`,
+            `${level === 0 ? 0 : level}rem`,
         }}
       >
         {items.map((item, index) => {
@@ -124,9 +126,10 @@ const TOCInline = ({
               <a
                 href={item.url}
                 className={cn(
-                  'block rounded-md px-1 pb-1.5 pt-2 text-sm transition-all',
+                  'block rounded-md px-2 py-1 text-sm transition-all',
                   'text-muted-foreground hover:bg-slate-50 hover:dark:bg-[#242e45]',
-                  isActiveHeader && 'active-header'
+                  isActiveHeader &&
+                    'active-header bg-slate-100 dark:bg-[#1e2638]'
                 )}
               >
                 {item.value}
@@ -142,13 +145,19 @@ const TOCInline = ({
   return (
     <div
       className={clsx(
-        'border-divider-light hidden h-auto max-w-80 rounded-xl bg-gray-300 pb-1 sm:block',
+        'border-divider-light hidden h-auto max-w-64 rounded-xl bg-gray-300 pb-1 sm:block',
         'dark:border-divider-dark dark:bg-gray-900'
       )}
     >
       <div className="flex items-center justify-between border-b p-2">
-        <div className="ml-5 text-lg font-bold text-black dark:text-white">
-          Table of Contents
+        <div className="ml-2 flex items-center text-base font-bold text-black dark:text-white">
+          <span>On this page</span>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="ml-2 p-1"
+          >
+            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
         </div>
         {isScrolled && (
           <button
@@ -164,7 +173,7 @@ const TOCInline = ({
         )}
       </div>
 
-      <div>{createList(nestedList)}</div>
+      {isExpanded && <div className="mt-2">{createList(nestedList)}</div>}
     </div>
   );
 };

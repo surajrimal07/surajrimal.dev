@@ -44,7 +44,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <div
         className={`${
           imgSrc && 'h-full'
-        } flex h-full flex-col overflow-hidden rounded-lg border border-transparent shadow-nextjs dark:shadow-nextjs-dark`}
+        } flex h-full flex-col overflow-hidden rounded-lg border border-gray-600 shadow-nextjs hover:border-white dark:shadow-nextjs-dark`}
       >
         <div className="relative">
           <Image
@@ -63,35 +63,26 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
         </div>
 
-        <div className="p-6">
-          <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
-            {url ? (
-              <Link href={url} aria-label={`Link to ${title}`}>
-                {title}
-              </Link>
-            ) : (
-              title
-            )}
+        <div className="p-4">
+          <h2 className="mb-2 text-2xl font-bold leading-8 tracking-tight">
+            {title}
           </h2>
-          <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
-            {repository?.description || description}
-          </p>
-
-          <div className="mb-3 flex flex-wrap space-x-1.5">
-            <span className="shrink-0">Built with: </span>
+          <div className="mb-2 flex flex-wrap space-x-1.5">
             {builtWith?.map((tool, index) => {
               return (
                 <span
                   key={index}
-                  className="font-semibold text-gray-600 dark:text-gray-300"
+                  className="m-1 inline-flex items-center overflow-hidden rounded-md border border-gray-700 bg-gray-800 bg-opacity-50 px-3 py-1 text-sm font-medium text-white transition-all duration-200 ease-in-out hover:border-white"
                 >
-                  {tool}
-                  {index !== builtWith.length - 1 && ','}
+                  {tool.toUpperCase()}
                 </span>
               );
             })}
-            .
           </div>
+          <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
+            {repository?.description || description}
+          </p>
+
           {repository ? (
             <GithubRepo repo={repository} projectUrl={url} />
           ) : (

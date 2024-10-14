@@ -118,3 +118,9 @@
 .wl-power {
   display: none !important;
 }
+
+.wave {
+  display: inline-block;
+  animation: wave 2.5s infinite;
+  transform-origin: 70% 70%;
+}

@@ -22,11 +22,12 @@ const WalineComment = (props: WalineOptions) => {
       dark: '.dark',
       emoji: ['https://unpkg.com/@waline/emojis@1.2.0/tw-emoji'],
       requiredMeta: ['nick'],
-      pageview: process.env.NODE_ENV === 'production',
+      pageview: false,
+      reaction: false,
     });
 
     return () => walineInstanceRef.current?.destroy();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     walineInstanceRef.current?.update(props);
