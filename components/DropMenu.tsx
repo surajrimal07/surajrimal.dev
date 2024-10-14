@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ import {
   UserRoundPen,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import useSWR from 'swr';
 
 import usePlaySound from '@/components/PlaySound';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
@@ -38,6 +40,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import useChatStore from '@/lib/hooks/chatState';
 import { cacheAndServeImage } from '@/utils/cacheImage';
+import { fetcher } from '@/utils/fetcher';
 import { createClient } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 
@@ -45,6 +48,11 @@ export function DropdownMenuDemo() {
   const [user, setUser] = useState<User | null>(null);
   const { chatEnabled, setChatEnabled } = useChatStore();
   const [cachedAvatarUrl, setCachedAvatarUrl] = useState<string | null>(null);
+  const {
+    data: weatherData,
+    error,
+    isLoading,
+  } = useSWR('/api/weather', fetcher);
 
   const supabase = createClient();
   const router = useRouter();
@@ -171,6 +179,7 @@ export function DropdownMenuDemo() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuLabel>Pages</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href="/snippets" className="flex items-center">
@@ -220,6 +229,32 @@ export function DropdownMenuDemo() {
               <span>Terms of service</span>
             </Link>
           </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Weather</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          {isLoading && (
+            <DropdownMenuItem>Loading weather data</DropdownMenuItem>
+          )}
+          {error && (
+            <DropdownMenuItem>Error loading weather data</DropdownMenuItem>
+          )}
+          {weatherData && (
+            <DropdownMenuItem className="cursor-default focus:bg-transparent">
+              <div className="flex w-full items-center justify-between">
+                <Image
+                  src={`https:${weatherData.icon}`}
+                  alt={weatherData.condition}
+                  width={24}
+                  height={24}
+                  className="h-6 w-6"
+                />
+                <span className="font-medium">{weatherData.city}</span>
+
+                <span className="font-bold">{weatherData.temperature}°C</span>
+              </div>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

@@ -20,11 +20,10 @@ import { LanguageIcon } from '@/components/social-icons/icons';
 import { Separator } from '@/components/ui/cool-separator';
 import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
-import { timeAgo } from '@/utils/timeAgo';
 
 const renderPost = (post) => {
   const { slug, date, readingTime, title, summary, tags } = post;
-  const timeAgoText = timeAgo(new Date(date));
+
   return (
     <li key={slug} className="py-6">
       <article>
@@ -61,10 +60,10 @@ const renderPost = (post) => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
-                <FaRegHourglassHalf className="h-3 w-3" />
+                <FaRegHourglassHalf className="mr-1 h-3 w-3" />
 
                 <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
-                <span className="ml-1.5 whitespace-nowrap">Min</span>
+                <span className="ml-1.5 whitespace-nowrap">Minutes</span>
               </div>
               <div className="flex items-center">
                 <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />

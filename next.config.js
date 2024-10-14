@@ -93,6 +93,10 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'wakapi.dev',
         },
+        {
+          protocol: 'https',
+          hostname: 'cdn.weatherapi.com',
+        },
       ],
       unoptimized,
     },
