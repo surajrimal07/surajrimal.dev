@@ -3,8 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 
+import { Badge } from '@/components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +16,12 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -24,185 +31,109 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Switch } from '@/components/ui/switch';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { deleteProject, getProjects } from '@/lib/project';
-import { Project } from '@/types/project';
+import { Project } from '@/types/newProject';
+import { toastOptions } from '@/utils/toast';
 
 export default function AdminProjectsListPage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
-  const [isGridView, setIsGridView] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     fetchProjects();
   }, []);
 
+  console.log('Projects fetched', projects);
+
   async function fetchProjects() {
     try {
-      const fetchedProjects = await getProjects();
-      setProjects(fetchedProjects);
+      setProjects(await getProjects());
     } catch (error) {
-      toast.error('Failed to fetch projects');
+      toast.error(`Failed to fetch proects ${error}`, toastOptions);
     }
   }
 
   async function handleDelete(id: string) {
     try {
       await deleteProject(id);
-      toast.success('Project deleted successfully');
+      toast.success('Project deleted successfully', toastOptions);
       fetchProjects();
-      setProjectToDelete(null);
     } catch (error) {
-      toast.error('Failed to delete project');
+      toast.error(`Failed to delete project ${error}`, toastOptions);
     }
   }
 
-  const workProjects = projects.filter((project) => project.type === 'work');
-  const selfProjects = projects.filter((project) => project.type === 'self');
-  const selfHostedProjects = projects.filter(
-    (project) => project.type === 'selfhosted'
+  const ProjectList = ({ projects }: { projects: Project[] }) => (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project) => (
+        <Card key={project.id} className="flex flex-col">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">{project.title}</h3>
+              {project.is_dark_badge_needed && (
+                <Badge variant="outline">Dark</Badge>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">{project.stack}</p>
+          </CardHeader>
+          <CardContent className="flex-grow">
+            <p className="mb-2 text-sm">{project.description}</p>
+            <div className="mb-2">
+              <strong className="text-sm">Built with:</strong>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {project.built_with.map((tech) => (
+                  <Badge key={tech} variant="secondary" className="text-xs">
+                    {tech}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Created: {format(new Date(project.created_at), 'PPP')}
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/admin/project/${project.id}`)}
+            >
+              Edit
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                  Delete
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Confirm Deletion</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to delete {project.title}? This action
+                    cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button variant="outline">Cancel</Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => project.id && handleDelete(project.id)}
+                  >
+                    Delete
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
   );
 
-  const ProjectList = ({ projects }: { projects: Project[] }) =>
-    isGridView ? (
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <Card key={project.id}>
-            <CardContent>
-              <h3 className="font-bold">{project.title}</h3>
-              <p>{project.stack}</p>
-              <div className="mt-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mr-2"
-                  onClick={() => router.push(`/admin/project/${project.id}`)}
-                >
-                  Edit
-                </Button>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() =>
-                        project.id && setProjectToDelete(project.id)
-                      }
-                    >
-                      Delete
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>
-                        Are you sure you want to delete this project?
-                      </DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the project.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => setProjectToDelete(null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() => project.id && handleDelete(project.id)}
-                      >
-                        Delete
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    ) : (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Stack</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {projects.map((project) => (
-            <TableRow key={project.id}>
-              <TableCell>{project.title}</TableCell>
-              <TableCell>{project.stack}</TableCell>
-              <TableCell>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mr-2"
-                  onClick={() => router.push(`/admin/project/${project.id}`)}
-                >
-                  Edit
-                </Button>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() =>
-                        project.id && setProjectToDelete(project.id)
-                      }
-                    >
-                      Delete
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>
-                        Are you sure you want to delete this project?
-                      </DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the project.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => setProjectToDelete(null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() => project.id && handleDelete(project.id)}
-                      >
-                        Delete
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
-
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto p-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <Breadcrumb>
@@ -216,53 +147,38 @@ export default function AdminProjectsListPage() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="view-mode"
-                checked={isGridView}
-                onCheckedChange={setIsGridView}
-              />
-              <label htmlFor="view-mode">Grid View</label>
-            </div>
-            <Button onClick={() => router.push('/admin/project/new')}>
-              New Project
-            </Button>
-          </div>
+          <Button onClick={() => router.push('/admin/project/new')}>
+            New Project
+          </Button>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
-            <div className="flex justify-center">
-              <TabsList className="inline-flex justify-center">
-                <TabsTrigger value="all" className="flex-1">
-                  All
+            <TabsList className="mb-4 flex justify-center">
+              {['all', 'work', 'self', 'self-hosted'].map((tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="flex-1 capitalize"
+                >
+                  {tab.replace('-', ' ')}
                 </TabsTrigger>
-                <TabsTrigger value="work" className="flex-1">
-                  Work
-                </TabsTrigger>
-                <TabsTrigger value="self" className="flex-1">
-                  Self
-                </TabsTrigger>
-                <TabsTrigger value="self-hosted" className="flex-1">
-                  Self Hosted
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            <div className="mt-2">
-              <TabsContent value="all">
-                <ProjectList projects={projects} />
+              ))}
+            </TabsList>
+            {['all', 'work', 'self', 'self-hosted'].map((tab) => (
+              <TabsContent key={tab} value={tab}>
+                <ProjectList
+                  projects={
+                    tab === 'all'
+                      ? projects
+                      : projects.filter(
+                          (p) =>
+                            p.type ===
+                            (tab === 'self-hosted' ? 'selfhosted' : tab)
+                        )
+                  }
+                />
               </TabsContent>
-              <TabsContent value="work">
-                <ProjectList projects={workProjects} />
-              </TabsContent>
-              <TabsContent value="self">
-                <ProjectList projects={selfProjects} />
-              </TabsContent>
-              <TabsContent value="self-hosted">
-                <ProjectList projects={selfHostedProjects} />
-              </TabsContent>
-            </div>
+            ))}
           </Tabs>
         </CardContent>
       </Card>

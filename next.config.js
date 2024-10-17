@@ -97,6 +97,10 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'cdn.weatherapi.com',
         },
+        {
+          protocol: 'https',
+          hostname: 'nfmcturislsuejmkigqk.supabase.co',
+        },
       ],
       unoptimized,
     },

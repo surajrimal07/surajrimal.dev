@@ -4,20 +4,19 @@ import { useEffect } from 'react';
 
 import clsx from 'clsx';
 
+import Link from '@/components//Link';
+import MobileNav from '@/components//MobileNav';
+import { useCurrentPath } from '@/components//PathProvider';
+import SearchButton from '@/components//SearchButton';
+import ThemeSwitch from '@/components//ThemeSwitch';
+import { HoverBorderGradient } from '@/components//ui/shimmer-button';
+import Tooltip from '@/components//ui/tooltip';
+import AnalyticsLink from '@/components/AnalyticsLink';
+import DropMenu from '@/components/DropMenu';
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
 import { useAvailabilityStore } from '@/lib/hooks/availablityState';
 import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
-
-import AnalyticsLink from './AnalyticsLink';
-import DropMenu from './DropMenu';
-import Link from './Link';
-import MobileNav from './MobileNav';
-import { useCurrentPath } from './PathProvider';
-import SearchButton from './SearchButton';
-import ThemeSwitch from './ThemeSwitch';
-import { HoverBorderGradient } from './ui/shimmer-button';
-import Tooltip from './ui/tooltip';
 
 const Header = () => {
   const currentPath = useCurrentPath();
@@ -70,6 +69,8 @@ const Header = () => {
                   '/admin/snippets'
                 ) : currentPath.startsWith('/admin/blog') ? (
                   '/admin/blog'
+                ) : currentPath.startsWith('/admin/project') ? (
+                  '/admin/project'
                 ) : (
                   currentPath
                 )}
