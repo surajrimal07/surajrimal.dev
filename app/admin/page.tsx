@@ -41,7 +41,7 @@ export default async function AdminDashboard() {
     },
     {
       name: 'Projects',
-      href: '/admin/projects',
+      href: '/admin/project',
       icon: Briefcase,
       description: 'Showcase your projects',
     },
@@ -65,13 +65,13 @@ export default async function AdminDashboard() {
     },
     {
       name: 'Availability',
-      href: '/admin/availability',
+      href: '/admin/available',
       icon: Calendar,
       description: 'Set your availability',
     },
     {
       name: 'Contacts',
-      href: '/admin/contacts',
+      href: '/admin/contact',
       icon: ContactRound,
       description: 'Set your contact information',
     },

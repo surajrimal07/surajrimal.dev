@@ -13,10 +13,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* * {
+  outline: 1px solid #f00 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+} */
+
 html,
 .lightbox-overlay {
   width: 100vw;
 }
+
+/* //fixes the layout shift in certain case like select  */
+/* body {
+  overflow-y: visible;
+} */
 
 html.prevent-scroll {
   overflow-y: hidden;

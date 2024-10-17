@@ -1,4 +1,5 @@
 export interface Project {
+  id?: string;
   type: 'work' | 'self' | 'selfhosted';
   title: string;
   description?: string;

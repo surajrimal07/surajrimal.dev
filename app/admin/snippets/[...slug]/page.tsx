@@ -1,13 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import matter from 'gray-matter';
-import { ArrowLeft, LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,21 +25,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { LANGUAGES, LAYOUTS, PostData } from '@/types/post';
 import { toastOptions } from '@/utils/toast';
+import AdminLoading from '@/components/admin/Loader';
 
-interface PostData {
-  title: string;
-  content: string;
-  summary: string;
-  date: string;
-  tags: string[];
-  draft: boolean;
-  language: string;
-}
-
-const LANGUAGES = ['English', 'Nepali'];
-
-export default function EditBlogPost() {
+export default function EditSnippet() {
   const params = useParams();
   const router = useRouter();
 
@@ -48,6 +44,7 @@ export default function EditBlogPost() {
   }, [params.slug]);
 
   const isNewPost = useMemo(() => postId === 'new', [postId]);
+  const [orginalTitle, setOrginalTitle] = useState('');
 
   const [postData, setPostData] = useState<PostData>({
     title: '',
@@ -57,6 +54,8 @@ export default function EditBlogPost() {
     tags: [],
     draft: false,
     language: 'English',
+    layout: 'PostSimple',
+    lastmod: '',
   });
   const [newTag, setNewTag] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +63,7 @@ export default function EditBlogPost() {
   useEffect(() => {
     if (!isNewPost && postId) {
       setIsLoading(true);
-      fetch(`/api/snippets?id=${postId}`)
+      fetch(`/api/posts?type=snippet&id=${postId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -72,6 +71,7 @@ export default function EditBlogPost() {
           return response.json();
         })
         .then((rawContent) => {
+          setOrginalTitle(`Editing - ${rawContent.title}`);
           setPostData({
             title: rawContent.title || '',
             content: rawContent.content || '',
@@ -80,12 +80,13 @@ export default function EditBlogPost() {
             tags: rawContent.tags || [],
             draft: rawContent.draft || false,
             language: rawContent.language || 'English',
+            layout: rawContent.layout || 'PostSimple',
+            lastmod: rawContent.lastmod || rawContent.date,
           });
         })
         .catch((error) => {
-          console.log(error);
           toast.error(
-            `Failed to load snippets data: ${error.message}`,
+            `Failed to load snippet data: ${error.message}`,
             toastOptions
           );
           router.push('/admin/snippets');
@@ -114,6 +115,13 @@ export default function EditBlogPost() {
     setPostData((prev) => ({
       ...prev,
       language: value,
+    }));
+  }, []);
+
+  const handleLayoutChange = useCallback((value: string) => {
+    setPostData((prev) => ({
+      ...prev,
+      layout: value,
     }));
   }, []);
 
@@ -156,9 +164,7 @@ export default function EditBlogPost() {
         const { content, ...frontmatter } = postData;
         const fileContent = matter.stringify(content, frontmatter);
 
-        console.log('File content to be sent:', fileContent);
-
-        const response = await fetch('/api/snippets', {
+        const response = await fetch('/api/posts?type=snippet', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -185,25 +191,30 @@ export default function EditBlogPost() {
   );
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoaderCircle className="h-12 w-12 animate-spin text-white" />
-      </div>
-    );
+    return <AdminLoading />;
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-5">
       <div className="flex items-center space-x-4">
-        <Link href="/admin/snippets">
-          <ArrowLeft className="h-6 w-6 cursor-pointer" />
-        </Link>
-        <h1 className="text-3xl font-bold">
-          {isNewPost ? 'Create New Snippet' : 'Edit Snippet'}
-        </h1>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/admin">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/snippets">Snippets</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{orginalTitle}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 pt-5">
         <div className="space-y-2">
           <Label htmlFor="title">Title</Label>
           <Input
@@ -215,26 +226,30 @@ export default function EditBlogPost() {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="date">Date</Label>
-          <Input
-            id="date"
-            type="date"
-            value={postData.date}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="summary">Summary</Label>
-          <Input
-            id="summary"
-            type="text"
-            value={postData.summary}
-            onChange={handleInputChange}
-            required
-          />
+        <div className="flex space-x-4">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              disabled={!isNewPost}
+              value={postData.date}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          {!isNewPost && (
+            <div className="flex-1 space-y-2">
+              <Label htmlFor="lastmod">Last Modified</Label>
+              <Input
+                id="lastmod"
+                type="date"
+                value={postData.lastmod}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex space-x-4">
@@ -291,15 +306,43 @@ export default function EditBlogPost() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <input
-            id="draft"
-            type="checkbox"
-            checked={postData.draft}
+        <div className="flex space-x-4">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="layout">Post Layout</Label>
+            <Select value={postData.layout} onValueChange={handleLayoutChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a layout" />
+              </SelectTrigger>
+              <SelectContent>
+                {LAYOUTS.map((layout) => (
+                  <SelectItem key={layout} value={layout}>
+                    {layout}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="mt-8 flex flex-1 items-center space-x-2">
+            <input
+              id="draft"
+              type="checkbox"
+              checked={postData.draft}
+              onChange={handleInputChange}
+              className="h-4 w-4 rounded"
+            />
+            <Label htmlFor="draft">Draft</Label>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="summary">Summary</Label>
+          <Textarea
+            id="summary"
+            value={postData.summary}
             onChange={handleInputChange}
-            className="h-4 w-4 rounded"
+            className="min-h-[100px] w-full resize-y"
+            placeholder="Write your snippet summary here..."
           />
-          <Label htmlFor="draft">Draft</Label>
         </div>
 
         <div className="mt-5">
@@ -310,8 +353,8 @@ export default function EditBlogPost() {
             id="content"
             value={postData.content}
             onChange={handleInputChange}
-            className="min-h-[500px] w-full resize-y"
-            placeholder="Write your snippet content here..."
+            className="min-h-[500px] w-full resize-y break-words"
+            placeholder="Write your blog content here..."
           />
         </div>
         <Button type="submit">

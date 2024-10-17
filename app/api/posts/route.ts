@@ -1,67 +1,129 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { readFile, writeFile } from 'fs/promises';
+import { readFile, unlink, writeFile } from 'fs/promises';
 import matter from 'gray-matter';
 import path from 'path';
 
-function generateFileName(title: string) {
+const CONTENT_TYPES = {
+  snippet: 'snippets',
+  post: 'blog',
+} as const;
+
+type ContentType = keyof typeof CONTENT_TYPES;
+
+function generateFileName(title: string): string {
   return `${title
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/--+/g, '-')}.mdx`;
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')}.mdx`;
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const { title, content, date, tags, draft, summary } = await req.json();
+function getFilePath(contentType: ContentType, id: string): string {
+  return path.join(
+    process.cwd(),
+    'data',
+    CONTENT_TYPES[contentType],
+    `${id}.mdx`
+  );
+}
 
-    const frontmatter =
-      `---\n` +
-      `title: '${title}'\n` +
-      `date: '${date}'\n` +
-      `lastmod: '${date}'\n` +
-      `tags: [${tags.map((tag: string) => `'${tag}'`).join(', ')}]\n` +
-      `summary: '${summary}'\n` +
-      `draft: ${draft}\n` +
-      `layout: PostSimple\n` +
-      `---\n\n`;
+async function handleRequest(
+  req: NextRequest,
+  method: 'GET' | 'POST' | 'DELETE'
+) {
+  const url = new URL(req.url);
+  const contentType = url.searchParams.get('type') as ContentType;
+  const id = url.searchParams.get('id');
 
-    const fullContent = frontmatter + content;
-    const fileName = generateFileName(title);
-    const filePath = path.join(process.cwd(), 'data', 'blog', fileName);
+  console.log('contentType:', contentType, 'id:', id);
 
-    await writeFile(filePath, fullContent);
-
-    return NextResponse.json({ success: true, fileName });
-  } catch (error) {
+  if (!contentType || !CONTENT_TYPES[contentType]) {
     return NextResponse.json(
-      { success: false, error: `Failed to save the post ${error}` },
+      { error: 'Invalid content type' },
+      { status: 400 }
+    );
+  }
+
+  if (method !== 'POST' && !id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
+
+  try {
+    switch (method) {
+      case 'GET':
+        return await handleGet(contentType, id!);
+      case 'POST':
+        return await handlePost(req, contentType, id);
+      case 'DELETE':
+        return await handleDelete(contentType, id!);
+      default:
+        return NextResponse.json(
+          { error: 'Method not allowed' },
+          { status: 405 }
+        );
+    }
+  } catch (error) {
+    console.error(`Error in ${method} function:`, error);
+    return NextResponse.json(
+      { success: false, error: `Operation failed: ${error}` },
       { status: 500 }
     );
   }
+}
+
+async function handleGet(contentType: ContentType, id: string) {
+  const filePath = getFilePath(contentType, id);
+  const fileContents = await readFile(filePath, 'utf8');
+  const { data, content } = matter(fileContents);
+  return NextResponse.json({ ...data, content });
+}
+
+async function handlePost(
+  req: NextRequest,
+  contentType: ContentType,
+  id: string | null
+) {
+  const { content: fileContent } = await req.json();
+  const { data: frontmatter, content } = matter(fileContent);
+
+  frontmatter.lastmod = frontmatter.lastmod || frontmatter.date;
+  frontmatter.draft = frontmatter.draft ?? false;
+  frontmatter.layout = frontmatter.layout || 'PostSimple';
+
+  const mdxContent = matter.stringify(content, frontmatter);
+
+  const fileName =
+    id && id !== 'new' ? `${id}.mdx` : generateFileName(frontmatter.title);
+  const filePath = getFilePath(contentType, fileName.replace('.mdx', ''));
+
+  await writeFile(filePath, mdxContent);
+
+  return NextResponse.json({
+    success: true,
+    fileName: path.basename(filePath),
+  });
+}
+
+async function handleDelete(contentType: ContentType, id: string) {
+  console.log(
+    `content type and id in delete function is ${contentType} and ${id}`
+  );
+  const filePath = getFilePath(contentType, id);
+  await unlink(filePath);
+  return NextResponse.json({
+    success: true,
+    message: `${contentType} deleted successfully`,
+  });
 }
 
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const id = url.searchParams.get('id');
+  return handleRequest(req, 'GET');
+}
 
-  if (!id) {
-    return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
-  }
+export async function POST(req: NextRequest) {
+  return handleRequest(req, 'POST');
+}
 
-  try {
-    const filePath = path.join(process.cwd(), 'data', 'blog', `${id}.mdx`);
-    const fileContents = await readFile(filePath, 'utf8');
-
-    const { data, content } = matter(fileContents);
-
-    return NextResponse.json({ ...data, content });
-  } catch (error) {
-    return NextResponse.json(
-      { error: `Failed to read the snippets: ${error}` },
-      { status: 500 }
-    );
-  }
+export async function DELETE(req: NextRequest) {
+  return handleRequest(req, 'DELETE');
 }

@@ -56,5 +56,3 @@ const SearchButton = () => {
 };
 
 export default SearchButton;
-
-//hover:text-red-500

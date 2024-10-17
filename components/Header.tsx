@@ -37,13 +37,6 @@ const Header = () => {
         siteMetadata.stickyNav && 'sticky top-0 z-40'
       )}
     >
-      {/* <div
-        className="absolute inset-0 rounded-lg transition-all duration-300"
-        style={{
-          background: `linear-gradient(90deg, rgba(128, 128, 128, 0.5) ${completion}%, rgba(255, 255, 255, 0) ${completion}%)`,
-        }}
-      /> */}
-
       <div className="pointer-events-none absolute bottom-0 left-0 h-full w-full overflow-hidden rounded-lg">
         <div
           className="absolute bottom-0 left-0 h-0.5 rounded-full bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400"

@@ -170,30 +170,30 @@ export default function ContactPage() {
             </div>
             {stack === 'other' && (
               <div>
-                <Label htmlFor="customStack">Specify Stack</Label>
+                <Label htmlFor="custom_stack">Specify Stack</Label>
                 <Input
-                  id="customStack"
-                  name="customStack"
+                  id="custom_stack"
+                  name="custom_stack"
                   placeholder="Please specify your stack"
                   required
                 />
               </div>
             )}
             <div>
-              <Label htmlFor="projectDescription">Project Description</Label>
+              <Label htmlFor="project_description">Project Description</Label>
               <Textarea
-                id="projectDescription"
-                name="projectDescription"
+                id="project_description"
+                name="project_description"
                 placeholder="Please describe your project"
                 className="resize-none"
                 required
               />
             </div>
             <div>
-              <Label htmlFor="costExpectations">Cost Expectations</Label>
+              <Label htmlFor="cost_expectations">Cost Expectations</Label>
               <Input
-                id="costExpectations"
-                name="costExpectations"
+                id="cost_expectations"
+                name="cost_expectations"
                 placeholder="~ $Your budget range"
                 required
               />

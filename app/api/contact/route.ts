@@ -40,9 +40,9 @@ export async function POST(req: NextRequest) {
         email: data.email,
         purpose: data.purpose,
         stack: data.stack || null,
-        custom_stack: data.customStack || null,
-        project_description: data.projectDescription || null,
-        cost_expectations: data.costExpectations || null,
+        custom_stack: data.custom_stack || null,
+        project_description: data.project_description || null,
+        cost_expectations: data.cost_expectations || null,
         message: data.message || null,
         user_session: sessionId,
       },
@@ -50,6 +50,85 @@ export async function POST(req: NextRequest) {
 
     if (error) {
       throw new Error('Failed to submit the form: ' + error.message);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const supabase = createClient();
+
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error('Failed to fetch contacts: ' + error.message);
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const supabase = createClient();
+
+  try {
+    const { responded, responded_at } = await req.json();
+
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
+
+    if (!id || responded === undefined) {
+      return NextResponse.json(
+        { message: 'id and responded  is required' },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase
+      .from('contacts')
+      .update({
+        responded: responded,
+        responded_at: responded_at,
+      })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error('Failed to update the contact: ' + error.message);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const supabase = createClient();
+
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { message: 'Contact ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase.from('contacts').delete().eq('id', id);
+
+    if (error) {
+      throw new Error('Failed to delete the contact: ' + error.message);
     }
 
     return NextResponse.json({ success: true });
