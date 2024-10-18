@@ -9,6 +9,7 @@ import {
   FileSpreadsheet,
   FileText,
   Map,
+  ShieldCheck,
   User,
 } from 'lucide-react';
 
@@ -74,6 +75,12 @@ export default async function AdminDashboard() {
       href: '/admin/contact',
       icon: ContactRound,
       description: 'Set your contact information',
+    },
+    {
+      name: 'Certificates',
+      href: '/admin/certifications',
+      icon: ShieldCheck,
+      description: 'Set your certification information',
     },
   ];
 

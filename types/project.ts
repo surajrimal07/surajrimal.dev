@@ -3,11 +3,13 @@ export interface Project {
   type: 'work' | 'self' | 'selfhosted';
   title: string;
   description?: string;
-  imgSrc: string;
-  isDarkBadgeNeeded?: boolean;
+  img_src: string;
+  is_dark_badge_needed?: boolean;
   url?: string;
   repo?: string;
-  builtWith: string[];
+  built_with: string[];
+  created_at: string;
+  updated_at: string;
   stack:
     | 'fullstack'
     | 'frontend'

@@ -1,4 +1,4 @@
-import { Project } from '@/types/newProject';
+import { Project } from '@/types/project';
 import { supabase } from '@/utils/supabase/client';
 
 export async function getProjects(): Promise<Project[]> {
@@ -26,6 +26,8 @@ export async function getProject(id: string): Promise<Project> {
 export async function createProject(
   project: Omit<Project, 'id'>
 ): Promise<Project> {
+  console.log('project', project);
+
   const { data, error } = await supabase
     .from('projects')
     .insert(project)
@@ -40,6 +42,8 @@ export async function updateProject(
   id: string,
   project: Partial<Project>
 ): Promise<Project> {
+  console.log('project', project);
+
   const { data, error } = await supabase
     .from('projects')
     .update(project)
@@ -77,7 +81,7 @@ export async function getProjectImages(): Promise<string[]> {
 }
 
 export async function uploadProjectImage(file: File): Promise<string> {
-  const fileName = `${Date.now()}_${file.name}`;
+  const fileName = `project-images/${Date.now()}_${file.name}`;
   const { error } = await supabase.storage
     .from('surajr')
     .upload(fileName, file, {

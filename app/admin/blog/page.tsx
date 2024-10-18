@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { allBlogs } from 'contentlayer/generated';
 import { sortPosts } from 'pliny/utils/contentlayer';
 
-import DeleteButton from '@/components/snippet/DeleteButton';
+import DeleteButton from '@/components/admin/SnippetDelete';
 import {
   Breadcrumb,
   BreadcrumbItem,

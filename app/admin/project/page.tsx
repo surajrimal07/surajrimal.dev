@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { deleteProject, getProjects } from '@/lib/project';
-import { Project } from '@/types/newProject';
+import { Project } from '@/types/project';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminProjectsListPage() {
@@ -43,8 +43,6 @@ export default function AdminProjectsListPage() {
   useEffect(() => {
     fetchProjects();
   }, []);
-
-  console.log('Projects fetched', projects);
 
   async function fetchProjects() {
     try {
@@ -90,7 +88,11 @@ export default function AdminProjectsListPage() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Created: {format(new Date(project.created_at), 'PPP')}
+              Created on : {format(new Date(project.created_at), 'PPP')}
+            </p>
+
+            <p className="text-xs text-muted-foreground">
+              Edited on : {format(new Date(project.updated_at), 'PPP')}
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">

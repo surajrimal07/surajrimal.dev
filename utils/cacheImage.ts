@@ -19,6 +19,7 @@ export async function cacheAndServeImage(originalUrl: string): Promise<string> {
     return `/image-cache/${cachedFilename}`;
   } catch (error) {
     // If the file doesn't exist, download and cache it
+    console.log(`Error occured while caching image ${originalUrl}: ${error}`);
     const response = await fetch(originalUrl);
     const arrayBuffer = await response.arrayBuffer();
 

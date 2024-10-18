@@ -14,11 +14,11 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   const {
     title,
     description,
-    imgSrc,
-    isDarkBadgeNeeded,
+    img_src,
+    is_dark_badge_needed,
     url,
     repo,
-    builtWith,
+    built_with,
     stack,
   } = project;
 
@@ -43,20 +43,20 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
     <div className="md max-w-[544px] p-4 md:w-1/2">
       <div
         className={`${
-          imgSrc && 'h-full'
+          img_src && 'h-full'
         } flex h-full flex-col overflow-hidden rounded-lg border border-gray-600 shadow-nextjs hover:border-white dark:shadow-nextjs-dark`}
       >
         <div className="relative">
           <Image
             alt={title}
-            src={imgSrc}
+            src={img_src}
             className="object-cover object-center md:h-36 lg:h-60"
             width={1088}
             height={612}
           />
           {stack && (
             <div className="absolute right-2 top-2">
-              <Badge variant={isDarkBadgeNeeded ? 'neutralDark' : 'neutral'}>
+              <Badge variant={is_dark_badge_needed ? 'neutralDark' : 'neutral'}>
                 {stack}
               </Badge>
             </div>
@@ -68,7 +68,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             {title}
           </h2>
           <div className="mb-2 flex flex-wrap space-x-1.5">
-            {builtWith?.map((tool, index) => {
+            {built_with?.map((tool, index) => {
               return (
                 <span
                   key={index}

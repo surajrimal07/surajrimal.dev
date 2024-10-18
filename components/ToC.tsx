@@ -78,14 +78,10 @@ export function ToC({ toc }: { toc: TOC[] }) {
   }, [modifiedToc]);
 
   const handleLinkClick = (e: MouseEvent, url: string) => {
-    console.log('URL:', url); // Log the URL
-
     const targetElement: HTMLElement | null = document.querySelector(url);
-    console.log('Target Element:', targetElement); // Log the target element
 
     if (targetElement) {
       e.preventDefault();
-      console.log('Offset Top:', targetElement.offsetTop); // Log the offsetTop value
 
       window.scrollTo({
         top: targetElement.offsetTop - 80,

@@ -5,26 +5,15 @@ import matter from 'gray-matter';
 import path from 'path';
 
 const CONTENT_TYPES = {
-  snippet: 'snippets',
-  post: 'blog',
+  default: 'default',
+  resume: 'resume',
+  usage: 'usage',
 } as const;
 
 type ContentType = keyof typeof CONTENT_TYPES;
 
-function generateFileName(title: string): string {
-  return `${title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')}.mdx`;
-}
-
-function getFilePath(contentType: ContentType, id: string): string {
-  return path.join(
-    process.cwd(),
-    'data',
-    CONTENT_TYPES[contentType],
-    `${id}.mdx`
-  );
+function getFilePath(contentType: ContentType): string {
+  return path.join(process.cwd(), 'data', 'authors', `${contentType}.mdx`);
 }
 
 async function handleRequest(
@@ -33,7 +22,6 @@ async function handleRequest(
 ) {
   const url = new URL(req.url);
   const contentType = url.searchParams.get('type') as ContentType;
-  const id = url.searchParams.get('id');
 
   if (!contentType || !CONTENT_TYPES[contentType]) {
     return NextResponse.json(
@@ -42,18 +30,21 @@ async function handleRequest(
     );
   }
 
-  if (method !== 'POST' && !id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  if (method !== 'POST' && !contentType) {
+    return NextResponse.json(
+      { error: 'ContentType is required' },
+      { status: 400 }
+    );
   }
 
   try {
     switch (method) {
       case 'GET':
-        return await handleGet(contentType, id!);
+        return await handleGet(contentType);
       case 'POST':
-        return await handlePost(req, contentType, id);
+        return await handlePost(req, contentType);
       case 'DELETE':
-        return await handleDelete(contentType, id!);
+        return await handleDelete(contentType);
       default:
         return NextResponse.json(
           { error: 'Method not allowed' },
@@ -69,30 +60,25 @@ async function handleRequest(
   }
 }
 
-async function handleGet(contentType: ContentType, id: string) {
-  const filePath = getFilePath(contentType, id);
+async function handleGet(contentType: ContentType) {
+  const filePath = getFilePath(contentType);
+
+  console.log('filePath', filePath);
+
   const fileContents = await readFile(filePath, 'utf8');
   const { data, content } = matter(fileContents);
+
   return NextResponse.json({ ...data, content });
 }
 
-async function handlePost(
-  req: NextRequest,
-  contentType: ContentType,
-  id: string | null
-) {
+async function handlePost(req: NextRequest, contentType: ContentType) {
   const { content: fileContent } = await req.json();
-  const { data: frontmatter, content } = matter(fileContent);
 
-  frontmatter.lastmod = frontmatter.lastmod || frontmatter.date;
-  frontmatter.draft = frontmatter.draft ?? false;
-  frontmatter.layout = frontmatter.layout || 'PostSimple';
+  const { data: frontmatter, content } = matter(fileContent);
 
   const mdxContent = matter.stringify(content, frontmatter);
 
-  const fileName =
-    id && id !== 'new' ? `${id}.mdx` : generateFileName(frontmatter.title);
-  const filePath = getFilePath(contentType, fileName.replace('.mdx', ''));
+  const filePath = getFilePath(contentType);
 
   await writeFile(filePath, mdxContent);
 
@@ -102,8 +88,8 @@ async function handlePost(
   });
 }
 
-async function handleDelete(contentType: ContentType, id: string) {
-  const filePath = getFilePath(contentType, id);
+async function handleDelete(contentType: ContentType) {
+  const filePath = getFilePath(contentType);
   await unlink(filePath);
   return NextResponse.json({
     success: true,

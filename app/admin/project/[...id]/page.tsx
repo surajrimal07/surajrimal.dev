@@ -2,7 +2,13 @@
 
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 
 import { Check, Maximize2, X, ZoomIn } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -17,8 +23,21 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -37,41 +56,71 @@ import {
   updateProject,
   uploadProjectImage,
 } from '@/lib/project';
-import { Project } from '@/types/newProject';
+import { Project } from '@/types/project';
 import { toastOptions } from '@/utils/toast';
+
+// Types
+type ProjectState = Project;
+
+type ProjectAction =
+  | { type: 'SET_PROJECT'; payload: Partial<Project> }
+  | { type: 'RESET_PROJECT' };
+
+// Initial state
+const initialState: ProjectState = {
+  title: '',
+  type: 'work',
+  description: '',
+  img_src: '',
+  is_dark_badge_needed: false,
+  url: '',
+  repo: '',
+  built_with: [],
+  stack: 'fullstack',
+  created_at: '',
+  updated_at: '',
+};
+
+// Reducer
+function projectReducer(
+  state: ProjectState,
+  action: ProjectAction
+): ProjectState {
+  switch (action.type) {
+    case 'SET_PROJECT':
+      return { ...state, ...action.payload };
+    case 'RESET_PROJECT':
+      return initialState;
+    default:
+      return state;
+  }
+}
 
 export default function EditProject() {
   const params = useParams();
   const router = useRouter();
+  const [state, dispatch] = useReducer(projectReducer, initialState);
 
   const [projectId, setProjectId] = useState<string | null>(null);
   const [isNewProject, setIsNewProject] = useState(false);
   const [originalTitle, setOriginalTitle] = useState('');
-
   const [projectImages, setProjectImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [zoomImage, setZoomImage] = useState<string>('');
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
-
-  const [projectData, setProjectData] = useState<Project>({
-    title: '',
-    type: 'work',
-    description: '',
-    img_src: '',
-    is_dark_badge_needed: false,
-    url: '',
-    repo: '',
-    built_with: [],
-    stack: 'fullstack',
-    created_at: '',
-    updated_at: '',
-  });
-
-  const [isLoading, setIsLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isFullImageViewOpen, setIsFullImageViewOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const filteredImages = useMemo(
+    () =>
+      projectImages.filter((image) =>
+        image.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [projectImages, searchTerm]
+  );
 
   useEffect(() => {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -80,59 +129,61 @@ export default function EditProject() {
   }, [params.id]);
 
   useEffect(() => {
-    const fetchProject = async () => {
-      const images = await getProjectImages();
-      setProjectImages(images);
-
-      if (!isNewProject && projectId) {
+    const fetchProjectData = async () => {
+      try {
         setIsLoading(true);
-        try {
+
+        const images = await getProjectImages();
+        setProjectImages(images);
+
+        if (!isNewProject && projectId) {
           const project = await getProject(projectId);
           setOriginalTitle(`Editing - ${project.title}`);
-          setProjectData(project);
+          dispatch({ type: 'SET_PROJECT', payload: project });
           setSelectedImage(project.img_src);
-        } catch (error) {
-          toast.error(
-            `Failed to load project data: ${error instanceof Error ? error.message : String(error)}`,
-            toastOptions
-          );
-          router.push('/admin/project');
-        } finally {
-          setIsLoading(false);
         }
-      } else {
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        toast.error(
+          `Failed to load project data: ${errorMessage}`,
+          toastOptions
+        );
+        router.push('/admin/project');
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProject();
+    fetchProjectData();
   }, [isNewProject, projectId, router]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { id, value, type } = e.target;
-      setProjectData((prev) => ({
-        ...prev,
-        [id]:
-          type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-      }));
+      dispatch({
+        type: 'SET_PROJECT',
+        payload: {
+          [id]:
+            type === 'checkbox'
+              ? (e.target as HTMLInputElement).checked
+              : value,
+        },
+      });
     },
     []
   );
 
   const handleImageSelect = useCallback((image: string) => {
     setSelectedImage(image);
-    setProjectData((prev) => ({
-      ...prev,
-      img_src: image,
-    }));
+    dispatch({ type: 'SET_PROJECT', payload: { img_src: image } });
     setUploadedImage(null);
     setPreviewUrl('');
     setIsDrawerOpen(false);
   }, []);
 
   const handleImageUpload = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
         setUploadedImage(file);
@@ -148,47 +199,39 @@ export default function EditProject() {
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      if (
-        !projectData.title ||
-        (!selectedImage && !uploadedImage) ||
-        !projectData.stack
-      ) {
+      if (!state.title || (!selectedImage && !uploadedImage) || !state.stack) {
         toast.error('Please fill in all required fields.', toastOptions);
         return;
       }
 
       try {
         let imgSrc = selectedImage;
-
         if (uploadedImage) {
           imgSrc = await uploadProjectImage(uploadedImage);
         }
 
-        const updatedProjectData = {
-          ...projectData,
+        const projectData = {
+          ...state,
           img_src: imgSrc,
+          created_at: state.created_at || new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         };
 
         if (isNewProject) {
-          await createProject(updatedProjectData);
+          await createProject(projectData);
           toast.success('Project created successfully', toastOptions);
         } else {
-          await updateProject(projectId as string, updatedProjectData);
+          await updateProject(projectId as string, projectData);
           toast.success('Project updated successfully', toastOptions);
         }
         router.push('/admin/project');
       } catch (error) {
-        toast.error(
-          `Failed to save project: ${error instanceof Error ? error.message : String(error)}`,
-          toastOptions
-        );
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        toast.error(`Failed to save project: ${errorMessage}`, toastOptions);
       }
     },
-    [projectData, selectedImage, uploadedImage, isNewProject, router, projectId]
-  );
-
-  const filteredImages = projectImages.filter((image) =>
-    image.toLowerCase().includes(searchTerm.toLowerCase())
+    [state, selectedImage, uploadedImage, isNewProject, projectId, router]
   );
 
   if (isLoading) {
@@ -219,14 +262,15 @@ export default function EditProject() {
         </Breadcrumb>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="mt-2 space-y-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Left Column */}
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
-                value={projectData.title}
+                value={state.title}
                 onChange={handleInputChange}
                 required
               />
@@ -235,9 +279,12 @@ export default function EditProject() {
             <div className="space-y-2">
               <Label htmlFor="type">Type</Label>
               <Select
-                value={projectData.type}
+                value={state.type}
                 onValueChange={(value) =>
-                  setProjectData((prev) => ({ ...prev, type: value }))
+                  dispatch({
+                    type: 'SET_PROJECT',
+                    payload: { type: value as Project['type'] },
+                  })
                 }
               >
                 <SelectTrigger>
@@ -251,7 +298,6 @@ export default function EditProject() {
               </Select>
             </div>
 
-            {/* Image Selection and Upload Section */}
             <div className="space-y-4">
               <Label>Project Image</Label>
               <div className="rounded-lg border p-4">
@@ -263,7 +309,7 @@ export default function EditProject() {
                         alt="Project image"
                         width={300}
                         height={200}
-                        className="h-[200px] w-full rounded-md object-cover"
+                        className="h-full w-full rounded-md object-cover"
                         priority
                       />
                       <Button
@@ -284,167 +330,45 @@ export default function EditProject() {
                         className="absolute bottom-2 right-2"
                         onClick={(e) => {
                           e.preventDefault();
+                          setZoomImage(selectedImage || previewUrl);
                           setIsFullImageViewOpen(true);
                         }}
                       >
                         <ZoomIn className="h-4 w-4" />
                       </Button>
                     </div>
-                    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-                      <DrawerTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setIsDrawerOpen(true);
-                          }}
-                        >
-                          Change Image
-                        </Button>
-                      </DrawerTrigger>
-                      <DrawerContent>
-                        <div className="p-4">
-                          <h2 className="mb-4 text-lg font-semibold">
-                            Select Image
-                          </h2>
-                          <div className="mb-4">
-                            <Input
-                              type="text"
-                              placeholder="Search images..."
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                              className="w-full"
-                            />
-                          </div>
-                          <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
-                            {filteredImages.length > 0 ? (
-                              filteredImages.map((image) => (
-                                <div
-                                  key={image}
-                                  className="group relative cursor-pointer overflow-hidden rounded-lg border-2 border-transparent hover:border-blue-500"
-                                >
-                                  <Image
-                                    src={image}
-                                    alt="Project image"
-                                    width={150}
-                                    height={100}
-                                    className="h-[100px] w-full object-cover"
-                                  />
-
-                                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 p-2 opacity-0 transition-opacity group-hover:opacity-100">
-                                    <Button
-                                      variant="secondary"
-                                      size="sm"
-                                      className="h-8 px-3"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setZoomImage(image);
-                                        setIsFullImageViewOpen(true);
-                                      }}
-                                    >
-                                      <Maximize2 className="mr-1 h-4 w-4" />
-                                      Zoom
-                                    </Button>
-                                    <Button
-                                      variant="secondary"
-                                      size="sm"
-                                      className="h-8 px-3"
-                                      onClick={() => handleImageSelect(image)}
-                                    >
-                                      <Check className="mr-1 h-4 w-4" />
-                                      Select
-                                    </Button>
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="col-span-full text-center text-gray-500">
-                                No images found
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </DrawerContent>
-                    </Drawer>
+                    <ImageSelectionDrawer
+                      isOpen={isDrawerOpen}
+                      onOpenChange={setIsDrawerOpen}
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                      filteredImages={filteredImages}
+                      onImageSelect={handleImageSelect}
+                      onZoomImage={(image) => {
+                        setZoomImage(image);
+                        setIsFullImageViewOpen(true);
+                      }}
+                    />
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-                      <DrawerTrigger asChild>
-                        <Button variant="outline" className="w-full">
-                          Choose Existing Image
-                        </Button>
-                      </DrawerTrigger>
-                      <DrawerContent>
-                        <div className="p-4">
-                          <h2 className="mb-4 text-lg font-semibold">
-                            Select Image
-                          </h2>
-                          <div className="mb-4">
-                            <Input
-                              type="text"
-                              placeholder="Search images..."
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                              className="w-full"
-                            />
-                          </div>
-                          <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
-                            {filteredImages.length > 0 ? (
-                              filteredImages.map((image) => (
-                                <div
-                                  key={image}
-                                  className="hover:border-white-500 group relative cursor-pointer overflow-hidden rounded-lg border-2 border-transparent"
-                                >
-                                  <Image
-                                    src={image}
-                                    alt="Project image"
-                                    width={150}
-                                    height={100}
-                                    className="h-[100px] w-full object-cover"
-                                  />
-                                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 p-2 opacity-0 transition-opacity group-hover:opacity-100">
-                                    <Button
-                                      variant="secondary"
-                                      size="sm"
-                                      className="h-8 px-3"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setZoomImage(image);
-                                        setIsFullImageViewOpen(true);
-                                      }}
-                                    >
-                                      <Maximize2 className="mr-1 h-4 w-4" />
-                                      Zoom
-                                    </Button>
-                                    <Button
-                                      variant="secondary"
-                                      size="sm"
-                                      className="h-8 px-3"
-                                      onClick={() => handleImageSelect(image)}
-                                    >
-                                      <Check className="mr-1 h-4 w-4" />
-                                      Select
-                                    </Button>
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="col-span-full text-center text-gray-500">
-                                No images found
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </DrawerContent>
-                    </Drawer>
+                    <ImageSelectionDrawer
+                      isOpen={isDrawerOpen}
+                      onOpenChange={setIsDrawerOpen}
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                      filteredImages={filteredImages}
+                      onImageSelect={handleImageSelect}
+                      onZoomImage={(image) => {
+                        setZoomImage(image);
+                        setIsFullImageViewOpen(true);
+                      }}
+                    />
                     <div className="text-center text-lg font-bold">or</div>
                     <div>
                       <div className="mb-2 text-center">
                         <Label htmlFor="imageUpload">Upload New Image</Label>
                       </div>
-
                       <Input
                         id="imageUpload"
                         type="file"
@@ -458,14 +382,17 @@ export default function EditProject() {
             </div>
           </div>
 
-          {/* Right column */}
+          {/* Right Column */}
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="stack">Stack</Label>
               <Select
-                value={projectData.stack}
+                value={state.stack}
                 onValueChange={(value) =>
-                  setProjectData((prev) => ({ ...prev, stack: value }))
+                  dispatch({
+                    type: 'SET_PROJECT',
+                    payload: { stack: value as Project['stack'] },
+                  })
                 }
               >
                 <SelectTrigger>
@@ -485,18 +412,14 @@ export default function EditProject() {
 
             <div className="space-y-2">
               <Label htmlFor="url">URL</Label>
-              <Input
-                id="url"
-                value={projectData.url}
-                onChange={handleInputChange}
-              />
+              <Input id="url" value={state.url} onChange={handleInputChange} />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="repo">Repository</Label>
               <Input
                 id="repo"
-                value={projectData.repo}
+                value={state.repo}
                 onChange={handleInputChange}
               />
             </div>
@@ -505,7 +428,7 @@ export default function EditProject() {
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
-                value={projectData.description}
+                value={state.description}
                 onChange={handleInputChange}
                 className="h-32"
               />
@@ -515,14 +438,16 @@ export default function EditProject() {
               <Label htmlFor="builtWith">Built With (comma-separated)</Label>
               <Input
                 id="builtWith"
-                value={projectData.built_with.join(', ')}
+                value={state.built_with.join(', ')}
                 onChange={(e) => {
-                  setProjectData((prev) => ({
-                    ...prev,
-                    built_with: e.target.value
-                      .split(',')
-                      .map((item) => item.trim()),
-                  }));
+                  dispatch({
+                    type: 'SET_PROJECT',
+                    payload: {
+                      built_with: e.target.value
+                        .split(',')
+                        .map((item) => item.trim()),
+                    },
+                  });
                 }}
               />
             </div>
@@ -530,12 +455,12 @@ export default function EditProject() {
             <div className="flex items-center space-x-2">
               <Switch
                 id="isDarkBadgeNeeded"
-                checked={projectData.is_dark_badge_needed}
+                checked={state.is_dark_badge_needed}
                 onCheckedChange={(checked) =>
-                  setProjectData((prev) => ({
-                    ...prev,
-                    is_dark_badge_needed: checked,
-                  }))
+                  dispatch({
+                    type: 'SET_PROJECT',
+                    payload: { is_dark_badge_needed: checked },
+                  })
                 }
               />
               <Label htmlFor="isDarkBadgeNeeded">Dark Badge Needed</Label>
@@ -548,9 +473,12 @@ export default function EditProject() {
         </Button>
       </form>
 
-      {/* Full Image View Dialog */}
       <Dialog open={isFullImageViewOpen} onOpenChange={setIsFullImageViewOpen}>
         <DialogContent className="max-w-3xl">
+          <DialogTitle>Full size project image</DialogTitle>
+          <DialogDescription>
+            This is the full-sized version of the project image.
+          </DialogDescription>
           <DialogClose asChild>
             <Button
               variant="destructive"
@@ -561,16 +489,124 @@ export default function EditProject() {
               <X className="h-6 w-6" />
             </Button>
           </DialogClose>
-
           <Image
             src={zoomImage}
             alt="Full size project image"
             width={800}
             height={600}
-            className="h-auto w-full object-contain"
+            className="h-[600px] w-[800px] object-cover"
           />
         </DialogContent>
       </Dialog>
     </div>
   );
+}
+
+interface ImageSelectionDrawerProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  filteredImages: string[];
+  onImageSelect: (image: string) => void;
+  onZoomImage: (image: string) => void;
+}
+
+const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
+  isOpen,
+  onOpenChange,
+  searchTerm,
+  setSearchTerm,
+  filteredImages,
+  onImageSelect,
+  onZoomImage,
+}) => (
+  <Drawer open={isOpen} onOpenChange={onOpenChange}>
+    <DrawerTrigger asChild>
+      <Button
+        variant="outline"
+        className="w-full"
+        onClick={(e) => {
+          e.preventDefault();
+          onOpenChange(true);
+        }}
+      >
+        Choose Existing Image
+      </Button>
+    </DrawerTrigger>
+    <DrawerContent>
+      <div className="p-4">
+        <DrawerHeader>
+          <DrawerTitle>Select Image</DrawerTitle>
+          <DrawerDescription>
+            Tap and image to choose image and click zoom to view the image
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="mb-4">
+          <Input
+            type="text"
+            placeholder="Search images..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full"
+          />
+        </div>
+        <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
+          {filteredImages.length > 0 ? (
+            filteredImages.map((image) => (
+              <div
+                key={image}
+                className="group relative cursor-pointer overflow-hidden rounded-lg border-2 border-transparent hover:border-white"
+              >
+                <Image
+                  src={image}
+                  alt="Project image"
+                  width={410}
+                  height={200}
+                  className="h-[200px] w-[410px] object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 p-2 opacity-0 transition-opacity group-hover:opacity-100">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="h-8 px-3"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onZoomImage(image);
+                    }}
+                  >
+                    <Maximize2 className="mr-1 h-4 w-4" />
+                    Zoom
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="h-8 px-3"
+                    onClick={() => onImageSelect(image)}
+                  >
+                    <Check className="mr-1 h-4 w-4" />
+                    Select
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500">
+              No images found
+            </div>
+          )}
+        </div>
+      </div>
+    </DrawerContent>
+  </Drawer>
+);
+
+interface ImageSelectionDrawerProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  filteredImages: string[];
+  onImageSelect: (image: string) => void;
+  onZoomImage: (image: string) => void;
 }

@@ -3,9 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { User } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import {
   BriefcaseBusiness,
@@ -15,8 +14,10 @@ import {
   Cookie,
   HeartHandshake,
   LayoutDashboard,
+  LoaderCircle,
   LogOut,
   Route,
+  ShieldCheck,
   Tags,
   User as UserIcon,
   UserRoundPen,
@@ -39,27 +40,31 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import useChatStore from '@/lib/hooks/chatState';
-import { cacheAndServeImage } from '@/utils/cacheImage';
+import useAuthStore from '@/lib/stores/auth';
 import { fetcher } from '@/utils/fetcher';
-import { createClient } from '@/utils/supabase/client';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
 import { toastOptions } from '@/utils/toast';
 
-export function DropdownMenuDemo() {
-  const [user, setUser] = useState<User | null>(null);
+export function UserDropdownMenu() {
+  const {
+    user,
+    avatarUrl,
+    isLoading: isAuthLoading,
+    initialize,
+    signOut,
+  } = useAuthStore();
   const { chatEnabled, setChatEnabled } = useChatStore();
-  const [cachedAvatarUrl, setCachedAvatarUrl] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
+    useSuperadminStatus(user);
+
   const {
     data: weatherData,
     error,
     isLoading,
   } = useSWR('/api/weather', fetcher);
-
-  const supabase = createClient();
-  const router = useRouter();
-
-  const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
-    useSuperadminStatus(user);
 
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
@@ -67,40 +72,19 @@ export function DropdownMenuDemo() {
   });
 
   useEffect(() => {
-    const checkUserSession = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (error || !session?.user) {
-        setUser(null);
-      } else {
-        setUser(session.user);
-        if (session.user.user_metadata?.avatar_url) {
-          const cachedUrl = await cacheAndServeImage(
-            session.user.user_metadata.avatar_url
-          );
-          setCachedAvatarUrl(cachedUrl);
-        }
-      }
-    };
-
-    checkUserSession();
-  }, [supabase]);
+    initialize();
+  }, [initialize]);
 
   const handleSignOut = async () => {
     if (user) {
-      const { error } = await supabase.auth.signOut();
-
-      if (!error) {
+      try {
+        await signOut();
         router.push('/auth');
-
         toast.success('Successfully signed out', {
           ...toastOptions,
         });
-      } else {
-        toast.error('Something went wrong, please try again', {
+      } catch (error) {
+        toast.error(`Something went wrong, please try again ${error}`, {
           ...toastOptions,
         });
       }
@@ -128,8 +112,12 @@ export function DropdownMenuDemo() {
             transition={{ duration: 0.1, ease: 'easeIn' }}
           >
             <Avatar>
-              {cachedAvatarUrl ? (
-                <AvatarImage src={cachedAvatarUrl} alt="User avatar" />
+              {isAuthLoading ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <LoaderCircle className="h-6 w-6 animate-spin text-white" />
+                </div>
+              ) : avatarUrl ? (
+                <AvatarImage src={avatarUrl} alt="User avatar" />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
                   <UserIcon size={22} />
@@ -203,6 +191,12 @@ export function DropdownMenuDemo() {
             <Link href="/tags" className="flex items-center">
               <Tags className="mr-2 h-4 w-4" />
               <span>Tags</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/certificates" className="flex items-center">
+              <ShieldCheck className="mr-2 h-4 w-4" />
+              <span>Certificates</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -281,4 +275,4 @@ export function DropdownMenuDemo() {
   );
 }
 
-export default DropdownMenuDemo;
+export default UserDropdownMenu;

@@ -1,12 +1,33 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import toast from 'react-hot-toast';
+
 import ProjectCard from '@/components/projects/ProjectCard';
-import projectsData from '@/data/projectsData';
+import { getProjects } from '@/lib/project';
+import { Project } from '@/types/project';
+import { toastOptions } from '@/utils/toast';
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const description =
     'My open-source side projects and stuff that I built with my colleagues at work';
 
-  const workProjects = projectsData.filter(({ type }) => type === 'work');
-  const sideProjects = projectsData.filter(({ type }) => type === 'self');
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  async function fetchProjects() {
+    try {
+      setProjects(await getProjects());
+    } catch (error) {
+      toast.error(`Failed to fetch proects ${error}`, toastOptions);
+    }
+  }
+
+  const workProjects = projects.filter(({ type }) => type === 'work');
+  const sideProjects = projects.filter(({ type }) => type === 'self');
 
   return (
     <>

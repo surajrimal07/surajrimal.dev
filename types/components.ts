@@ -4,7 +4,7 @@ import { Authors } from 'contentlayer/generated';
 import { CoreContent } from 'pliny/utils/contentlayer';
 import type readingTime from 'reading-time';
 
-import type projectsData from '@/data/projectsData';
+import { Project } from './project';
 
 export interface ImageProps extends NextImageProps {
   shouldOpenLightbox?: boolean;
@@ -20,10 +20,8 @@ export type TwemojiProps = {
   className?: string;
 };
 
-export type ProjectDataType = (typeof projectsData)[0];
-
 export interface ProjectCardProps {
-  project: ProjectDataType;
+  project: Project;
 }
 
 export type ReadingTime = ReturnType<typeof readingTime>;

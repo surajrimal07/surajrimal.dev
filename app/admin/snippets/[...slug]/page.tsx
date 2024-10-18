@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import matter from 'gray-matter';
 import toast from 'react-hot-toast';
 
+import AdminLoading from '@/components/admin/Loader';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -27,7 +28,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { LANGUAGES, LAYOUTS, PostData } from '@/types/post';
 import { toastOptions } from '@/utils/toast';
-import AdminLoading from '@/components/admin/Loader';
 
 export default function EditSnippet() {
   const params = useParams();
