@@ -38,7 +38,7 @@ export default async function CertificationsPage() {
               <Card key={cert.id} className="flex flex-col">
                 <CardHeader>
                   <Image
-                    src={cert.imageUrl}
+                    src={cert.image_url}
                     alt={`${cert.name} Certificate`}
                     width={300}
                     height={200}

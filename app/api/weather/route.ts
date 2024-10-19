@@ -6,6 +6,8 @@ const locationAPI = process.env.IP2LOCATION_API_KEY;
 
 const weatherAPI = process.env.WEATHER_API_KEY!;
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     let ip: string;

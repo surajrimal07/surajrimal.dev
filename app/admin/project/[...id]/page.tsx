@@ -208,6 +208,7 @@ export default function EditProject() {
         let imgSrc = selectedImage;
         if (uploadedImage) {
           imgSrc = await uploadProjectImage(uploadedImage);
+          setSelectedImage(imgSrc);
         }
 
         const projectData = {

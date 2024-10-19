@@ -40,76 +40,67 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
   ipaddress,
 }) => {
   return (
-    <li className="group relative mb-3.5 flex transform cursor-pointer flex-wrap rounded-lg border border-gray-200 bg-opacity-50 p-px py-px hover:bg-zinc-200/50 dark:border-gray-700 dark:hover:bg-zinc-900/50">
-      <article className="flex space-x-4 px-0">
-        <div className="flex flex-col justify-between pl-2">
-          <div>
-            <h2 className="text-2xl font-bold leading-8 tracking-tight">
-              <Link
-                href={`/${path}`}
-                className="text-gray-900 dark:text-gray-100"
-              >
-                {title}
-              </Link>
-            </h2>
-            <div className="flex flex-wrap">
-              {tags.map((tag) => (
-                <Tag key={tag} text={tag} />
-              ))}
-            </div>
-            <div className="prose mt-1 max-w-none text-gray-500 dark:text-gray-400">
-              {summary}
-            </div>
+    <li className="group relative mb-3.5 transform cursor-pointer rounded-lg border border-gray-200 bg-opacity-50 p-3 hover:bg-zinc-200/50 dark:border-gray-700 dark:hover:bg-zinc-900/50">
+      <article>
+        <div>
+          <h2 className="text-xl font-bold leading-8 tracking-tight sm:text-2xl">
+            <Link
+              href={`/${path}`}
+              className="text-gray-900 dark:text-gray-100"
+            >
+              {title}
+            </Link>
+          </h2>
+          <div className="mt-2 flex flex-wrap">
+            {tags.map((tag) => (
+              <Tag key={tag} text={tag} />
+            ))}
           </div>
-          <div className="mt-1 flex items-center gap-2 text-gray-500 dark:text-gray-400">
-            <dl className="flex items-center">
-              <dt className="sr-only">Published on</dt>
-              <dd className="flex items-center text-sm leading-6">
-                <time
-                  dateTime={date}
-                  suppressHydrationWarning
-                  className="flex items-center"
-                >
-                  <CalendarIcon className={clsx('mr-1 h-4 w-4')} />
-                  {formatDate(date, siteMetadata.locale)}
-                </time>
-              </dd>
-            </dl>
-            <span>&middot;</span>
-            <div className="flex items-center">
-              <LanguageIcon className="h-4 w-4" />
-              <span className="ml-1">{language}</span>
-            </div>
-            <span>&middot;</span>
-            <div className="flex items-center">
-              <FaFire className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="flex items-center gap-1.5 text-sm">
-                <AnimatedCounter targetValue={views} /> Views
-              </span>
-            </div>
-            <span>&middot;</span>
-            <div className="relative flex items-center">
-              <IoMdShare
-                className="mr-1 h-4 w-4 cursor-pointer"
-                onClick={() =>
-                  setOpenShareMenuSlug(openShareMenuSlug === path ? null : path)
-                }
+          <div className="prose mt-3 max-w-none text-sm text-gray-500 dark:text-gray-400 sm:text-base">
+            {summary}
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+          <div className="flex items-center">
+            <CalendarIcon className={clsx('mr-1 h-3 w-3 sm:h-4 sm:w-4')} />
+            <time dateTime={date} suppressHydrationWarning>
+              {formatDate(date, siteMetadata.locale)}
+            </time>
+          </div>
+          <span>&middot;</span>
+          <div className="flex items-center">
+            <LanguageIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="ml-1">{language}</span>
+          </div>
+          <span>&middot;</span>
+          <div className="flex items-center">
+            <FaFire className="mr-1 h-3 w-3" />
+            <span className="flex items-center gap-1">
+              <AnimatedCounter targetValue={views} /> Views
+            </span>
+          </div>
+          <span>&middot;</span>
+          <div className="relative flex items-center">
+            <IoMdShare
+              className="mr-1 h-3 w-3 cursor-pointer sm:h-4 sm:w-4"
+              onClick={() =>
+                setOpenShareMenuSlug(openShareMenuSlug === path ? null : path)
+              }
+            />
+            {openShareMenuSlug === path && (
+              <ShareButton
+                ip={ipaddress}
+                slug={path}
+                url={`${process.env.NEXT_PUBLIC_URL}/${path}`}
+                onShareComplete={() => setOpenShareMenuSlug(null)}
               />
-              {openShareMenuSlug === path && (
-                <ShareButton
-                  ip={ipaddress}
-                  slug={path}
-                  url={`${process.env.NEXT_PUBLIC_URL}/${path}`}
-                  onShareComplete={() => setOpenShareMenuSlug(null)}
-                />
-              )}
-              <span
-                className="flex items-center gap-1.5 text-sm"
-                title="Number of share(s)"
-              >
-                <AnimatedCounter targetValue={shares} /> Shares
-              </span>
-            </div>
+            )}
+            <span
+              className="flex items-center gap-1"
+              title="Number of share(s)"
+            >
+              <AnimatedCounter targetValue={shares} /> Shares
+            </span>
           </div>
         </div>
       </article>

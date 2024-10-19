@@ -9,6 +9,8 @@ import {
   FileSpreadsheet,
   FileText,
   Map,
+  MessageSquare,
+  MicVocal,
   ShieldCheck,
   User,
 } from 'lucide-react';
@@ -81,6 +83,18 @@ export default async function AdminDashboard() {
       href: '/admin/certifications',
       icon: ShieldCheck,
       description: 'Set your certification information',
+    },
+    {
+      name: 'Chat',
+      href: '/admin/chat',
+      icon: MessageSquare,
+      description: 'Chat with your visitors',
+    },
+    {
+      name: 'In Media',
+      href: '/admin/media',
+      icon: MicVocal,
+      description: 'Manage your media appearances',
     },
   ];
 

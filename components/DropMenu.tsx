@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   LoaderCircle,
   LogOut,
+  MicVocal,
   Route,
   ShieldCheck,
   Tags,
@@ -197,6 +198,12 @@ export function UserDropdownMenu() {
             <Link href="/certificates" className="flex items-center">
               <ShieldCheck className="mr-2 h-4 w-4" />
               <span>Certificates</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/media" className="flex items-center">
+              <MicVocal className="mr-2 h-4 w-4" />
+              <span>In Media</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

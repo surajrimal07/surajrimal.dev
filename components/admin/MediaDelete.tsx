@@ -15,32 +15,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { deleteCertification } from '@/lib/certification';
+import { deleteMedia } from '@/lib/media';
 import { toastOptions } from '@/utils/toast';
 
 interface DeleteButtonProps {
   id: number;
-  name: string;
+  title: string;
 }
 
-export default function DeleteButton({ id, name }: DeleteButtonProps) {
+export default function DeleteButton({ id, title }: DeleteButtonProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    setIsDeleting(true);
     try {
-      await deleteCertification(id);
-      toast.success('Certification deleted successfully', toastOptions);
+      await deleteMedia(id);
+      toast.success('Media deleted successfully', toastOptions);
       router.refresh();
     } catch (error) {
       toast.error(
-        `Failed to delete certification: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to delete media: ${error instanceof Error ? error.message : String(error)}`,
         toastOptions
       );
     } finally {
-      setIsDeleting(false);
       setIsOpen(false);
     }
   };
@@ -54,24 +51,18 @@ export default function DeleteButton({ id, name }: DeleteButtonProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Are you sure you want to delete this certification?
-          </DialogTitle>
+          <DialogTitle>Are you sure you want to delete?</DialogTitle>
           <DialogDescription>
             This action will permanently delete the certification{' '}
-            <span className="font-bold text-red-400">{name}</span>.
+            <span className="font-bold text-red-400">{title}</span>.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}
+          <Button variant="destructive" onClick={handleDelete}>
+            Delete
           </Button>
         </DialogFooter>
       </DialogContent>

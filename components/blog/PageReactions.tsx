@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import { m, useAnimationControls } from 'framer-motion';
 import { ShareIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { FaFire } from 'react-icons/fa6';
 
 import { reactions } from '@/data/emojiIcons';
 import { debounce } from '@/lib/hooks/debounce';
+import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
 import {
   getBlogShares,
   getBlogView,
@@ -15,6 +17,7 @@ import {
   handleReaction,
 } from '@/lib/pageView';
 import { ReactionType } from '@/types/reaction';
+import { toastOptions } from '@/utils/toast';
 
 import EmojiReaction from './EmojiReaction';
 
@@ -29,7 +32,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const hasBeenShown = useRef(false);
-  //const completion = useReadingProgress();
+  const completion = useReadingProgress();
   const controls = useAnimationControls();
   const [userReaction, setUserReaction] = useState<string | null>(null);
   const [reactionCounts, setReactionCounts] = useState<{
@@ -51,7 +54,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
         }
         setIsLoaded(true);
       } catch (error) {
-        console.error('Error fetching blog data:', error);
+        toast.error(`Failed to fetch reaction data ${error} `, toastOptions);
       }
     };
 
@@ -59,11 +62,11 @@ export default function Reactions({ slug, ip }: ReactionProps) {
   }, [ip, slug]);
 
   useEffect(() => {
-    if (!hasBeenShown.current && !isLoaded) {
+    if (!hasBeenShown.current && !isLoaded && completion >= 50) {
       setIsVisible(true);
       hasBeenShown.current = true;
     }
-  }, [isLoaded]);
+  }, [completion, isLoaded]);
 
   const addReaction = debounce(async (type: ReactionType) => {
     const reactionResponse = await handleReaction(slug, ip, type);
@@ -94,9 +97,14 @@ export default function Reactions({ slug, ip }: ReactionProps) {
       }
     }
   }, 1500);
+
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <div
-      className={`fixed inset-x-0 bottom-2 z-50 flex justify-center transition-all duration-500 ease-in-out ${
+      className={`z-99 fixed inset-x-0 bottom-2 flex justify-center transition-all duration-500 ease-in-out ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
       }`}
     >

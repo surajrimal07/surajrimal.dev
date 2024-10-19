@@ -8,6 +8,7 @@ import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
 
+import { ThemeProviders } from '@/app/theme-providers';
 import Chatbox from '@/components/ChatBox';
 import CookieConsent from '@/components/CookieConsent';
 import Footer from '@/components/Footer';
@@ -23,8 +24,6 @@ import '@/css/resume.css';
 import '@/css/tailwind.css';
 import '@/css/twemoji.css';
 import siteMetadata from '@/data/siteMetadata';
-
-import { ThemeProviders } from './theme-providers';
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],

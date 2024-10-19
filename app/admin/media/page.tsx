@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import DeleteButton from '@/components/admin/CertificationDelete';
+import DeleteButton from '@/components/admin/MediaDelete';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,11 +18,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getCertifications } from '@/lib/certification';
-import { Certification } from '@/types/certificate';
+import { getMedia } from '@/lib/media';
+import { InMedia } from '@/types/media';
 
 export default async function CertificationsList() {
-  const certifications = await getCertifications();
+  const mediaItems = await getMedia();
 
   return (
     <div className="container mx-auto py-10">
@@ -33,45 +33,41 @@ export default async function CertificationsList() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>
-              All Certificates - {certifications.length}
-            </BreadcrumbPage>
+            <BreadcrumbPage>All Medias - {mediaItems.length}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Certifications</h1>
+        <h1 className="text-3xl font-bold">In Media</h1>
         <Button asChild>
-          <Link href="/admin/certifications/new">Add Certification</Link>
+          <Link href="/admin/media/new">Add Media</Link>
         </Button>
       </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[40%]">Name</TableHead>
-              <TableHead className="w-[25%]">Platform</TableHead>
-              <TableHead className="w-[20%]">Completion Date</TableHead>
+              <TableHead className="w-[40%]">Title</TableHead>
+              <TableHead className="w-[25%]">Publication</TableHead>
+              <TableHead className="w-[20%]">Date</TableHead>
               <TableHead className="w-[15%] text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {certifications.map((cert: Certification) => (
-              <TableRow key={cert.id}>
-                <TableCell className="font-medium">{cert.name}</TableCell>
-                <TableCell>{cert.platform}</TableCell>
+            {mediaItems.map((media: InMedia) => (
+              <TableRow key={media.id}>
+                <TableCell className="font-medium">{media.title}</TableCell>
+                <TableCell>{media.publication}</TableCell>
                 <TableCell>
-                  {new Date(cert.completion_date).toLocaleDateString()}
+                  {new Date(media.date).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
                     <Button asChild variant="outline" size="sm">
-                      <Link href={`/admin/certifications/${cert.id}`}>
-                        Edit
-                      </Link>
+                      <Link href={`/admin/media/${media.id}`}>Edit</Link>
                     </Button>
-                    <DeleteButton id={cert.id} name={cert.name} />
+                    <DeleteButton id={media.id} title={media.title} />
                   </div>
                 </TableCell>
               </TableRow>

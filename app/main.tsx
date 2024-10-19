@@ -91,16 +91,14 @@ export default function Home({ posts }) {
     <div>
       <ScrollTopAndComment showScrollToComment={false} />
       <Greeting />
-      <div className="flex flex-col justify-between md:my-4 md:pb-5 xl:flex-row">
-        <Avatar />
+      <div className="mb-2 flex flex-col justify-between md:flex-row md:space-x-8 md:space-y-0">
+        <div className="mb-4 mt-4 flex justify-center md:mb-0 md:block">
+          <Avatar />
+        </div>
         <div className="my-auto flex flex-col text-lg leading-8 text-gray-600 dark:text-gray-400">
           <Heading />
           <ShortDescription />
           <BlogLinks />
-          <p className="flex">
-            <Twemoji emoji="clinking-beer-mugs" /> &nbsp;
-            <span className="mr-2">Happy reading</span>
-          </p>
         </div>
       </div>
 

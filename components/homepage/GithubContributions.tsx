@@ -12,14 +12,15 @@ const GithubContributions = () => {
           Github Contributions {''}
           <Twemoji size="twa-sm" emoji="keyboard" />
         </h1>
-        <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">
-          My Github contributions calendar throughout the year, fetched
-          from&nbsp;
+        <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
+          <span className="mr-1">
+            My Github contributions calendar throughout the year, fetched from
+          </span>
           <Link
             href={'https://github.com/surajrimal07'}
             className="special-underline-new inline-flex items-center"
           >
-            Github <TfiArrowTopRight />
+            Github <TfiArrowTopRight className="ml-1" />
           </Link>
           .
         </p>

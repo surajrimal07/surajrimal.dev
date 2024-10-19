@@ -222,7 +222,6 @@ export default function CertificationPage({
                   <Image
                     src={selectedImage || previewUrl}
                     alt="Certification image"
-                    priority={true}
                     width={300}
                     height={200}
                     className="h-[200px] w-full rounded-md object-cover"

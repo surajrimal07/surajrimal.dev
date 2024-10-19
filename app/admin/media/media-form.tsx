@@ -9,26 +9,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createCertification, updateCertification } from '@/lib/certification';
-import { Certification } from '@/types/certificate';
+import { createMedia, updateMedia } from '@/lib/media';
+import { InMedia } from '@/types/media';
 import { toastOptions } from '@/utils/toast';
 
-type FormData = Omit<Certification, 'id' | 'created_at' | 'updated_at'>;
+type FormData = Omit<InMedia, 'id'>;
 
-export default function CertificationForm({
-  certification,
-}: {
-  certification?: Certification;
-}) {
+export default function MediaForm({ media }: { media?: InMedia }) {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(
-    certification || {
-      name: '',
-      platform: '',
-      completion_date: '',
-      image_url: '',
+    media || {
+      title: '',
+      publication: '',
+      date: '',
+      url: '',
       description: '',
-      verification_link: '',
+      category: '',
     }
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,19 +40,18 @@ export default function CertificationForm({
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      if (certification) {
-        await updateCertification(certification.id, formData);
-
-        toast.success('Certification updated successfully', toastOptions);
+      if (media) {
+        await updateMedia(media.id, formData);
+        toast.success('Media item updated successfully', toastOptions);
       } else {
-        await createCertification(formData);
-        toast.success('Certification created successfully', toastOptions);
+        await createMedia(formData);
+        toast.success('Media item created successfully', toastOptions);
       }
-      router.push('/admin/certifications');
+      router.push('/admin/media');
       router.refresh();
     } catch (error) {
       toast.error(
-        `Failed to save certification: ${
+        `Failed to save media: ${
           error instanceof Error ? error.message : String(error)
         }`,
         toastOptions
@@ -69,42 +64,53 @@ export default function CertificationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="title">Title</Label>
         <Input
-          id="name"
-          name="name"
-          value={formData.name}
+          id="title"
+          name="title"
+          value={formData.title}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <Label htmlFor="platform">Platform</Label>
+        <Label htmlFor="publication">Publication</Label>
         <Input
-          id="platform"
-          name="platform"
-          value={formData.platform}
+          id="publication"
+          name="publication"
+          value={formData.publication}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <Label htmlFor="completion_date">Completion Date</Label>
+        <Label htmlFor="date">Publication Date</Label>
         <Input
-          id="completion_date"
-          name="completion_date"
+          id="date"
+          name="date"
           type="date"
-          value={formData.completion_date}
+          value={formData.date}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <Label htmlFor="image_url">Image URL</Label>
+        <Label htmlFor="url">URL</Label>
         <Input
-          id="image_url"
-          name="image_url"
-          value={formData.image_url}
+          id="url"
+          name="url"
+          type="url"
+          value={formData.url}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="category">Category</Label>
+        <Input
+          id="category"
+          name="category"
+          value={formData.category}
           onChange={handleChange}
           required
         />
@@ -114,21 +120,12 @@ export default function CertificationForm({
         <Textarea
           id="description"
           name="description"
-          value={formData.description || ''}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <Label htmlFor="verification_link">Verification Link</Label>
-        <Input
-          id="verification_link"
-          name="verification_link"
-          value={formData.verification_link || ''}
+          value={formData.description}
           onChange={handleChange}
         />
       </div>
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Saving...' : 'Save Certification'}
+        {isSubmitting ? 'Saving...' : media ? 'Update Media' : 'Create Media'}
       </Button>
     </form>
   );

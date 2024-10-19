@@ -1,55 +1,36 @@
 import Link from '@/components/Link';
 import Twemoji from '@/components/Twemoji';
+import { HomepageLinks } from '@/data/homepageLinks';
 
 const BlogLinks = () => {
-  const links = [
-    {
-      href: '/blog',
-      emoji: 'writing-hand',
-      label: 'My writings',
-      event: 'home-link-blog',
-    },
-    {
-      href: '/projects',
-      emoji: 'hammer-and-wrench',
-      label: 'What have I built?',
-      event: 'home-link-projects',
-    },
-    {
-      href: '/about',
-      emoji: 'face-with-monocle',
-      label: 'More about me and myself',
-      event: 'home-link-about',
-    },
-    {
-      href: '/resume',
-      emoji: 'briefcase',
-      label: 'My career',
-      event: 'home-link-resume',
-    },
-  ];
+  const renderItem = (item, index) => {
+    const content = (
+      <>
+        <Twemoji emoji={item.emoji} />
+        <span data-umami-event={item.event} className="ml-1.5">
+          {item.label}
+        </span>
+      </>
+    );
+
+    return item.href ? (
+      <Link key={index} href={item.href} className="hover:underline">
+        {content}
+      </Link>
+    ) : (
+      <div key={index} className="flex items-center">
+        {content}
+      </div>
+    );
+  };
 
   return (
-    <div className="flex justify-between">
-      <div className="flex flex-col space-y-1.5">
-        {links.slice(0, 2).map((link, index) => (
-          <Link key={index} href={link.href} className="hover:underline">
-            <Twemoji emoji={link.emoji} />
-            <span data-umami-event={link.event} className="ml-1.5">
-              {link.label}
-            </span>
-          </Link>
-        ))}
+    <div className="flex flex-col sm:flex-row sm:justify-between">
+      <div className="mb-2 flex flex-col space-y-1.5 sm:mb-0">
+        {HomepageLinks.slice(0, 3).map(renderItem)}
       </div>
       <div className="flex flex-col space-y-1.5">
-        {links.slice(2).map((link, index) => (
-          <Link key={index} href={link.href} className="hover:underline">
-            <Twemoji emoji={link.emoji} />
-            <span data-umami-event={link.event} className="ml-1.5">
-              {link.label}
-            </span>
-          </Link>
-        ))}
+        {HomepageLinks.slice(3).map(renderItem)}
       </div>
     </div>
   );
