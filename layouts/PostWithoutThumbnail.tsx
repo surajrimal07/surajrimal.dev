@@ -8,7 +8,6 @@ import { IoMdShare } from 'react-icons/io';
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
-import ShareButton from '@/components/blog/ShareButton';
 import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
 
@@ -76,30 +75,20 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
           <div className="flex items-center">
             <FaFire className="mr-1 h-3 w-3" />
             <span className="flex items-center gap-1">
-              <AnimatedCounter targetValue={views} /> Views
+              <AnimatedCounter targetValue={views} />
+              <span className="hidden sm:inline">Views</span>
             </span>
           </div>
+
           <span>&middot;</span>
           <div className="relative flex items-center">
-            <IoMdShare
-              className="mr-1 h-3 w-3 cursor-pointer sm:h-4 sm:w-4"
-              onClick={() =>
-                setOpenShareMenuSlug(openShareMenuSlug === path ? null : path)
-              }
-            />
-            {openShareMenuSlug === path && (
-              <ShareButton
-                ip={ipaddress}
-                slug={path}
-                url={`${process.env.NEXT_PUBLIC_URL}/${path}`}
-                onShareComplete={() => setOpenShareMenuSlug(null)}
-              />
-            )}
+            <IoMdShare className="mr-1 h-3 w-3" />
             <span
               className="flex items-center gap-1"
               title="Number of share(s)"
             >
-              <AnimatedCounter targetValue={shares} /> Shares
+              <AnimatedCounter targetValue={shares} />
+              <span className="hidden sm:inline">Shares</span>
             </span>
           </div>
         </div>

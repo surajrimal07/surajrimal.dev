@@ -24,7 +24,7 @@ const siteMetadata = {
   stickyNav: true,
   socialAccounts: {
     phone: '+977-9840220290',
-    twitter: 'https://twitter.com',
+    twitter: 'https://twitter.com/0x100000',
     youtube: 'https://youtube.com',
     github: 'https://github.com/surajrimal07',
     facebook: 'fb.com/meettheflash',

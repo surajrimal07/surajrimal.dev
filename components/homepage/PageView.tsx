@@ -1,32 +1,55 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import clsx from 'clsx';
+import toast from 'react-hot-toast';
+
+import { useCurrentPath } from '@/components/PathProvider';
+import AnimatedCounter from '@/components/animata/text/counter';
 import { updatePageViews } from '@/lib/pageView';
+import { toastOptions } from '@/utils/toast';
 
-import { useCurrentPath } from '../PathProvider';
-import AnimatedCounter from '../animata/text/counter';
+const MemoizedAnimatedCounter = React.memo(AnimatedCounter);
 
-const PageView = () => {
+interface PageViewProps {
+  hideViewsInSmallDevice?: boolean;
+}
+
+const PageView: React.FC<PageViewProps> = ({
+  hideViewsInSmallDevice = false,
+}) => {
   const pathname = useCurrentPath();
   const [pageView, setPageView] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchPageViews = async () => {
-      try {
-        const views = await updatePageViews(pathname);
-        setPageView(views);
-      } catch (error) {
-        console.error('Failed to fetch page views:', error);
-      }
-    };
-
-    fetchPageViews();
+  const fetchPageViews = useCallback(async () => {
+    try {
+      const views = await updatePageViews(pathname);
+      setPageView(views);
+    } catch (error) {
+      toast.error(`Failed to fetch page views ${error}`, toastOptions);
+    }
   }, [pathname]);
+
+  useEffect(() => {
+    fetchPageViews();
+  }, [fetchPageViews]);
+
+  const memoizedCounter = useMemo(
+    () => <MemoizedAnimatedCounter targetValue={pageView} />,
+    [pageView]
+  );
 
   return (
     <p>
-      <AnimatedCounter targetValue={pageView} /> views
+      {memoizedCounter}
+      <span
+        className={clsx({
+          'hidden sm:inline': hideViewsInSmallDevice,
+        })}
+      >
+        {' views'}
+      </span>
     </p>
   );
 };

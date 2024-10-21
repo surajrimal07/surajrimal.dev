@@ -73,14 +73,14 @@ const BlogMeta = async ({
         <div className="flex items-center">
           <FaFire className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="ml-1.5">
-            <PageView />
+            <PageView hideViewsInSmallDevice={true} />
           </span>
         </div>
 
         <div className="flex items-center">
           <IoMdShare className="h-4 w-4 sm:h-5 sm:w-5" />
           <AnimatedCounter targetValue={total} />
-          <span className="ml-1.5">Shares</span>
+          <span className="ml-1.5 hidden sm:inline">Shares</span>
         </div>
       </div>
     </div>

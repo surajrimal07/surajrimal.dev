@@ -10,7 +10,7 @@ import React, {
 
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { HelpCircle, Send, X } from 'lucide-react';
+import { HelpCircle, MessageCircle, Send, X } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -311,75 +311,94 @@ const Chatbox: React.FC = () => {
     shouldShowTimeSeparator,
   ]);
 
+  const renderCollapsedState = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return (
+        <div key="collapsed-icon" className="relative">
+          <Button
+            onClick={() => {
+              setIsCollapsed(false);
+              console.log('Button clicked or touched!');
+            }}
+            className={`h-12 w-12 rounded-full p-0 ${isAuthorOnline ? 'bg-green-500' : 'bg-red-500'}`}
+          >
+            <MessageCircle className="h-6 w-6 text-white" />
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <motion.div
+          key="collapsed"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+        >
+          <motion.div
+            animate={{
+              boxShadow: [
+                '0 0 0 0 rgba(59, 130, 246, 0)',
+                '0 0 0 10px rgba(59, 130, 246, 0.1)',
+                '0 0 0 20px rgba(59, 130, 246, 0)',
+              ],
+            }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="absolute inset-0 rounded-lg"
+          />
+          <div
+            className={clsx(
+              'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
+              {
+                'bg-green-800': isAuthorOnline,
+                'bg-primary-600': !isAuthorOnline,
+              }
+            )}
+          >
+            <Button
+              onClick={() => setIsCollapsed(false)}
+              className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
+            >
+              <div className="flex flex-col items-start">
+                <div className="flex items-center">
+                  <span className="font-semibold text-white">
+                    Chat with {siteMetadata.headerTitle}
+                  </span>
+                  {newMessage && (
+                    <Badge variant="neutral" className="ml-1 p-0 text-xs">
+                      New
+                    </Badge>
+                  )}
+                </div>
+                <span className="text-xs text-white opacity-80">
+                  Active {lastAuthorOnline}
+                </span>
+              </div>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleHide();
+              }}
+              className="bg-transparent text-white hover:bg-white/20"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </motion.div>
+      );
+    }
+  };
+
   if (!chatEnabled) return null;
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <AnimatePresence mode="wait">
         {isCollapsed ? (
-          <motion.div
-            key="collapsed"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            <motion.div
-              animate={{
-                boxShadow: [
-                  '0 0 0 0 rgba(59, 130, 246, 0)',
-                  '0 0 0 10px rgba(59, 130, 246, 0.1)',
-                  '0 0 0 20px rgba(59, 130, 246, 0)',
-                ],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 1.5,
-              }}
-              className="absolute inset-0 rounded-lg"
-            />
-            <div
-              className={clsx(
-                'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
-                {
-                  'bg-green-800': isAuthorOnline,
-                  'bg-primary-600': !isAuthorOnline,
-                }
-              )}
-            >
-              <Button
-                onClick={() => setIsCollapsed(false)}
-                className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
-              >
-                <div className="flex flex-col items-start">
-                  <div className="flex items-center">
-                    <span className="font-semibold text-white">
-                      Chat with {siteMetadata.headerTitle}
-                    </span>
-                    {newMessage && (
-                      <Badge variant="neutral" className="ml-1 p-0 text-xs">
-                        New
-                      </Badge>
-                    )}
-                  </div>
-                  <span className="text-xs text-white opacity-80">
-                    Active {lastAuthorOnline}
-                  </span>
-                </div>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleHide();
-                }}
-                className="bg-transparent text-white hover:bg-white/20"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </motion.div>
+          renderCollapsedState()
         ) : (
           <motion.div
             key="expanded"

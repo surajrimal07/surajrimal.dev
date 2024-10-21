@@ -2,31 +2,43 @@
 
 import React from 'react';
 
-import clsx from 'clsx';
 import toast from 'react-hot-toast';
-import { FaRegClipboard } from 'react-icons/fa';
 import { FaFacebookF, FaXTwitter } from 'react-icons/fa6';
-import { LuExternalLink } from 'react-icons/lu';
+import { LuExternalLink, LuLink } from 'react-icons/lu';
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { updateBlogShares } from '@/lib/pageView';
 import { ShareType } from '@/types/share';
-import { toastOptions } from '@/utils/toast';
 
-interface ShareButtonProps {
+interface ShareMenuProps {
   url: string;
   slug: string;
   ip: string;
   onItemClick?: (type: ShareType) => void;
   onShareComplete?: () => void;
+  children: React.ReactNode;
 }
 
-const ShareButton: React.FC<ShareButtonProps> = ({
+export default function ShareMenu({
   url,
   slug,
   ip,
   onItemClick = () => {},
   onShareComplete = () => {},
-}) => {
+  children,
+}: ShareMenuProps) {
   const handleShareClick = async (
     type: ShareType,
     shareFunction: () => void
@@ -38,21 +50,17 @@ const ShareButton: React.FC<ShareButtonProps> = ({
       onShareComplete();
     } catch (error) {
       if (error.message === 'Max shares limit reached') {
-        toast.error('Maximum shares limit reached', {
-          ...toastOptions,
-        });
+        toast.error('Maximum shares limit reached');
       } else {
-        console.error(`Failed to update shares for ${slug}:`, error);
+        toast.error('Failed to update shares');
       }
     }
   };
 
   const handleCopy = () => {
-    toast.success('Link copied to clipboard', {
-      ...toastOptions,
-    });
     handleShareClick('clipboardshare', () => {
       navigator.clipboard.writeText(url);
+      toast.success('Link copied to clipboard');
     });
   };
 
@@ -72,36 +80,32 @@ const ShareButton: React.FC<ShareButtonProps> = ({
   };
 
   return (
-    <div className="w-42 absolute left-0 z-10 mt-2 rounded-md bg-gray-900 shadow-lg">
-      <div className={clsx('px-2 py-2 text-center text-lg text-gray-300')}>
-        Share this on
-      </div>
-      <div className="my-1 h-px bg-gray-600"></div>
-      <button
-        onClick={handleTwitter}
-        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
-      >
-        <FaXTwitter className="mr-2 h-4 w-4" />
-        Twitter
-        <LuExternalLink className="ml-1 h-3 w-3" />
-      </button>
-      <button
-        onClick={handleFacebook}
-        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
-      >
-        <FaFacebookF className="mr-2 h-4 w-4" />
-        Facebook
-        <LuExternalLink className="ml-1 h-3 w-3" />
-      </button>
-      <button
-        onClick={handleCopy}
-        className="flex w-full items-center px-6 py-3 text-white hover:bg-gray-700"
-      >
-        <FaRegClipboard className="mr-2 h-4 w-4" />
-        Copy link
-      </button>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <Card>
+          <CardHeader>
+            <CardTitle>Share this on</CardTitle>
+            <CardDescription>Choose a platform to share</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <DropdownMenuItem onClick={handleTwitter}>
+              <FaXTwitter className="mr-2 h-4 w-4" />
+              <span>Twitter</span>
+              <LuExternalLink className="ml-auto h-4 w-4" />
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleFacebook}>
+              <FaFacebookF className="mr-2 h-4 w-4" />
+              <span>Facebook</span>
+              <LuExternalLink className="ml-auto h-4 w-4" />
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleCopy}>
+              <LuLink className="mr-2 h-4 w-4" />
+              <span>Copy link</span>
+            </DropdownMenuItem>
+          </CardContent>
+        </Card>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
-};
-
-export default ShareButton;
+}
