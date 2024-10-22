@@ -33,16 +33,15 @@ export default function ShareMenu({
     type: ShareType,
     shareFunction: () => void
   ) => {
+    shareFunction();
+
     try {
       await updateBlogShares(slug, ip, type);
       onItemClick(type);
-      shareFunction();
       onShareComplete();
     } catch (error) {
-      if (error.message === 'Max shares limit reached') {
-        toast.error('Maximum shares limit reached');
-      } else {
-        toast.error('Failed to update shares');
+      if (error.message !== 'Max shares limit reached') {
+        toast.error('Unable to update share count');
       }
     }
   };
