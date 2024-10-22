@@ -15,6 +15,7 @@ export async function emaillogin(formData: FormData) {
   const logindata = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
+    options: { captchaToken: formData.get('captchaToken') as string },
   };
 
   const { error } = await supabase.auth.signInWithPassword(logindata);
@@ -30,7 +31,9 @@ export async function emaillogin(formData: FormData) {
 export async function magiclinklogin(email: string) {
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithOtp({ email });
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+  });
 
   if (error) {
     throw new Error(error.message);
@@ -43,6 +46,7 @@ export async function emailsignup(formData: FormData) {
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
+    options: { captchaToken: formData.get('captchaToken') as string },
   };
 
   const { error } = await supabase.auth.signUp(data);

@@ -1,9 +1,8 @@
 import { GoRepoForked } from 'react-icons/go';
 
+import Link from '@/components/Link';
+import IconsBundle from '@/components/social-icons/index';
 import siteMetadata from '@/data/siteMetadata';
-
-import Link from './Link';
-import IconsBundle from './social-icons';
 
 const BuildWith = () => (
   <div className="flex items-center space-x-1">
@@ -11,14 +10,15 @@ const BuildWith = () => (
 
     <div className="flex space-x-1.5">
       <IconsBundle
-        kind="nextjs"
+        kind="nextdotjs"
         href="https://nextjs.org?ref=surajr.com.np"
         size={6}
         className="h-5 w-5"
+        iconColor="white"
       />
 
       <IconsBundle
-        kind="tailwind"
+        kind="tailwindcss"
         href="https://tailwindcss.com?ref=surajr.com.np"
         size={6}
         className="h-5 w-5"
@@ -32,6 +32,7 @@ const BuildWith = () => (
       <IconsBundle
         kind="umami"
         href="https://umami.is?ref=surajr.com.np"
+        iconColor="white"
         size={6}
         className="h-5 w-5"
       />
@@ -42,7 +43,7 @@ const BuildWith = () => (
         className="h-5 w-5"
       />
       <IconsBundle
-        kind="postgres"
+        kind="postgresql"
         href="https://www.postgresql.org?ref=surajr.com.np"
         size={6}
         className="h-5 w-5"

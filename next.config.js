@@ -7,13 +7,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
-  frame-src giscus.app
+  frame-src https://challenges.cloudflare.com
 `;
 
 const securityHeaders = [
@@ -72,6 +72,7 @@ module.exports = () => {
       ],
     },
     images: {
+      dangerouslyAllowSVG: true,
       remotePatterns: [
         {
           protocol: 'https',
@@ -100,6 +101,11 @@ module.exports = () => {
         {
           protocol: 'https',
           hostname: 'nfmcturislsuejmkigqk.supabase.co',
+        },
+
+        {
+          protocol: 'https',
+          hostname: 'cdn.simpleicons.org',
         },
       ],
       unoptimized,

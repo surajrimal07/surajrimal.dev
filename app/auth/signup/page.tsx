@@ -3,11 +3,13 @@
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 
+import { Turnstile } from '@marsidev/react-turnstile';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FaGithub, FaTwitter } from 'react-icons/fa';
 import { GrGoogle } from 'react-icons/gr';
 
+import { emailsignup } from '@/app/auth/actions';
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,8 +24,6 @@ import { Input } from '@/components/ui/input';
 import { LoadingButton } from '@/components/ui/loading-button';
 import { toastOptions } from '@/utils/toast';
 
-import { emailsignup } from '../actions';
-
 const SignUpCard = () => {
   const [formState, setFormState] = useState({
     email: '',
@@ -32,9 +32,16 @@ const SignUpCard = () => {
     confirmPassword: '',
   });
   const [pending, setPending] = useState(false);
+
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   const router = useRouter();
+
+  const cloudflare_turnstile =
+    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_KEY!;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,6 +68,7 @@ const SignUpCard = () => {
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
+        formData.append('captchaToken', captchaToken!);
 
         await emailsignup(formData);
 
@@ -133,6 +141,12 @@ const SignUpCard = () => {
                 name="confirmPassword"
                 value={formState.confirmPassword}
                 onChange={handleChange}
+              />
+              <Turnstile
+                siteKey={cloudflare_turnstile}
+                onSuccess={(token) => {
+                  setCaptchaToken(token);
+                }}
               />
               <LoadingButton
                 loading={pending}

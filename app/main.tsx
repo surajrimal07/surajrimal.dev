@@ -1,3 +1,4 @@
+import { Blog } from 'contentlayer/generated';
 import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
 import { FaRegHourglassHalf } from 'react-icons/fa6';
@@ -21,7 +22,7 @@ import { Separator } from '@/components/ui/cool-separator';
 import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 
-const renderPost = (post) => {
+const renderPost = (post: Blog) => {
   const { slug, date, readingTime, title, summary, tags } = post;
 
   return (

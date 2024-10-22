@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Turnstile } from '@marsidev/react-turnstile';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -29,6 +29,12 @@ const AuthScreen = () => {
   const [success, setSuccess] = useState(false);
 
   const errorMessageRef = useRef<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+
+  const cloudflare_turnstile =
+    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_KEY!;
 
   const router = useRouter();
 
@@ -100,6 +106,12 @@ const AuthScreen = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+              <Turnstile
+                siteKey={cloudflare_turnstile}
+                onSuccess={(token) => {
+                  setCaptchaToken(token);
+                }}
               />
               <LoadingButton
                 loading={pending}

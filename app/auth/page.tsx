@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Turnstile } from '@marsidev/react-turnstile';
 import { Provider } from '@supabase/supabase-js';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -34,12 +35,18 @@ const AuthScreen = () => {
   const [password, setPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   const errorMessageRef = useRef<string | null>(null);
 
   const showErrorToast = useCallback((message: string) => {
     toast.error(message, toastOptions);
   }, []);
+
+  const cloudflare_turnstile =
+    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_KEY!;
 
   useEffect(() => {
     const errorMessage = searchParams.get('message');
@@ -81,6 +88,7 @@ const AuthScreen = () => {
       const formData = new FormData();
       formData.append('email', email);
       formData.append('password', password);
+      formData.append('captchaToken', captchaToken!);
 
       await emaillogin(formData);
 
@@ -133,6 +141,12 @@ const AuthScreen = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+              <Turnstile
+                siteKey={cloudflare_turnstile}
+                onSuccess={(token) => {
+                  setCaptchaToken(token);
+                }}
               />
               <LoadingButton
                 loading={pending}
