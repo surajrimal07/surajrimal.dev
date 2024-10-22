@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 
 import { Badge } from '@/components/ui/badge';
@@ -34,6 +33,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { deleteProject, getProjects } from '@/lib/project';
 import { Project } from '@/types/project';
+import { formatDate } from '@/utils/timeAgo';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminProjectsListPage() {
@@ -88,11 +88,11 @@ export default function AdminProjectsListPage() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Created on : {format(new Date(project.created_at), 'PPP')}
+              Created on : {formatDate(project.created_at)}
             </p>
 
             <p className="text-xs text-muted-foreground">
-              Edited on : {format(new Date(project.updated_at), 'PPP')}
+              Edited on : {formatDate(project.updated_at)}
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
