@@ -58,7 +58,7 @@ export default function AdminAvailabilityPage() {
         const subs = await getSubscribers();
         setSubscribers(subs);
       } catch (error) {
-        toast.error('Failed to load data', toastOptions);
+        toast.error(`Failed to load available data ${error} `, toastOptions);
       } finally {
         setIsLoading(false);
       }

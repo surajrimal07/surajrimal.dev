@@ -34,9 +34,6 @@ export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({
   language,
   views,
   shares,
-  setOpenShareMenuSlug,
-  openShareMenuSlug,
-  ipaddress,
 }) => {
   return (
     <li className="group relative mb-3.5 transform cursor-pointer rounded-lg border border-gray-200 bg-opacity-50 p-3 hover:bg-zinc-200/50 dark:border-gray-700 dark:hover:bg-zinc-900/50">

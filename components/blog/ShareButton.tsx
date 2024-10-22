@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-
+import { ShareIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FaFacebookF, FaXTwitter } from 'react-icons/fa6';
 import { LuExternalLink, LuLink } from 'react-icons/lu';
@@ -21,7 +20,6 @@ interface ShareMenuProps {
   ip: string;
   onItemClick?: (type: ShareType) => void;
   onShareComplete?: () => void;
-  children: React.ReactNode;
 }
 
 export default function ShareMenu({
@@ -30,7 +28,6 @@ export default function ShareMenu({
   ip,
   onItemClick = () => {},
   onShareComplete = () => {},
-  children,
 }: ShareMenuProps) {
   const handleShareClick = async (
     type: ShareType,
@@ -74,7 +71,9 @@ export default function ShareMenu({
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
+        <ShareIcon className="h-5 w-5 text-gray-300" />
+      </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-56 rounded-lg border border-gray-700 bg-gray-900 p-0 text-white shadow-lg"
         align="end"

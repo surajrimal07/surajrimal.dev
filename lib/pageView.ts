@@ -90,7 +90,6 @@ export async function updateBlogShares(
   ip: string,
   shareType: ShareType
 ): Promise<number> {
-  const normalizedSlug = `/${slug}`;
   const sharesKey = `shares:${slug}`;
   const ipKey = `ip:${ip}:shares`;
 

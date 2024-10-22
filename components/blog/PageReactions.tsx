@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { m, useAnimationControls } from 'framer-motion';
-import { ShareIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FaFire } from 'react-icons/fa6';
 
+import EmojiReaction from '@/components/blog/EmojiReaction';
+import ShareMenu from '@/components/blog/ShareButton';
 import { reactions } from '@/data/emojiIcons';
 import { debounce } from '@/lib/hooks/debounce';
 import { useScrollProgress } from '@/lib/hooks/useScrollProgress';
@@ -18,9 +19,6 @@ import {
 } from '@/lib/pageView';
 import { ReactionType } from '@/types/reaction';
 import { toastOptions } from '@/utils/toast';
-
-import EmojiReaction from './EmojiReaction';
-import ShareButton from './ShareButton';
 
 interface ReactionProps {
   slug: string;
@@ -147,14 +145,12 @@ export default function Reactions({ slug, ip }: ReactionProps) {
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
               <button className="p-1">
-                <ShareButton
+                <ShareMenu
                   url={`${process.env.NEXT_PUBLIC_URL}/${slug}`}
                   slug={slug}
                   ip={ip}
                   onItemClick={() => setShareCounts((prev) => prev + 1)}
-                >
-                  <ShareIcon className="h-5 w-5 text-gray-300" />
-                </ShareButton>
+                />
               </button>
             </div>
             <span className="mt-1 text-[11px] font-medium text-gray-300">
