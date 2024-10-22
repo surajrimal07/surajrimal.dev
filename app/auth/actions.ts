@@ -5,13 +5,13 @@ import { redirect } from 'next/navigation';
 
 import { Provider } from '@supabase/supabase-js';
 
+import { AuthError } from '@/app/auth/autherror';
 import { createClient } from '@/utils/supabase/server';
 
-export async function emaillogin(formData: FormData) {
+export async function emaillogin(
+  formData: FormData
+): Promise<{ error?: string }> {
   const supabase = createClient();
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
   const logindata = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -21,7 +21,7 @@ export async function emaillogin(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(logindata);
 
   if (error) {
-    throw new Error(error.message);
+    return { error: error.message };
   }
 
   revalidatePath('/', 'layout');
@@ -36,7 +36,7 @@ export async function magiclinklogin(email: string) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new AuthError(error.message);
   }
 }
 
@@ -52,7 +52,7 @@ export async function emailsignup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    throw new Error(error.message);
+    throw new AuthError(error.message);
   }
 
   revalidatePath('/', 'layout');
@@ -69,7 +69,7 @@ export async function AuthSignIn(provider: Provider) {
     },
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new AuthError(error.message);
 
   // revalidatePath('/', 'layout');
   // redirect('/dashboard');

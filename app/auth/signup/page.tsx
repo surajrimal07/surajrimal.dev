@@ -10,6 +10,7 @@ import { FaGithub, FaTwitter } from 'react-icons/fa';
 import { GrGoogle } from 'react-icons/gr';
 
 import { emailsignup } from '@/app/auth/actions';
+import { AuthError } from '@/app/auth/autherror';
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import {
@@ -77,16 +78,19 @@ const SignUpCard = () => {
           toastOptions
         );
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : 'An error occurred';
-
-        setError(errorMessage);
-        toast.error(errorMessage, toastOptions);
+        if (err instanceof AuthError) {
+          const errorMessage = err.message;
+          setError(errorMessage);
+          toast.error(errorMessage, toastOptions);
+        } else {
+          toast.error('An unexpected error occurred', toastOptions);
+          setError('An unexpected error occurred');
+        }
       } finally {
         setPending(false);
       }
     },
-    [formState]
+    [captchaToken, formState]
   );
 
   return (

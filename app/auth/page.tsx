@@ -27,6 +27,8 @@ import { LoadingButton } from '@/components/ui/loading-button';
 import { createClient } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 
+import { AuthError } from './autherror';
+
 const AuthScreen = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -70,9 +72,14 @@ const AuthScreen = () => {
         throw new Error(errorMessage || 'Something went wrong');
       }
     } catch (err) {
-      const message = err.message || 'Something went wrong';
-      showErrorToast(message);
-      setError(message);
+      if (err instanceof AuthError) {
+        const errorMessage = err.message;
+        showErrorToast(errorMessage);
+        setError(errorMessage);
+      } else {
+        showErrorToast('An unexpected error occurred');
+        setError('An unexpected error occurred');
+      }
     } finally {
       setPending(false);
     }
@@ -90,7 +97,14 @@ const AuthScreen = () => {
       formData.append('password', password);
       formData.append('captchaToken', captchaToken!);
 
-      await emaillogin(formData);
+      const result: { error?: string } = await emaillogin(formData);
+
+      if (result?.error) {
+        const errorMessage = result.error;
+        showErrorToast(errorMessage);
+        setError(errorMessage);
+        return;
+      }
 
       const {
         data: { session },
@@ -100,7 +114,7 @@ const AuthScreen = () => {
         toast.success(`Logged in as ${session.user.email}`, toastOptions);
       }
     } catch (err) {
-      const errorMessage = err.message || 'Something went wrong';
+      const errorMessage = `An unexpected error occurred ${err} `;
       showErrorToast(errorMessage);
       setError(errorMessage);
     } finally {
