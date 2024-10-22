@@ -29,7 +29,7 @@ export default function AuthHeaderImage() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={clsx(
-            'h-[450px] w-[450px] stroke-indigo-500 opacity-60 dark:opacity-40',
+            'h-[350px] w-[350px] stroke-indigo-500 opacity-60 dark:opacity-40',
             'hidden md:block'
           )}
         >

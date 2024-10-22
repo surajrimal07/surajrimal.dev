@@ -96,45 +96,39 @@ export async function updateBlogShares(
 
   const multi = redis.multi();
 
-  try {
-    // Check IP shares limit
-    const currentSharesCount = parseInt((await redis.get(ipKey)) || '0');
+  // Remove the try-catch from here and let it bubble up
+  const currentSharesCount = parseInt((await redis.get(ipKey)) || '0');
 
-    if (currentSharesCount >= MAX_SHARES_PER_SESSION) {
-      console.warn(`IP ${ip} has reached the maximum shares limit.`);
-      return -1;
-    }
-
-    // Increment share count for the specific type
-    multi.hincrby(sharesKey, shareType, 1);
-
-    // Increment IP shares count
-    multi.incr(ipKey);
-
-    // Set expiry for IP record (24 hours)
-    multi.expire(ipKey, 24 * 60 * 60);
-
-    const results = await multi.exec();
-
-    if (!results) {
-      throw new Error('Transaction failed');
-    }
-
-    // Type guard for the results
-    if (!Array.isArray(results[0]) || results[0].length < 2) {
-      throw new Error('Unexpected result format');
-    }
-    const newShares = Number(results[0][1]);
-
-    if (isNaN(newShares)) {
-      throw new Error('Invalid share count returned');
-    }
-
-    return newShares;
-  } catch (error) {
-    console.error(`Error updating shares for ${normalizedSlug}:`, error);
-    return 0;
+  if (currentSharesCount >= MAX_SHARES_PER_SESSION) {
+    throw new Error('Max shares limit reached');
   }
+
+  // Increment share count for the specific type
+  multi.hincrby(sharesKey, shareType, 1);
+
+  // Increment IP shares count
+  multi.incr(ipKey);
+
+  // Set expiry for IP record (24 hours)
+  multi.expire(ipKey, 24 * 60 * 60);
+
+  const results = await multi.exec();
+
+  if (!results) {
+    throw new Error('Transaction failed');
+  }
+
+  // Type guard for the results
+  if (!Array.isArray(results[0]) || results[0].length < 2) {
+    throw new Error('Unexpected result format');
+  }
+  const newShares = Number(results[0][1]);
+
+  if (isNaN(newShares)) {
+    throw new Error('Invalid share count returned');
+  }
+
+  return newShares;
 }
 
 export async function handleReaction(

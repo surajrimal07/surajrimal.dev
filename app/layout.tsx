@@ -17,6 +17,7 @@ import { PathProvider } from '@/components/PathProvider';
 import { SearchProvider } from '@/components/SearchProvider';
 import SectionContainer from '@/components/SectionContainer';
 import VercelAnalytics from '@/components/VercelAnalytics';
+import ConsoleLabrador from '@/components/homepage/ConsoleLabrador';
 import '@/css/about.css';
 import '@/css/extra.css';
 import '@/css/prism.css';
@@ -127,6 +128,7 @@ export default function RootLayout({
         <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
           <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50"></div>
         </div>
+        <ConsoleLabrador />
         <NextTopLoader color="#ef4444" height={1} showSpinner={false} />
 
         <Toaster position="top-right" reverseOrder={false} />

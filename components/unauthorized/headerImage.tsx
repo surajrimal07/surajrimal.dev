@@ -43,7 +43,7 @@ export default function UnauthorizedImage() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={clsx(
-            'h-[450px] w-[450px] opacity-60 dark:opacity-40',
+            'h-[350px] w-[350px] opacity-60 dark:opacity-40',
             'hidden md:block'
           )}
         >

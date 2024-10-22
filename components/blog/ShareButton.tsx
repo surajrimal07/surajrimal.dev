@@ -7,13 +7,6 @@ import { FaFacebookF, FaXTwitter } from 'react-icons/fa6';
 import { LuExternalLink, LuLink } from 'react-icons/lu';
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -80,31 +73,44 @@ export default function ShareMenu({
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <Card>
-          <CardHeader>
-            <CardTitle>Share this on</CardTitle>
-            <CardDescription>Choose a platform to share</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            <DropdownMenuItem onClick={handleTwitter}>
-              <FaXTwitter className="mr-2 h-4 w-4" />
-              <span>Twitter</span>
-              <LuExternalLink className="ml-auto h-4 w-4" />
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleFacebook}>
-              <FaFacebookF className="mr-2 h-4 w-4" />
-              <span>Facebook</span>
-              <LuExternalLink className="ml-auto h-4 w-4" />
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleCopy}>
-              <LuLink className="mr-2 h-4 w-4" />
-              <span>Copy link</span>
-            </DropdownMenuItem>
-          </CardContent>
-        </Card>
+      <DropdownMenuContent
+        className="w-56 rounded-lg border border-gray-700 bg-gray-900 p-0 text-white shadow-lg"
+        align="end"
+        side="top"
+        sideOffset={20}
+        avoidCollisions={false}
+      >
+        <div className="border-b border-gray-700 p-3">
+          <h3 className="text-base font-semibold">Share this on</h3>
+          <p className="text-sm text-gray-400">Choose a platform to share</p>
+        </div>
+        <div className="p-1.5">
+          <DropdownMenuItem
+            onClick={handleTwitter}
+            className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+          >
+            <FaXTwitter className="mr-2 h-4 w-4" />
+            <span>Twitter</span>
+            <LuExternalLink className="ml-auto h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleFacebook}
+            className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+          >
+            <FaFacebookF className="mr-2 h-4 w-4" />
+            <span>Facebook</span>
+            <LuExternalLink className="ml-auto h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleCopy}
+            className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+          >
+            <LuLink className="mr-2 h-4 w-4" />
+            <span>Copy link</span>
+          </DropdownMenuItem>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

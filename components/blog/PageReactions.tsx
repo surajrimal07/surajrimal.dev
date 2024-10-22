@@ -108,7 +108,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
 
   return (
     <div
-      className={`sticky inset-x-0 bottom-4 flex justify-center transition-all duration-500 ease-in-out ${
+      className={`inset-x-0 flex justify-center transition-all duration-500 ease-in-out ${
         isVisible ? 'translate-y-0' : 'translate-y-20'
       }`}
     >
@@ -148,7 +148,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
               <button className="p-1">
                 <ShareButton
-                  url={`https://yourdomain.com/blog/${slug}`}
+                  url={`${process.env.NEXT_PUBLIC_URL}/${slug}`}
                   slug={slug}
                   ip={ip}
                   onItemClick={() => setShareCounts((prev) => prev + 1)}

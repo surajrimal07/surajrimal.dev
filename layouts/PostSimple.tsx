@@ -86,12 +86,12 @@ export default function PostLayout({
               {children}
             </div>
           </div>
-          <div className="fixed bottom-4 left-1/2 z-10 w-full max-w-md -translate-x-1/2 transform border-none outline-none lg:sticky lg:bottom-0 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
+          <div className="sticky bottom-4 z-10 mb-2 w-full max-w-md transform border-none outline-none lg:sticky lg:bottom-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
             <Reactions slug={slugNormalized} ip={ip} />
           </div>
 
           <div
-            className="max-w-full pb-4 pt-8 text-center text-gray-700 dark:text-gray-300"
+            className="max-w-full pb-4 pt-2 text-center text-gray-700 dark:text-gray-300"
             id="comment"
           >
             <WalineComment
