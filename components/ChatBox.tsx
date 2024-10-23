@@ -10,7 +10,8 @@ import React, {
 
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { HelpCircle, MessageCircle, Send, X } from 'lucide-react';
+import { HelpCircle, MessageCircle, MoreVertical, Send, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -20,11 +21,21 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
+import { clearChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
+import useLocalStorage from '@/lib/hooks/use-local-storage';
 import { sendMessage } from '@/lib/telegram';
 import { DatabaseChangePayload, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
+import { toastOptions } from '@/utils/toast';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 interface MessageTimeProps {
   time: string;
@@ -70,14 +81,15 @@ const formatMessageTime = (timestamp: number) => {
 };
 
 const Chatbox: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useLocalStorage<string>('chatboxEmail', '');
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [showFAQ, setShowFAQ] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { chatEnabled, setChatEnabled } = useChatStore();
   const [newMessage, setNewMessage] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+
   const {
     isAuthorOnline,
     setIsAuthorOnline,
@@ -142,16 +154,13 @@ const Chatbox: React.FC = () => {
       { id: Date.now(), text: question, sender: 'user' },
       { id: Date.now() + 1, text: answer, sender: 'bot' },
     ]);
-    setShowFAQ(false);
   }, []);
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem('chatboxEmail');
-    if (savedEmail) {
-      setEmail(savedEmail);
+    if (email) {
       setIsEmailSubmitted(true);
     }
-  }, []);
+  }, [email]);
 
   useEffect(() => {
     if (!isCollapsed) {
@@ -202,10 +211,10 @@ const Chatbox: React.FC = () => {
   const handleEmailSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      localStorage.setItem('chatboxEmail', email);
+      setEmail(email);
       setIsEmailSubmitted(true);
     },
-    [email]
+    [email, setEmail]
   );
 
   const handleSendMessage = useCallback(async () => {
@@ -244,6 +253,27 @@ const Chatbox: React.FC = () => {
     const timeDiff = nextMessage.id - currentMessage.id;
     return timeDiff > 600000;
   }, []);
+
+  const handleDeleteChat = async () => {
+    setEmail('');
+    setMessages([]);
+    setIsEmailSubmitted(false);
+
+    try {
+      await clearChat(email);
+    } catch (error) {
+      toast.error(`Error deleting chat ${error}`, toastOptions);
+    }
+
+    setShowOptions(false);
+  };
+
+  const handleDeleteEmail = () => {
+    setEmail('');
+    setMessages([]);
+    setIsEmailSubmitted(false);
+    setShowOptions(false);
+  };
 
   const renderMessages = useMemo(() => {
     return messages.map((message, index) => (
@@ -479,38 +509,49 @@ const Chatbox: React.FC = () => {
                     >
                       <Send className="h-4 w-4" />
                     </Button>
-                    <div className="relative">
-                      <Button
-                        onClick={() => setShowFAQ(!showFAQ)}
-                        className="h-10 px-2 py-1"
-                      >
-                        <HelpCircle className="h-4 w-4" />
-                      </Button>
-                      <AnimatePresence>
-                        {showFAQ && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute bottom-full right-0 z-10 mb-2 w-72 rounded-lg border border-gray-200 bg-black p-2 shadow-lg"
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button className="h-10 px-2 py-1">
+                          <HelpCircle className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-72">
+                        {simpleFAQs.map((faq, index) => (
+                          <DropdownMenuItem
+                            key={index}
+                            onClick={() =>
+                              handleFAQClick(faq.question, faq.answer)
+                            }
                           >
-                            {simpleFAQs.map((faq, index) => (
-                              <Button
-                                key={index}
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  handleFAQClick(faq.question, faq.answer)
-                                }
-                                className="mb-1 w-full justify-start text-left text-xs"
-                              >
-                                {faq.question}
-                              </Button>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                            {faq.question}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <div className="relative">
+                      <DropdownMenu
+                        open={showOptions}
+                        onOpenChange={setShowOptions}
+                      >
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                            <span className="sr-only">Open options</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56">
+                          <DropdownMenuItem onClick={handleDeleteChat}>
+                            <span>Delete Chat</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={handleDeleteEmail}>
+                            <span>Delete Email</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Turnstile } from '@marsidev/react-turnstile';
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from '@/components/ui/loading-button';
+import useAuthStore from '@/lib/stores/auth';
 import { toastOptions } from '@/utils/toast';
 
 import { magiclinklogin } from '../actions';
@@ -27,6 +28,8 @@ const AuthScreen = () => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const { user, isLoading, initialize } = useAuthStore();
 
   const errorMessageRef = useRef<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | undefined>(
@@ -52,6 +55,20 @@ const AuthScreen = () => {
     }
   }, [searchParams, showErrorToast]);
 
+  useEffect(() => {
+    const initAuth = async () => {
+      await initialize();
+    };
+
+    initAuth();
+  }, [initialize]);
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push('/profile');
+    }
+  }, [user, isLoading, router]);
+
   const sendMagicLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
@@ -59,29 +76,49 @@ const AuthScreen = () => {
     setSuccess(false);
 
     try {
-      await magiclinklogin(email);
+      const result: { error?: string } = await magiclinklogin(
+        email,
+        captchaToken!
+      );
 
-      toast.success('Magic link sent! Check your email to sign in.', {
-        ...toastOptions,
-      });
+      if (result?.error) {
+        await refreshCaptcha();
+        const errorMessage = result.error;
+        setError(errorMessage);
+        return;
+      }
       setSuccess(true);
     } catch (err) {
+      await refreshCaptcha();
       const errorMessage = err.message || 'Something went wrong';
-      toast.error(errorMessage, {
-        ...toastOptions,
-      });
       setError(errorMessage);
     } finally {
       setPending(false);
     }
   };
 
+  const refreshCaptcha = async () => {
+    if (turnstileRef.current) {
+      turnstileRef.current.reset();
+      turnstileRef.current.execute();
+    }
+  };
+
+  if (isLoading || user) {
+    return (
+      <div className="flex min-h-[200px] flex-col items-center justify-center gap-4">
+        <span className="text-lg text-white">Checking authentication...</span>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-red-500 border-t-transparent" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full items-center justify-center">
       <div className="md:h-auto md:w-[420px]">
         <Card className="h-full w-full p-8 shadow-lg">
           <CardHeader className="px-0 pt-0">
-            <CardTitle>Sign In with magiclink</CardTitle>
+            <CardTitle>Sign In with Magic Link</CardTitle>
             <CardDescription>
               Enter your email to receive a magic link for signing in
             </CardDescription>
@@ -108,9 +145,18 @@ const AuthScreen = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <Turnstile
+                ref={turnstileRef}
                 siteKey={cloudflare_turnstile}
+                options={{ size: 'invisible' }}
                 onSuccess={(token) => {
                   setCaptchaToken(token);
+                }}
+                onError={() => {
+                  setCaptchaToken(undefined);
+                }}
+                onExpire={() => {
+                  setCaptchaToken(undefined);
+                  refreshCaptcha();
                 }}
               />
               <LoadingButton
@@ -124,13 +170,13 @@ const AuthScreen = () => {
               </LoadingButton>
             </form>
             <p className="text-center text-xs text-muted-foreground">
-              Don&apos;t have an account?{' '}
+              Go back to {''}
               <button
                 className="cursor-pointer border-none bg-transparent p-0 text-xs underline"
                 type="button"
-                onClick={() => router.push('/auth/signup')}
+                onClick={() => router.push('/auth')}
               >
-                Sign Up
+                Login
               </button>
             </p>
             <p className="text-center text-xs text-muted-foreground">

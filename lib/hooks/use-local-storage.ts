@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 
-const useLocalStorage = <T>(
+const useLocalStorage = <T extends string | null>(
   key: string,
   initialValue: T
 ): [T, (value: T) => void] => {
-  const [storedValue, setStoredValue] = useState(initialValue);
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   useEffect(() => {
     const item = window.localStorage.getItem(key);
-    if (item) {
-      setStoredValue(JSON.parse(item));
+    if (item !== null) {
+      setStoredValue(item as T);
     }
   }, [key]);
 
   const setValue = (value: T) => {
     setStoredValue(value);
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (value === null) {
+      window.localStorage.removeItem(key);
+    } else {
+      window.localStorage.setItem(key, value);
+    }
   };
+
   return [storedValue, setValue];
 };
 
