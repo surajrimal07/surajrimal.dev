@@ -81,6 +81,7 @@ function createTagCount(allBlogs, allSnippets) {
       });
     }
   });
+
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount));
 }
 

@@ -13,3 +13,5 @@ export const MAX_DISPLAY = 3;
 export const MAX_SUBMISSIONS_PER_SESSION = 3;
 
 export const AUTHOR_OFFLINE_TIMEOUT = 1 * 60 * 1000;
+
+export const MAX_TAGS_IN_HOME = 6;
