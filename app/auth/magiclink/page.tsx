@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -28,16 +27,9 @@ const AuthScreen = () => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const turnstileRef = useRef<TurnstileInstance>(null);
   const { user, isLoading, initialize } = useAuthStore();
 
   const errorMessageRef = useRef<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-
-  const cloudflare_turnstile =
-    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_KEY!;
 
   const router = useRouter();
 
@@ -76,31 +68,19 @@ const AuthScreen = () => {
     setSuccess(false);
 
     try {
-      const result: { error?: string } = await magiclinklogin(
-        email,
-        captchaToken!
-      );
+      const result: { error?: string } = await magiclinklogin(email);
 
       if (result?.error) {
-        await refreshCaptcha();
         const errorMessage = result.error;
         setError(errorMessage);
         return;
       }
       setSuccess(true);
     } catch (err) {
-      await refreshCaptcha();
       const errorMessage = err.message || 'Something went wrong';
       setError(errorMessage);
     } finally {
       setPending(false);
-    }
-  };
-
-  const refreshCaptcha = async () => {
-    if (turnstileRef.current) {
-      turnstileRef.current.reset();
-      turnstileRef.current.execute();
     }
   };
 
@@ -144,21 +124,7 @@ const AuthScreen = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Turnstile
-                ref={turnstileRef}
-                siteKey={cloudflare_turnstile}
-                options={{ size: 'invisible' }}
-                onSuccess={(token) => {
-                  setCaptchaToken(token);
-                }}
-                onError={() => {
-                  setCaptchaToken(undefined);
-                }}
-                onExpire={() => {
-                  setCaptchaToken(undefined);
-                  refreshCaptcha();
-                }}
-              />
+
               <LoadingButton
                 loading={pending}
                 className="w-full"

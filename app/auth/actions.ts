@@ -6,14 +6,12 @@ import { AuthError } from '@/app/auth/autherror';
 import { createClient } from '@/utils/supabase/server';
 
 export async function magiclinklogin(
-  email: string,
-  capta: string
+  email: string
 ): Promise<{ error?: string }> {
   const supabase = createClient();
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email,
-    options: { captchaToken: capta },
   });
 
   if (error) {
