@@ -124,7 +124,7 @@ export default function RootLayout({
         href={`${basePath}/feed.xml`}
       />
 
-      <body className="pl-[calc(100vw-100%)] text-black antialiased dark:text-white">
+      <body className="pl-[calc(100vw-100%)] antialiased">
         <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
           <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50"></div>
         </div>

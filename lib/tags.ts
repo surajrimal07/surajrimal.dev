@@ -1,3 +1,5 @@
+import tagData from 'app/tag-data.json';
+
 import { PopularTag } from '@/types/tag';
 import { supabase } from '@/utils/supabase/client';
 
@@ -50,3 +52,36 @@ export const deleteTagByTitle = async (title: string) => {
 
   return data;
 };
+
+export async function updateTagsInSupabase() {
+  const tagDatas: Record<string, number> = tagData;
+
+  for (const [tagSlug, count] of Object.entries(tagDatas)) {
+    await upsertTagInSupabase(tagSlug, count);
+  }
+}
+
+async function upsertTagInSupabase(tagSlug: string, count: number) {
+  const href = `/tags/${tagSlug}`;
+  const title = capitalize(tagSlug);
+  const iconType = 'Javascript';
+
+  const { error } = await supabase.from('popular_tags').upsert(
+    {
+      slug: tagSlug,
+      href: href,
+      icon_type: iconType,
+      title: title,
+      count: count,
+    },
+    { onConflict: 'slug' }
+  );
+
+  if (error) {
+    console.error('Error upserting tag in Supabase:', error);
+  }
+}
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

@@ -65,7 +65,7 @@ const computedFields: ComputedFields = {
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
-function createTagCount(allBlogs, allSnippets) {
+async function createTagCount(allBlogs, allSnippets) {
   const tagCount: Record<string, number> = {};
   const allDocuments = [...allBlogs, ...allSnippets];
 
@@ -83,6 +83,7 @@ function createTagCount(allBlogs, allSnippets) {
   });
 
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount));
+  return tagCount;
 }
 
 function createSearchIndex(allBlogs, allSnippets) {
@@ -231,7 +232,7 @@ export default makeSource({
     const { allBlogs } = await importData();
     const { allSnippets } = await importData();
 
-    createTagCount(allBlogs, allSnippets);
     createSearchIndex(allBlogs, allSnippets);
+    createTagCount(allBlogs, allSnippets);
   },
 });

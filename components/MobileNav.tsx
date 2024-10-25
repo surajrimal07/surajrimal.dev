@@ -14,9 +14,9 @@ import {
 
 import headerNavLinks from '@/data/headerNavLinks';
 
+import usePlaySound from '../lib/hooks/PlaySound';
 import Link from './Link';
 import { useCurrentPath } from './PathProvider';
-import usePlaySound from './PlaySound';
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false);

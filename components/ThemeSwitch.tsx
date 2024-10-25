@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { Monitor } from 'lucide-react';
@@ -19,7 +19,41 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import usePlaySound from './PlaySound';
+import usePlaySound from '../lib/hooks/PlaySound';
+
+const THEME_OPTIONS = [
+  { value: 'light', icon: <HiSun />, label: 'Light' },
+  { value: 'dark', icon: <BsMoonStarsFill />, label: 'Dark' },
+  { value: 'system', icon: <Monitor />, label: 'System' },
+] as const;
+
+const ThemeOption = memo(
+  ({
+    value,
+    icon,
+    label,
+    theme,
+    onClick,
+  }: {
+    value: string;
+    icon: React.ReactNode;
+    label: string;
+    theme: string | undefined;
+    onClick: (value: string) => void;
+  }) => (
+    <DropdownMenuItem
+      onClick={() => onClick(value)}
+      className={`${
+        theme === value ? 'bg-red-500 text-white dark:bg-red-500' : ''
+      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+    >
+      <div className="mr-2">{icon}</div>
+      {label}
+    </DropdownMenuItem>
+  )
+);
+
+ThemeOption.displayName = 'ThemeOption';
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
@@ -28,42 +62,35 @@ const ThemeSwitch = () => {
     filePath: '/static/sounds/switch-on.mp3',
     volume: 0.7,
   });
-
   const [isThemeChanged, setIsThemeChanged] = useState(false);
 
-  const handleClick = (value: string) => {
-    playSound();
-    setTheme(value);
-    setIsThemeChanged(true);
-  };
-
-  useEffect(() => setMounted(true), []);
+  const handleClick = useCallback(
+    (value: string) => {
+      playSound();
+      setTheme(value);
+      setIsThemeChanged(true);
+    },
+    [playSound, setTheme]
+  );
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     if (isThemeChanged) {
-      setTimeout(() => setIsThemeChanged(false), 500);
+      timeoutId = setTimeout(() => setIsThemeChanged(false), 500);
     }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [isThemeChanged]);
 
-  const ThemeOption = ({
-    value,
-    icon,
-    label,
-  }: {
-    value: string;
-    icon: React.ReactNode;
-    label: string;
-  }) => (
-    <DropdownMenuItem
-      onClick={() => handleClick(value)}
-      className={`${
-        theme === value ? 'bg-red-500 text-white dark:bg-red-500' : ''
-      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-    >
-      <div className="mr-2">{icon}</div>
-      {label}
-    </DropdownMenuItem>
-  );
+  const getCurrentIcon = () => {
+    if (!mounted) return <BsMoonStarsFill />;
+    return resolvedTheme === 'dark' ? <BsMoonStarsFill /> : <HiSun />;
+  };
 
   return (
     <DropdownMenu modal={false}>
@@ -78,15 +105,7 @@ const ThemeSwitch = () => {
             transition={{ duration: 0.1, ease: 'easeIn' }}
             whileHover={{ scale: 1.1 }}
           >
-            {mounted ? (
-              resolvedTheme === 'dark' ? (
-                <BsMoonStarsFill />
-              ) : (
-                <HiSun />
-              )
-            ) : (
-              <Monitor />
-            )}
+            {getCurrentIcon()}
             <span className="sr-only">Toggle theme</span>
           </motion.div>
         </Button>
@@ -96,13 +115,20 @@ const ThemeSwitch = () => {
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <ThemeOption value="light" icon={<HiSun />} label="Light" />
-          <ThemeOption value="dark" icon={<BsMoonStarsFill />} label="Dark" />
-          <ThemeOption value="system" icon={<Monitor />} label="System" />
+          {THEME_OPTIONS.map(({ value, icon, label }) => (
+            <ThemeOption
+              key={value}
+              value={value}
+              icon={icon}
+              label={label}
+              theme={theme}
+              onClick={handleClick}
+            />
+          ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default ThemeSwitch;
+export default memo(ThemeSwitch);

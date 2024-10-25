@@ -4,13 +4,11 @@ import type { Blog } from 'contentlayer/generated';
 import Bleed from 'pliny/ui/Bleed';
 import { CoreContent } from 'pliny/utils/contentlayer';
 
-import Comments from '@/components/Comments';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
-import siteMetadata from '@/data/siteMetadata';
 
 interface LayoutProps {
   content: CoreContent<Blog>;
@@ -25,7 +23,7 @@ export default function PostMinimal({
   prev,
   children,
 }: LayoutProps) {
-  const { slug, title, images } = content;
+  const { title, images } = content;
   const displayImage =
     images && images.length > 0
       ? images[0]
@@ -56,14 +54,6 @@ export default function PostMinimal({
           <div className="prose max-w-none py-4 dark:prose-invert">
             {children}
           </div>
-          {siteMetadata.comments && (
-            <div
-              className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
-              id="comment"
-            >
-              <Comments slug={slug} />
-            </div>
-          )}
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
               {prev && prev.path && (

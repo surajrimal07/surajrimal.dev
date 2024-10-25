@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from '@/components/ui/loading-button';
-import useAuthStore from '@/lib/stores/auth';
 import { toastOptions } from '@/utils/toast';
 
 import { magiclinklogin } from '../actions';
@@ -27,7 +26,6 @@ const AuthScreen = () => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const { user, isLoading, initialize } = useAuthStore();
 
   const errorMessageRef = useRef<string | null>(null);
 
@@ -47,51 +45,30 @@ const AuthScreen = () => {
     }
   }, [searchParams, showErrorToast]);
 
-  useEffect(() => {
-    const initAuth = async () => {
-      await initialize();
-    };
+  const handleSendMagicLink = useCallback(
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      setPending(true);
+      setError('');
+      setSuccess(false);
 
-    initAuth();
-  }, [initialize]);
+      try {
+        const result: { error?: string } = await magiclinklogin(email);
 
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.push('/profile');
-    }
-  }, [user, isLoading, router]);
-
-  const sendMagicLink = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setPending(true);
-    setError('');
-    setSuccess(false);
-
-    try {
-      const result: { error?: string } = await magiclinklogin(email);
-
-      if (result?.error) {
-        const errorMessage = result.error;
+        if (result?.error) {
+          setError(result.error);
+          return;
+        }
+        setSuccess(true);
+      } catch (err) {
+        const errorMessage = err.message || 'Something went wrong';
         setError(errorMessage);
-        return;
+      } finally {
+        setPending(false);
       }
-      setSuccess(true);
-    } catch (err) {
-      const errorMessage = err.message || 'Something went wrong';
-      setError(errorMessage);
-    } finally {
-      setPending(false);
-    }
-  };
-
-  if (isLoading || user) {
-    return (
-      <div className="flex min-h-[200px] flex-col items-center justify-center gap-4">
-        <span className="text-lg text-white">Checking authentication...</span>
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-red-500 border-t-transparent" />
-      </div>
-    );
-  }
+    },
+    [email]
+  );
 
   return (
     <div className="flex h-full items-center justify-center">
@@ -115,7 +92,7 @@ const AuthScreen = () => {
             </div>
           )}
           <CardContent className="space-y-5 px-0 pb-0">
-            <form className="space-y-2.5" onSubmit={sendMagicLink}>
+            <form className="space-y-2.5" onSubmit={handleSendMagicLink}>
               <Input
                 required
                 disabled={pending}

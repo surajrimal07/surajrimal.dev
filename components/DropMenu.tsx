@@ -26,7 +26,6 @@ import {
 import toast from 'react-hot-toast';
 import useSWR from 'swr';
 
-import usePlaySound from '@/components/PlaySound';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -40,6 +39,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import usePlaySound from '@/lib/hooks/PlaySound';
 import useChatStore from '@/lib/hooks/chatState';
 import useAuthStore from '@/lib/stores/auth';
 import { fetcher } from '@/utils/fetcher';

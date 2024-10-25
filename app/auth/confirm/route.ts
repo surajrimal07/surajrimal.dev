@@ -30,11 +30,11 @@ export async function GET(request: NextRequest) {
       redirect(`/auth/magiclink?&message=${error.message}`);
     }
 
-    if (error && type === 'signup') {
-      redirect(`/auth/signup?&message=${error.message}`);
-    }
+    // if (error && type === 'signup') {
+    //   redirect(`/auth/signup?&message=${error.message}`);
+    // }
   }
 
   // redirect the user to an error page with some instructions
-  redirect('/auth?flow=signUp&message=Invalid token');
+  redirect('/auth?message=Invalid token');
 }

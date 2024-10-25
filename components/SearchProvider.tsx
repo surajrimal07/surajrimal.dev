@@ -113,7 +113,7 @@ export const SearchProvider = ({ children }) => {
           const blogResults = json.map((post: Blog) => ({
             id: post.path,
             name: post.title,
-            keywords: post.body.raw,
+            keywords: post.body,
             section: 'Blog',
             subtitle: post.tags.join(', '),
             perform: () => router.push('/' + post.path),
@@ -122,7 +122,7 @@ export const SearchProvider = ({ children }) => {
           const snippetResults = json.map((snippet: Snippets) => ({
             id: snippet.path,
             name: snippet.title,
-            keywords: snippet.body.raw,
+            keywords: snippet.body,
             section: 'Blog and Snippets',
             subtitle: snippet.tags.join(', '),
             perform: () => router.push('/' + snippet.path),

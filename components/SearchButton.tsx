@@ -8,7 +8,7 @@ import { FiCommand } from 'react-icons/fi';
 
 import siteMetadata from '@/data/siteMetadata';
 
-import usePlaySound from './PlaySound';
+import usePlaySound from '../lib/hooks/PlaySound';
 
 const SearchButton = () => {
   const { playSound } = usePlaySound({

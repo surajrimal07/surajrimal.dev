@@ -37,46 +37,38 @@ export default function CookieConsent() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 50, opacity: 0 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed bottom-10 left-4 right-4 z-50 mx-auto max-w-sm"
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          className="fixed bottom-5 left-4 right-4 z-50 mx-auto max-w-sm"
         >
-          <Card className="border-none bg-gray-900/95 shadow-lg">
+          <Card className="border-none bg-gray-900 shadow-lg">
             <CardContent className="p-4">
               <h3 className="text-lg font-medium text-gray-100">
                 Cookie Consent
               </h3>
               <p className="mb-2 text-sm text-gray-300">
-                We use cookies to enhance your experience. This site uses:
+                We use cookies to enhance your experience. This site uses{' '}
+                <Link
+                  href="https://supabase.com"
+                  className="text-red-400 hover:text-red-300"
+                >
+                  Supabase <ExternalLink className="inline h-3 w-3" />
+                </Link>{' '}
+                for data storage{' '}
+                <Link
+                  href="https://vercel.com/analytics"
+                  className="text-red-400 hover:text-red-300"
+                >
+                  Vercel Analytics <ExternalLink className="inline h-3 w-3" />
+                </Link>{' '}
+                for performance monitoring{' '}
+                <Link
+                  href="https://umami.is"
+                  className="text-red-400 hover:text-red-300"
+                >
+                  Umami <ExternalLink className="inline h-3 w-3" />
+                </Link>{' '}
+                for website statistics.{' '}
               </p>
-              <div className="space-y-0.5 text-sm text-gray-300">
-                <div>
-                  <Link
-                    href="https://supabase.com"
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    Supabase <ExternalLink className="inline h-3 w-3" />
-                  </Link>{' '}
-                  for data storage
-                </div>
-                <div>
-                  <Link
-                    href="https://vercel.com/analytics"
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    Vercel Analytics <ExternalLink className="inline h-3 w-3" />
-                  </Link>{' '}
-                  for performance monitoring
-                </div>
-                <div>
-                  <Link
-                    href="https://umami.is"
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    Umami Analytics <ExternalLink className="inline h-3 w-3" />
-                  </Link>{' '}
-                  for website statistics
-                </div>
-              </div>
               <div className="mt-2 flex items-center justify-between">
                 <p className="text-xs text-gray-400">
                   By accepting, you agree to our{' '}

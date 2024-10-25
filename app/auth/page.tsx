@@ -20,17 +20,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import useLocalStorage from '@/lib/hooks/use-local-storage';
-import useAuthStore from '@/lib/stores/auth';
+import { LastAuth } from '@/types/lastauth';
 import { toastOptions } from '@/utils/toast';
 
 const AuthScreen = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { user, isLoading, initialize } = useAuthStore();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
-  const [lastProvider, setLastProvider] = useLocalStorage<Provider | null>(
+  const [lastProvider, setLastProvider] = useLocalStorage<LastAuth | null>(
     'lastAuthProvider',
     null
   );
@@ -50,27 +49,12 @@ const AuthScreen = () => {
     }
   }, [searchParams, showErrorToast]);
 
-  useEffect(() => {
-    const initAuth = async () => {
-      await initialize();
-    };
-
-    initAuth();
-  }, [initialize]);
-
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.push('/profile');
-    }
-  }, [user, isLoading, router]);
-
   const oAuthSignIn = async (provider: Provider) => {
     setPending(true);
     setError('');
 
     try {
-      localStorage.setItem('lastAuthProvider', provider);
-      setLastProvider(provider);
+      setLastProvider(provider as LastAuth);
 
       const { errorMessage, url } = await AuthSignIn(provider);
 
@@ -112,14 +96,6 @@ const AuthScreen = () => {
     </button>
   );
 
-  if (isLoading || user) {
-    return (
-      <div className="flex min-h-[200px] flex-col items-center justify-center gap-4">
-        <span className="text-lg text-white">Checking authentication...</span>
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-red-500 border-t-transparent" />
-      </div>
-    );
-  }
   return (
     <div className="flex h-full items-center justify-center">
       <div className="md:h-auto md:w-[420px]">

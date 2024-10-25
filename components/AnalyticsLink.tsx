@@ -3,7 +3,7 @@ import { LuLineChart } from 'react-icons/lu';
 
 import siteMetadata from '@/data/siteMetadata';
 
-import usePlaySound from './PlaySound';
+import usePlaySound from '../lib/hooks/PlaySound';
 
 const AnalyticsLink = () => {
   const { playSound } = usePlaySound({
