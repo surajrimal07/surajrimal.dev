@@ -12,6 +12,7 @@ import { GrGoogle } from 'react-icons/gr';
 import { PiMagicWandBold } from 'react-icons/pi';
 
 import { AuthSignIn } from '@/app/auth/actions';
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -91,7 +92,12 @@ const AuthScreen = () => {
       <Icon className="size-5" />
       <span className="ml-2">{children}</span>
       {lastProvider === provider && (
-        <div className="absolute right-3 size-2 rounded-full bg-emerald-500" />
+        <Badge
+          variant="outline"
+          className="absolute right-1 top-1 bg-background/80 px-1 py-0 text-[10px] font-normal leading-3"
+        >
+          Last used
+        </Badge>
       )}
     </button>
   );
