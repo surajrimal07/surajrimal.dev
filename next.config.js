@@ -159,7 +159,7 @@ module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
-  org: 'none-x97',
+  org: 'surajrimal',
   project: 'personalwebsite',
 
   // Only print logs for uploading source maps in CI
