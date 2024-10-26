@@ -2,11 +2,12 @@ import { allAuthors } from 'contentlayer/generated';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
 
 import { components } from '@/components/mdx/MDXComponents';
+import siteMetadata from '@/data/siteMetadata';
 import UsesLayout from '@/layouts/UsesLayout';
 
 export const metadata = {
-  title: 'Uses - Dale Larroder',
-  description: 'What I Use - Dale Larroder',
+  title: `Uses - ${siteMetadata.author}`,
+  description: `What I Use - ${siteMetadata.author}`,
 };
 
 export default function Uses() {

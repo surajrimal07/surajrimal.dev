@@ -1,4 +1,5 @@
 import { GoRepoForked } from 'react-icons/go';
+import { RiRssLine } from 'react-icons/ri';
 
 import Link from '@/components/Link';
 import IconsBundle from '@/components/social-icons/index';
@@ -49,14 +50,24 @@ const BuildWith = () => (
         className="h-5 w-5"
       />
     </div>
-    <span className="px-1 text-gray-400 dark:text-gray-500">-</span>
+    <span className="px-0 text-gray-400 dark:text-gray-500">-</span>
     <Link
       href={siteMetadata.siteRepo}
       className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
     >
       <span data-umami-event="view-source" className="flex items-center">
-        View source
-        <GoRepoForked size={15} />
+        Source
+        <GoRepoForked size={12} />
+      </span>
+    </Link>
+    <span className="px-0 text-gray-400 dark:text-gray-500">-</span>
+    <Link
+      href={`${siteMetadata.siteUrl}/feed`}
+      className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
+    >
+      <span data-umami-event="view-source" className="flex items-center">
+        RSS {'  '}
+        <RiRssLine size={12} className="ml-0.5" />
       </span>
     </Link>
   </div>

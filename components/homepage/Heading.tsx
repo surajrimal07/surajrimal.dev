@@ -9,8 +9,9 @@ const Heading = () => {
     <h1 className="font-medium text-neutral-900 dark:text-neutral-200">
       <span className="inline-block">I'm</span>{' '}
       <Link href={'/about'} className="special-underline-new mx-1">
-        {siteMetadata.fullName},
-      </Link>{' '}
+        {siteMetadata.fullName}
+      </Link>
+      ,{' '}
       <Highlight className="text-black dark:text-white">
         backend developer
       </Highlight>{' '}

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 import {
+  BookHeart,
   BriefcaseBusiness,
   Code,
   Computer,
@@ -80,7 +81,6 @@ export function UserDropdownMenu() {
     if (user) {
       try {
         await signOut();
-        router.push('/auth');
         toast.success('Successfully signed out', {
           ...toastOptions,
         });
@@ -177,12 +177,6 @@ export function UserDropdownMenu() {
         <DropdownMenuLabel>Pages</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/snippets" className="flex items-center">
-              <Code className="mr-2 h-4 w-4" />
-              <span>Snippets</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link href="/uses" className="flex items-center">
               <Computer className="mr-2 h-4 w-4" />
               <span>Uses</span>
@@ -195,11 +189,12 @@ export function UserDropdownMenu() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/certificates" className="flex items-center">
-              <ShieldCheck className="mr-2 h-4 w-4" />
-              <span>Certificates</span>
+            <Link href="/snippets" className="flex items-center">
+              <Code className="mr-2 h-4 w-4" />
+              <span>Snippets</span>
             </Link>
           </DropdownMenuItem>
+
           <DropdownMenuItem asChild>
             <Link href="/media" className="flex items-center">
               <MicVocal className="mr-2 h-4 w-4" />
@@ -219,9 +214,21 @@ export function UserDropdownMenu() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link href="/certificates" className="flex items-center">
+              <ShieldCheck className="mr-2 h-4 w-4" />
+              <span>Certificates</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/available" className="flex items-center">
               <BriefcaseBusiness className="mr-2 h-4 w-4" />
               <span>Availablity</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/guestbook" className="flex items-center">
+              <BookHeart className="mr-2 h-4 w-4" />
+              <span>Guestbook</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

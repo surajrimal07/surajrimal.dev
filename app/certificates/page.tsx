@@ -1,7 +1,6 @@
-import Image from 'next/image';
-
 import { ExternalLink } from 'lucide-react';
 
+import Image from '@/components/Image';
 import Link from '@/components/Link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
