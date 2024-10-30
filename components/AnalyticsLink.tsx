@@ -2,17 +2,19 @@ import { motion } from 'framer-motion';
 import { LuLineChart } from 'react-icons/lu';
 
 import siteMetadata from '@/data/siteMetadata';
-
-import usePlaySound from '../lib/hooks/PlaySound';
+import usePlaySound from '@/lib/hooks/PlaySound';
+import { useSoundStore } from '@/lib/hooks/soundState';
 
 const AnalyticsLink = () => {
+  const { isSoundEnabled } = useSoundStore();
+
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
     volume: 0.7,
   });
 
   const handleClick = () => {
-    playSound();
+    if (isSoundEnabled) playSound();
     window.open(siteMetadata.analyticsURL, '_blank');
   };
 

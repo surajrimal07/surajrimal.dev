@@ -18,8 +18,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import usePlaySound from '../lib/hooks/PlaySound';
+import usePlaySound from '@/lib/hooks/PlaySound';
+import { useSoundStore } from '@/lib/hooks/soundState';
 
 const THEME_OPTIONS = [
   { value: 'light', icon: <HiSun />, label: 'Light' },
@@ -58,6 +58,7 @@ ThemeOption.displayName = 'ThemeOption';
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { isSoundEnabled } = useSoundStore();
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/switch-on.mp3',
     volume: 0.7,
@@ -66,11 +67,11 @@ const ThemeSwitch = () => {
 
   const handleClick = useCallback(
     (value: string) => {
-      playSound();
+      if (isSoundEnabled) playSound();
       setTheme(value);
       setIsThemeChanged(true);
     },
-    [playSound, setTheme]
+    [isSoundEnabled, playSound, setTheme]
   );
 
   useEffect(() => {

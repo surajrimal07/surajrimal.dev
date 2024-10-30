@@ -12,14 +12,15 @@ import {
   enableBodyScroll,
 } from 'body-scroll-lock';
 
+import Link from '@/components/Link';
+import { useCurrentPath } from '@/components/PathProvider';
 import headerNavLinks from '@/data/headerNavLinks';
-
-import usePlaySound from '../lib/hooks/PlaySound';
-import Link from './Link';
-import { useCurrentPath } from './PathProvider';
+import usePlaySound from '@/lib/hooks/PlaySound';
+import { useSoundStore } from '@/lib/hooks/soundState';
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false);
+  const { isSoundEnabled } = useSoundStore();
   const navRef = useRef(null);
   const pathname = useCurrentPath();
 
@@ -30,7 +31,7 @@ const MobileNav = () => {
 
   const onToggleNav = () => {
     setNavShow((status) => {
-      playSound();
+      if (isSoundEnabled) playSound();
       if (status) {
         enableBodyScroll(navRef.current);
       } else {

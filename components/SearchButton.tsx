@@ -7,17 +7,19 @@ import 'pliny/search/algolia.css';
 import { FiCommand } from 'react-icons/fi';
 
 import siteMetadata from '@/data/siteMetadata';
-
-import usePlaySound from '../lib/hooks/PlaySound';
+import usePlaySound from '@/lib/hooks/PlaySound';
+import { useSoundStore } from '@/lib/hooks/soundState';
 
 const SearchButton = () => {
+  const { isSoundEnabled } = useSoundStore();
+
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
     volume: 0.7,
   });
 
   const handleClick = () => {
-    playSound();
+    if (isSoundEnabled) playSound();
   };
 
   if (

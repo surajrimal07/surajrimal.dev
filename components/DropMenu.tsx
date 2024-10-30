@@ -42,6 +42,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import usePlaySound from '@/lib/hooks/PlaySound';
 import useChatStore from '@/lib/hooks/chatState';
+import { useSoundStore } from '@/lib/hooks/soundState';
 import useAuthStore from '@/lib/stores/auth';
 import { fetcher } from '@/utils/fetcher';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
@@ -61,6 +62,8 @@ export function UserDropdownMenu() {
 
   const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
     useSuperadminStatus(user);
+
+  const { isSoundEnabled, toggleSound } = useSoundStore();
 
   const {
     data: weatherData,
@@ -95,7 +98,7 @@ export function UserDropdownMenu() {
   };
 
   const handleDropdownChange = (open: boolean) => {
-    if (open) {
+    if (open && isSoundEnabled) {
       playSound();
     }
   };
@@ -281,6 +284,18 @@ export function UserDropdownMenu() {
               id="chat-toggle"
               checked={chatEnabled}
               onCheckedChange={setChatEnabled}
+            />
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div className="flex w-full items-center justify-between">
+            <Label htmlFor="chat-toggle" className="cursor-pointer">
+              Enable Sound
+            </Label>
+            <Switch
+              id="chat-toggle"
+              checked={isSoundEnabled}
+              onCheckedChange={toggleSound}
             />
           </div>
         </DropdownMenuItem>

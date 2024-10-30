@@ -42,14 +42,14 @@ const PageView: React.FC<PageViewProps> = ({
 
   return (
     <p>
-      {memoizedCounter}
       <span
         className={clsx({
           'hidden sm:inline': hideViewsInSmallDevice,
         })}
       >
-        {' views'}
+        {'Views '}
       </span>
+      {memoizedCounter}
     </p>
   );
 };

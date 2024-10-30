@@ -1,7 +1,8 @@
 import { Blog } from 'contentlayer/generated';
 import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
-import { FaRegHourglassHalf } from 'react-icons/fa6';
+import { IoLanguage } from 'react-icons/io5';
+import { PiHourglassLowFill } from 'react-icons/pi';
 
 import Link from '@/components/Link';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
@@ -17,7 +18,6 @@ import PopularTags from '@/components/homepage/PopularTags';
 import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';
 import { Technologies } from '@/components/homepage/Technologies';
-import { LanguageIcon } from '@/components/social-icons/icons';
 import { Separator } from '@/components/ui/cool-separator';
 import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
@@ -61,14 +61,21 @@ const renderPost = (post: Blog) => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
-                <FaRegHourglassHalf className="mr-1 h-3 w-3" />
+                <PiHourglassLowFill className="mr-1 h-4 w-4" />
 
-                <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
-                <span className="ml-1.5 whitespace-nowrap">Minutes</span>
+                <AnimatedCounter
+                  className="text-sm"
+                  targetValue={Math.ceil(readingTime.minutes)}
+                />
+                <span className="ml-1.5 whitespace-nowrap text-sm">
+                  Minutes
+                </span>
               </div>
               <div className="flex items-center">
-                <LanguageIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="ml-1.5">{post.language ?? 'English'}</span>
+                <IoLanguage className="h-4 w-4" />
+                <span className="ml-1.5 text-sm">
+                  {post.language ?? 'English'}
+                </span>
               </div>
             </div>
             <div className="text-base font-medium leading-6">

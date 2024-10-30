@@ -91,7 +91,7 @@ export function Technologies() {
                   {filteredSkillsData[category].map((skill) => (
                     <Tooltip key={skill.id} content={skill.name}>
                       <Button
-                        className={`h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
+                        className={`relative h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
                         variant="outline"
                       >
                         <Suspense fallback={<Skeleton />}>
@@ -103,7 +103,7 @@ export function Technologies() {
                         </Suspense>
                         {skill.level === 'advanced' && (
                           <span
-                            className="absolute right-8 top-0 text-xs"
+                            className="absolute -right-1 -top-1 scale-75 text-xs"
                             aria-label="Advanced skill"
                           >
                             <Twemoji size="sm" emoji="fire" />
