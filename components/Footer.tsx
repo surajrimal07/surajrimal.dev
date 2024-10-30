@@ -1,8 +1,9 @@
+import BuildWith from '@/components/BuildWith';
+import PageView from '@/components/homepage/PageView';
 import IconsBundle from '@/components/social-icons';
 import siteMetadata from '@/data/siteMetadata';
 
-import BuildWith from './BuildWith';
-import PageView from './homepage/PageView';
+import VisitorCounter from './Visitor';
 
 export default function Footer() {
   return (
@@ -50,6 +51,8 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{` • `}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
+          <div>{` • `}</div>
+          <VisitorCounter />
           <div>{` • `}</div>
           <PageView />
         </div>
