@@ -1,4 +1,5 @@
-import Image from '@/components/Image';
+import Image from 'next/image';
+
 import { BLUR_IMAGE_DATA_URL, LOGO_IMAGE_PATH } from '@/constants/index';
 
 const Avatar = () => {
