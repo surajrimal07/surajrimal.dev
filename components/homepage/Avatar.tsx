@@ -11,6 +11,7 @@ const Avatar = () => {
             blurDataURL={BLUR_IMAGE_DATA_URL}
             placeholder="blur"
             src={LOGO_IMAGE_PATH}
+            priority={true}
             alt="author avatar"
             fill
             sizes="(max-width: 640px) 16rem, (max-width: 768px) 20rem, (max-width: 1024px) 24rem, 27rem"

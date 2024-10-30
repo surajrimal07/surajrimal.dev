@@ -74,6 +74,8 @@ module.exports = () => {
     },
     images: {
       dangerouslyAllowSVG: true,
+      formats: ['image/avif', 'image/webp'],
+      minimumCacheTTL: 60,
       remotePatterns: [
         {
           protocol: 'https',
@@ -138,6 +140,16 @@ module.exports = () => {
         {
           source: '/(.*)',
           headers: securityHeaders,
+        },
+        {
+          source: '/public/:path*',
+          headers: [
+            ...securityHeaders,
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=31536000, immutable',
+            },
+          ],
         },
       ];
     },

@@ -67,6 +67,8 @@ export function Technologies() {
         <TabsList className="h-27 grid w-full grid-cols-2 gap-2 md:h-9 md:grid-cols-5 md:gap-1 lg:grid-cols-5 xl:gap-2">
           {categories.map((category, index) => (
             <TabsTrigger
+              aria-label={`Tab for ${category}`}
+              aria-selected={index === tabIndex}
               key={`trigger-${category}`}
               value={category}
               className={`${index === tabIndex ? 'bg-primary-500/60 text-white dark:bg-primary-500/60' : 'bg-gray text-white-900'} hover:bg-gray-700/40 hover:text-white hover:dark:bg-gray-700/40`}
@@ -91,6 +93,7 @@ export function Technologies() {
                   {filteredSkillsData[category].map((skill) => (
                     <Tooltip key={skill.id} content={skill.name}>
                       <Button
+                        aria-label={skill.name}
                         className={`relative h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
                         variant="outline"
                       >

@@ -108,6 +108,7 @@ export function UserDropdownMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
+          aria-label="User dropdown menu"
           className="relative ml-2 h-9 w-9 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
         >
           <motion.div
