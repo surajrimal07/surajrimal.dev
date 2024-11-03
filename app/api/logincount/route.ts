@@ -1,55 +1,29 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import redis from '@/utils/redis';
 
 const LOGIN_COUNTER_KEY = 'tmsextension:login:counter';
 
-function isValidTmsDomain(origin: string | null): boolean {
-  if (!origin) return false;
-  const tmsPattern = /^https:\/\/tms\d+\.nepsetms\.com\.np$/;
-  return tmsPattern.test(origin);
-}
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const action = searchParams.get('action');
 
-function corsResponse(response: NextResponse, request: NextRequest) {
-  const origin = request.headers.get('origin');
-
-  if (isValidTmsDomain(origin)) {
-    response.headers.set('Access-Control-Allow-Origin', origin!);
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    response.headers.set(
-      'Access-Control-Allow-Headers',
-      'Content-Type, Authorization'
-    );
-    response.headers.set('Access-Control-Max-Age', '86400');
-  }
-  return response;
-}
-
-export async function OPTIONS(request: NextRequest) {
-  const response = new NextResponse(null, { status: 200 });
-  return corsResponse(response, request);
-}
-
-export async function POST(request: NextRequest) {
   try {
-    const count = await redis.incr(LOGIN_COUNTER_KEY);
-    const response = NextResponse.json({ success: true, count });
-    return corsResponse(response, request);
-  } catch {
-    return NextResponse.json(
-      { success: false, error: 'Failed to increment counter' },
-      { status: 500 }
-    );
-  }
-}
+    if (action === 'receive') {
+      await redis.incr(LOGIN_COUNTER_KEY);
+      return NextResponse.json({ message: 'Ping received!' }, { status: 200 });
+    }
 
-export async function GET() {
-  try {
-    const count = await redis.get(LOGIN_COUNTER_KEY);
-    return NextResponse.json({ success: true, count: count || 0 });
-  } catch {
+    if (action === 'count') {
+      const count = (await redis.get<number>(LOGIN_COUNTER_KEY)) || 0;
+      return NextResponse.json({ totalPings: count }, { status: 200 });
+    }
+
+    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+  } catch (error) {
+    console.error('Error in login count route:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to get counter' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
