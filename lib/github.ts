@@ -31,6 +31,7 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
             stargazerCount
             description
             homepageUrl
+            isPrivate
             watchers {
               totalCount
             }
@@ -109,7 +110,6 @@ export async function useUserData() {
     })
       .then((res) => res.json())
       .catch((error) => {
-        console.error('Error fetching user data:', error);
         throw error;
       });
 

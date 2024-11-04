@@ -9,6 +9,9 @@ export default async function Projects() {
 
   const workProjects = projects.filter(({ type }) => type === 'work');
   const sideProjects = projects.filter(({ type }) => type === 'self');
+  const selfHostedProjects = projects.filter(
+    ({ type }) => type === 'selfhosted'
+  );
 
   return (
     <div className="dark:divide-gray divide-y divide-gray-200">
@@ -21,27 +24,44 @@ export default async function Projects() {
         </p>
       </div>
 
-      <div className="container py-6">
-        <h3 className="mb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
-          Work
-        </h3>
-        <div className="-m-4 flex flex-wrap">
-          {workProjects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
-          ))}
+      {workProjects?.length > 0 && (
+        <div className="container py-6">
+          <h3 className="mb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
+            Work
+          </h3>
+          <div className="-m-4 flex flex-wrap">
+            {workProjects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="container py-12">
-        <h3 className="mb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
-          Side projects
-        </h3>
-        <div className="-m-4 flex flex-wrap">
-          {sideProjects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
-          ))}
+      {sideProjects?.length > 0 && (
+        <div className="container py-12">
+          <h3 className="mb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
+            Side projects
+          </h3>
+          <div className="-m-4 flex flex-wrap">
+            {sideProjects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {selfHostedProjects?.length > 0 && (
+        <div className="container py-12">
+          <h3 className="mb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
+            Self hosted
+          </h3>
+          <div className="-m-4 flex flex-wrap">
+            {selfHostedProjects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

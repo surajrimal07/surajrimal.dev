@@ -11,6 +11,7 @@ export interface GithubRepository {
   nameWithOwner: string;
   url: string;
   forkCount: number;
+  isPrivate: boolean;
   repositoryTopics: string[];
 }
 

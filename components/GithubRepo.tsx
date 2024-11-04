@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { ExternalLink, Eye, GitFork, Github, Star } from 'lucide-react';
 
 import type { GithubRepository } from '@/types/server';
@@ -7,12 +9,13 @@ interface GithubRepoProps {
   projectUrl?: string;
 }
 
-export default function GithubRepo({ repo, projectUrl }: GithubRepoProps) {
+const GithubRepo = ({ repo, projectUrl }: GithubRepoProps) => {
   const mainLanguage = repo.languages.find(
     (language) => language.name !== 'CSS'
   );
 
-  const url = projectUrl || repo.url;
+  const hasProjectUrl = projectUrl && projectUrl !== repo.url;
+  const isPublic = !repo.isPrivate;
 
   return (
     <div className="flex items-center justify-between">
@@ -26,44 +29,61 @@ export default function GithubRepo({ repo, projectUrl }: GithubRepoProps) {
             <span>{mainLanguage.name}</span>
           </div>
         )}
-        <div className="flex items-center space-x-1.5">
-          <Star size={20} strokeWidth={1} />
-          <span>{repo.stargazerCount}</span>
-        </div>
-        <div className="flex items-center space-x-1.5">
-          <GitFork size={20} strokeWidth={1} />
-          <span>{repo.forkCount}</span>
-        </div>
-        <div className="flex items-center space-x-1.5">
-          <Eye size={20} strokeWidth={1} />
-          <span>{repo.watch}</span>
-        </div>
+        <RepoMetric
+          icon={<Star size={20} strokeWidth={1} />}
+          value={repo.stargazerCount}
+        />
+        <RepoMetric
+          icon={<GitFork size={20} strokeWidth={1} />}
+          value={repo.forkCount}
+        />
+        <RepoMetric
+          icon={<Eye size={20} strokeWidth={1} />}
+          value={repo.watch}
+        />
       </div>
       <div className="flex items-center space-x-2">
-        {url && (
-          <>
-            <a
-              href={url}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center"
-              data-umami-event="project-demo"
-            >
-              <ExternalLink size={20} strokeWidth={1} />
-            </a>
-            <span className="text-gray-400 dark:text-gray-500">|</span>
-          </>
+        {hasProjectUrl && (
+          <Link
+            href={projectUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center"
+            data-umami-event="project-demo"
+          >
+            <ExternalLink size={20} strokeWidth={1} />
+          </Link>
         )}
-        <a
-          href={repo.url}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center space-x-1"
-          data-umami-event="project-repo"
-        >
-          <Github size={20} strokeWidth={1} />
-        </a>
+        {hasProjectUrl && isPublic && (
+          <span className="text-gray-400 dark:text-gray-500">|</span>
+        )}
+        {isPublic && (
+          <Link
+            href={repo.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center space-x-1"
+            data-umami-event="project-repo"
+          >
+            <Github size={20} strokeWidth={1} />
+          </Link>
+        )}
       </div>
     </div>
   );
-}
+};
+
+const RepoMetric = ({
+  icon,
+  value,
+}: {
+  icon: React.ReactNode;
+  value: number;
+}) => (
+  <div className="flex items-center space-x-1.5">
+    {icon}
+    <span>{value}</span>
+  </div>
+);
+
+export default GithubRepo;
