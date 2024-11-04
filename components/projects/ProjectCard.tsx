@@ -1,16 +1,12 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
 import GithubRepo from '@/components/GithubRepo';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import { Badge } from '@/components/ui/badge';
 import { fetchGithubRepo } from '@/lib/github';
 import type { ProjectCardProps } from '@/types/components';
-import type { GithubRepository } from '@/types/server';
+import redis from '@/utils/redis';
 
-const ProjectCard = ({ project }: ProjectCardProps) => {
+async function ProjectCard({ project }: ProjectCardProps) {
   const {
     title,
     description,
@@ -22,22 +18,14 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
     stack,
   } = project;
 
-  const [repository, setRepository] = useState<GithubRepository | null>(null);
+  const repository = repo ? await fetchGithubRepo(repo) : null;
 
-  useEffect(() => {
-    const getRepoData = async () => {
-      if (repo) {
-        try {
-          const data = await fetchGithubRepo(repo);
-          setRepository(data);
-        } catch (error) {
-          console.error('Error fetching repository data:', error);
-        }
-      }
-    };
-
-    getRepoData();
-  }, [repo]);
+  let enhancedDescription = description;
+  if (title === 'Nepse Trade Helper Extension') {
+    const loginCount =
+      (await redis.get<number>('tmsextension:login:counter')) || 0;
+    enhancedDescription = `${description} The extension has auto logged in more than ${loginCount} sessions.`;
+  }
 
   return (
     <div className="md max-w-[544px] p-4 md:w-1/2">
@@ -80,7 +68,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             })}
           </div>
           <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
-            {repository?.description || description}
+            {enhancedDescription || repository?.description}
           </p>
 
           {repository ? (
@@ -100,6 +88,6 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default ProjectCard;
