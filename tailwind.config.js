@@ -17,6 +17,7 @@ module.exports = {
     './node_modules/pliny/**/*.{js,ts,tsx}',
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,tsx}',
+    './layouts/**/*.{js,ts,tsx}',
     './lib/**/*.{js,ts,tsx}',
     './data/**/*.mdx',
   ],
