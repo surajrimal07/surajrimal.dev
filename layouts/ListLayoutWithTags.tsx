@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
-import type { Blog } from 'contentlayer/generated';
 import { slug } from 'github-slugger';
-import { CoreContent } from 'pliny/utils/contentlayer';
 
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
@@ -20,22 +18,10 @@ import {
 } from '@/components/ui/pagination';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { blogSearchPlaceholders } from '@/data/blogSearchData';
+import PostWithThumbnail from '@/layouts/PostWithThumbnail';
+import PostWithoutThumbnail from '@/layouts/PostWithoutThumbnail';
 import { getBlogShares, getBlogView } from '@/lib/pageView';
-
-import PostWithThumbnail from './PostWithThumbnail';
-import PostWithoutThumbnail from './PostWithoutThumbnail';
-
-interface PaginationProps {
-  totalPages: number;
-  currentPage: number;
-}
-interface ListLayoutProps {
-  posts: CoreContent<Blog>[];
-  title: string;
-  initialDisplayPosts?: CoreContent<Blog>[];
-  pagination?: PaginationProps;
-  ipaddress: string;
-}
+import { ListLayoutProps, PaginationProps } from '@/types/bloglist';
 
 function Paginations({ totalPages, currentPage }: PaginationProps) {
   const pathname = useCurrentPath();
@@ -103,16 +89,11 @@ export default function ListLayoutWithTags({
   title,
   initialDisplayPosts = [],
   pagination,
-  ipaddress,
 }: ListLayoutProps) {
   const pathname = useCurrentPath();
   const [searchValue, setSearchValue] = useState('');
   const [viewCounts, setViewCounts] = useState(new Map());
   const [shareCounts, setShareCounts] = useState(new Map());
-  const [openShareMenuSlug, setOpenShareMenuSlug] = useState<string | null>(
-    null
-  );
-  const shareMenuRef = useRef<HTMLDivElement | null>(null);
 
   const filteredBlogPosts = posts.filter((post) => {
     const searchContent = post.title + post.summary + post.tags.join(' ');
@@ -129,7 +110,7 @@ export default function ListLayoutWithTags({
       : filteredBlogPosts;
 
   useEffect(() => {
-    const fetchCounts = async (slug) => {
+    const fetchCounts = async (slug: string) => {
       const views = await getBlogView(slug);
       const { total } = await getBlogShares(slug);
       setViewCounts((prev) => new Map(prev).set(slug, views));
@@ -140,22 +121,6 @@ export default function ListLayoutWithTags({
       fetchCounts(post.path);
     });
   }, [displayPosts]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        shareMenuRef.current &&
-        !shareMenuRef.current.contains(event.target as Node)
-      ) {
-        setOpenShareMenuSlug(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -181,7 +146,7 @@ export default function ListLayoutWithTags({
         </div>
       </div>
       <div className="flex sm:space-x-6">
-        <div className="hidden h-full max-h-screen min-w-[195px] max-w-[210px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex md:block">
+        <div className="hidden h-full max-h-screen min-w-[210px] max-w-[210px] flex-wrap overflow-auto rounded border pt-5 shadow-md dark:border-gray-700 dark:bg-black sm:flex md:block">
           <div className="px-3 py-1">
             {pathname.startsWith('/blog') ? (
               <h3 className="font-bold uppercase text-primary-500">
@@ -236,9 +201,6 @@ export default function ListLayoutWithTags({
                   thumbnail={thumbnail}
                   views={views}
                   shares={shares}
-                  setOpenShareMenuSlug={setOpenShareMenuSlug}
-                  openShareMenuSlug={openShareMenuSlug}
-                  ipaddress={ipaddress}
                 />
               );
             } else {
@@ -253,9 +215,6 @@ export default function ListLayoutWithTags({
                   tags={tags}
                   views={views}
                   shares={shares}
-                  setOpenShareMenuSlug={setOpenShareMenuSlug}
-                  openShareMenuSlug={openShareMenuSlug}
-                  ipaddress={ipaddress}
                 />
               );
             }

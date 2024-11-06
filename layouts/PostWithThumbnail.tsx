@@ -9,7 +9,6 @@ import Image from '@/components/Image';
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
-import ShareButton from '@/components/blog/ShareButton';
 import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
 
@@ -20,12 +19,9 @@ interface PostWithThumbnailProps {
   summary: string;
   tags: string[];
   thumbnail: string;
-  language;
+  language: string;
   views: number;
   shares: number;
-  setOpenShareMenuSlug: (slug: string | null) => void;
-  openShareMenuSlug: string | null;
-  ipaddress: string;
 }
 
 export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
@@ -38,9 +34,6 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
   thumbnail,
   views,
   shares,
-  setOpenShareMenuSlug,
-  openShareMenuSlug,
-  ipaddress,
 }) => {
   return (
     <li className="group relative mb-3.5 flex transform cursor-pointer flex-wrap rounded-lg border border-gray-200 p-px py-px hover:bg-zinc-200/50 dark:border-gray-700 dark:hover:bg-zinc-900/50">
@@ -100,20 +93,8 @@ export const PostWithThumbnail: React.FC<PostWithThumbnailProps> = ({
             </div>
             <span>&middot;</span>
             <div className="relative flex items-center">
-              <IoMdShare
-                className="mr-1 h-4 w-4 cursor-pointer"
-                onClick={() =>
-                  setOpenShareMenuSlug(openShareMenuSlug === path ? null : path)
-                }
-              />
-              {openShareMenuSlug === path && (
-                <ShareButton
-                  ip={ipaddress}
-                  slug={path}
-                  url={`${process.env.NEXT_PUBLIC_URL}/${path}`}
-                  onShareComplete={() => setOpenShareMenuSlug(null)}
-                />
-              )}
+              <IoMdShare className="mr-1 h-4 w-4 cursor-pointer" />
+
               <span
                 className="flex items-center gap-1.5 text-sm"
                 title="Number of share(s)"

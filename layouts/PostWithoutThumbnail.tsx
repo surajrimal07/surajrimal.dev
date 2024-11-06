@@ -20,9 +20,6 @@ interface PostWithoutThumbnailProps {
   tags: string[];
   views: number;
   shares: number;
-  setOpenShareMenuSlug: (slug: string | null) => void;
-  openShareMenuSlug: string | null;
-  ipaddress: string;
 }
 
 export const PostWithoutThumbnail: React.FC<PostWithoutThumbnailProps> = ({

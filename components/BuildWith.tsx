@@ -1,7 +1,10 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { GoRepoForked } from 'react-icons/go';
 import { RiRssLine } from 'react-icons/ri';
 
-import Link from '@/components/Link';
+import CustomLink from '@/components/Link';
 import IconsBundle from '@/components/social-icons/index';
 import siteMetadata from '@/data/siteMetadata';
 
@@ -50,8 +53,8 @@ const BuildWith = () => (
         className="h-5 w-5"
       />
     </div>
-    <span className="px-0 text-gray-400 dark:text-gray-500">-</span>
-    <Link
+    <div>{` • `}</div>
+    <CustomLink
       href={siteMetadata.siteRepo}
       className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
     >
@@ -59,16 +62,31 @@ const BuildWith = () => (
         Source
         <GoRepoForked size={12} />
       </span>
-    </Link>
-    <span className="px-0 text-gray-400 dark:text-gray-500">-</span>
-    <Link
+    </CustomLink>
+    <div>{` • `}</div>
+    <CustomLink
       href={`${siteMetadata.siteUrl}/feed`}
       className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
     >
       <span data-umami-event="view-source" className="flex items-center">
         RSS {'  '}
-        <RiRssLine size={12} className="ml-0.5" />
+        <RiRssLine size={13} className="ml-0.5" />
       </span>
+    </CustomLink>
+    <div>{` • `}</div>
+    <Link
+      href="https://stats.surajr.com.np/status/servers"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Image
+        src="https://stats.surajr.com.np/api/badge/58/status?style=social"
+        alt="API Status"
+        width={60}
+        height={10}
+        unoptimized={true}
+        className="inline-block transition-opacity hover:opacity-80"
+      />
     </Link>
   </div>
 );
