@@ -27,6 +27,7 @@ import {
 import toast from 'react-hot-toast';
 import useSWR from 'swr';
 
+import { useCurrentPath } from '@/components//PathProvider';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -59,6 +60,7 @@ export function UserDropdownMenu() {
   const { chatEnabled, setChatEnabled } = useChatStore();
 
   const router = useRouter();
+  const currentPath = useCurrentPath();
 
   const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
     useSuperadminStatus(user);
@@ -83,7 +85,10 @@ export function UserDropdownMenu() {
   const handleSignOut = async () => {
     if (user) {
       try {
-        await signOut();
+        const { shouldRedirect } = await signOut(currentPath);
+        if (shouldRedirect) {
+          router.push('/auth');
+        }
         toast.success('Successfully signed out', {
           ...toastOptions,
         });

@@ -13,7 +13,6 @@ import Image from '@/components/Image';
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
 import AnimatedCounter from '@/components/animata/text/counter';
-import ShareButton from '@/components/blog/ShareButton';
 import { Badge } from '@/components/ui/badge';
 import {
   Pagination,
@@ -38,7 +37,6 @@ interface ListLayoutProps {
   title: string;
   initialDisplayPosts?: CoreContent<Blog>[];
   pagination?: PaginationProps;
-  ipaddress: string;
 }
 
 function Paginations({ totalPages, currentPage }: PaginationProps) {
@@ -107,7 +105,6 @@ export default function ListLayout({
   title,
   initialDisplayPosts = [],
   pagination,
-  ipaddress,
 }: ListLayoutProps) {
   const [searchValue, setSearchValue] = useState('');
   const [viewCounts, setViewCounts] = useState(new Map());
@@ -246,28 +243,7 @@ export default function ListLayout({
                             </span>
                             <span>・</span>
                             <div className="relative">
-                              <IoMdShare
-                                className="h-4 w-4 cursor-pointer"
-                                onClick={() =>
-                                  setOpenShareMenuSlug(
-                                    openShareMenuSlug === path ? null : path
-                                  )
-                                }
-                              />
-                              {openShareMenuSlug === path && (
-                                <div ref={shareMenuRef}>
-                                  <ShareButton
-                                    ip={ipaddress}
-                                    slug={path}
-                                    url={
-                                      process.env.NEXT_PUBLIC_URL + `/${path}`
-                                    }
-                                    onShareComplete={() =>
-                                      setOpenShareMenuSlug(null)
-                                    }
-                                  />
-                                </div>
-                              )}
+                              <IoMdShare className="h-4 w-4" />
                             </div>
                             <span
                               className="flex items-center gap-1.5 text-sm"

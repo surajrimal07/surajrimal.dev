@@ -1,5 +1,4 @@
 import { Blog } from 'contentlayer/generated';
-import NewsletterForm from 'pliny/ui/NewsletterForm';
 import { formatDate } from 'pliny/utils/formatDate';
 import { IoLanguage } from 'react-icons/io5';
 import { PiHourglassLowFill } from 'react-icons/pi';
@@ -14,6 +13,7 @@ import BlogLinks from '@/components/homepage/BlogLinks';
 import GithubContributions from '@/components/homepage/GithubContributions';
 import Greeting from '@/components/homepage/Greeting';
 import Heading from '@/components/homepage/Heading';
+import NewsletterForm from '@/components/homepage/NewsletterForm';
 import PopularTags from '@/components/homepage/PopularTags';
 import PrivateContributions from '@/components/homepage/PrivateContributions';
 import ShortDescription from '@/components/homepage/ShortDescription';

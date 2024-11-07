@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
-  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://stats.surajr.com.np;
+  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://stats.surajr.com.np https://www.gravatar.com;
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
@@ -58,6 +58,16 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer];
   return plugins.reduce((acc, next) => next(acc), {
+    compiler: {
+      removeConsole: process.env.NODE_ENV === 'production',
+    },
+    // compiler: {
+    //   removeConsole: process.env.NODE_ENV === 'production'
+    //     ? {
+    //         exclude: ['error'],
+    //       }
+    //     : false,
+    // },
     reactStrictMode: false,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     transpilePackages: ['lucide-react'],

@@ -12,10 +12,17 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HelpCircle, MessageCircle, MoreVertical, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { z } from 'zod';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
@@ -25,17 +32,11 @@ import { clearChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
 import useLocalStorage from '@/lib/hooks/use-local-storage';
 import { sendMessage } from '@/lib/telegram';
+import { emailSchema } from '@/lib/validation/email';
 import { DatabaseChangePayload, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
 
 interface MessageTimeProps {
   time: string;
@@ -44,6 +45,12 @@ interface MessageTimeProps {
 
 interface TimeSeparatorProps {
   time: string;
+}
+
+interface AuthorStatusPayload {
+  new: {
+    last_active: string;
+  };
 }
 
 const MessageTime: React.FC<MessageTimeProps> = React.memo(
@@ -92,11 +99,10 @@ const Chatbox: React.FC = () => {
 
   const {
     isAuthorOnline,
-    setIsAuthorOnline,
-    lastAuthorOnline,
-    setLastOnline,
+    lastOnlineTimeAgo,
     isCollapsed,
     setIsCollapsed,
+    updateAuthorStatus,
   } = useChatStore();
   const [selectedMessageId, setSelectedMessageId] = useState(null);
 
@@ -131,8 +137,7 @@ const Chatbox: React.FC = () => {
       if (newMessages && newMessages.length > 0) {
         const lastMessage = newMessages[newMessages.length - 1];
         if (lastMessage && lastMessage.sender === 'author') {
-          setIsAuthorOnline(true);
-          setLastOnline();
+          updateAuthorStatus(new Date());
           setMessages((prev) => {
             if (!prev.some((msg) => msg.id === lastMessage.id)) {
               if (isCollapsed) {
@@ -145,7 +150,7 @@ const Chatbox: React.FC = () => {
         }
       }
     },
-    [isCollapsed, setIsAuthorOnline, setLastOnline]
+    [isCollapsed, updateAuthorStatus]
   );
 
   const handleFAQClick = useCallback((question: string, answer: string) => {
@@ -171,6 +176,44 @@ const Chatbox: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [isCollapsed, messages, scrollToBottom]);
+
+  //author status
+  useEffect(() => {
+    const fetchAuthorStatus = async () => {
+      const { data } = await supabase
+        .from('author_status')
+        .select('last_active')
+        .eq('id', 'author')
+        .single();
+
+      if (data) {
+        updateAuthorStatus(new Date(data.last_active));
+      }
+    };
+
+    fetchAuthorStatus();
+
+    const channel = supabase
+      .channel('author-status')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'author_status',
+          filter: 'id=eq.author',
+        },
+        (payload) => {
+          const newPayload = payload as unknown as AuthorStatusPayload;
+          updateAuthorStatus(new Date(newPayload.new.last_active));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [updateAuthorStatus]);
 
   useEffect(() => {
     if (email) {
@@ -209,12 +252,26 @@ const Chatbox: React.FC = () => {
   }, [email, fetchInitialMessages, handleDatabaseChange]);
 
   const handleEmailSubmit = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
-      setEmail(email);
-      setIsEmailSubmitted(true);
+
+      try {
+        const validatedInput = emailSchema.parse({ email });
+
+        setEmail(validatedInput.email);
+        setIsEmailSubmitted(true);
+
+        await fetchInitialMessages(validatedInput.email);
+      } catch (err) {
+        if (err instanceof z.ZodError) {
+          const errorMessage = err.errors[0].message;
+          toast.error(errorMessage, toastOptions);
+        } else {
+          toast.error('An unexpected error occurred', toastOptions);
+        }
+      }
     },
-    [email, setEmail]
+    [email, fetchInitialMessages]
   );
 
   const handleSendMessage = useCallback(async () => {
@@ -348,7 +405,6 @@ const Chatbox: React.FC = () => {
           <Button
             onClick={() => {
               setIsCollapsed(false);
-              console.log('Button clicked or touched!');
             }}
             className={`h-12 w-12 rounded-full p-0 ${isAuthorOnline ? 'bg-green-500' : 'bg-red-500'}`}
           >
@@ -401,7 +457,7 @@ const Chatbox: React.FC = () => {
                   )}
                 </div>
                 <span className="text-xs text-white opacity-80">
-                  Active {lastAuthorOnline}
+                  Active {lastOnlineTimeAgo}
                 </span>
               </div>
             </Button>
@@ -448,7 +504,7 @@ const Chatbox: React.FC = () => {
                 <h2 className="font-bold text-white">
                   Chat with {siteMetadata.headerTitle}
                 </h2>
-                <p className="text-sm text-white">Active {lastAuthorOnline}</p>
+                <p className="text-sm text-white">Active {lastOnlineTimeAgo}</p>
               </div>
               <Button
                 variant="ghost"

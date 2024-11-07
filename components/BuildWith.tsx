@@ -83,7 +83,7 @@ const BuildWith = () => (
         src="https://stats.surajr.com.np/api/badge/58/status?style=social"
         alt="API Status"
         width={60}
-        height={10}
+        height={20}
         unoptimized={true}
         className="inline-block transition-opacity hover:opacity-80"
       />

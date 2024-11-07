@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Send } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -17,10 +18,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
+import { updateAuthorStatus } from '@/lib/telegram';
 import { DBChatMessage, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { timeAgo } from '@/utils/timeAgo';
+import { toastOptions } from '@/utils/toast';
 
 export default function AdminChat() {
   const [conversations, setConversations] = useState<{
@@ -128,8 +131,9 @@ export default function AdminChat() {
         .eq('email', activeEmail);
 
       if (error) {
-        console.error('Error sending reply:', error);
+        toast.error(`Error sending reply: ${error.message}`, toastOptions);
       } else {
+        await updateAuthorStatus();
         setConversations((prev) => ({
           ...prev,
           [activeEmail]: updatedMessages,
@@ -139,14 +143,19 @@ export default function AdminChat() {
     }
   };
 
-  const getLastClientReplyTime = (messages: Message[]) => {
+  const getLastClientReplyTime = useCallback((messages: Message[]) => {
     const clientMessages = messages.filter((msg) => msg.sender !== 'author');
     if (clientMessages.length > 0) {
       const lastClientMessage = clientMessages[clientMessages.length - 1];
       return timeAgo(new Date(lastClientMessage.id));
     }
     return null;
-  };
+  }, []);
+
+  const lastReplyTime = useMemo(() => {
+    if (!activeEmail || !conversations[activeEmail]) return null;
+    return getLastClientReplyTime(conversations[activeEmail]);
+  }, [activeEmail, conversations, getLastClientReplyTime]);
 
   return (
     <div className="container mx-auto">
@@ -206,10 +215,9 @@ export default function AdminChat() {
                 <span className="text-sm font-semibold">
                   Chat with {activeEmail}
                 </span>
-                {getLastClientReplyTime(conversations[activeEmail]) && (
+                {lastReplyTime && (
                   <span className="text-xs text-muted-foreground">
-                    Last reply:{' '}
-                    {getLastClientReplyTime(conversations[activeEmail])}
+                    Last reply: {lastReplyTime}
                   </span>
                 )}
               </div>

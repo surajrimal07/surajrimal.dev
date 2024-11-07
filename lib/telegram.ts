@@ -5,6 +5,7 @@ import { Message } from 'telegraf/typings/core/types/typegram';
 
 import { clearChat, loadChat, saveChat } from '@/lib/chat';
 import { Message as ChatMessage } from '@/types/chat';
+import { supabase } from '@/utils/supabase/client';
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 const channelId = process.env.TELEGRAM_CHANNEL_ID!;
@@ -16,6 +17,8 @@ function isTextMessage(message: any): message is Message.TextMessage {
 }
 
 bot.on('message', async (ctx) => {
+  await updateAuthorStatus();
+
   if (
     'reply_to_message' in ctx.message &&
     isTextMessage(ctx.message.reply_to_message)
@@ -74,4 +77,15 @@ export async function sendMessage(email: string, message: string) {
   await saveChat(email, newMessage);
 }
 
-export { clearChat, loadChat };
+async function updateAuthorStatus() {
+  try {
+    await supabase
+      .from('author_status')
+      .update({ last_active: new Date().toISOString() })
+      .eq('id', 'author');
+  } catch (error) {
+    console.error('Failed to update author status:', error);
+  }
+}
+
+export { clearChat, loadChat, updateAuthorStatus };

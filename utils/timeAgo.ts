@@ -2,6 +2,10 @@ export function timeAgo(timestamp: Date, locale: string = 'en'): string {
   const now = new Date();
   const diffInSeconds = (now.getTime() - timestamp.getTime()) / 1000;
 
+  if (diffInSeconds < 60) {
+    return 'now';
+  }
+
   const thresholds = {
     year: 60 * 60 * 24 * 365,
     month: 60 * 60 * 24 * 30,

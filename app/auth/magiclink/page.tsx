@@ -6,7 +6,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { z } from 'zod';
 
+import { magiclinklogin } from '@/app/auth/actions';
 import {
   Card,
   CardContent,
@@ -16,9 +18,8 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from '@/components/ui/loading-button';
+import { emailSchema } from '@/lib/validation/email';
 import { toastOptions } from '@/utils/toast';
-
-import { magiclinklogin } from '../actions';
 
 const AuthScreen = () => {
   const searchParams = useSearchParams();
@@ -53,7 +54,10 @@ const AuthScreen = () => {
       setSuccess(false);
 
       try {
-        const result: { error?: string } = await magiclinklogin(email);
+        const validatedInput = emailSchema.parse({ email });
+        const result: { error?: string } = await magiclinklogin(
+          validatedInput.email
+        );
 
         if (result?.error) {
           setError(result.error);
@@ -61,8 +65,15 @@ const AuthScreen = () => {
         }
         setSuccess(true);
       } catch (err) {
-        const errorMessage = err.message || 'Something went wrong';
-        setError(errorMessage);
+        if (err instanceof z.ZodError) {
+          const errorMessage = err.errors[0].message;
+          setError(errorMessage);
+          toast.error(errorMessage, toastOptions);
+        } else {
+          const errorMessage = err.message || 'Something went wrong';
+          setError(errorMessage);
+          toast.error(errorMessage, toastOptions);
+        }
       } finally {
         setPending(false);
       }

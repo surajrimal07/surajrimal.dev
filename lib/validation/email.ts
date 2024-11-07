@@ -1,4 +1,5 @@
-export const validateEmail = (email) => {
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return regex.test(email);
-};
+import { z } from 'zod';
+
+export const emailSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+});

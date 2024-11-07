@@ -18,8 +18,7 @@ import {
 } from '@/components/ui/pagination';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { blogSearchPlaceholders } from '@/data/blogSearchData';
-import PostWithThumbnail from '@/layouts/PostWithThumbnail';
-import PostWithoutThumbnail from '@/layouts/PostWithoutThumbnail';
+import PostCard from '@/layouts/BlogList';
 import { getBlogShares, getBlogView } from '@/lib/pageView';
 import { ListLayoutProps, PaginationProps } from '@/types/bloglist';
 
@@ -188,36 +187,20 @@ export default function ListLayoutWithTags({
             const views = viewCounts.get(path) || 0;
             const shares = shareCounts.get(path) || 0;
 
-            if (thumbnail) {
-              return (
-                <PostWithThumbnail
-                  key={path}
-                  path={path}
-                  date={date}
-                  language={post.language || 'English'}
-                  title={title}
-                  summary={summary || ''}
-                  tags={tags}
-                  thumbnail={thumbnail}
-                  views={views}
-                  shares={shares}
-                />
-              );
-            } else {
-              return (
-                <PostWithoutThumbnail
-                  key={path}
-                  language={post.language || 'English'}
-                  path={path}
-                  date={date}
-                  title={title}
-                  summary={summary || ''}
-                  tags={tags}
-                  views={views}
-                  shares={shares}
-                />
-              );
-            }
+            return (
+              <PostCard
+                key={path}
+                path={path}
+                date={date}
+                title={title}
+                summary={summary || ''}
+                tags={tags}
+                language={post.language || 'English'}
+                views={views}
+                shares={shares}
+                thumbnail={thumbnail}
+              />
+            );
           })}
         </ul>
       </div>

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { genPageMetadata } from 'app/seo';
@@ -39,9 +38,6 @@ export const generateStaticParams = async () => {
 };
 
 export default function TagPage({ params }: { params: { tag: string } }) {
-  const headersList = headers();
-  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
-
   const tag = decodeURI(params.tag);
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1);
   const filteredPosts = allCoreContent(
@@ -54,5 +50,5 @@ export default function TagPage({ params }: { params: { tag: string } }) {
   if (filteredPosts.length === 0) {
     return notFound();
   }
-  return <ListLayout ipaddress={ip} posts={filteredPosts} title={title} />;
+  return <ListLayout posts={filteredPosts} title={title} />;
 }

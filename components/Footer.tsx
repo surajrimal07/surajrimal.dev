@@ -8,7 +8,7 @@ import VisitorCounter from './Visitor';
 export default function Footer() {
   return (
     <footer>
-      <div className="mt-16 flex flex-col items-center">
+      <div className="mt-14 flex flex-col items-center">
         <div className="mb-3 flex space-x-4">
           <IconsBundle
             kind="mail"

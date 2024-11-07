@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, Briefcase, CheckCircle, Clock, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { z } from 'zod';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { saveSubscriberEmail } from '@/lib/availablity';
 import { useAvailabilityStore } from '@/lib/hooks/availablityState';
-import { validateEmail } from '@/lib/validation/email';
+import { emailSchema } from '@/lib/validation/email';
 import { toastOptions } from '@/utils/toast';
 
 export default function AvailabilityPage() {
@@ -41,18 +42,26 @@ export default function AvailabilityPage() {
   }, [availabilityData, fetchAvailabilityData]);
 
   const handleNotifyClick = async () => {
-    if (validateEmail(email)) {
+    try {
+      const validatedInput = emailSchema.parse({ email });
+
       try {
-        await saveSubscriberEmail(email);
+        await saveSubscriberEmail(validatedInput.email);
         toast.success(
-          `You will recieve email when author becomes available for work.`,
+          'You will receive an email when author becomes available for work.',
           toastOptions
         );
+        setEmail('');
       } catch (error) {
         toast.error(error.message, toastOptions);
       }
-    } else {
-      toast.error(`Please input a valid email for notification`, toastOptions);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const errorMessage = err.errors[0].message;
+        toast.error(errorMessage, toastOptions);
+      } else {
+        toast.error('An unexpected error occurred', toastOptions);
+      }
     }
   };
 
