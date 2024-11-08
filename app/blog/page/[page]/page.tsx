@@ -1,5 +1,3 @@
-import { headers } from 'next/headers';
-
 import { allBlogs } from 'contentlayer/generated';
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer';
 
@@ -17,9 +15,6 @@ export const generateStaticParams = async () => {
 };
 
 export default function Page({ params }: { params: { page: string } }) {
-  const headersList = headers();
-  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
-
   const posts = allCoreContent(sortPosts(allBlogs));
   const pageNumber = parseInt(params.page as string);
   const initialDisplayPosts = posts.slice(
@@ -34,7 +29,6 @@ export default function Page({ params }: { params: { page: string } }) {
   return (
     <ListLayout
       posts={posts}
-      ipaddress={ip}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}
       title="All Posts"

@@ -17,6 +17,7 @@ const PostCard: React.FC<PostCardProps> = ({
   path,
   date,
   title,
+  highlightTag,
   summary,
   tags,
   language,
@@ -70,7 +71,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </h2>
           <div className={clsx('flex flex-wrap', !hasThumbnail && 'mt-2')}>
             {tags.map((tag) => (
-              <Tag key={tag} text={tag} />
+              <Tag key={tag} text={tag} highlight={tag === highlightTag!} />
             ))}
           </div>
           <div

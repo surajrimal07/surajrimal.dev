@@ -29,6 +29,39 @@ export async function updatePageViews(slug: string): Promise<number> {
   }
 }
 
+export async function getPopularPosts(
+  slugs: string[],
+  limit: number = 5
+): Promise<Array<{ slug: string; views: number }>> {
+  try {
+    const modifiedSlugs = slugs.map((slug) => `/blog/${slug}`);
+
+    const pipeline = redis.pipeline();
+
+    modifiedSlugs.forEach((slug) => {
+      pipeline.get(slug);
+    });
+
+    const results = await pipeline.exec();
+
+    if (!results) return [];
+
+    const viewsArray = modifiedSlugs
+      .map((slug, i) => ({
+        slug: slug.replace('/blog/', ''),
+        views: results[i] as number,
+      }))
+      .filter((item) => item.views > 0)
+      .sort((a, b) => b.views - a.views)
+      .slice(0, limit);
+
+    return viewsArray;
+  } catch (error) {
+    console.error('Error fetching popular posts:', error);
+    return [];
+  }
+}
+
 // export async function getBlogShares(slug: string): Promise<BlogShares> {
 //   const normalizedSlug = `/${slug}`;
 

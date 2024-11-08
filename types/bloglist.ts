@@ -18,6 +18,7 @@ export interface PostCardProps {
   title: string;
   summary: string;
   tags: string[];
+  highlightTag?: string;
   language: string;
   views: number;
   shares: number;

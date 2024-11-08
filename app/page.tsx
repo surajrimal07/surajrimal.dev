@@ -6,5 +6,6 @@ import Main from '@/app/main';
 export default async function Page() {
   const sortedPosts = sortPosts(allBlogs);
   const posts = allCoreContent(sortedPosts);
+
   return <Main posts={posts} />;
 }

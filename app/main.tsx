@@ -1,5 +1,7 @@
 import { Blog } from 'contentlayer/generated';
+import { CoreContent } from 'pliny/utils/contentlayer';
 import { formatDate } from 'pliny/utils/formatDate';
+import { FaFire } from 'react-icons/fa';
 import { IoLanguage } from 'react-icons/io5';
 import { PiHourglassLowFill } from 'react-icons/pi';
 
@@ -21,8 +23,14 @@ import { Technologies } from '@/components/homepage/Technologies';
 import { Separator } from '@/components/ui/cool-separator';
 import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
+import { getPopularPosts } from '@/lib/pageView';
 
-const renderPost = (post: Blog) => {
+type PostWithViews = {
+  post: CoreContent<Blog>;
+  views: number;
+};
+
+const renderPost = async (post: CoreContent<Blog>, views: number) => {
   const { slug, date, readingTime, title, summary, tags } = post;
 
   return (
@@ -61,6 +69,11 @@ const renderPost = (post: Blog) => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
+                <FaFire className="mr-1 h-4 w-4" />
+
+                <AnimatedCounter className="text-sm" targetValue={views} />
+              </div>
+              <div className="flex items-center">
                 <PiHourglassLowFill className="mr-1 h-4 w-4" />
 
                 <AnimatedCounter
@@ -94,7 +107,18 @@ const renderPost = (post: Blog) => {
   );
 };
 
-export default function Home({ posts }) {
+export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
+  const slugs = posts.map((post) => post.slug);
+  const popularSlugs = await getPopularPosts(slugs, 4);
+
+  const popularPosts: PostWithViews[] = posts
+    .filter((post) => popularSlugs.some((p) => p.slug === post.slug))
+    .map((post) => ({
+      post,
+      views: popularSlugs.find((p) => p.slug === post.slug)?.views || 0,
+    }))
+    .sort((a, b) => b.views - a.views);
+
   return (
     <div>
       <ScrollTopAndComment showScrollToComment={false} />
@@ -121,17 +145,19 @@ export default function Home({ posts }) {
       <Separator gradient marginTop={15} />
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
-          Recent Posts
+          Popular Posts
           <Twemoji size="twa-sm" emoji="writing-hand" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          {siteMetadata.description}
+          Here are some of my most popular posts.
         </p>
       </div>
 
       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-        {!posts.length && <li className="py-6">No posts found.</li>}
-        {posts.slice(0, MAX_DISPLAY).map(renderPost)}
+        {!popularPosts.length && <li className="py-6">No posts found.</li>}
+        {popularPosts
+          .slice(0, MAX_DISPLAY)
+          .map(({ post, views }) => renderPost(post, views))}
       </ul>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">

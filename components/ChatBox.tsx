@@ -30,7 +30,6 @@ import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
 import { clearChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
-import useLocalStorage from '@/lib/hooks/use-local-storage';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
 import { DatabaseChangePayload, Message } from '@/types/chat';
@@ -88,8 +87,6 @@ const formatMessageTime = (timestamp: number) => {
 };
 
 const Chatbox: React.FC = () => {
-  const [email, setEmail] = useLocalStorage<string>('chatboxEmail', '');
-  const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -103,6 +100,10 @@ const Chatbox: React.FC = () => {
     isCollapsed,
     setIsCollapsed,
     updateAuthorStatus,
+    email,
+    setEmail,
+    isEmailSubmitted,
+    setIsEmailSubmitted,
   } = useChatStore();
   const [selectedMessageId, setSelectedMessageId] = useState(null);
 
@@ -165,7 +166,7 @@ const Chatbox: React.FC = () => {
     if (email) {
       setIsEmailSubmitted(true);
     }
-  }, [email]);
+  }, [email, setIsEmailSubmitted]);
 
   useEffect(() => {
     if (!isCollapsed) {
@@ -271,7 +272,7 @@ const Chatbox: React.FC = () => {
         }
       }
     },
-    [email, fetchInitialMessages]
+    [email, fetchInitialMessages, setEmail, setIsEmailSubmitted]
   );
 
   const handleSendMessage = useCallback(async () => {

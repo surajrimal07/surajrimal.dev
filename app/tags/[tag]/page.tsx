@@ -8,7 +8,7 @@ import { slug } from 'github-slugger';
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer';
 
 import siteMetadata from '@/data/siteMetadata';
-import ListLayout from '@/layouts/ListLayoutWithTags';
+import ListLayout from '@/layouts/ListLayout';
 
 export async function generateMetadata({
   params,
@@ -40,6 +40,7 @@ export const generateStaticParams = async () => {
 export default function TagPage({ params }: { params: { tag: string } }) {
   const tag = decodeURI(params.tag);
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1);
+
   const filteredPosts = allCoreContent(
     sortPosts(
       allBlogs.filter(
@@ -47,8 +48,9 @@ export default function TagPage({ params }: { params: { tag: string } }) {
       )
     )
   );
+
   if (filteredPosts.length === 0) {
     return notFound();
   }
-  return <ListLayout posts={filteredPosts} title={title} />;
+  return <ListLayout posts={filteredPosts} tagTitle={title} />;
 }

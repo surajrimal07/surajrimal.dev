@@ -8,7 +8,7 @@ export const MAX_SHARES_PER_SESSION = 10;
 
 export const MAX_VIEWS_PER_SESSION = 20;
 
-export const MAX_DISPLAY = 3;
+export const MAX_DISPLAY = 4;
 
 export const MAX_SUBMISSIONS_PER_SESSION = 3;
 

@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
+import { Blog } from 'contentlayer/generated';
 import { slug } from 'github-slugger';
+import { CoreContent } from 'pliny/utils/contentlayer';
 
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
@@ -182,7 +184,7 @@ export default function ListLayoutWithTags({
         </div>
         <ul>
           {!filteredBlogPosts.length && 'No posts found.'}
-          {displayPosts.map((post) => {
+          {displayPosts.map((post: CoreContent<Blog>) => {
             const { path, date, title, summary, tags, thumbnail } = post;
             const views = viewCounts.get(path) || 0;
             const shares = shareCounts.get(path) || 0;
