@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
-  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://stats.surajr.com.np https://www.gravatar.com;
+  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://stats.surajrimal.dev https://www.gravatar.com;
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
@@ -129,7 +129,7 @@ module.exports = () => {
         },
         {
           protocol: 'https',
-          hostname: 'stats.surajr.com.np',
+          hostname: 'stats.surajrimal.dev',
         },
       ],
       unoptimized,

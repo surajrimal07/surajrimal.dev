@@ -75,12 +75,12 @@ const BuildWith = () => (
     </CustomLink>
     <div>{` • `}</div>
     <Link
-      href="https://stats.surajr.com.np/status/servers"
+      href="https://stats.surajrimal.dev/status/servers"
       target="_blank"
       rel="noopener noreferrer"
     >
       <Image
-        src="https://stats.surajr.com.np/api/badge/58/status?style=social"
+        src="https://stats.surajrimal.dev/api/badge/58/status?style=social"
         alt="API Status"
         width={60}
         height={20}

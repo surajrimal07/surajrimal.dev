@@ -1,32 +1,54 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { User } from '@supabase/supabase-js';
 
+import useChatStore from '@/lib/hooks/chatState';
+import { updateAuthorStatus } from '@/lib/telegram';
 import { createClient } from '@/utils/supabase/client';
 
-export function useSuperadminStatus(user: User | null) {
-  const [isSuperadmin, setIsSuperadmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+interface SuperadminStatus {
+  isSuperadmin: boolean;
+  isLoading: boolean;
+}
+
+export function useSuperadminStatus(user: User | null): SuperadminStatus {
+  const [state, setState] = useState<SuperadminStatus>({
+    isSuperadmin: false,
+    isLoading: true,
+  });
+  const { setChatEnabled } = useChatStore();
   const supabase = createClient();
 
-  useEffect(() => {
-    async function checkSuperadminStatus() {
-      if (user) {
-        const { data: userProfile, error } = await supabase
-          .from('users_admin')
-          .select('is_superadmin')
-          .eq('email', user.email)
-          .single();
-
-        if (!error && userProfile) {
-          setIsSuperadmin(userProfile.is_superadmin);
-        }
-      }
-      setIsLoading(false);
+  const checkSuperadminStatus = useCallback(async () => {
+    if (!user?.email) {
+      setState({ isSuperadmin: false, isLoading: false });
+      return;
     }
 
-    checkSuperadminStatus();
-  }, [user, supabase]);
+    try {
+      const { data: userProfile } = await supabase
+        .from('users_admin')
+        .select('is_superadmin')
+        .eq('email', user.email)
+        .single();
 
-  return { isSuperadmin, isLoading };
+      if (userProfile) {
+        await updateAuthorStatus();
+        setChatEnabled(false);
+        setState({
+          isSuperadmin: userProfile.is_superadmin,
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      console.error('Error checking superadmin status:', error);
+      setState({ isSuperadmin: false, isLoading: false });
+    }
+  }, [user?.email, supabase, setChatEnabled]);
+
+  useEffect(() => {
+    checkSuperadminStatus();
+  }, [checkSuperadminStatus]);
+
+  return state;
 }

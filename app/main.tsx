@@ -25,13 +25,15 @@ import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 import { getPopularPosts } from '@/lib/pageView';
 
-type PostWithViews = {
+// Define types at the top level
+interface PostWithViews {
   post: CoreContent<Blog>;
   views: number;
-};
+}
 
-const renderPost = async (post: CoreContent<Blog>, views: number) => {
-  const { slug, date, readingTime, title, summary, tags } = post;
+// Memoized post renderer as a separate component
+function BlogPost({ post, views }: PostWithViews) {
+  const { slug, date, readingTime, title, summary, tags, language } = post;
 
   return (
     <li key={slug} className="py-6">
@@ -70,12 +72,10 @@ const renderPost = async (post: CoreContent<Blog>, views: number) => {
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
                 <FaFire className="mr-1 h-4 w-4" />
-
                 <AnimatedCounter className="text-sm" targetValue={views} />
               </div>
               <div className="flex items-center">
                 <PiHourglassLowFill className="mr-1 h-4 w-4" />
-
                 <AnimatedCounter
                   className="text-sm"
                   targetValue={Math.ceil(readingTime.minutes)}
@@ -86,9 +86,7 @@ const renderPost = async (post: CoreContent<Blog>, views: number) => {
               </div>
               <div className="flex items-center">
                 <IoLanguage className="h-4 w-4" />
-                <span className="ml-1.5 text-sm">
-                  {post.language ?? 'English'}
-                </span>
+                <span className="ml-1.5 text-sm">{language ?? 'English'}</span>
               </div>
             </div>
             <div className="text-base font-medium leading-6">
@@ -105,24 +103,32 @@ const renderPost = async (post: CoreContent<Blog>, views: number) => {
       </article>
     </li>
   );
-};
+}
 
+// Main component with optimized data fetching
 export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
-  const slugs = posts.map((post) => post.slug);
-  const popularSlugs = await getPopularPosts(slugs, 4);
+  // Single Redis pipeline call to get all view counts
+  const popularSlugs = await getPopularPosts(
+    posts.map((post) => post.slug),
+    MAX_DISPLAY
+  );
 
+  // Create posts with views in one pass
   const popularPosts: PostWithViews[] = posts
     .filter((post) => popularSlugs.some((p) => p.slug === post.slug))
     .map((post) => ({
       post,
       views: popularSlugs.find((p) => p.slug === post.slug)?.views || 0,
     }))
-    .sort((a, b) => b.views - a.views);
+    .sort((a, b) => b.views - a.views)
+    .slice(0, MAX_DISPLAY);
 
   return (
     <div>
       <ScrollTopAndComment showScrollToComment={false} />
       <Greeting />
+
+      {/* Profile Section */}
       <div className="mb-2 flex flex-col justify-between md:flex-row md:space-x-8 md:space-y-0">
         <div className="mb-4 mt-4 flex justify-center md:mb-0 md:block">
           <Avatar />
@@ -134,6 +140,7 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         </div>
       </div>
 
+      {/* Sections with Separators */}
       <Separator gradient />
       <PopularTags />
       <Separator gradient />
@@ -143,6 +150,8 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       <Separator gradient marginTop={15} />
       <PrivateContributions />
       <Separator gradient marginTop={15} />
+
+      {/* Popular Posts Section */}
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Popular Posts
@@ -153,12 +162,15 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         </p>
       </div>
 
+      {/* Posts List */}
       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
         {!popularPosts.length && <li className="py-6">No posts found.</li>}
-        {popularPosts
-          .slice(0, MAX_DISPLAY)
-          .map(({ post, views }) => renderPost(post, views))}
+        {popularPosts.map((postWithViews) => (
+          <BlogPost key={postWithViews.post.slug} {...postWithViews} />
+        ))}
       </ul>
+
+      {/* View All Posts Link */}
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
@@ -170,6 +182,8 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
           </Link>
         </div>
       )}
+
+      {/* Newsletter Section */}
       {siteMetadata.newsletter?.provider && (
         <div className="flex items-center justify-center pt-2">
           <NewsletterForm />
