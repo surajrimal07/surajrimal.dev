@@ -12,22 +12,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { updateBlogShares } from '@/lib/pageView';
-import { ShareType } from '@/types/share';
+import { BlogShares, ShareType } from '@/types/share';
+import { toastOptions } from '@/utils/toast';
 
 interface ShareMenuProps {
   url: string;
   slug: string;
   ip: string;
-  onItemClick?: (type: ShareType) => void;
-  onShareComplete?: () => void;
+  shares: BlogShares;
+  onShareComplete?: (shares: BlogShares) => void;
 }
 
 export default function ShareMenu({
   url,
   slug,
   ip,
-  onItemClick = () => {},
-  onShareComplete = () => {},
+  shares,
+  onShareComplete = (shares: BlogShares) => {},
 }: ShareMenuProps) {
   const handleShareClick = async (
     type: ShareType,
@@ -36,12 +37,14 @@ export default function ShareMenu({
     shareFunction();
 
     try {
-      await updateBlogShares(slug, ip, type);
-      onItemClick(type);
-      onShareComplete();
+      const updatedShares = await updateBlogShares(slug, ip, type);
+      onShareComplete(updatedShares);
     } catch (error) {
-      if (error.message !== 'Max shares limit reached') {
-        toast.error('Unable to update share count');
+      if (
+        error instanceof Error &&
+        error.message === 'Max shares limit reached'
+      ) {
+        toast.error(error.message, toastOptions);
       }
     }
   };
@@ -90,7 +93,7 @@ export default function ShareMenu({
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
           >
             <FaXTwitter className="mr-2 h-4 w-4" />
-            <span>Twitter</span>
+            <span>Twitter - {shares.twittershare}</span>
             <LuExternalLink className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -98,7 +101,7 @@ export default function ShareMenu({
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
           >
             <FaFacebookF className="mr-2 h-4 w-4" />
-            <span>Facebook</span>
+            <span>Facebook - {shares.facebookshare}</span>
             <LuExternalLink className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -106,7 +109,7 @@ export default function ShareMenu({
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
           >
             <LuLink className="mr-2 h-4 w-4" />
-            <span>Copy link</span>
+            <span>Copy link - {shares.clipboardshare}</span>
           </DropdownMenuItem>
         </div>
       </DropdownMenuContent>

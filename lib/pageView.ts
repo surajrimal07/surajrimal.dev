@@ -122,7 +122,7 @@ export async function updateBlogShares(
   slug: string,
   ip: string,
   shareType: ShareType
-): Promise<number> {
+): Promise<BlogShares> {
   const sharesKey = `shares:${slug}`;
   const ipKey = `ip:${ip}:shares`;
 
@@ -150,17 +150,19 @@ export async function updateBlogShares(
     throw new Error('Transaction failed');
   }
 
-  // Type guard for the results
-  if (!Array.isArray(results[0]) || results[0].length < 2) {
-    throw new Error('Unexpected result format');
-  }
-  const newShares = Number(results[0][1]);
+  const shares = await redis.hgetall(sharesKey);
 
-  if (isNaN(newShares)) {
-    throw new Error('Invalid share count returned');
-  }
+  const twittershare = parseInt(shares?.twittershare as string) || 0;
+  const facebookshare = parseInt(shares?.facebookshare as string) || 0;
+  const clipboardshare = parseInt(shares?.clipboardshare as string) || 0;
+  const total = twittershare + facebookshare + clipboardshare;
 
-  return newShares;
+  return {
+    twittershare,
+    facebookshare,
+    clipboardshare,
+    total,
+  };
 }
 
 export async function handleReaction(

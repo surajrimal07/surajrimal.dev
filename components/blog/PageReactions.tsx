@@ -18,6 +18,7 @@ import {
   handleReaction,
 } from '@/lib/pageView';
 import { ReactionType } from '@/types/reaction';
+import { BlogShares } from '@/types/share';
 import { toastOptions } from '@/utils/toast';
 
 interface ReactionProps {
@@ -27,13 +28,19 @@ interface ReactionProps {
 
 export default function Reactions({ slug, ip }: ReactionProps) {
   const [viewCounts, setViewCounts] = useState(0);
-  const [shareCounts, setShareCounts] = useState(0);
+  const [shareCounts, setShareCounts] = useState<BlogShares>({
+    twittershare: 0,
+    facebookshare: 0,
+    clipboardshare: 0,
+    total: 0,
+  });
   const [isLoaded, setIsLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const hasBeenShown = useRef(false);
   const { showScrollToTop } = useScrollProgress();
   const controls = useAnimationControls();
   const [userReaction, setUserReaction] = useState<string | null>(null);
+
   const [reactionCounts, setReactionCounts] = useState<{
     [key: string]: number;
   }>({});
@@ -41,7 +48,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [views, { total: shares }, reactionData] = await Promise.all([
+        const [views, shares, reactionData] = await Promise.all([
           getBlogView(slug),
           getBlogShares(slug),
           getReactionCount(slug),
@@ -148,13 +155,16 @@ export default function Reactions({ slug, ip }: ReactionProps) {
                 <ShareMenu
                   url={`${process.env.NEXT_PUBLIC_URL}/${slug}`}
                   slug={slug}
+                  shares={shareCounts}
                   ip={ip}
-                  onItemClick={() => setShareCounts((prev) => prev + 1)}
+                  onShareComplete={(updatedShares: BlogShares) => {
+                    setShareCounts(updatedShares);
+                  }}
                 />
               </button>
             </div>
             <span className="mt-1 text-[11px] font-medium text-gray-300">
-              {shareCounts}
+              {shareCounts.total}
             </span>
           </div>
         </div>
