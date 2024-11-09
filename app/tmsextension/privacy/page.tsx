@@ -2,16 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Nepse Trade Helper',
+  title: 'Privacy Policy - Nepse Account Manager',
   description:
-    'Privacy Policy for the Nepse Trade Helper browser extension. Learn about data handling, storage, and user privacy.',
+    'Privacy Policy for the Nepse Account Manager browser extension. Learn about data handling, storage, and user privacy.',
 };
 
 export default function PrivacyPage() {
   return (
     <div className="mx-auto px-4 py-8 dark:text-gray-100">
       <h1 className="mb-6 text-3xl font-bold">
-        Privacy Policy - Nepse Trade Helper
+        Privacy Policy - Nepse Account Manager
       </h1>
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <ul className="mb-2 list-disc pl-6">
             <li>
               This privacy policy applies exclusively to the browser extension
-              "Nepse Trade Helper"
+              "Nepse Account Manager"
             </li>
             <li>
               The Extension operates only on:

@@ -2,16 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - Nepse Trade Helper',
+  title: 'Terms of Service - Nepse Account Manager',
   description:
-    'Terms of Service for the Nepse Trade Helper browser extension. Learn about usage terms, limitations, and user responsibilities.',
+    'Terms of Service for the Nepse Account Manager browser extension. Learn about usage terms, limitations, and user responsibilities.',
 };
 
 export default function TermsPage() {
   return (
     <div className="mx-auto px-4 py-8 dark:text-gray-100">
       <h1 className="mb-3 text-3xl font-bold">
-        Terms of Service - Nepse Trade Helper
+        Terms of Service - Nepse Account Manager
       </h1>
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
@@ -24,7 +24,7 @@ export default function TermsPage() {
           <ul className="mb-2 list-disc pl-6">
             <li>
               These terms apply exclusively to the browser extension "Nepse
-              Trade Helper"
+              Account Manager"
             </li>
             <li>
               This Extension functions only on specific domains:
