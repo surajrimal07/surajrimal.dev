@@ -54,7 +54,7 @@ export default function Footer() {
           <div>{` • `}</div>
           <VisitorCounter />
           <div>{` • `}</div>
-          <PageView />
+          <PageView shouldIncrement={true} />
         </div>
         <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
           <BuildWith />

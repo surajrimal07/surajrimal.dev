@@ -13,7 +13,7 @@ import { debounce } from '@/lib/hooks/debounce';
 import { useScrollProgress } from '@/lib/hooks/useScrollProgress';
 import {
   getBlogShares,
-  getBlogView,
+  getPageViews,
   getReactionCount,
   handleReaction,
 } from '@/lib/pageView';
@@ -49,7 +49,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
     const fetchData = async () => {
       try {
         const [views, shares, reactionData] = await Promise.all([
-          getBlogView(slug),
+          getPageViews(`/${slug}`, false),
           getBlogShares(slug),
           getReactionCount(slug),
         ]);

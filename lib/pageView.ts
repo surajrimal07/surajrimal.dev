@@ -1,31 +1,90 @@
+'use server';
+
+import { MAX_SHARES_PER_SESSION } from '@/constants';
+import { localCache } from '@/lib/cache';
 import { ReactionType } from '@/types/reaction';
 import { BlogShares, ShareType } from '@/types/share';
 import redis from '@/utils/redis';
+import { supabase } from '@/utils/supabase/client';
 
-import { MAX_SHARES_PER_SESSION } from '../constants';
-import { supabase } from '../utils/supabase/client';
+const POPULAR_POSTS_CACHE_KEY = 'popular-posts-cache';
 
-export async function getBlogView(slug: string): Promise<number> {
-  const normalizedSlug = `/${slug}`;
+export async function getPageViews(
+  slug: string,
+  shouldIncrement?: boolean
+): Promise<number> {
+  const cacheKey = `views:${slug}`;
 
   try {
-    const views = await redis.get(normalizedSlug);
-    return parseInt(views as string) || 0;
+    if (shouldIncrement) {
+      const newViews = await redis.incr(slug);
+      localCache.set(cacheKey, newViews);
+      updatePopularPostsCache(slug, newViews);
+      return newViews;
+    }
+
+    const cachedViews = localCache.get(cacheKey) as number | undefined;
+
+    if (cachedViews !== undefined && cachedViews !== null) {
+      return cachedViews;
+    }
+
+    const views = parseInt((await redis.get(slug)) as string) || 0;
+    localCache.set(cacheKey, views);
+    return views;
   } catch (error) {
-    console.error(`Error fetching blog view for ${normalizedSlug}:`, error);
-    return 0;
+    console.error(
+      `Error ${shouldIncrement ? 'updating' : 'fetching'} page views for ${slug}:`,
+      error
+    );
+    return localCache.get(cacheKey) || 0;
   }
 }
 
-export async function updatePageViews(slug: string): Promise<number> {
-  const normalizedSlug = slug === '/' ? 'home' : slug;
+export async function getBlogShares(slug: string): Promise<BlogShares> {
+  const sharesKey = `shares:${slug}`;
+  const cacheKey = `shares-data:${slug}`;
 
-  try {
-    const newViews = await redis.incr(normalizedSlug);
-    return newViews;
-  } catch (error) {
-    console.error(`Error updating page views for ${normalizedSlug}:`, error);
-    return 0;
+  const cachedShares = localCache.get(cacheKey) as BlogShares | undefined;
+
+  if (cachedShares !== undefined && cachedShares !== null) {
+    return cachedShares;
+  }
+
+  const shares = await redis.hgetall(sharesKey);
+
+  const updatedShares: BlogShares = {
+    twittershare: parseInt(shares?.twittershare as string) || 0,
+    facebookshare: parseInt(shares?.facebookshare as string) || 0,
+    clipboardshare: parseInt(shares?.clipboardshare as string) || 0,
+    total: 0,
+  };
+  updatedShares.total =
+    updatedShares.twittershare +
+    updatedShares.facebookshare +
+    updatedShares.clipboardshare;
+
+  localCache.set(cacheKey, updatedShares);
+
+  return updatedShares;
+}
+
+async function updatePopularPostsCache(slug: string, newViews: number) {
+  const cachedPopularPosts = localCache.get(POPULAR_POSTS_CACHE_KEY) as
+    | Array<{ slug: string; views: number }>
+    | undefined;
+
+  if (cachedPopularPosts) {
+    const normalizedSlug = slug.replace('/blog/', '');
+    const updatedPopularPosts = cachedPopularPosts.map((post) => {
+      if (post.slug === normalizedSlug) {
+        return { ...post, views: newViews };
+      }
+      return post;
+    });
+
+    updatedPopularPosts.sort((a, b) => b.views - a.views);
+    localCache.set(POPULAR_POSTS_CACHE_KEY, updatedPopularPosts);
   }
 }
 
@@ -34,8 +93,14 @@ export async function getPopularPosts(
   limit: number = 5
 ): Promise<Array<{ slug: string; views: number }>> {
   try {
-    const modifiedSlugs = slugs.map((slug) => `/blog/${slug}`);
+    const cachedPopularPosts = localCache.get(POPULAR_POSTS_CACHE_KEY) as
+      | Array<{ slug: string; views: number }>
+      | undefined;
+    if (cachedPopularPosts !== undefined && cachedPopularPosts !== null) {
+      return cachedPopularPosts;
+    }
 
+    const modifiedSlugs = slugs.map((slug) => `/blog/${slug}`);
     const pipeline = redis.pipeline();
 
     modifiedSlugs.forEach((slug) => {
@@ -43,7 +108,6 @@ export async function getPopularPosts(
     });
 
     const results = await pipeline.exec();
-
     if (!results) return [];
 
     const viewsArray = modifiedSlugs
@@ -55,66 +119,12 @@ export async function getPopularPosts(
       .sort((a, b) => b.views - a.views)
       .slice(0, limit);
 
+    localCache.set(POPULAR_POSTS_CACHE_KEY, viewsArray);
+
     return viewsArray;
   } catch (error) {
     console.error('Error fetching popular posts:', error);
     return [];
-  }
-}
-
-// export async function getBlogShares(slug: string): Promise<BlogShares> {
-//   const normalizedSlug = `/${slug}`;
-
-//   const { data, error } = await supabase
-//     .from('page_views')
-//     .select('twittershare, facebookshare, clipboardshare')
-//     .eq('slug', normalizedSlug)
-//     .maybeSingle();
-
-//   if (error) {
-//     console.error(`Error fetching shares for ${normalizedSlug}:`, error);
-//     return { twittershare: 0, facebookshare: 0, clipboardshare: 0, total: 0 };
-//   }
-
-//   const twittershare = data?.twittershare ?? 0;
-//   const facebookshare = data?.facebookshare ?? 0;
-//   const clipboardshare = data?.clipboardshare ?? 0;
-//   const total = twittershare + facebookshare + clipboardshare;
-
-//   return {
-//     twittershare,
-//     facebookshare,
-//     clipboardshare,
-//     total,
-//   };
-// }
-
-export async function getBlogShares(slug: string): Promise<BlogShares> {
-  const normalizedSlug = `/${slug}`;
-  const sharesKey = `shares:${slug}`;
-
-  try {
-    const shares = await redis.hgetall(sharesKey);
-
-    const twittershare = parseInt(shares?.twittershare as string) || 0;
-    const facebookshare = parseInt(shares?.facebookshare as string) || 0;
-    const clipboardshare = parseInt(shares?.clipboardshare as string) || 0;
-    const total = twittershare + facebookshare + clipboardshare;
-
-    return {
-      twittershare,
-      facebookshare,
-      clipboardshare,
-      total,
-    };
-  } catch (error) {
-    console.error(`Error fetching shares for ${normalizedSlug}:`, error);
-    return {
-      twittershare: 0,
-      facebookshare: 0,
-      clipboardshare: 0,
-      total: 0,
-    };
   }
 }
 
@@ -123,46 +133,54 @@ export async function updateBlogShares(
   ip: string,
   shareType: ShareType
 ): Promise<BlogShares> {
+  const BLOG_SHARES_CACHE_KEY = `shares-data:${slug}`;
   const sharesKey = `shares:${slug}`;
   const ipKey = `ip:${ip}:shares`;
 
-  const multi = redis.multi();
+  const cachedShares = localCache.get(BLOG_SHARES_CACHE_KEY) as
+    | BlogShares
+    | undefined;
+  const cachedIpCount = localCache.get(ipKey) as number | undefined;
 
-  // Remove the try-catch from here and let it bubble up
-  const currentSharesCount = parseInt((await redis.get(ipKey)) || '0');
+  try {
+    if (cachedIpCount === undefined) {
+      const currentCount = parseInt((await redis.get(ipKey)) || '0');
+      if (currentCount >= MAX_SHARES_PER_SESSION) {
+        throw new Error('Max shares limit reached');
+      }
+      localCache.set(ipKey, currentCount);
+    }
 
-  if (currentSharesCount >= MAX_SHARES_PER_SESSION) {
-    throw new Error('Max shares limit reached');
+    const multi = redis.multi();
+    multi.hincrby(sharesKey, shareType, 1);
+    multi.incr(ipKey);
+    multi.expire(ipKey, 24 * 60 * 60);
+    multi.hgetall(sharesKey);
+
+    const results = await multi.exec();
+    if (!results) throw new Error('Transaction failed');
+
+    const finalShares = results[results.length - 1] as Record<string, string>;
+
+    const updatedShares: BlogShares = {
+      twittershare: parseInt(finalShares?.twittershare as string) || 0,
+      facebookshare: parseInt(finalShares?.facebookshare as string) || 0,
+      clipboardshare: parseInt(finalShares?.clipboardshare as string) || 0,
+      total: 0,
+    };
+    updatedShares.total =
+      updatedShares.twittershare +
+      updatedShares.facebookshare +
+      updatedShares.clipboardshare;
+
+    localCache.set(BLOG_SHARES_CACHE_KEY, updatedShares);
+    localCache.set(ipKey, (cachedIpCount || 0) + 1);
+
+    return updatedShares;
+  } catch (error) {
+    if (cachedShares) return cachedShares;
+    throw error;
   }
-
-  // Increment share count for the specific type
-  multi.hincrby(sharesKey, shareType, 1);
-
-  // Increment IP shares count
-  multi.incr(ipKey);
-
-  // Set expiry for IP record (24 hours)
-  multi.expire(ipKey, 24 * 60 * 60);
-
-  const results = await multi.exec();
-
-  if (!results) {
-    throw new Error('Transaction failed');
-  }
-
-  const shares = await redis.hgetall(sharesKey);
-
-  const twittershare = parseInt(shares?.twittershare as string) || 0;
-  const facebookshare = parseInt(shares?.facebookshare as string) || 0;
-  const clipboardshare = parseInt(shares?.clipboardshare as string) || 0;
-  const total = twittershare + facebookshare + clipboardshare;
-
-  return {
-    twittershare,
-    facebookshare,
-    clipboardshare,
-    total,
-  };
 }
 
 export async function handleReaction(
@@ -179,7 +197,6 @@ export async function handleReaction(
     .single();
 
   if (checkError && checkError.code !== 'PGRST116') {
-    console.error('Error checking existing reaction:', checkError.message);
     return { success: false, error: checkError.message };
   }
 
@@ -197,7 +214,6 @@ export async function handleReaction(
       .single();
 
     if (error) {
-      console.error('Error adding reaction:', error.message);
       return { success: false, error: error.message };
     }
 
@@ -236,13 +252,22 @@ export async function handleReaction(
 }
 
 export async function getReactionCount(slug: string) {
+  const reactionCacheKey = `reaction-count:${slug}`;
+
+  const cachedReactionCount = localCache.get(reactionCacheKey) as
+    | Record<ReactionType, number>
+    | undefined;
+
+  if (cachedReactionCount !== undefined && cachedReactionCount !== null) {
+    return { success: true, counts: cachedReactionCount };
+  }
+
   const { data, error } = await supabase
     .from('blog_reactions')
     .select('reaction')
     .eq('post_slug', slug);
 
   if (error) {
-    console.error('Error fetching reaction count:', error.message);
     return { success: false, error: error.message };
   }
 
@@ -260,6 +285,8 @@ export async function getReactionCount(slug: string) {
       reactionCounts[reactionType] += 1;
     }
   });
+
+  localCache.set(reactionCacheKey, reactionCounts);
 
   return { success: true, counts: reactionCounts };
 }

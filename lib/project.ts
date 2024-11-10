@@ -19,7 +19,6 @@ export async function getProject(id: string): Promise<Project> {
     .single();
 
   if (error) throw error;
-
   return data;
 }
 
@@ -96,3 +95,7 @@ export async function uploadProjectImage(file: File): Promise<string> {
 
   return publicUrl;
 }
+//to do add cache to more db calls
+//fix blog layouts missing reactions,comments, meta etc
+//use official supabase types for all db calls
+//fix sign in

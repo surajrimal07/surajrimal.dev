@@ -1,35 +1,56 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 
 import { useCurrentPath } from '@/components/PathProvider';
 import AnimatedCounter from '@/components/animata/text/counter';
-import { updatePageViews } from '@/lib/pageView';
+import { getPageViews } from '@/lib/pageView';
 import { toastOptions } from '@/utils/toast';
 
 const MemoizedAnimatedCounter = React.memo(AnimatedCounter);
 
 interface PageViewProps {
   hideViewsInSmallDevice?: boolean;
+  shouldIncrement?: boolean;
 }
 
 const PageView: React.FC<PageViewProps> = ({
   hideViewsInSmallDevice = false,
+  shouldIncrement = false,
 }) => {
   const pathname = useCurrentPath();
   const [pageView, setPageView] = useState<number>(0);
+  const lastIncrementTimestamp = useRef<{ [key: string]: number }>({});
 
   const fetchPageViews = useCallback(async () => {
     try {
-      const views = await updatePageViews(pathname);
+      const now = Date.now();
+      const lastIncrement = lastIncrementTimestamp.current[pathname] || 0;
+      const shouldDebounce = shouldIncrement && now - lastIncrement < 60000;
+
+      const views = await getPageViews(
+        pathname,
+        shouldIncrement && !shouldDebounce
+      );
+
+      if (shouldIncrement && !shouldDebounce) {
+        lastIncrementTimestamp.current[pathname] = now;
+      }
+
       setPageView(views);
     } catch (error) {
-      toast.error(`Failed to fetch page views ${error}`, toastOptions);
+      toast.error(`Failed to fetch page views`, toastOptions);
     }
-  }, [pathname]);
+  }, [pathname, shouldIncrement]);
 
   useEffect(() => {
     fetchPageViews();

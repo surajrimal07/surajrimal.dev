@@ -44,7 +44,7 @@ import { Switch } from '@/components/ui/switch';
 import usePlaySound from '@/lib/hooks/PlaySound';
 import useChatStore from '@/lib/hooks/chatState';
 import { useSoundStore } from '@/lib/hooks/soundState';
-import useAuthStore from '@/lib/stores/auth';
+import useAuthStore from '@/lib/store/authStore';
 import { fetcher } from '@/utils/fetcher';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
 import { toastOptions } from '@/utils/toast';

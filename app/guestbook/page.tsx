@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { GUESTBOOK_ENTRIES_LIMIT } from '@/constants/index';
-import useAuthStore from '@/lib/stores/auth';
+import useAuthStore from '@/lib/store/authStore';
 import { GuestbookEntry } from '@/types/guestbook';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';

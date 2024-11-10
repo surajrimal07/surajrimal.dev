@@ -20,7 +20,7 @@ const BlogMeta = async ({
   language,
 }: BlogMetaProps) => {
   const timeAgoText = timeAgo(new Date(date));
-  const { total } = await getBlogShares(slug);
+  const { total } = await getBlogShares(`/${slug}`);
 
   return (
     <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
@@ -41,7 +41,7 @@ const BlogMeta = async ({
               {author.twitter && (
                 <Link
                   href={author.twitter}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                  className="text-xs text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                 >
                   {author.twitter
                     .replace('https://twitter.com/', '@')
@@ -60,9 +60,9 @@ const BlogMeta = async ({
         </div>
 
         <div className="flex items-center">
-          <FaRegHourglassHalf className="h-3 w-3 sm:h-4 sm:w-4" />
+          <FaRegHourglassHalf className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
           <AnimatedCounter targetValue={Math.ceil(readingTime.minutes)} />
-          <span className="ml-1.5">Min</span>
+          <span className="ml-1">Min</span>
         </div>
 
         <div className="flex items-center">
@@ -73,7 +73,7 @@ const BlogMeta = async ({
         <div className="flex items-center">
           <FaFire className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="ml-1.5">
-            <PageView hideViewsInSmallDevice={true} />
+            <PageView hideViewsInSmallDevice={true} shouldIncrement={false} />
           </span>
         </div>
 
