@@ -27,11 +27,12 @@ export interface ProjectCardProps {
 export type ReadingTime = ReturnType<typeof readingTime>;
 
 export interface BlogMetaProps {
-  authorDetails: CoreContent<Authors>[];
-  date: string;
+  authorDetails?: CoreContent<Authors>[];
+  date?: string;
   slug: string;
   readingTime: ReadingTime;
   language?: string;
+  className?: string;
 }
 
 export interface ViewCounterProps {

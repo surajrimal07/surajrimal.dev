@@ -16,7 +16,7 @@ import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
 import Reactions from '@/components/blog/PageReactions';
 
-interface LayoutProps {
+export interface BlogPostProps {
   content: CoreContent<Blog> | CoreContent<Snippets>;
   authorDetails: CoreContent<Authors>[];
   children: ReactNode;
@@ -32,7 +32,7 @@ export default function PostLayout({
   toc,
   prev,
   children,
-}: LayoutProps) {
+}: BlogPostProps) {
   const { slug, date, title, tags, readingTime, thumbnail } = content;
   const headersList = headers();
   const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
@@ -56,7 +56,7 @@ export default function PostLayout({
                 />
               </div>
             )}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <PageTitle>{title}</PageTitle>
               <BlogTags tags={tags} />
               <dl>
@@ -79,7 +79,7 @@ export default function PostLayout({
           <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
             <div className="prose max-w-none pb-8 pt-0 dark:prose-invert">
               {toc && (
-                <div className="toc -mt-8">
+                <div className="toc -mt-8 ml-16">
                   <TOCInline toc={toc} />
                 </div>
               )}

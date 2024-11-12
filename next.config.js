@@ -14,7 +14,8 @@ const ContentSecurityPolicy = `
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
-  frame-src https://challenges.cloudflare.com
+  frame-src https://challenges.cloudflare.com;
+  object-src 'self' data:;
 `;
 
 const securityHeaders = [

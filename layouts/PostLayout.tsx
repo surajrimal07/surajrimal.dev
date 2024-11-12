@@ -1,19 +1,18 @@
-import { ReactNode } from 'react';
-
-import type { Authors, Blog, Snippets } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import { headers } from 'next/headers';
 
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
+import TOCInline from '@/components/TOCInline';
 import Tag from '@/components/Tag';
+import WalineComment from '@/components/WalineComment';
+import BlogMeta from '@/components/blog/BlogMeta';
+import Reactions from '@/components/blog/PageReactions';
 import siteMetadata from '@/data/siteMetadata';
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`;
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`;
+import { BlogPostProps } from './PostSimple';
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -22,23 +21,18 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 };
 
-interface LayoutProps {
-  content: CoreContent<Blog> | CoreContent<Snippets>;
-  authorDetails: CoreContent<Authors>[];
-  next?: { path: string; title: string };
-  prev?: { path: string; title: string };
-  children: ReactNode;
-}
-
 export default function PostLayout({
   content,
   authorDetails,
   next,
+  toc,
   prev,
   children,
-}: LayoutProps) {
-  const { filePath, path, date, title, tags } = content;
-  const basePath = path.split('/')[0];
+}: BlogPostProps) {
+  const { slug, readingTime, date, title, tags } = content;
+  const headersList = headers();
+  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
+  const slugNormalized = `blog/${slug}`;
 
   return (
     <SectionContainer>
@@ -47,22 +41,25 @@ export default function PostLayout({
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(
-                        siteMetadata.locale,
-                        postDateTemplate
-                      )}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
+              <dt className="sr-only">Published on</dt>
+              <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                <time dateTime={date}>
+                  {new Date(date).toLocaleDateString(
+                    siteMetadata.locale,
+                    postDateTemplate
+                  )}
+                </time>
+              </dd>
+
+              <PageTitle>{title}</PageTitle>
+
+              <dt className="sr-only">Published on</dt>
+              <BlogMeta
+                className="flex justify-center"
+                slug={slugNormalized}
+                readingTime={readingTime}
+                language={content.language || 'English'}
+              />
             </div>
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
@@ -109,24 +106,32 @@ export default function PostLayout({
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">
+              <div className="prose max-w-none pb-8 pt-6 dark:prose-invert">
+                {toc && (
+                  <div className="toc -ml-16 -mt-8">
+                    <TOCInline toc={toc} />
+                  </div>
+                )}
                 {children}
               </div>
-              <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
-                  Discuss on Twitter
-                </Link>
-                {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
+              <div className="sticky bottom-4 z-10 mb-2 w-full max-w-md transform border-none outline-none lg:sticky lg:bottom-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/4">
+                <Reactions slug={slugNormalized} ip={ip} />
+              </div>
+
+              <div
+                className="max-w-full pb-4 pt-2 text-center text-gray-700 dark:text-gray-300"
+                id="comment"
+              >
+                <WalineComment
+                  serverURL={process.env.NEXT_PUBLIC_COMMENT_SERVER_URL!}
+                />
               </div>
             </div>
+
             <footer>
               <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
                 {tags && (
-                  <div className="py-4 xl:py-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      Tags
-                    </h2>
+                  <div className="py-2 xl:py-4">
                     <div className="flex flex-wrap">
                       {tags.map((tag) => (
                         <Tag key={tag} text={tag} />
@@ -159,9 +164,9 @@ export default function PostLayout({
                   </div>
                 )}
               </div>
-              <div className="pt-4 xl:pt-8">
+              <div className="pt-1 xl:pt-4">
                 <Link
-                  href={`/${basePath}`}
+                  href="/blog"
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="Back to the blog"
                 >

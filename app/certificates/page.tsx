@@ -13,9 +13,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getCertifications } from '@/lib/certification';
+import { Tables } from '@/types/database';
 
 export default async function CertificationsPage() {
-  const certifications = await getCertifications();
+  const certifications =
+    (await getCertifications()) as Tables<'certifications'>[];
 
   return (
     <>

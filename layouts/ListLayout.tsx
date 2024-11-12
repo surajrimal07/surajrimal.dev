@@ -18,7 +18,7 @@ import {
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { blogSearchPlaceholders } from '@/data/blogSearchData';
 import PostCard from '@/layouts/BlogList';
-import { getBlogShares, getBlogView } from '@/lib/pageView';
+import { getBlogShares, getPageViews } from '@/lib/pageView';
 
 interface PaginationProps {
   totalPages: number;
@@ -117,7 +117,7 @@ export default function ListLayout({
 
   useEffect(() => {
     const fetchCounts = async (slug: string) => {
-      const views = await getBlogView(slug);
+      const views = await getPageViews(`/${slug}`, false);
       const { total } = await getBlogShares(slug);
       setViewCounts((prev) => new Map(prev).set(slug, views));
       setShareCounts((prev) => new Map(prev).set(slug, total));

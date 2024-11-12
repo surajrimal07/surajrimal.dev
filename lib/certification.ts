@@ -1,7 +1,14 @@
-import { Certification } from '@/types/certificate';
+import { localCache } from '@/lib/cache';
+import type { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
-export async function getCertifications() {
+const CACHE_KEY = 'certifications';
+
+export async function getCertifications(): Promise<Tables<'certifications'>[]> {
+  const cached = localCache.get(CACHE_KEY);
+  if (cached) {
+    return cached as Tables<'certifications'>[];
+  }
   const { data, error } = await supabase
     .from('certifications')
     .select('*')
@@ -12,11 +19,15 @@ export async function getCertifications() {
     throw new Error('Failed to fetch certifications');
   }
 
+  localCache.set(CACHE_KEY, data);
   return data;
 }
 
 export async function createCertification(
-  certification: Omit<Certification, 'id' | 'created_at' | 'updated_at'>
+  certification: Omit<
+    Tables<'certifications'>,
+    'id' | 'created_at' | 'updated_at'
+  >
 ) {
   const { data, error } = await supabase
     .from('certifications')
@@ -33,7 +44,9 @@ export async function createCertification(
 
 export async function updateCertification(
   id: number,
-  updatedData: Partial<Omit<Certification, 'id' | 'created_at' | 'updated_at'>>
+  updatedData: Partial<
+    Omit<Tables<'certifications'>, 'id' | 'created_at' | 'updated_at'>
+  >
 ) {
   const { data, error } = await supabase
     .from('certifications')

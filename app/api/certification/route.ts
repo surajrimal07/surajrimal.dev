@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Certification } from '@/types/certificate';
+import type { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
 export async function GET() {
@@ -21,8 +21,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const certification: Omit<Certification, 'id' | 'created_at' | 'updated_at'> =
-    await request.json();
+  const certification: Omit<
+    Tables<'certifications'>,
+    'id' | 'created_at' | 'updated_at'
+  > = await request.json();
 
   const { data, error } = await supabase
     .from('certifications')
@@ -46,7 +48,7 @@ export async function PUT(
 ) {
   const id = parseInt(params.id);
   const updatedData: Partial<
-    Omit<Certification, 'id' | 'created_at' | 'updated_at'>
+    Omit<Tables<'certifications'>, 'id' | 'created_at' | 'updated_at'>
   > = await request.json();
 
   const { data, error } = await supabase

@@ -7,7 +7,6 @@ import { PiHourglassLowFill } from 'react-icons/pi';
 
 import Link from '@/components/Link';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
-import Tag from '@/components/Tag';
 import Twemoji from '@/components/Twemoji';
 import AnimatedCounter from '@/components/animata/text/counter';
 import Avatar from '@/components/homepage/Avatar';
@@ -25,13 +24,11 @@ import { MAX_DISPLAY } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 import { getPopularPosts } from '@/lib/pageView';
 
-// Define types at the top level
 interface PostWithViews {
   post: CoreContent<Blog>;
   views: number;
 }
 
-// Memoized post renderer as a separate component
 function BlogPost({ post, views }: PostWithViews) {
   const { slug, date, readingTime, title, summary, tags, language } = post;
 
@@ -59,11 +56,6 @@ function BlogPost({ post, views }: PostWithViews) {
                     {title}
                   </Link>
                 </h2>
-                <div className="flex flex-wrap">
-                  {tags.map((tag) => (
-                    <Tag key={tag} text={tag} />
-                  ))}
-                </div>
               </div>
               <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                 {summary}
@@ -89,15 +81,6 @@ function BlogPost({ post, views }: PostWithViews) {
                 <span className="ml-1.5 text-sm">{language ?? 'English'}</span>
               </div>
             </div>
-            <div className="text-base font-medium leading-6">
-              <Link
-                href={`/blog/${slug}`}
-                className="text-primary hover:text-red-400 dark:hover:text-red-400"
-                aria-label={`Read "${title}"`}
-              >
-                Read more &rarr;
-              </Link>
-            </div>
           </div>
         </div>
       </article>
@@ -105,15 +88,12 @@ function BlogPost({ post, views }: PostWithViews) {
   );
 }
 
-// Main component with optimized data fetching
 export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
-  // Single Redis pipeline call to get all view counts
   const popularSlugs = await getPopularPosts(
     posts.map((post) => post.slug),
     MAX_DISPLAY
   );
 
-  // Create posts with views in one pass
   const popularPosts: PostWithViews[] = posts
     .filter((post) => popularSlugs.some((p) => p.slug === post.slug))
     .map((post) => ({
@@ -128,7 +108,6 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       <ScrollTopAndComment showScrollToComment={false} />
       <Greeting />
 
-      {/* Profile Section */}
       <div className="mb-2 flex flex-col justify-between md:flex-row md:space-x-8 md:space-y-0">
         <div className="mb-4 mt-4 flex justify-center md:mb-0 md:block">
           <Avatar />
@@ -140,7 +119,6 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         </div>
       </div>
 
-      {/* Sections with Separators */}
       <Separator gradient />
       <PopularTags />
       <Separator gradient />
@@ -151,18 +129,16 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       <PrivateContributions />
       <Separator gradient marginTop={15} />
 
-      {/* Popular Posts Section */}
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Popular Posts
           <Twemoji size="twa-sm" emoji="writing-hand" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Here are some of my most popular posts.
+          Here are some of my most popular posts sorted by engagement.
         </p>
       </div>
 
-      {/* Posts List */}
       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
         {!popularPosts.length && <li className="py-6">No posts found.</li>}
         {popularPosts.map((postWithViews) => (
@@ -170,7 +146,6 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         ))}
       </ul>
 
-      {/* View All Posts Link */}
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
@@ -183,7 +158,6 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         </div>
       )}
 
-      {/* Newsletter Section */}
       {siteMetadata.newsletter?.provider && (
         <div className="flex items-center justify-center pt-2">
           <NewsletterForm />

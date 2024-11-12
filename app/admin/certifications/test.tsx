@@ -41,10 +41,13 @@ import {
   updateCertification,
 } from '@/lib/certification';
 import { getProjectImages, uploadProjectImage } from '@/lib/project';
-import { Certification } from '@/types/certificate';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
-type FormData = Omit<Certification, 'id' | 'created_at' | 'updated_at'>;
+type FormData = Omit<
+  Tables<'certifications'>,
+  'id' | 'created_at' | 'updated_at'
+>;
 
 export default function CertificationPage({
   params,
@@ -52,9 +55,8 @@ export default function CertificationPage({
   params: { id: string };
 }) {
   const router = useRouter();
-  const [certification, setCertification] = useState<Certification | null>(
-    null
-  );
+  const [certification, setCertification] =
+    useState<Tables<'certifications'> | null>(null);
 
   const [projectImages, setProjectImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>('');

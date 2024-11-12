@@ -48,6 +48,7 @@ const PageView: React.FC<PageViewProps> = ({
 
       setPageView(views);
     } catch (error) {
+      console.error(`Failed to fetch page views for ${pathname}`, error);
       toast.error(`Failed to fetch page views`, toastOptions);
     }
   }, [pathname, shouldIncrement]);

@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getCertifications } from '@/lib/certification';
-import { Certification } from '@/types/certificate';
+import type { Tables } from '@/types/database';
 
 export default async function CertificationsList() {
   const certifications = await getCertifications();
@@ -57,7 +57,7 @@ export default async function CertificationsList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {certifications.map((cert: Certification) => (
+            {certifications.map((cert: Tables<'certifications'>) => (
               <TableRow key={cert.id}>
                 <TableCell className="font-medium">{cert.name}</TableCell>
                 <TableCell>{cert.platform}</TableCell>

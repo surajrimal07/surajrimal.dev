@@ -1,4 +1,4 @@
-import Tag from '../Tag';
+import Tag from '@/components/Tag';
 
 const BlogTags = ({ tags }: { tags: string[] }) => {
   if (!tags || tags.length === 0) {
@@ -6,7 +6,7 @@ const BlogTags = ({ tags }: { tags: string[] }) => {
   }
 
   return (
-    <div className="!mt-1 flex flex-wrap">
+    <div className="!mt-3 mb-1 flex flex-wrap">
       {tags.map((tag) => (
         <Tag key={tag} text={tag} />
       ))}

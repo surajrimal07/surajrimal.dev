@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { TfiArrowTopRight } from 'react-icons/tfi';
+
+import { LoadingSpinner } from '../ui/loadingSpinner';
 
 // Fetch SVG data with caching
 async function fetchSvg() {
@@ -9,7 +12,7 @@ async function fetchSvg() {
     'https://wakapi.dev/api/activity/chart/surajrimal.svg',
     {
       next: {
-        revalidate: 7200, // Cache for 2 hours (7200 seconds)
+        revalidate: 7200,
       },
     }
   );
@@ -34,7 +37,6 @@ async function fetchBadges() {
         },
       });
       const svg = await res.text();
-      // Convert SVG to base64 data URL
       const base64 = Buffer.from(svg).toString('base64');
       const dataUrl = `data:image/svg+xml;base64,${base64}`;
       return {
@@ -43,7 +45,6 @@ async function fetchBadges() {
       };
     })
   );
-
   return badgeData;
 }
 
@@ -67,23 +68,40 @@ function modifySvg(svgString: string): string {
     );
 }
 
-export default async function PrivateContributions() {
-  // Fetch data in parallel with caching
+async function ContributionContent() {
   const [svgString, badgeData] = await Promise.all([fetchSvg(), fetchBadges()]);
 
   if (!svgString) {
-    return (
-      <div className="flex min-h-[300px] items-center justify-center rounded-lg border border-dashed border-gray-300 dark:border-gray-800">
-        <p className="text-lg text-gray-500 dark:text-gray-400">
-          Loading data failed. Please try again.
-        </p>
-      </div>
-    );
+    throw new Error('Failed to load contribution data');
   }
 
-  // Modify SVG
   const modifiedSvg = modifySvg(svgString);
 
+  return (
+    <div className="pt-3">
+      <div dangerouslySetInnerHTML={{ __html: modifiedSvg }} />
+      <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
+        {badgeData?.length > 0 && (
+          <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
+            {badgeData.map((badge, index) => (
+              <Image
+                key={index}
+                src={badge.dataUrl}
+                alt={`${badge.label} contributions`}
+                width={150}
+                height={30}
+                unoptimized
+                className="h-auto w-auto max-w-[80px] sm:max-w-none"
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function PrivateContributions() {
   return (
     <>
       <div className="space-y-2 py-1 md:space-y-5">
@@ -107,26 +125,15 @@ export default async function PrivateContributions() {
           .
         </p>
       </div>
-      <div className="pt-3">
-        <div dangerouslySetInnerHTML={{ __html: modifiedSvg }} />
-        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
-          {badgeData?.length > 0 && (
-            <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
-              {badgeData.map((badge, index) => (
-                <Image
-                  key={index}
-                  src={badge.dataUrl}
-                  alt={`${badge.label} contributions`}
-                  width={150}
-                  height={30}
-                  unoptimized
-                  className="h-auto w-auto max-w-[80px] sm:max-w-none"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <Suspense
+        fallback={
+          <div className="flex min-h-[300px] items-center justify-center rounded-lg border border-dashed border-gray-300 dark:border-gray-800">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <ContributionContent />
+      </Suspense>
     </>
   );
 }
