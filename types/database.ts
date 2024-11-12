@@ -162,10 +162,10 @@ export type Database = {
           message: string | null;
           name: string;
           project_description: string | null;
-          purpose: string;
+          purpose: Database['public']['Enums']['contact_purpose'];
           responded: boolean;
           responded_at: string | null;
-          stack: string | null;
+          stack: Database['public']['Enums']['contact_stack'] | null;
           user_session: string;
         };
         Insert: {
@@ -178,10 +178,10 @@ export type Database = {
           message?: string | null;
           name: string;
           project_description?: string | null;
-          purpose: string;
+          purpose: Database['public']['Enums']['contact_purpose'];
           responded?: boolean;
           responded_at?: string | null;
-          stack?: string | null;
+          stack?: Database['public']['Enums']['contact_stack'] | null;
           user_session?: string;
         };
         Update: {
@@ -194,10 +194,10 @@ export type Database = {
           message?: string | null;
           name?: string;
           project_description?: string | null;
-          purpose?: string;
+          purpose?: Database['public']['Enums']['contact_purpose'];
           responded?: boolean;
           responded_at?: string | null;
-          stack?: string | null;
+          stack?: Database['public']['Enums']['contact_stack'] | null;
           user_session?: string;
         };
         Relationships: [];
@@ -379,9 +379,9 @@ export type Database = {
           img_src: string;
           is_dark_badge_needed: boolean | null;
           repo: string | null;
-          stack: string | null;
+          stack: Database['public']['Enums']['project_stack'] | null;
           title: string;
-          type: string;
+          type: Database['public']['Enums']['project_type'];
           updated_at: string | null;
           url: string | null;
         };
@@ -393,9 +393,9 @@ export type Database = {
           img_src: string;
           is_dark_badge_needed?: boolean | null;
           repo?: string | null;
-          stack?: string | null;
+          stack?: Database['public']['Enums']['project_stack'] | null;
           title: string;
-          type: string;
+          type: Database['public']['Enums']['project_type'];
           updated_at?: string | null;
           url?: string | null;
         };
@@ -407,9 +407,9 @@ export type Database = {
           img_src?: string;
           is_dark_badge_needed?: boolean | null;
           repo?: string | null;
-          stack?: string | null;
+          stack?: Database['public']['Enums']['project_stack'] | null;
           title?: string;
-          type?: string;
+          type?: Database['public']['Enums']['project_type'];
           updated_at?: string | null;
           url?: string | null;
         };
@@ -671,7 +671,17 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never;
+      contact_purpose: 'general' | 'project' | 'feedback' | 'other';
+      contact_stack: 'full-stack' | 'backend' | 'frontend' | 'devops' | 'other';
+      project_stack:
+        | 'fullstack'
+        | 'frontend'
+        | 'backend'
+        | 'mobile'
+        | 'api'
+        | 'devops'
+        | 'desktop';
+      project_type: 'work' | 'self' | 'selfhosted';
     };
     CompositeTypes: {
       [_ in never]: never;

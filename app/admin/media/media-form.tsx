@@ -10,12 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createMedia, updateMedia } from '@/lib/media';
-import { InMedia } from '@/types/media';
+import { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
-type FormData = Omit<InMedia, 'id'>;
+type FormData = Omit<Tables<'in_media'>, 'id'>;
 
-export default function MediaForm({ media }: { media?: InMedia }) {
+export default function MediaForm({ media }: { media?: Tables<'in_media'> }) {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(
     media || {

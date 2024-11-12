@@ -16,13 +16,14 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import siteMetadata from '@/data/siteMetadata';
-import { ContactForm } from '@/types/contact';
+import { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [purpose, setPurpose] = useState<ContactForm['purpose']>('general');
-  const [stack, setStack] = useState<ContactForm['stack']>(undefined);
+  const [purpose, setPurpose] =
+    useState<Tables<'contacts'>['purpose']>('general');
+  const [stack, setStack] = useState<Tables<'contacts'>['stack']>('other');
   const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +32,9 @@ export default function ContactPage() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const contactData = Object.fromEntries(formData) as unknown as ContactForm;
+    const contactData = Object.fromEntries(
+      formData
+    ) as unknown as Tables<'contacts'>;
 
     try {
       const response = await fetch('/api/contact', {
@@ -64,7 +67,7 @@ export default function ContactPage() {
         formRef.current.reset();
       }
       setPurpose('general');
-      setStack(undefined);
+      setStack(null);
     } catch (error) {
       toast.error(
         `Failed to send message. Please try again. ${error}`,
@@ -130,7 +133,7 @@ export default function ContactPage() {
           <Select
             value={purpose}
             onValueChange={(value) =>
-              setPurpose(value as ContactForm['purpose'])
+              setPurpose(value as Tables<'contacts'>['purpose'])
             }
             required
           >
@@ -150,9 +153,9 @@ export default function ContactPage() {
             <div>
               <Label htmlFor="stack">Project Stack</Label>
               <Select
-                value={stack}
+                value={stack || 'null'}
                 onValueChange={(value) =>
-                  setStack(value as ContactForm['stack'])
+                  setStack(value as Tables<'contacts'>['stack'])
                 }
                 required
               >

@@ -12,9 +12,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getMedia } from '@/lib/media';
+import { Tables } from '@/types/database';
 
 export default async function InMediaPage() {
-  const mediaItems = await getMedia();
+  const mediaItems: Tables<'in_media'>[] = await getMedia();
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">

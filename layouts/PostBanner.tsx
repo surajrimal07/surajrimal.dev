@@ -1,29 +1,27 @@
-import { ReactNode } from 'react';
+import { headers } from 'next/headers';
 
-import type { Blog } from 'contentlayer/generated';
 import Bleed from 'pliny/ui/Bleed';
-import { CoreContent } from 'pliny/utils/contentlayer';
 
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
-
-interface LayoutProps {
-  content: CoreContent<Blog>;
-  children: ReactNode;
-  next?: { path: string; title: string };
-  prev?: { path: string; title: string };
-}
+import WalineComment from '@/components/WalineComment';
+import Reactions from '@/components/blog/PageReactions';
+import { BlogPostProps } from '@/types/bloglist';
 
 export default function PostMinimal({
   content,
   next,
   prev,
   children,
-}: LayoutProps) {
-  const { title, images } = content;
+}: BlogPostProps) {
+  const { title, images, slug } = content;
+  const headersList = headers();
+  const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
+  const slugNormalized = `blog/${slug}`;
+
   const displayImage =
     images && images.length > 0
       ? images[0]
@@ -53,6 +51,18 @@ export default function PostMinimal({
           </div>
           <div className="prose max-w-none py-4 dark:prose-invert">
             {children}
+          </div>
+          <div className="sticky bottom-4 z-10 mb-2 w-full max-w-md transform border-none outline-none lg:sticky lg:bottom-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
+            <Reactions slug={slugNormalized} ip={ip} />
+          </div>
+
+          <div
+            className="max-w-full pb-4 pt-2 text-center text-gray-700 dark:text-gray-300"
+            id="comment"
+          >
+            <WalineComment
+              serverURL={process.env.NEXT_PUBLIC_COMMENT_SERVER_URL!}
+            />
           </div>
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">

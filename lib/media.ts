@@ -1,7 +1,14 @@
-import { InMedia } from '@/types/media';
+import { localCache } from '@/lib/cache';
+import { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
-export async function getMedia() {
+const CACHE_KEY = 'in_media';
+export async function getMedia(): Promise<Tables<'in_media'>[]> {
+  const cached = localCache.get(CACHE_KEY);
+  if (cached) {
+    return cached as Tables<'in_media'>[];
+  }
+
   const { data, error } = await supabase
     .from('in_media')
     .select('*')
@@ -12,10 +19,11 @@ export async function getMedia() {
     throw new Error('Failed to fetch medias');
   }
 
+  localCache.set(CACHE_KEY, data);
   return data;
 }
 
-export async function createMedia(media: Omit<InMedia, 'id'>) {
+export async function createMedia(media: Omit<Tables<'in_media'>, 'id'>) {
   const { data, error } = await supabase
     .from('in_media')
     .insert([media])
@@ -26,12 +34,13 @@ export async function createMedia(media: Omit<InMedia, 'id'>) {
     throw new Error('Failed to create medias');
   }
 
+  localCache.delete(CACHE_KEY);
   return data;
 }
 
 export async function updateMedia(
   id: number,
-  updatedData: Partial<Omit<InMedia, 'id'>>
+  updatedData: Partial<Omit<Tables<'in_media'>, 'id'>>
 ) {
   const { data, error } = await supabase
     .from('in_media')
@@ -44,6 +53,7 @@ export async function updateMedia(
     throw new Error('Failed to update medias');
   }
 
+  localCache.delete(CACHE_KEY);
   return data;
 }
 
@@ -61,5 +71,6 @@ export async function deleteMedia(id: number) {
     throw new Error('Failed to delete medias');
   }
 
+  localCache.delete(CACHE_KEY);
   return data;
 }

@@ -1,7 +1,17 @@
-import { JourneyEvent } from '@/types/journey';
+import { localCache } from '@/lib/cache';
+import { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
-export const getJourneyEvents = async (): Promise<JourneyEvent[]> => {
+const CACHE_KEY = 'journey_events';
+
+export const getJourneyEvents = async (): Promise<
+  Tables<'journey_events'>[]
+> => {
+  const cached = localCache.get(CACHE_KEY);
+  if (cached) {
+    return cached as Tables<'journey_events'>[];
+  }
+
   const { data, error } = await supabase
     .from('journey_events')
     .select('*')
@@ -11,17 +21,20 @@ export const getJourneyEvents = async (): Promise<JourneyEvent[]> => {
     throw new Error('Error fetching journey events');
   }
 
-  return data as JourneyEvent[];
+  localCache.set(CACHE_KEY, data);
+  return data;
 };
 
 export const insertJourneyEvent = async (
-  event: Omit<JourneyEvent, 'id'>
-): Promise<JourneyEvent | null> => {
+  event: Omit<Tables<'journey_events'>, 'id'>
+): Promise<Tables<'journey_events'> | null> => {
   const { data, error } = await supabase.from('journey_events').insert([event]);
 
   if (error) {
     throw new Error('Error inserting journey event');
   }
+
+  localCache.delete(CACHE_KEY);
 
   return data;
 };
@@ -32,12 +45,14 @@ export const deleteJourneyEvent = async (id: number): Promise<void> => {
   if (error) {
     throw new Error('Error deleting journey event');
   }
+
+  localCache.delete(CACHE_KEY);
 };
 
 export const updateJourneyEvent = async (
   id: number,
-  updates: Partial<Omit<JourneyEvent, 'id'>>
-): Promise<JourneyEvent | null> => {
+  updates: Partial<Omit<Tables<'journey_events'>, 'id'>>
+): Promise<Tables<'journey_events'> | null> => {
   const { data, error } = await supabase
     .from('journey_events')
     .update(updates)
@@ -48,5 +63,6 @@ export const updateJourneyEvent = async (
     throw new Error('Error updating journey event');
   }
 
+  localCache.delete(CACHE_KEY);
   return data ? data[0] : null;
 };

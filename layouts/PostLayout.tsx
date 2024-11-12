@@ -11,8 +11,7 @@ import WalineComment from '@/components/WalineComment';
 import BlogMeta from '@/components/blog/BlogMeta';
 import Reactions from '@/components/blog/PageReactions';
 import siteMetadata from '@/data/siteMetadata';
-
-import { BlogPostProps } from './PostSimple';
+import { BlogPostProps } from '@/types/bloglist';
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',

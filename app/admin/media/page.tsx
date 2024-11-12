@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getMedia } from '@/lib/media';
-import { InMedia } from '@/types/media';
+import { Tables } from '@/types/database';
 
 export default async function CertificationsList() {
   const mediaItems = await getMedia();
@@ -55,7 +55,7 @@ export default async function CertificationsList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mediaItems.map((media: InMedia) => (
+            {mediaItems.map((media: Tables<'in_media'>) => (
               <TableRow key={media.id}>
                 <TableCell className="font-medium">{media.title}</TableCell>
                 <TableCell>{media.publication}</TableCell>

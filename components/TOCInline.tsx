@@ -106,16 +106,20 @@ const TOCInline = ({
     };
   }, []);
 
+  if (!toc || toc.length < 2) {
+    return null;
+  }
+
   const createList = (items: NestedTocItem[] | undefined, level = 0) => {
     if (!items || items.length === 0) return null;
 
     return (
       <ul
-        className={cn(ulClassName, level === 0 && 'space-y-1')}
-        style={{
-          [rightAlign ? 'marginRight' : 'marginLeft']:
-            `${level === 0 ? 0 : level}rem`,
-        }}
+        className={cn(
+          ulClassName,
+          level === 0 && 'space-y-1',
+          level > 0 && `toc-indent-${level}`
+        )}
       >
         {items.map((item, index) => {
           const itemId = item.url.substring(1);

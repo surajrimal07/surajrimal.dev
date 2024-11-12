@@ -1,9 +1,4 @@
 import { headers } from 'next/headers';
-import { ReactNode } from 'react';
-
-import type { Authors, Blog, Snippets } from 'contentlayer/generated';
-import { Toc } from 'pliny/mdx-plugins';
-import { CoreContent } from 'pliny/utils/contentlayer';
 
 import Image from '@/components/Image';
 import Link from '@/components/Link';
@@ -15,15 +10,7 @@ import WalineComment from '@/components/WalineComment';
 import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
 import Reactions from '@/components/blog/PageReactions';
-
-export interface BlogPostProps {
-  content: CoreContent<Blog> | CoreContent<Snippets>;
-  authorDetails: CoreContent<Authors>[];
-  children: ReactNode;
-  toc?: Toc;
-  next?: { path: string; title: string };
-  prev?: { path: string; title: string };
-}
+import { BlogPostProps } from '@/types/bloglist';
 
 export default function PostLayout({
   content,

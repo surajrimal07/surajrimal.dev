@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { GUESTBOOK_ENTRIES_LIMIT } from '@/constants/index';
 import useAuthStore from '@/lib/store/authStore';
-import { GuestbookEntry } from '@/types/guestbook';
+import { Tables } from '@/types/database';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
@@ -20,7 +20,7 @@ import { timeAgo } from '@/utils/timeAgo';
 import { toastOptions } from '@/utils/toast';
 
 export default function Guestbook() {
-  const [entries, setEntries] = useState<GuestbookEntry[]>([]);
+  const [entries, setEntries] = useState<Tables<'guestbook'>[]>([]);
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingEntries, setIsLoadingEntries] = useState(true);
@@ -45,7 +45,7 @@ export default function Guestbook() {
       );
 
       if (error) throw error;
-      setEntries(data as GuestbookEntry[]);
+      setEntries(data as Tables<'guestbook'>[]);
     } catch (error) {
       console.error('Error fetching entries:', error);
       toast.error('Failed to load guestbook entries', toastOptions);
@@ -161,7 +161,7 @@ export default function Guestbook() {
     }
   };
 
-  const startEdit = (entry: GuestbookEntry) => {
+  const startEdit = (entry: Tables<'guestbook'>) => {
     setEditingEntry(entry.id);
     setEditMessage(entry.message);
   };
@@ -177,7 +177,10 @@ export default function Guestbook() {
 
   const { userEntry, otherEntries } = separateEntries();
 
-  const renderEntry = (entry: GuestbookEntry, isUserEntry: boolean = false) => (
+  const renderEntry = (
+    entry: Tables<'guestbook'>,
+    isUserEntry: boolean = false
+  ) => (
     <div
       key={entry.id}
       className={`rounded-lg ${isUserEntry ? 'bg-gray-800' : 'bg-gray-900'} p-4 transition-all`}

@@ -72,7 +72,7 @@ async function ProjectCard({ project }: ProjectCardProps) {
           </p>
 
           {repository ? (
-            <GithubRepo repo={repository} projectUrl={url} />
+            <GithubRepo repo={repository} projectUrl={url!} />
           ) : (
             url && (
               <Link

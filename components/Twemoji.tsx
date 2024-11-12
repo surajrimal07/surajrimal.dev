@@ -1,4 +1,4 @@
-import type { TwemojiProps } from '@/types/index';
+import { TwemojiProps } from '@/types/components';
 import kebabCase from '@/utils/kebabCase';
 
 export function Twemoji({ emoji, size = 'twa-lg', className }: TwemojiProps) {

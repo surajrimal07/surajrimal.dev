@@ -255,3 +255,20 @@ input:-webkit-autofill:focus {
     color: white;
   }
 }
+
+/* for toc */
+.toc-indent-1 {
+  margin-left: 1rem;
+}
+.toc-indent-2 {
+  margin-left: 2rem;
+}
+.toc-indent-3 {
+  margin-left: 3rem;
+}
+.toc-indent-4 {
+  margin-left: 4rem;
+}
+.toc-indent-5 {
+  margin-left: 5rem;
+}

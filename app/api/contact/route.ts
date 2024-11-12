@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { MAX_SUBMISSIONS_PER_SESSION } from '@/constants/index';
 import { getSessionId } from '@/lib/session';
-import { ContactForm } from '@/types/contact';
+import { Tables } from '@/types/database';
 import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
   const supabase = createClient();
   const sessionId = getSessionId(req);
 
-  const data: ContactForm = await req.json();
+  const data: Tables<'contacts'> = await req.json();
 
   try {
     const { data: submissionCountData, error: submissionCountError } =

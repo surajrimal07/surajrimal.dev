@@ -141,7 +141,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
         <div className="flex items-center space-x-3">
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
-              <button className="p-1">
+              <button type="button" className="p-1" title="View Counts">
                 <FaFire className="h-5 w-5 text-gray-300" />
               </button>
             </div>
@@ -151,7 +151,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
           </div>
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
-              <button className="p-1">
+              <button type="button" className="p-1" title="Share Article">
                 <ShareMenu
                   url={`${process.env.NEXT_PUBLIC_URL}/${slug}`}
                   slug={slug}

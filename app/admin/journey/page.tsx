@@ -41,15 +41,19 @@ import {
   insertJourneyEvent,
   updateJourneyEvent,
 } from '@/lib/journey';
-import { JourneyEvent } from '@/types/journey';
+import { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 const JourneyEventManager = () => {
-  const [journeyEvents, setJourneyEvents] = useState<JourneyEvent[]>([]);
+  const [journeyEvents, setJourneyEvents] = useState<
+    Tables<'journey_events'>[]
+  >([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<JourneyEvent | null>(null);
-  const [eventToDelete, setEventToDelete] = useState<JourneyEvent | null>(null);
+  const [currentEvent, setCurrentEvent] =
+    useState<Tables<'journey_events'> | null>(null);
+  const [eventToDelete, setEventToDelete] =
+    useState<Tables<'journey_events'> | null>(null);
   const [error, setError] = useState('');
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
@@ -83,7 +87,7 @@ const JourneyEventManager = () => {
     setCurrentEvent((prev) => (prev ? { ...prev, is_current: checked } : null));
   }, []);
 
-  const validateEvent = (event: JourneyEvent): boolean => {
+  const validateEvent = (event: Tables<'journey_events'>): boolean => {
     const errors: { [key: string]: string } = {};
     if (!event.title.trim()) errors.title = 'Title is required';
     if (!event.description?.trim())
@@ -121,16 +125,19 @@ const JourneyEventManager = () => {
     }
   }, [currentEvent, fetchJourneyEvents]);
 
-  const handleEditEvent = useCallback((event: JourneyEvent) => {
+  const handleEditEvent = useCallback((event: Tables<'journey_events'>) => {
     setCurrentEvent(event);
     setValidationErrors({});
     setIsDialogOpen(true);
   }, []);
 
-  const handleDeleteEvent = useCallback(async (event: JourneyEvent) => {
-    setEventToDelete(event);
-    setIsDeleteDialogOpen(true);
-  }, []);
+  const handleDeleteEvent = useCallback(
+    async (event: Tables<'journey_events'>) => {
+      setEventToDelete(event);
+      setIsDeleteDialogOpen(true);
+    },
+    []
+  );
 
   const confirmDeleteEvent = useCallback(async () => {
     if (eventToDelete) {
@@ -157,7 +164,7 @@ const JourneyEventManager = () => {
       date: new Date().toISOString().split('T')[0],
       is_current: false,
       color: '',
-    } as JourneyEvent);
+    } as Tables<'journey_events'>);
     setValidationErrors({});
     setIsDialogOpen(true);
   }, []);

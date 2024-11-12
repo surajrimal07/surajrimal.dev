@@ -1,3 +1,4 @@
+//not used as of now
 import tagData from 'app/tag-data.json';
 
 import { PopularTag } from '@/types/tag';

@@ -1,17 +1,31 @@
-import { Project } from '@/types/project';
+import { localCache } from '@/lib/cache';
+import { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
-export async function getProjects(): Promise<Project[]> {
+const CACHE_KEY = 'projects';
+export async function getProjects(): Promise<Tables<'projects'>[]> {
+  const cached = localCache.get(CACHE_KEY);
+  if (cached) {
+    return cached as Tables<'projects'>[];
+  }
+
   const { data, error } = await supabase
     .from('projects')
     .select('*')
     .order('created_at', { ascending: false });
 
   if (error) throw error;
+
+  localCache.set(CACHE_KEY, data);
+
   return data;
 }
 
-export async function getProject(id: string): Promise<Project> {
+export async function getProject(id: string): Promise<Tables<'projects'>> {
+  const cached = localCache.get(`project:${id}`);
+  if (cached) {
+    return cached as Tables<'projects'>;
+  }
   const { data, error } = await supabase
     .from('projects')
     .select('*')
@@ -19,12 +33,15 @@ export async function getProject(id: string): Promise<Project> {
     .single();
 
   if (error) throw error;
+
+  localCache.set(`project:${id}`, data);
+
   return data;
 }
 
 export async function createProject(
-  project: Omit<Project, 'id'>
-): Promise<Project> {
+  project: Omit<Tables<'projects'>, 'id'>
+): Promise<Tables<'projects'>> {
   console.log('project', project);
 
   const { data, error } = await supabase
@@ -34,13 +51,16 @@ export async function createProject(
     .single();
 
   if (error) throw error;
+
+  localCache.delete(CACHE_KEY);
+
   return data;
 }
 
 export async function updateProject(
   id: string,
-  project: Partial<Project>
-): Promise<Project> {
+  project: Partial<Tables<'projects'>>
+): Promise<Tables<'projects'>> {
   console.log('project', project);
 
   const { data, error } = await supabase
@@ -51,6 +71,9 @@ export async function updateProject(
     .single();
 
   if (error) throw error;
+
+  localCache.delete(CACHE_KEY);
+
   return data;
 }
 
@@ -58,6 +81,8 @@ export async function deleteProject(id: string): Promise<void> {
   const { error } = await supabase.from('projects').delete().eq('id', id);
 
   if (error) throw error;
+
+  localCache.delete(CACHE_KEY);
 }
 
 export async function getProjectImages(): Promise<string[]> {
@@ -96,6 +121,5 @@ export async function uploadProjectImage(file: File): Promise<string> {
   return publicUrl;
 }
 //to do add cache to more db calls
-//fix blog layouts missing reactions,comments, meta etc
 //use official supabase types for all db calls
 //fix sign in

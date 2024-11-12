@@ -39,11 +39,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ContactForm } from '@/types/contact';
+import { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminContactsComponent() {
-  const [contacts, setContacts] = useState<ContactForm[]>([]);
+  const [contacts, setContacts] = useState<Tables<'contacts'>[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const [showResponded, setShowResponded] = useState(false);
@@ -84,8 +84,8 @@ export default function AdminContactsComponent() {
 
   const handleResponded = async (id: number, type: string) => {
     const newcontacts = {
-      responded: type === 'responded' ? true : false,
-      responded_at: type === 'responded' ? new Date().toISOString() : undefined,
+      responded: type === 'responded',
+      responded_at: type === 'responded' ? new Date().toISOString() : null,
     };
     try {
       const response = await fetch(`/api/contact?id=${id}`, {
@@ -115,7 +115,7 @@ export default function AdminContactsComponent() {
     }
   };
 
-  const handleRespond = (contact: ContactForm) => {
+  const handleRespond = (contact: Tables<'contacts'>) => {
     window.open(`mailto:${contact.email}?subject=Re: ${contact.purpose}`);
   };
 

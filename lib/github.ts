@@ -6,8 +6,7 @@ import {
 
 import siteMetadata from '@/data/siteMetadata';
 import { Repository, UserData } from '@/types/github';
-
-import { GithubRepository } from '../types';
+import { GithubRepository } from '@/types/server';
 
 export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
   if (!repo) {

@@ -38,7 +38,7 @@ export default async function EditMedia({
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>
-              Edit - {params.id === 'new' ? 'New' : media.title}
+              Edit - {params.id === 'new' ? 'New' : media?.title}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>

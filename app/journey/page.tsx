@@ -9,7 +9,7 @@ import { SiLeetcode } from 'react-icons/si';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
 
 import { getJourneyEvents } from '@/lib/journey';
-import { JourneyEvent } from '@/types/journey';
+import { Tables } from '@/types/database';
 
 const iconMap: { [key: string]: JSX.Element } = {
   FaBlackTie: <FaBlackTie />,
@@ -25,7 +25,7 @@ const iconMap: { [key: string]: JSX.Element } = {
 export const metadata = genPageMetadata({ title: 'Journey' });
 
 export default async function Page() {
-  const journey: JourneyEvent[] = await getJourneyEvents();
+  const journey: Tables<'journey_events'>[] = await getJourneyEvents();
 
   return (
     <>

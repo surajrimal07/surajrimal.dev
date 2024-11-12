@@ -1,9 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
-
-import { Snippets } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import { useState } from 'react';
 
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
@@ -19,19 +16,7 @@ import {
 } from '@/components/ui/pagination';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { snippetSearchPlaceholders } from '@/data/snippetSearchData';
-
-interface PaginationProps {
-  totalPages: number;
-  currentPage: number;
-}
-
-interface SnippetsLayoutProps {
-  posts: CoreContent<Snippets>[];
-  title: string;
-  initialDisplayPosts?: CoreContent<Snippets>[];
-  pagination?: PaginationProps;
-  children?: ReactNode;
-}
+import { PaginationProps, SnippetsLayoutProps } from '@/types/bloglist';
 
 function Paginations({ totalPages, currentPage }: PaginationProps) {
   const pathname = useCurrentPath();

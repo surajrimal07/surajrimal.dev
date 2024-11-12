@@ -32,12 +32,12 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { deleteProject, getProjects } from '@/lib/project';
-import { Project } from '@/types/project';
+import { Tables } from '@/types/database';
 import { formatDate } from '@/utils/timeAgo';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminProjectsListPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Tables<'projects'>[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function AdminProjectsListPage() {
     }
   }
 
-  const ProjectList = ({ projects }: { projects: Project[] }) => (
+  const ProjectList = ({ projects }: { projects: Tables<'projects'>[] }) => (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
         <Card key={project.id} className="flex flex-col">
@@ -88,11 +88,11 @@ export default function AdminProjectsListPage() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Created on : {formatDate(project.created_at)}
+              Created on : {formatDate(project.created_at!)}
             </p>
 
             <p className="text-xs text-muted-foreground">
-              Edited on : {formatDate(project.updated_at)}
+              Edited on : {formatDate(project.updated_at!)}
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">

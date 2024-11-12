@@ -56,14 +56,14 @@ import {
   updateProject,
   uploadProjectImage,
 } from '@/lib/project';
-import { Project } from '@/types/project';
+import { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 // Types
-type ProjectState = Project;
+type ProjectState = Omit<Tables<'projects'>, 'id'>;
 
 type ProjectAction =
-  | { type: 'SET_PROJECT'; payload: Partial<Project> }
+  | { type: 'SET_PROJECT'; payload: Partial<Tables<'projects'>> }
   | { type: 'RESET_PROJECT' };
 
 // Initial state
@@ -284,7 +284,7 @@ export default function EditProject() {
                 onValueChange={(value) =>
                   dispatch({
                     type: 'SET_PROJECT',
-                    payload: { type: value as Project['type'] },
+                    payload: { type: value as Tables<'projects'>['type'] },
                   })
                 }
               >
@@ -383,16 +383,15 @@ export default function EditProject() {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="stack">Stack</Label>
               <Select
-                value={state.stack}
+                value={state.stack!}
                 onValueChange={(value) =>
                   dispatch({
                     type: 'SET_PROJECT',
-                    payload: { stack: value as Project['stack'] },
+                    payload: { stack: value as Tables<'projects'>['stack'] },
                   })
                 }
               >
@@ -413,14 +412,14 @@ export default function EditProject() {
 
             <div className="space-y-2">
               <Label htmlFor="url">URL</Label>
-              <Input id="url" value={state.url} onChange={handleInputChange} />
+              <Input id="url" value={state.url!} onChange={handleInputChange} />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="repo">Repository</Label>
               <Input
                 id="repo"
-                value={state.repo}
+                value={state.repo!}
                 onChange={handleInputChange}
               />
             </div>
@@ -456,7 +455,7 @@ export default function EditProject() {
             <div className="flex items-center space-x-2">
               <Switch
                 id="isDarkBadgeNeeded"
-                checked={state.is_dark_badge_needed}
+                checked={state.is_dark_badge_needed!}
                 onCheckedChange={(checked) =>
                   dispatch({
                     type: 'SET_PROJECT',

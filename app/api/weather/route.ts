@@ -8,14 +8,14 @@ const weatherAPI = process.env.WEATHER_API_KEY!;
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     let ip: string;
     if (process.env.NODE_ENV === 'development') {
       ip = DEV_IP;
     } else {
       const forwardedFor = request.headers.get('x-forwarded-for');
-      ip = forwardedFor ? forwardedFor.split(',')[0].trim() : request.ip;
+      ip = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
     }
 
     const locationResponse = await fetch(
