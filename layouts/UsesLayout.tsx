@@ -14,7 +14,7 @@ export default function UsesLayout({ children }: Props) {
           What I Use
         </h1>
         <span className="text-base text-gray-500 dark:text-gray-400 md:text-lg md:leading-7">
-          Inspired by{' '}
+          My tech stack is inspired by{' '}
           <Link
             href="https://wesbos.com/uses"
             className="underline-magical"

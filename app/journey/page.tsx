@@ -4,6 +4,7 @@ import { AiOutlineCode } from 'react-icons/ai';
 import { BsBuilding } from 'react-icons/bs';
 import { FaBlackTie, FaGraduationCap } from 'react-icons/fa';
 import { HiOutlineDatabase } from 'react-icons/hi';
+import { HiOutlineRocketLaunch } from 'react-icons/hi2';
 import { RiDoorClosedLine } from 'react-icons/ri';
 import { SiLeetcode } from 'react-icons/si';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
@@ -20,6 +21,7 @@ const iconMap: { [key: string]: JSX.Element } = {
   BsBuilding: <BsBuilding />,
   RiDoorClosedLine: <RiDoorClosedLine />,
   AiOutlineCode: <AiOutlineCode />,
+  HiOutlineRocketLaunch: <HiOutlineRocketLaunch />,
 };
 
 export const metadata = genPageMetadata({ title: 'Journey' });

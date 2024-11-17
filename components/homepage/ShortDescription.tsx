@@ -1,4 +1,4 @@
-import Twemoji from '../Twemoji';
+import Twemoji from '@/components/Twemoji';
 
 const ShortDescription = () => {
   return (
@@ -7,9 +7,15 @@ const ShortDescription = () => {
         Originally from <b className="font-medium">Simara</b>, my journey began
         with <b className="font-medium">Java</b> as my first programming
         language, and I now specialize in{' '}
-        <b className="font-medium">system design</b> and{' '}
-        <b className="font-medium">backend development</b>. I’m currently
-        working on a{' '}
+        <b className="font-medium">
+          system design, backend development, machine learning
+        </b>{' '}
+        and{' '}
+        <b className="font-medium">
+          {' '}
+          finance <Twemoji emoji="money-with-wings" />
+        </b>
+        . I’m currently working on a{' '}
         <b className="font-medium">Real-time Stock Analytics Platform</b> and
         primarily use <b className="font-medium">JavaScript</b> and{' '}
         <b className="font-medium">TypeScript</b>. As a proud{' '}

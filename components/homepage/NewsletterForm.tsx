@@ -27,7 +27,7 @@ const NewsletterForm = () => {
   useEffect(() => {
     const fetchTotalSubscribers = async () => {
       const result = await getConvertkitTotalSubscribers();
-      setTotalSubscribers(result!.totalSubscribers);
+      setTotalSubscribers(result?.totalSubscribers);
     };
 
     fetchTotalSubscribers();

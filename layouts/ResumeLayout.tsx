@@ -34,7 +34,7 @@ export default function AuthorLayout({ children, toc }: Props) {
           </div>
 
           <div className="hidden border-l border-gray-300 dark:border-gray-600 md:block" />
-          <div className="content prose prose-slate grow table-auto border-collapse space-y-5 text-justify leading-6 text-black dark:text-gray-200">
+          <div className="content prose grow table-auto border-collapse space-y-5 text-justify leading-6 dark:prose-invert">
             {children}
           </div>
         </main>

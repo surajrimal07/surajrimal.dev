@@ -85,7 +85,7 @@ const BuildWith = () => (
         width={60}
         height={20}
         unoptimized={true}
-        className="inline-block transition-opacity hover:opacity-80"
+        className="inline-block h-auto w-auto transition-opacity hover:opacity-80"
       />
     </Link>
   </div>

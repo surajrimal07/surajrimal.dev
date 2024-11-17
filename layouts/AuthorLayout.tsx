@@ -25,8 +25,15 @@ export default function AuthorLayout({ children }: Props) {
           <div className="flex flex-col items-center space-x-2 pt-8">
             <ProfileCard />
           </div>
-          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
+          <div className="prose max-w-none pb-2 pt-8 dark:prose-invert xl:col-span-2">
             {children}
+            <div className="-mt-10 flex justify-end">
+              <img
+                src="https://cdn.surajrimal.dev/image.png"
+                alt="Signature"
+                className="h-24 w-auto"
+              />
+            </div>
           </div>
         </div>
       </div>

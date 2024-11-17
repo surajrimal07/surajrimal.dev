@@ -30,7 +30,7 @@ interface PostWithViews {
 }
 
 function BlogPost({ post, views }: PostWithViews) {
-  const { slug, date, readingTime, title, summary, tags, language } = post;
+  const { slug, date, readingTime, title, summary, language } = post;
 
   return (
     <li key={slug} className="py-6">

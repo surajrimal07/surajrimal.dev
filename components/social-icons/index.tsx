@@ -11,6 +11,7 @@ import {
   AiOutlineTwitter,
 } from 'react-icons/ai';
 import { BsSearchHeartFill } from 'react-icons/bs';
+import { GiArtificialIntelligence } from 'react-icons/gi';
 import { IoIosMail } from 'react-icons/io';
 import {
   LuCandy,
@@ -35,14 +36,14 @@ import {
 import { SiBuymeacoffee, SiMicrosoftazure, SiPowershell } from 'react-icons/si';
 import { VscVscodeInsiders } from 'react-icons/vsc';
 
+import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-import Link from '../Link';
 
 const iconMap = {
   candy: LuCandy,
   buymeacoffee: SiBuymeacoffee,
+  agent: GiArtificialIntelligence,
   pizza: LuPizza,
   dashboard: LuLayoutDashboard,
   logout: LuLogOut,
