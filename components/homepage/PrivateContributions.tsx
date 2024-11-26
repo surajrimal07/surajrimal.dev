@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 
 import { TfiArrowTopRight } from 'react-icons/tfi';
 
+import Twemoji from '../Twemoji';
 import { LoadingSpinner } from '../ui/loadingSpinner';
 
 // Fetch SVG data with caching
@@ -105,11 +106,8 @@ export default function PrivateContributions() {
   return (
     <>
       <div className="space-y-2 py-1 md:space-y-5">
-        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
-          Private Contributions
-          <span role="img" aria-label="keyboard" className="ml-2">
-            ⌨️
-          </span>
+        <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
+          Private Contributions <Twemoji size="md" hexcode="2328" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
           <span className="mr-1">

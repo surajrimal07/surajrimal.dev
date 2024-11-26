@@ -28,7 +28,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
-import { clearChat } from '@/lib/chat';
+import { clearChat, saveChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
@@ -93,6 +93,7 @@ const Chatbox: React.FC = () => {
   const { chatEnabled, setChatEnabled } = useChatStore();
   const [newMessage, setNewMessage] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     isAuthorOnline,
@@ -108,7 +109,7 @@ const Chatbox: React.FC = () => {
   const [selectedMessageId, setSelectedMessageId] = useState(null);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
   }, []);
 
   const fetchInitialMessages = useCallback(async (email: string) => {
@@ -173,7 +174,7 @@ const Chatbox: React.FC = () => {
       const timer = setTimeout(() => {
         scrollToBottom();
         setNewMessage(false);
-      }, 500);
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [isCollapsed, messages, scrollToBottom]);
@@ -284,33 +285,71 @@ const Chatbox: React.FC = () => {
       };
       setMessages((prev) => [...prev, userMessage]);
       setInputMessage('');
-
+      setIsLoading(true);
+      //send user message to author on telegram
       await sendMessage(email, userMessage.text);
 
-      if (!isAuthorOnline && !isCollapsed) {
-        const botMessage: Message = {
-          id: Date.now() + 1,
-          text: 'Author is currently offline. He will reply as soon as possible.',
-          sender: 'bot',
-        };
-        setMessages((prev) => [...prev, botMessage]);
+      try {
+        const formattedHistory = messages.map((msg) => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.text,
+        }));
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            message: userMessage.text,
+            chatHistory: formattedHistory,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              text: data.error || 'Failed to send message',
+              sender: 'bot',
+            },
+          ]);
+        }
+        if (data.isAutomated) {
+          const aiMessage: Message = {
+            id: Date.now(),
+            text: data.message,
+            sender: 'bot',
+          };
+          setMessages((prev) => [...prev, aiMessage]);
+          await saveChat(email, aiMessage);
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
+        toast.error('Failed to send message', toastOptions);
+      } finally {
+        setIsLoading(false);
       }
     }
-  }, [inputMessage, email, isAuthorOnline, isCollapsed]);
+  }, [inputMessage, email, messages]);
 
   const handleHide = useCallback(() => {
     setChatEnabled(false);
   }, [setChatEnabled]);
 
-  const handleMessageClick = useCallback((id) => {
+  const handleMessageClick = useCallback((id: any) => {
     setSelectedMessageId((prevId) => (prevId === id ? null : id));
   }, []);
 
-  const shouldShowTimeSeparator = useCallback((currentMessage, nextMessage) => {
-    if (!nextMessage) return false;
-    const timeDiff = nextMessage.id - currentMessage.id;
-    return timeDiff > 600000;
-  }, []);
+  const shouldShowTimeSeparator = useCallback(
+    (currentMessage: Message, nextMessage: Message) => {
+      if (!nextMessage) return false;
+      const timeDiff = nextMessage.id - currentMessage.id;
+      return timeDiff > 600000;
+    },
+    []
+  );
 
   const handleDeleteChat = async () => {
     setEmail('');
@@ -333,10 +372,21 @@ const Chatbox: React.FC = () => {
     setShowOptions(false);
   };
 
+  const LoadingDots = () => (
+    <div className="flex items-center space-x-1 p-2">
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
+    </div>
+  );
+
   const renderMessages = useMemo(() => {
-    return messages.map((message, index) => (
-      <React.Fragment key={message.id}>
+    const renderedMessages = messages.map((message, index) => {
+      const messageKey = `message-${message.id}-${index}`;
+
+      return (
         <div
+          key={messageKey}
           className={`flex ${
             message.sender === 'user' ? 'justify-end' : 'justify-start'
           } mb-4`}
@@ -378,25 +428,53 @@ const Chatbox: React.FC = () => {
               }`}
             >
               {message.text}
+              {message.sender === 'bot' && (
+                <span className="ml-2 text-xs text-gray-300">
+                  (AI Response)
+                </span>
+              )}
             </div>
             <MessageTime
               time={formatMessageTime(message.id)}
               isVisible={selectedMessageId === message.id}
             />
           </div>
-        </div>
 
-        {shouldShowTimeSeparator(message, messages[index + 1]) && (
-          <TimeSeparator time={formatMessageTime(message.id)} />
-        )}
-      </React.Fragment>
-    ));
+          {index < messages.length - 1 &&
+            shouldShowTimeSeparator(message, messages[index + 1]) && (
+              <TimeSeparator
+                key={`separator-${messageKey}`}
+                time={formatMessageTime(message.id)}
+              />
+            )}
+        </div>
+      );
+    });
+
+    if (
+      isLoading &&
+      messages[messages.length - 1]?.sender === 'user' &&
+      !isAuthorOnline
+    ) {
+      renderedMessages.push(
+        <div key="loading-dots" className="mb-4 flex justify-start">
+          <div className="mr-2 flex h-8 w-8 items-center justify-center">
+            <span className="text-2xl">🤖</span>
+          </div>
+          <LoadingDots />
+        </div>
+      );
+    }
+
+    return renderedMessages;
   }, [
     messages,
+    isLoading,
+    isAuthorOnline,
     email,
-    handleMessageClick,
     selectedMessageId,
     shouldShowTimeSeparator,
+    handleMessageClick,
   ]);
 
   const renderCollapsedState = () => {

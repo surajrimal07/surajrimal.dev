@@ -13,7 +13,7 @@ const PopularTags = async () => {
     <div className="w-full">
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Popular Tags <Twemoji size="twa-xs" emoji="rocket" />
+          Popular Tags <Twemoji size="md" hexcode="1f680" />
         </h1>
         <p className="!mt-2 text-sm leading-7 text-gray-500 dark:text-gray-400 sm:text-base lg:text-lg">
           Popular tags feature the most widely discussed topics.

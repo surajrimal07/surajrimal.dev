@@ -1,10 +1,22 @@
-import { TwemojiProps } from '@/types/components';
-import kebabCase from '@/utils/kebabCase';
+import { EMOJI_SIZES, TwemojiProps } from '@/types/components';
 
-export function Twemoji({ emoji, size = 'twa-lg', className }: TwemojiProps) {
-  const cls = `inline-block twa ${size} twa-${kebabCase(emoji)} ${className || ''}`;
+export function Twemoji({ hexcode, size = 'md', className }: TwemojiProps) {
+  const baseUrl =
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg';
+  const emojiUrl = `${baseUrl}/${hexcode}.svg`;
 
-  return <i className={cls.trim()} />;
+  const finalSize = typeof size === 'string' ? EMOJI_SIZES[size] : size;
+
+  return (
+    <img
+      src={emojiUrl}
+      alt={`Emoji ${hexcode}`}
+      className={`inline-block ${className || ''}`}
+      width={finalSize}
+      height={finalSize}
+      loading="lazy"
+    />
+  );
 }
 
 export default Twemoji;

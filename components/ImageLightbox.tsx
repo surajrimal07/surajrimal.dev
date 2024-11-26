@@ -73,7 +73,7 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
             Esc
           </button>
           <button className="p-4" onClick={handleClose}>
-            <Twemoji emoji="cross-mark" />
+            <Twemoji hexcode="274c" size={'sm'} />
           </button>
         </div>
         <img

@@ -23,10 +23,9 @@ import '@/css/extra.css';
 import '@/css/prism.css';
 import '@/css/resume.css';
 import '@/css/tailwind.css';
-import '@/css/twemoji.css';
 import siteMetadata from '@/data/siteMetadata';
 
-const space_grotesk = Space_Grotesk({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-space-grotesk',
@@ -82,7 +81,7 @@ export default function RootLayout({
   return (
     <html
       lang={siteMetadata.language}
-      className={`${space_grotesk.variable} scroll-smooth`}
+      className={`${spaceGrotesk.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <link

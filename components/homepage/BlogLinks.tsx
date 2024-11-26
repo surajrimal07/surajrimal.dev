@@ -1,12 +1,13 @@
 import Link from '@/components/Link';
 import Twemoji from '@/components/Twemoji';
 import { HomepageLinks } from '@/data/homepageLinks';
+import { HomepageLink } from '@/types/components';
 
 const BlogLinks = () => {
-  const renderItem = (item, index) => {
+  const renderItem = (item: HomepageLink, index: number) => {
     const content = (
       <>
-        <Twemoji emoji={item.emoji} />
+        <Twemoji hexcode={item.emoji} size={'sm'} />
         <span data-umami-event={item.event} className="ml-1.5">
           {item.label}
         </span>

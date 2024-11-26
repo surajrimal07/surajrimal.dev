@@ -14,9 +14,21 @@ export interface ImageLightBoxProps extends Pick<NextImageProps, 'src'> {
   closeLightbox: () => void;
 }
 
+export const EMOJI_SIZES = {
+  xs: 16,
+  sm: 24,
+  md: 32,
+  lg: 48,
+  xl: 56,
+  xxl: 64,
+  xxxl: 72,
+} as const;
+
+export type EmojiSize = keyof typeof EMOJI_SIZES | number;
+
 export type TwemojiProps = {
-  emoji: string;
-  size?: string;
+  hexcode: string;
+  size?: EmojiSize;
   className?: string;
 };
 
@@ -38,4 +50,11 @@ export interface BlogMetaProps {
 export interface ViewCounterProps {
   slug: string;
   className?: string;
+}
+
+export interface HomepageLink {
+  emoji: string;
+  event: string;
+  label: string;
+  href?: string;
 }

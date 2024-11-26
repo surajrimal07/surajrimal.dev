@@ -28,14 +28,14 @@ const ProfileCardInfo = () => {
               href="https://younetmedia.com/"
               rel="noreferrer"
             >
-              YouNet Media
+              Zorsha Technologies
             </a>
           </p>
         </div>
         <div className="flex items-center">
           <MapPin name="map-pin" size={20} strokeWidth={1} />
           <p className="px-2">
-            Binh Thanh - Ho Chi Minh, <Twemoji emoji="viet-nam-vietnam-flag" />
+            Kathmandu, Nepal, <Twemoji hexcode="1f1f3-1f1f5" size={'sm'} />
           </p>
         </div>
         <div className="flex items-center">

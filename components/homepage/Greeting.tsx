@@ -24,7 +24,7 @@ const Greeting = () => {
         }}
         className="mb-0 mt-0 text-center text-4xl font-bold leading-relaxed text-neutral-700 dark:text-white md:text-4xl lg:text-5xl lg:leading-snug"
       >
-        <Twemoji size="twa-sm" emoji="waving hand" />
+        <Twemoji size={'xl'} hexcode="1f44b" />
         {/* <span className="wave">👋🏻</span>, */}
         Hey there! Discover about me and my{' '}
         <Highlight className="text-black dark:text-white">

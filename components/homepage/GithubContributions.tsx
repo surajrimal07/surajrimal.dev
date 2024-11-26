@@ -36,7 +36,7 @@ const GithubContributions = () => {
     <div className="w-full">
       <div className="w-full space-y-2 py-2 md:space-y-5">
         <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Github Contributions <Twemoji size="twa-sm" emoji="keyboard" />
+          Github Contributions <Twemoji size="md" hexcode="2328" />
         </h1>
         <p className="!mt-2 text-base leading-7 text-gray-500 dark:text-gray-400 sm:text-lg">
           <span className="mr-1">

@@ -13,19 +13,19 @@ const ShortDescription = () => {
         and{' '}
         <b className="font-medium">
           {' '}
-          finance <Twemoji emoji="money-with-wings" />
+          finance <Twemoji hexcode="1f4b8" size={'sm'} />
         </b>
         . I’m currently working on a{' '}
         <b className="font-medium">Real-time Stock Analytics Platform</b> and
         primarily use <b className="font-medium">JavaScript</b> and{' '}
         <b className="font-medium">TypeScript</b>. As a proud{' '}
-        <b className="font-medium">pet owner</b> of a <Twemoji emoji="dog" />, I
-        also have a passion for comics like <Twemoji emoji="the-flash" /> and{' '}
-        <Twemoji emoji="superman" />. Additionally, I enjoy sci-fi{' '}
-        <Twemoji emoji="movie-camera" /> films and have a strong desire for
-        travel <Twemoji emoji="sunrise" /> and adventure. I am committed to
-        continuous learning and personal growth{' '}
-        <Twemoji emoji="flexed-biceps" />, with a strong work ethic and
+        <b className="font-medium">pet owner</b> of a{' '}
+        <Twemoji hexcode="1f436" size={'sm'} />, I also have a passion for DC
+        and Marvel comics. Additionally, I enjoy sci-fi{' '}
+        <Twemoji hexcode="1f3a5" size={'sm'} /> films and have a strong desire
+        for travel <Twemoji hexcode="1f305" size={'sm'} /> and adventure. I am
+        committed to continuous learning and personal growth{' '}
+        <Twemoji hexcode="1f4aa" size={'sm'} />, with a strong work ethic and
         meticulous attention to detail.
       </p>
     </div>

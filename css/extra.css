@@ -73,39 +73,6 @@
   animation: slide-up 0.5s ease-out forwards;
 }
 
-/* Scrollbar CSS */
-
-/* For Chrome, Safari, and Edge */
-/* ::-webkit-scrollbar {
-  width: 10px;
-  background-color: transparent;
-
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #ef4444;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-button {
-  background-color: #ef4444;
-  display: block;
-}
-
-/* For Firefox */
-/* * {
-  scrollbar-width: thin;
-  scrollbar-color: #ef4444 transparent;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #f87171;
-} */
-
 /* WL comment custom css to fix inputfield overflow */
 .wl-comment .wl-editor {
   box-sizing: border-box;

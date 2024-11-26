@@ -132,7 +132,7 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Popular Posts
-          <Twemoji size="twa-sm" emoji="writing-hand" />
+          <Twemoji hexcode="270d" size={'md'} />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
           Here are some of my most popular posts sorted by engagement.
