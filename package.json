@@ -96,7 +96,6 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@svgr/webpack": "^8.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/react": "^18.3.11",
@@ -113,8 +112,6 @@
     "husky": "^9.1.6",
     "js-yaml": "4.1.0",
     "lint-staged": "^15.2.10",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-preset-env": "^10.1.1",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "typescript": "^5.6.3"

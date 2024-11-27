@@ -153,7 +153,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
               <button type="button" className="p-1" title="Share Article">
                 <ShareMenu
-                  url={`${process.env.NEXT_PUBLIC_URL}/${slug}`}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/${slug}`}
                   slug={slug}
                   shares={shareCounts}
                   ip={ip}
