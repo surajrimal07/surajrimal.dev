@@ -27,7 +27,9 @@ export default async function ProfileCard() {
     privateRepos: 0,
     lastCommitDate: '',
   };
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const userData: UserData = await useUserData();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const repos: Repository[] = await useRepoData();
 
   const processRepoData = (repos: Repository[]) => {

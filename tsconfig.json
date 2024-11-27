@@ -1,65 +1,44 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "allowJs": true,
+    "useDefineForClassFields": true,
     "skipLibCheck": true,
     "strict": false,
     "noImplicitAny": false,
     "strictFunctionTypes": false,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "composite": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node", //Cannot find module 'pliny/mdx-components' or its corresponding type declarations.ts(2307) //bundler //esnext
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/types/*": [
-        "types/*"
-      ],
-      "@/app/*": [
-        "app/*"
-      ],
-      "@/utils/*": [
-        "utils/*"
-      ],
-      "@/constants/*": [
-        "constants/*"
-      ],
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/data/*": [
-        "data/*"
-      ],
-      "@/layouts/*": [
-        "layouts/*"
-      ],
-      "@/libs/*": [
-        "libs/*"
-      ],
-      "@/css/*": [
-        "css/*"
-      ],
-      "contentlayer/generated": [
-        "./.contentlayer/generated"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "@/types/*": ["types/*"],
+      "@/app/*": ["app/*"],
+      "@/utils/*": ["utils/*"],
+      "@/constants/*": ["constants/*"],
+      "@/components/*": ["components/*"],
+      "@/data/*": ["data/*"],
+      "@/layouts/*": ["layouts/*"],
+      "@/libs/*": ["libs/*"],
+      "@/css/*": ["css/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "@/*": ["./*"]
     },
     "plugins": [
       {
@@ -79,7 +58,5 @@
     ".contentlayer/generated/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

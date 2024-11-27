@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import redis from '@/utils/redis';
 
 export default async function VisitorCounter() {
-  const headersList = headers();
+  const headersList = await headers();
   const ip =
     headersList.get('x-forwarded-for')?.split(',')[0] ||
     headersList.get('x-real-ip') ||

@@ -25,6 +25,8 @@ import '@/css/resume.css';
 import '@/css/tailwind.css';
 import siteMetadata from '@/data/siteMetadata';
 
+export const fetchCache = 'default-cache';
+
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',

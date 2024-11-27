@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { EMOJI_SIZES, TwemojiProps } from '@/types/components';
 
 export function Twemoji({ hexcode, size = 'md', className }: TwemojiProps) {
@@ -8,9 +10,10 @@ export function Twemoji({ hexcode, size = 'md', className }: TwemojiProps) {
   const finalSize = typeof size === 'string' ? EMOJI_SIZES[size] : size;
 
   return (
-    <img
+    <Image
       src={emojiUrl}
       alt={`Emoji ${hexcode}`}
+      unoptimized={true}
       className={`inline-block ${className || ''}`}
       width={finalSize}
       height={finalSize}

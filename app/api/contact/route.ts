@@ -6,7 +6,7 @@ import { Tables } from '@/types/database';
 import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const sessionId = getSessionId(req);
 
   const data: Tables<'contacts'> = await req.json();
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(req: NextRequest) {
-  const supabase = createClient();
+export async function GET() {
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { responded, responded_at } = await req.json();
@@ -112,7 +112,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const url = new URL(req.url);

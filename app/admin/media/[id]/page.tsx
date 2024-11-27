@@ -12,11 +12,10 @@ import { getMedia } from '@/lib/media';
 
 import CertificationForm from '../media-form';
 
-export default async function EditMedia({
-  params,
-}: {
-  params: { id: string };
+export default async function EditMedia(props: {
+  params: Promise<{ id: string }>;
 }) {
+  const params = await props.params;
   const medias = await getMedia();
   const media = medias.find((c) => c.id === parseInt(params.id));
 

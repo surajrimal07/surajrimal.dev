@@ -13,14 +13,9 @@ interface PreProps {
 
 const Pre = ({ children }: PreProps) => {
   const textInput = useRef<HTMLDivElement>(null);
-  const [hovered, setHovered] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const onEnter = () => {
-    setHovered(true);
-  };
   const onExit = () => {
-    setHovered(false);
     setCopied(false);
   };
   const onCopy = () => {
@@ -43,7 +38,6 @@ const Pre = ({ children }: PreProps) => {
   return (
     <div
       ref={textInput}
-      onMouseEnter={onEnter}
       onMouseLeave={onExit}
       className="relative rounded-lg bg-black"
     >

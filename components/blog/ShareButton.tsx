@@ -28,7 +28,7 @@ export default function ShareMenu({
   slug,
   ip,
   shares,
-  onShareComplete = (shares: BlogShares) => {},
+  onShareComplete = () => {},
 }: ShareMenuProps) {
   const handleShareClick = async (
     type: ShareType,

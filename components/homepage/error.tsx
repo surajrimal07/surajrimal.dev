@@ -18,7 +18,6 @@ function ContributionError({ reset }: { reset: () => void }) {
 }
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };

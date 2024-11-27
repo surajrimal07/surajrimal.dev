@@ -11,14 +11,14 @@ import WalineComment from '@/components/WalineComment';
 import Reactions from '@/components/blog/PageReactions';
 import { BlogPostProps } from '@/types/bloglist';
 
-export default function PostMinimal({
+export default async function PostMinimal({
   content,
   next,
   prev,
   children,
 }: BlogPostProps) {
   const { title, images, slug } = content;
-  const headersList = headers();
+  const headersList = await headers();
   const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
   const slugNormalized = `blog/${slug}`;
 

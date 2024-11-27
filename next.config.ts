@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
-  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://stats.surajrimal.dev https://www.gravatar.com https://seccdn.libravatar.org https://cdn.surajrimal.dev https://cdn.jsdelivr.net;
+  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://*.supabase.co https://stats.surajrimal.dev https://www.gravatar.com https://seccdn.libravatar.org https://cdn.surajrimal.dev https://cdn.jsdelivr.net;
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
@@ -59,16 +59,23 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer];
   return plugins.reduce((acc, next) => next(acc), {
+    experimental: {
+      staleTimes: {
+        dynamic: 30,
+        static: 180,
+      },
+      // turbo: {
+      //   rules: {
+      //     '*.svg': {
+      //       loaders: ['@svgr/webpack'],
+      //       as: '*.js',
+      //     },
+      //   },
+      // },
+    },
     compiler: {
       removeConsole: process.env.NODE_ENV === 'production',
     },
-    // compiler: {
-    //   removeConsole: process.env.NODE_ENV === 'production'
-    //     ? {
-    //         exclude: ['error'],
-    //       }
-    //     : false,
-    // },
     reactStrictMode: false,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     transpilePackages: ['lucide-react'],
@@ -90,19 +97,11 @@ module.exports = () => {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'picsum.photos',
-        },
-        {
-          protocol: 'https',
           hostname: 'avatars.githubusercontent.com',
         },
         {
           protocol: 'https',
           hostname: 'pbs.twimg.com',
-        },
-        {
-          protocol: 'https',
-          hostname: 'i.scdn.co',
         },
         {
           protocol: 'https',
@@ -132,12 +131,15 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'stats.surajrimal.dev',
         },
+        {
+          protocol: 'https',
+          hostname: 'cdn.surajrimal.dev',
+        },
       ],
       unoptimized,
     },
     output,
     basePath,
-    swcMinify: true,
     async rewrites() {
       return [
         {

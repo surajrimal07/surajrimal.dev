@@ -42,7 +42,6 @@ const TOCInline = ({
   exclude = '',
   ulClassName = '',
   liClassName = '',
-  rightAlign = false,
 }: TOCInlineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ReactNode } from 'react';
 
 import type { Authors } from 'contentlayer/generated';
@@ -27,13 +28,13 @@ export default function AuthorLayout({ children }: Props) {
           </div>
           <div className="prose max-w-none pb-2 pt-8 dark:prose-invert xl:col-span-2">
             {children}
-            <div className="-mt-10 flex justify-end">
-              <img
-                src="https://cdn.surajrimal.dev/image.png"
-                alt="Signature"
-                className="h-24 w-auto"
-              />
-            </div>
+            <Image
+              src="https://cdn.surajrimal.dev/image.png"
+              alt="Signature"
+              width={96}
+              height={96}
+              className="h-24 w-auto"
+            />
           </div>
         </div>
       </div>

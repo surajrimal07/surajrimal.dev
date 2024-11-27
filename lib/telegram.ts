@@ -7,68 +7,67 @@ import { clearChat, loadChat, saveChat } from '@/lib/chat';
 import { Message as ChatMessage } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 const channelId = process.env.TELEGRAM_CHANNEL_ID!;
-
+let bot: Telegraf | null = null;
 let isRunning = false;
 
 function isTextMessage(message: any): message is Message.TextMessage {
   return 'text' in message;
 }
 
-bot.on('message', async (ctx) => {
-  await updateAuthorStatus();
-
-  if (
-    'reply_to_message' in ctx.message &&
-    isTextMessage(ctx.message.reply_to_message)
-  ) {
-    const [email] = ctx.message.reply_to_message.text.split(' says ');
-    const newMessage: ChatMessage = {
-      id: Date.now(),
-      text: isTextMessage(ctx.message) ? ctx.message.text : '',
-      sender: 'author',
-    };
-
-    await saveChat(email, newMessage);
-  }
-});
-
-async function launchBot() {
-  if (isRunning) {
-    console.error('Bot is already running.');
+export async function launchBot() {
+  if (isRunning || bot) {
+    console.log('Bot is already running');
     return;
   }
 
-  isRunning = true;
-
   try {
+    if (!bot) {
+      bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
+
+      bot.on('message', async (ctx) => {
+        await updateAuthorStatus();
+
+        if (
+          'reply_to_message' in ctx.message &&
+          isTextMessage(ctx.message.reply_to_message)
+        ) {
+          const [email] = ctx.message.reply_to_message.text.split(' says ');
+          const newMessage: ChatMessage = {
+            id: Date.now(),
+            text: isTextMessage(ctx.message) ? ctx.message.text : '',
+            sender: 'author',
+          };
+
+          await saveChat(email, newMessage);
+        }
+      });
+    }
+
     await bot.launch();
+    isRunning = true;
     console.log('Telegram Bot has been launched successfully.');
+
+    process.once('SIGINT', () => bot?.stop('SIGINT'));
+    process.once('SIGTERM', () => bot?.stop('SIGTERM'));
   } catch (error) {
     console.error('Failed to launch the bot:', error);
     isRunning = false;
+    bot = null;
   }
-
-  process.on('SIGINT', async () => {
-    await bot.stop('SIGINT');
-    isRunning = false;
-    console.log('Bot stopped gracefully.');
-    process.exit(0);
-  });
-
-  process.on('SIGTERM', async () => {
-    await bot.stop('SIGTERM');
-    isRunning = false;
-    console.log('Bot stopped gracefully.');
-    process.exit(0);
-  });
 }
 
-launchBot();
+export async function stopBot() {
+  if (bot && isRunning) {
+    await bot.stop();
+    isRunning = false;
+    bot = null;
+    console.log('Bot stopped');
+  }
+}
 
 export async function sendMessage(email: string, message: string) {
-  await bot.telegram.sendMessage(channelId, `${email} says ${message}`);
+  await bot!.telegram.sendMessage(channelId, `${email} says ${message}`);
   const newMessage: ChatMessage = {
     id: Date.now(),
     text: message,

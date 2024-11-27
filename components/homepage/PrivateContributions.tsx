@@ -56,11 +56,14 @@ function modifySvg(svgString: string): string {
   return svgString
     .replace(/<image[^>]+xlink:href="[^"]*logo-gh\.svg"[^>]*>/, '')
     .replace(/(<style[^>]*>[\s\S]*?<\/style>)/, (styleBlock) => {
-      return styleBlock.replace(/text\s?{([^}]*)}/, (textMatch, properties) => {
-        return `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`;
-      });
+      return styleBlock.replace(
+        /text\s?{([^}]*)}/,
+        (_textMatch, properties) => {
+          return `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`;
+        }
+      );
     })
-    .replace(/fill:\s?#([A-Fa-f0-9]{6})/g, (match, color) => {
+    .replace(/fill:\s?#([A-Fa-f0-9]{6})/g, (_match, color) => {
       return `fill: ${color === 'DCE3E1' ? '#171b21' : `#${color}`}`;
     })
     .replace(

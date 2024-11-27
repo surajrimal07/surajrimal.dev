@@ -22,7 +22,10 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page(props: {
+  params: Promise<{ slug: string[] }>;
+}) {
+  const params = await props.params;
   const slug = decodeURI(params.slug.join('/'));
   const sortedCoreContents = allCoreContent(sortPosts(allSnippets));
 

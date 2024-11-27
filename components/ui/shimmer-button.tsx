@@ -61,7 +61,7 @@ export function HoverBorderGradient({
   return (
     <Tag
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onMouseEnter={(event: React.MouseEvent<HTMLDivElement>) => {
+      onMouseEnter={() => {
         setHovered(true);
       }}
       onMouseLeave={() => setHovered(false)}

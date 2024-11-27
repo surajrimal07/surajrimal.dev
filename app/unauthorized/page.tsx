@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Unauthorized() {
   return (
     <div className="flex items-center justify-center">
@@ -9,13 +11,12 @@ export default function Unauthorized() {
           You are not authorized to navigate to this page as you don't have the
           necessary permissions.
         </p>
-
-        <a
+        <Link
           href="/"
           className="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-white transition duration-300 hover:bg-primary-700"
         >
           Go Back Home
-        </a>
+        </Link>
       </div>
     </div>
   );

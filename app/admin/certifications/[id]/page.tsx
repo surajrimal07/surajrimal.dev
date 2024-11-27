@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { notFound, useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { use, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Check, Maximize2, X, ZoomIn } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -49,11 +49,10 @@ type FormData = Omit<
   'id' | 'created_at' | 'updated_at'
 >;
 
-export default function CertificationPage({
-  params,
-}: {
-  params: { id: string };
+export default function CertificationPage(props: {
+  params: Promise<{ id: string }>;
 }) {
+  const params = use(props.params);
   const router = useRouter();
   const [certification, setCertification] =
     useState<Tables<'certifications'> | null>(null);

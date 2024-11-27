@@ -23,7 +23,7 @@ const getURL = () => {
 export async function magiclinklogin(
   email: string
 ): Promise<{ error?: string }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email,
@@ -37,7 +37,7 @@ export async function magiclinklogin(
 }
 
 export async function AuthSignIn(provider: Provider) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider,

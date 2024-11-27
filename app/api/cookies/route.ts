@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
 export async function POST() {
-  cookies().set('cookie_consent', 'accepted', {
+  (await cookies()).set('cookie_consent', 'accepted', {
     secure: true,
     httpOnly: true,
     path: '/',
@@ -17,7 +17,7 @@ export async function POST() {
 }
 
 export async function GET() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const consentCookie = cookieStore.get('cookie_consent');
 
   const isConsentAccepted = consentCookie?.value === 'accepted';
@@ -28,7 +28,7 @@ export async function GET() {
 }
 
 export async function DELETE() {
-  cookies().delete('cookie_consent');
+  (await cookies()).delete('cookie_consent');
 
   return NextResponse.json({
     message: 'Cookie consent cleared',

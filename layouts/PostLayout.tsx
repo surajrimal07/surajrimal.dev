@@ -20,7 +20,7 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 };
 
-export default function PostLayout({
+export default async function PostLayout({
   content,
   authorDetails,
   next,
@@ -29,7 +29,7 @@ export default function PostLayout({
   children,
 }: BlogPostProps) {
   const { slug, readingTime, date, title, tags } = content;
-  const headersList = headers();
+  const headersList = await headers();
   const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
   const slugNormalized = `blog/${slug}`;
 

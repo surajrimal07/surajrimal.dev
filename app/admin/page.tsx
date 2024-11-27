@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function AdminDashboard() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data } = await supabase.auth.getUser();
 

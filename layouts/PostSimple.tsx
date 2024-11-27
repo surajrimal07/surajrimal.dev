@@ -12,7 +12,7 @@ import BlogTags from '@/components/blog/BlogTags';
 import Reactions from '@/components/blog/PageReactions';
 import { BlogPostProps } from '@/types/bloglist';
 
-export default function PostLayout({
+export default async function PostLayout({
   content,
   authorDetails,
   next,
@@ -21,7 +21,7 @@ export default function PostLayout({
   children,
 }: BlogPostProps) {
   const { slug, date, title, tags, readingTime, thumbnail } = content;
-  const headersList = headers();
+  const headersList = await headers();
   const ip = headersList.get('x-forwarded-for') || '121.0.0.1';
   const slugNormalized = `blog/${slug}`;
 

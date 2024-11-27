@@ -25,11 +25,10 @@ const layouts = {
   PostBanner,
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] };
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata | undefined> {
+  const params = await props.params;
   const slug = decodeURI(params.slug.join('/'));
   const post = allBlogs.find((p) => p.slug === slug);
   const authorList = post?.authors || ['default'];
@@ -84,7 +83,10 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page(props: {
+  params: Promise<{ slug: string[] }>;
+}) {
+  const params = await props.params;
   const slug = decodeURI(params.slug.join('/'));
   // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs));
