@@ -91,7 +91,7 @@ const NewsletterForm = () => {
       You have already joined newsletter.{' '}
       <button
         onClick={handleUnsubscribe}
-        className="cursor-pointer text-primary-500 underline hover:text-primary-600 dark:hover:text-primary-400"
+        className="cursor-pointer text-primary-300 underline hover:text-primary-600 dark:hover:text-primary-400"
         type="button"
       >
         Unsubscribe

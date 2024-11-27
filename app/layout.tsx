@@ -26,6 +26,7 @@ import '@/css/tailwind.css';
 import siteMetadata from '@/data/siteMetadata';
 
 export const fetchCache = 'default-cache';
+export const dynamic = 'auto';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],

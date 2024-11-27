@@ -543,6 +543,7 @@ const Chatbox: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
+              aria-label="Disable the chat"
               onClick={(e) => {
                 e.stopPropagation();
                 handleHide();

@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { Suspense, memo } from 'react';
 
 import { TfiArrowTopRight } from 'react-icons/tfi';
 
 import Twemoji from '../Twemoji';
 import { LoadingSpinner } from '../ui/loadingSpinner';
 
-// Fetch SVG data with caching
+// Separate data fetching functions
 async function fetchSvg() {
   const res = await fetch(
     'https://wakapi.dev/api/activity/chart/surajrimal.svg',
@@ -20,7 +20,6 @@ async function fetchSvg() {
   return res.text();
 }
 
-// Fetch badge data with caching and convert to base64
 async function fetchBadges() {
   const badgeUrls = [
     'https://wakapi.dev/api/badge/surajrimal/interval:today?label=Today',
@@ -49,8 +48,8 @@ async function fetchBadges() {
   return badgeData;
 }
 
-// Modify SVG
-function modifySvg(svgString: string): string {
+// Memoized and pure SVG modification function
+const modifySvg = (svgString: string): string => {
   if (!svgString) return '';
 
   return svgString
@@ -70,8 +69,25 @@ function modifySvg(svgString: string): string {
       /<svg /,
       '<svg viewBox="0 0 1219 186" width="100%" height="100%" '
     );
-}
+};
 
+// Memoized Badge Component
+const BadgeItem = memo(
+  ({ badge }: { badge: { dataUrl: string; label: string } }) => (
+    <Image
+      src={badge.dataUrl}
+      alt={`${badge.label} contributions`}
+      width={150}
+      height={30}
+      unoptimized
+      className="h-auto w-auto max-w-[80px] sm:max-w-none"
+    />
+  )
+);
+
+BadgeItem.displayName = 'BadgeItem';
+
+// Server Component for Contribution Content
 async function ContributionContent() {
   const [svgString, badgeData] = await Promise.all([fetchSvg(), fetchBadges()]);
 
@@ -83,28 +99,22 @@ async function ContributionContent() {
 
   return (
     <div className="pt-3">
-      <div dangerouslySetInnerHTML={{ __html: modifiedSvg }} />
-      <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
-        {badgeData?.length > 0 && (
-          <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
-            {badgeData.map((badge, index) => (
-              <Image
-                key={index}
-                src={badge.dataUrl}
-                alt={`${badge.label} contributions`}
-                width={150}
-                height={30}
-                unoptimized
-                className="h-auto w-auto max-w-[80px] sm:max-w-none"
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: modifiedSvg }}
+        className="max-w-full overflow-hidden"
+      />
+      {badgeData?.length > 0 && (
+        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
+          {badgeData.map((badge, index) => (
+            <BadgeItem key={`badge-${index}`} badge={badge} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
+// Main Component
 export default function PrivateContributions() {
   return (
     <>

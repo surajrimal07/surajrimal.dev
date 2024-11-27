@@ -1,8 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-
-import * as Sentry from '@sentry/nextjs';
 import { AlertCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -13,10 +10,6 @@ interface ErrorProps {
 }
 
 export default function Error({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
-
   return (
     <div className="flex h-[50vh] flex-col items-center justify-center gap-4">
       <div className="flex items-center gap-2 text-destructive">
@@ -30,9 +23,7 @@ export default function Error({ error, reset }: ErrorProps) {
           ? error.message
           : 'Error has been reported, you can try reloading page again.'}
       </p>
-      <Button onClick={reset} variant="outline">
-        Try reloading
-      </Button>
+      <Button onClick={reset}>Try reloading</Button>
     </div>
   );
 }

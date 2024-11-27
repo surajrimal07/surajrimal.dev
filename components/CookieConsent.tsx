@@ -42,39 +42,37 @@ export default function CookieConsent() {
         >
           <Card className="border-none bg-gray-900 shadow-lg">
             <CardContent className="p-4">
-              <h3 className="text-lg font-medium text-gray-100">
-                Cookie Consent
-              </h3>
-              <p className="mb-2 text-sm text-gray-300">
+              <h3 className="text-lg font-medium text-white">Cookie Consent</h3>
+              <p className="mb-2 text-sm text-gray-200">
                 We use cookies to enhance your experience. This site uses{' '}
                 <Link
                   href="https://supabase.com"
-                  className="text-red-400 hover:text-red-300"
+                  className="text-red-300 underline hover:text-red-200"
                 >
                   Supabase <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
                 for data storage{' '}
                 <Link
                   href="https://vercel.com/analytics"
-                  className="text-red-400 hover:text-red-300"
+                  className="text-red-300 underline hover:text-red-200"
                 >
                   Vercel Analytics <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
                 for performance monitoring{' '}
                 <Link
                   href="https://umami.is"
-                  className="text-red-400 hover:text-red-300"
+                  className="text-red-300 underline hover:text-red-200"
                 >
                   Umami <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
                 for website statistics.{' '}
               </p>
               <div className="mt-2 flex items-center justify-between">
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-300">
                   By accepting, you agree to our{' '}
                   <Link
                     href="/privacy"
-                    className="text-red-400 hover:text-red-300"
+                    className="text-red-300 underline hover:text-red-200"
                   >
                     Privacy Policy
                   </Link>
@@ -82,7 +80,7 @@ export default function CookieConsent() {
                 <Button
                   onClick={handleAccept}
                   size="sm"
-                  className="ml-4 bg-red-500 text-white hover:bg-red-600"
+                  className="ml-4 bg-red-600 text-white hover:bg-red-700"
                 >
                   Accept
                 </Button>

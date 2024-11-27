@@ -11,7 +11,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tooltip from '@/components/ui/tooltip';
@@ -67,8 +66,10 @@ export function Technologies() {
         <TabsList className="h-27 grid w-full grid-cols-2 gap-2 md:h-9 md:grid-cols-5 md:gap-1 lg:grid-cols-5 xl:gap-2">
           {categories.map((category, index) => (
             <TabsTrigger
-              aria-label={`Tab for ${category}`}
-              aria-selected={index === tabIndex}
+              role="tab"
+              id={`tab-${category}`}
+              aria-controls={`panel-${category}`}
+              aria-selected={index === tabIndex ? 'true' : 'false'}
               key={`trigger-${category}`}
               value={category}
               className={`${index === tabIndex ? 'bg-primary-500/60 text-white dark:bg-primary-500/60' : 'bg-gray text-white-900'} hover:bg-gray-700/40 hover:text-white hover:dark:bg-gray-700/40`}
@@ -78,10 +79,18 @@ export function Technologies() {
           ))}
         </TabsList>
         {categories.map((category) => (
-          <TabsContent key={category} value={category}>
+          <TabsContent
+            id={`panel-${category}`}
+            key={category}
+            value={category}
+            role="tabpanel"
+            aria-labelledby={`tab-${category}`}
+          >
             <Card className="w-full">
               <CardHeader>
-                <CardTitle>{category}</CardTitle>
+                <div className="font-semibold leading-none tracking-tight">
+                  {category}
+                </div>
                 {category === 'Most Used' && (
                   <CardDescription>
                     These are my most used technologies.
@@ -94,6 +103,8 @@ export function Technologies() {
                     <Tooltip key={skill.id} content={skill.name}>
                       <Button
                         aria-label={skill.name}
+                        role="button"
+                        type="button"
                         className={`relative h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
                         variant="outline"
                       >
@@ -106,8 +117,9 @@ export function Technologies() {
                         </Suspense>
                         {skill.level === 'advanced' && (
                           <span
-                            className="absolute -right-1 -top-1 scale-75 text-xs"
+                            role="status"
                             aria-label="Advanced skill"
+                            className="absolute -right-1 -top-1 scale-75 text-xs"
                           >
                             <Twemoji size="xs" hexcode="1f525" />
                           </span>
