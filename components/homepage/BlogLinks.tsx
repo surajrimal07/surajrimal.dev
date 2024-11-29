@@ -7,7 +7,7 @@ const BlogLinks = () => {
   const renderItem = (item: HomepageLink, index: number) => {
     const content = (
       <>
-        <Twemoji hexcode={item.emoji} size={'sm'} />
+        <Twemoji name={item.emoji} size={'sm'} />
         <span data-umami-event={item.event} className="ml-1.5">
           {item.label}
         </span>

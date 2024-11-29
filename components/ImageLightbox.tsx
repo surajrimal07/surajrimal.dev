@@ -8,7 +8,7 @@ import React, {
 
 import { useTheme } from 'next-themes';
 
-import { Twemoji } from '@/components/Twemoji';
+import Twemoji from '@/components/Twemoji';
 import type { ImageLightBoxProps } from '@/types/components';
 
 const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
@@ -73,7 +73,7 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
             Esc
           </button>
           <button className="p-4" onClick={handleClose}>
-            <Twemoji hexcode="274c" size={'sm'} />
+            <Twemoji name="cross" size={'sm'} />
           </button>
         </div>
         <img

@@ -1,3 +1,5 @@
+import MillionLint from '@million/lint';
+
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { withContentlayer } = require('next-contentlayer2');
 
@@ -14,7 +16,6 @@ const ContentSecurityPolicy = `
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;
-  frame-src https://challenges.cloudflare.com;
   object-src 'self' data:;
 `;
 
@@ -56,7 +57,10 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
-module.exports = () => {
+module.exports = MillionLint.next({
+  enabled: true,
+  rsc: true,
+})(() => {
   const plugins = [withContentlayer, withBundleAnalyzer];
   return plugins.reduce((acc, next) => next(acc), {
     experimental: {
@@ -178,4 +182,4 @@ module.exports = () => {
       return config;
     },
   });
-};
+});

@@ -7,12 +7,25 @@ import { clearChat, loadChat, saveChat } from '@/lib/chat';
 import { Message as ChatMessage } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
+const botToken = process.env.TELEGRAM_BOT_TOKEN!;
 const channelId = process.env.TELEGRAM_CHANNEL_ID!;
+
+// Initialize bot globally
 let bot: Telegraf | null = null;
 let isRunning = false;
 
 function isTextMessage(message: any): message is Message.TextMessage {
   return 'text' in message;
+}
+
+// Initialize bot function
+export async function initBot() {
+  if (!botToken) {
+    throw new Error('TELEGRAM_BOT_TOKEN is not defined');
+  }
+
+  bot = new Telegraf(botToken);
+  await bot.launch();
 }
 
 export async function launchBot() {
@@ -66,14 +79,17 @@ export async function stopBot() {
   }
 }
 
+// Send message with error handling
 export async function sendMessage(email: string, message: string) {
-  await bot!.telegram.sendMessage(channelId, `${email} says ${message}`);
-  const newMessage: ChatMessage = {
-    id: Date.now(),
-    text: message,
-    sender: 'user',
-  };
-  await saveChat(email, newMessage);
+  if (!bot) {
+    await initBot();
+  }
+
+  try {
+    await bot!.telegram.sendMessage(channelId, `${email} says ${message}`);
+  } catch (error) {
+    console.error('Failed to send Telegram message:', error);
+  }
 }
 
 async function updateAuthorStatus() {
@@ -86,5 +102,9 @@ async function updateAuthorStatus() {
     console.error('Failed to update author status:', error);
   }
 }
+
+// Cleanup on exit
+process.once('SIGINT', () => bot?.stop('SIGINT'));
+process.once('SIGTERM', () => bot?.stop('SIGTERM'));
 
 export { clearChat, loadChat, updateAuthorStatus };

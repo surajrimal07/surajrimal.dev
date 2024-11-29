@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, memo, useEffect, useRef, useState } from 'react';
 
 import {
   Dialog,
@@ -146,4 +146,4 @@ const MobileNav = () => {
   );
 };
 
-export default MobileNav;
+export default memo(MobileNav);

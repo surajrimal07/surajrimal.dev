@@ -1,126 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense, memo } from 'react';
 
 import { TfiArrowTopRight } from 'react-icons/tfi';
 
-import Twemoji from '../Twemoji';
-import { LoadingSpinner } from '../ui/loadingSpinner';
+import Twemoji from '@/components/Twemoji';
 
-// Separate data fetching functions
-async function fetchSvg() {
-  const res = await fetch(
-    'https://wakapi.dev/api/activity/chart/surajrimal.svg',
-    {
-      next: {
-        revalidate: 7200,
-      },
-    }
-  );
-  return res.text();
-}
+const BADGES = [
+  { path: '/contributions/badges/today.svg', label: 'Today' },
+  { path: '/contributions/badges/week.svg', label: 'Week' },
+  { path: '/contributions/badges/30_days.svg', label: 'Month' },
+  { path: '/contributions/badges/last_12_months.svg', label: 'Year' },
+  { path: '/contributions/badges/all_time.svg', label: 'All Time' },
+] as const;
 
-async function fetchBadges() {
-  const badgeUrls = [
-    'https://wakapi.dev/api/badge/surajrimal/interval:today?label=Today',
-    'https://wakapi.dev/api/badge/surajrimal/interval:week?label=Week',
-    'https://wakapi.dev/api/badge/surajrimal/interval:30_days?label=Month',
-    'https://wakapi.dev/api/badge/surajrimal/interval:last_12_months?label=Year',
-    'https://wakapi.dev/api/badge/surajrimal/interval:all_time?label=All Time',
-  ];
-
-  const badgeData = await Promise.all(
-    badgeUrls.map(async (url) => {
-      const res = await fetch(url, {
-        next: {
-          revalidate: 7200,
-        },
-      });
-      const svg = await res.text();
-      const base64 = Buffer.from(svg).toString('base64');
-      const dataUrl = `data:image/svg+xml;base64,${base64}`;
-      return {
-        dataUrl,
-        label: url.split('?label=')[1],
-      };
-    })
-  );
-  return badgeData;
-}
-
-// Memoized and pure SVG modification function
-const modifySvg = (svgString: string): string => {
-  if (!svgString) return '';
-
-  return svgString
-    .replace(/<image[^>]+xlink:href="[^"]*logo-gh\.svg"[^>]*>/, '')
-    .replace(/(<style[^>]*>[\s\S]*?<\/style>)/, (styleBlock) => {
-      return styleBlock.replace(
-        /text\s?{([^}]*)}/,
-        (_textMatch, properties) => {
-          return `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`;
-        }
-      );
-    })
-    .replace(/fill:\s?#([A-Fa-f0-9]{6})/g, (_match, color) => {
-      return `fill: ${color === 'DCE3E1' ? '#171b21' : `#${color}`}`;
-    })
-    .replace(
-      /<svg /,
-      '<svg viewBox="0 0 1219 186" width="100%" height="100%" '
-    );
-};
-
-// Memoized Badge Component
-const BadgeItem = memo(
-  ({ badge }: { badge: { dataUrl: string; label: string } }) => (
-    <Image
-      src={badge.dataUrl}
-      alt={`${badge.label} contributions`}
-      width={150}
-      height={30}
-      unoptimized
-      className="h-auto w-auto max-w-[80px] sm:max-w-none"
-    />
-  )
-);
-
-BadgeItem.displayName = 'BadgeItem';
-
-// Server Component for Contribution Content
-async function ContributionContent() {
-  const [svgString, badgeData] = await Promise.all([fetchSvg(), fetchBadges()]);
-
-  if (!svgString) {
-    throw new Error('Failed to load contribution data');
-  }
-
-  const modifiedSvg = modifySvg(svgString);
-
-  return (
-    <div className="pt-3">
-      <div
-        dangerouslySetInnerHTML={{ __html: modifiedSvg }}
-        className="max-w-full overflow-hidden"
-      />
-      {badgeData?.length > 0 && (
-        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
-          {badgeData.map((badge, index) => (
-            <BadgeItem key={`badge-${index}`} badge={badge} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Main Component
 export default function PrivateContributions() {
   return (
     <>
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Private Contributions <Twemoji size="md" hexcode="2328" />
+          Private Contributions <Twemoji size="md" name="keyboard" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
           <span className="mr-1">
@@ -136,15 +34,31 @@ export default function PrivateContributions() {
           .
         </p>
       </div>
-      <Suspense
-        fallback={
-          <div className="flex min-h-[300px] items-center justify-center rounded-lg border border-dashed border-gray-300 dark:border-gray-800">
-            <LoadingSpinner />
-          </div>
-        }
-      >
-        <ContributionContent />
-      </Suspense>
+      <div className="pt-3">
+        <div className="max-w-full overflow-hidden">
+          <Image
+            src="/contributions/graph/contributions.png"
+            alt="Contribution graph"
+            width={1219}
+            height={186}
+            className="h-full w-full"
+            unoptimized={true}
+          />
+        </div>
+        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
+          {BADGES.map((badge) => (
+            <Image
+              key={badge.label}
+              src={badge.path}
+              alt={`${badge.label} contributions`}
+              unoptimized={true}
+              width={150}
+              height={30}
+              className="h-auto w-auto max-w-[80px] sm:max-w-none"
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 }

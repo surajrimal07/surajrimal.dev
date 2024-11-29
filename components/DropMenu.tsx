@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { motion } from 'framer-motion';
 import {
@@ -82,7 +82,26 @@ export function UserDropdownMenu() {
     initialize();
   }, [initialize]);
 
-  const handleSignOut = async () => {
+  const memoizedAvatar = useMemo(
+    () => (
+      <Avatar>
+        {isAuthLoading ? (
+          <div className="flex h-full w-full items-center justify-center">
+            <LoaderCircle className="h-6 w-6 animate-spin text-white" />
+          </div>
+        ) : avatarUrl ? (
+          <AvatarImage src={avatarUrl} alt="User avatar" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <UserIcon size={22} />
+          </div>
+        )}
+      </Avatar>
+    ),
+    [isAuthLoading, avatarUrl]
+  );
+
+  const handleSignOut = useCallback(async () => {
     if (user) {
       try {
         const { shouldRedirect } = await signOut(currentPath);
@@ -100,43 +119,19 @@ export function UserDropdownMenu() {
     } else {
       router.push('/auth');
     }
-  };
+  }, [user, signOut, currentPath, router]);
 
-  const handleDropdownChange = (open: boolean) => {
-    if (open && isSoundEnabled) {
-      playSound();
-    }
-  };
+  const handleDropdownChange = useCallback(
+    (open: boolean) => {
+      if (open && isSoundEnabled) {
+        playSound();
+      }
+    },
+    [isSoundEnabled, playSound]
+  );
 
-  return (
-    <DropdownMenu modal={false} onOpenChange={handleDropdownChange}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          aria-label="User dropdown menu"
-          className="relative ml-2 h-9 w-9 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
-        >
-          <motion.div
-            whileHover={{ scale: 0.9 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.1, ease: 'easeIn' }}
-          >
-            <Avatar>
-              {isAuthLoading ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <LoaderCircle className="h-6 w-6 animate-spin text-white" />
-                </div>
-              ) : avatarUrl ? (
-                <AvatarImage src={avatarUrl} alt="User avatar" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center">
-                  <UserIcon size={22} />
-                </div>
-              )}
-            </Avatar>
-          </motion.div>
-        </Button>
-      </DropdownMenuTrigger>
+  const memoizedDropdownMenuContent = useMemo(
+    () => (
       <DropdownMenuContent
         className="w-56"
         align="end"
@@ -295,19 +290,64 @@ export function UserDropdownMenu() {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <div className="flex w-full items-center justify-between">
-            <Label htmlFor="chat-toggle" className="cursor-pointer">
+            <Label htmlFor="sound-toggle" className="cursor-pointer">
               Enable Sound
             </Label>
             <Switch
-              id="chat-toggle"
+              id="sound-toggle"
               checked={isSoundEnabled}
               onCheckedChange={toggleSound}
             />
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
+    ),
+    [
+      user,
+      isSuperadmin,
+      isLoadingSuperadminStatus,
+      handleSignOut,
+      router,
+      chatEnabled,
+      setChatEnabled,
+      isLoading,
+      error,
+      weatherData,
+      isSoundEnabled,
+      toggleSound,
+    ]
+  );
+
+  const memoizedMotionProps = useMemo(
+    () => ({
+      whileHover: { scale: 0.9 },
+      whileTap: { scale: 0.95 },
+      transition: { duration: 0.1, ease: 'easeIn' },
+    }),
+    []
+  );
+
+  const memoizedDropdownMenuTrigger = useMemo(
+    () => (
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          aria-label="User dropdown menu"
+          className="relative ml-2 h-9 w-9 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
+        >
+          <motion.div {...memoizedMotionProps}>{memoizedAvatar}</motion.div>
+        </Button>
+      </DropdownMenuTrigger>
+    ),
+    [memoizedMotionProps, memoizedAvatar]
+  );
+
+  return (
+    <DropdownMenu modal={false} onOpenChange={handleDropdownChange}>
+      {memoizedDropdownMenuTrigger}
+      {memoizedDropdownMenuContent}
     </DropdownMenu>
   );
 }
 
-export default UserDropdownMenu;
+export default memo(UserDropdownMenu);

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Space_Grotesk } from 'next/font/google';
 
 import 'katex/dist/katex.css';
@@ -9,15 +10,11 @@ import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
 
 import { ThemeProviders } from '@/app/theme-providers';
-import Chatbox from '@/components/ChatBox';
-import CookieConsent from '@/components/CookieConsent';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PathProvider } from '@/components/PathProvider';
 import { SearchProvider } from '@/components/SearchProvider';
 import SectionContainer from '@/components/SectionContainer';
-import VercelAnalytics from '@/components/VercelAnalytics';
-import ConsoleLabrador from '@/components/homepage/ConsoleLabrador';
 import '@/css/about.css';
 import '@/css/extra.css';
 import '@/css/prism.css';
@@ -25,8 +22,18 @@ import '@/css/resume.css';
 import '@/css/tailwind.css';
 import siteMetadata from '@/data/siteMetadata';
 
+const Chatbox = dynamic(() => import('@/components/ChatBox'));
+
+const CookieConsent = dynamic(() => import('@/components/CookieConsent'));
+
+const ConsoleLabrador = dynamic(
+  () => import('@/components/homepage/ConsoleLabrador')
+);
+
+const VercelAnalytics = dynamic(() => import('@/components/VercelAnalytics'));
+
 export const fetchCache = 'default-cache';
-export const dynamic = 'auto';
+//export const dynamic = 'auto';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],

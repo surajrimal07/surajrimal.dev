@@ -79,61 +79,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(cachedResponse);
     }
 
-    // const body = await req.json();
-    // const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown';
-
-    // let validatedData: ValidatedChatData;
-    // try {
-    //   validatedData = chatSchema.parse({
-    //     ...body,
-    //     ipAddress: ip,
-    //   });
-    // } catch (validationError) {
-    //   return NextResponse.json(
-    //     { error: 'Validation failed', details: validationError },
-    //     { status: 400 }
-    //   );
-    // }
-
-    // const { email, message } = validatedData;
-
-    // try {
-    //   const { data: ipRecord, error: fetchError } = await supabase
-    //     .from('iprecord')
-    //     .select('chat')
-    //     .eq('ipaddress', ip)
-    //     .single();
-
-    //   if (fetchError && fetchError.code !== 'PGRST116') {
-    //     throw fetchError;
-    //   }
-
-    //   if (ipRecord?.chat >= 10) {
-    //     return NextResponse.json(
-    //       {
-    //         error:
-    //           'Dear User, you have reached the rate limit. Please try again later.',
-    //       },
-    //       { status: 429 }
-    //     );
-    //   }
-
-    //   // Update or insert IP record
-    //   if (ipRecord) {
-    //     await supabase
-    //       .from('iprecord')
-    //       .update({ chat: (ipRecord.chat || 0) + 1 })
-    //       .eq('ipaddress', ip);
-    //   } else {
-    //     await supabase.from('iprecord').insert([{ ipaddress: ip, chats: 1 }]);
-    //   }
-    // } catch (dbError) {
-    //   return NextResponse.json(
-    //     { error: 'Database error occured', details: dbError },
-    //     { status: 500 }
-    //   );
-    // }
-
     // 5. Parallel processing where possible
     const authorStatus = await supabase
       .from('author_status')
@@ -149,6 +94,7 @@ export async function POST(req: NextRequest) {
 
     // 7. Generate AI response if author is offline
     let aiResponse: string | null = null;
+
     if (!isAuthorOnline) {
       const questionEmbedding = await getEmbeddings(message);
       const relevantContext = await searchSimilarDocs(questionEmbedding);

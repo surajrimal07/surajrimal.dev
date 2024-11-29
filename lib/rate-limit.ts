@@ -14,7 +14,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   multi.expire(redisKey, 3600);
   const [count] = (await multi.exec()) as [number, any];
 
-  if (count > 50) {
+  if (count > 30) {
     const ttl = await redis.ttl(redisKey);
     return {
       success: false,
@@ -34,7 +34,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
       throw fetchError;
     }
 
-    if (ipRecord?.chat >= 40) {
+    if (ipRecord?.chat >= 60) {
       return {
         success: false,
         remaining: 0,

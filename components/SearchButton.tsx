@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { motion } from 'framer-motion';
 import { AlgoliaButton } from 'pliny/search/AlgoliaButton';
 import { KBarButton } from 'pliny/search/KBarButton';
@@ -10,7 +12,7 @@ import siteMetadata from '@/data/siteMetadata';
 import usePlaySound from '@/lib/hooks/PlaySound';
 import { useSoundStore } from '@/lib/hooks/soundState';
 
-const SearchButton = () => {
+const SearchButton = memo(() => {
   const { isSoundEnabled } = useSoundStore();
 
   const { playSound } = usePlaySound({
@@ -55,6 +57,8 @@ const SearchButton = () => {
   }
 
   return null;
-};
+});
+
+SearchButton.displayName = 'SearchButton';
 
 export default SearchButton;

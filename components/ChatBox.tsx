@@ -285,6 +285,7 @@ const Chatbox: React.FC = () => {
       };
       setMessages((prev) => [...prev, userMessage]);
       setInputMessage('');
+      await saveChat(email, userMessage);
       setIsLoading(true);
       //send user message to author on telegram
       await sendMessage(email, userMessage.text);

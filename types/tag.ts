@@ -1,9 +1,9 @@
-import { BrandIconType } from '@/components/BrandIcon';
+import { IconName } from '@/components/social-icons';
 
 export type PopularTag = {
   id?: number;
   href: string;
-  icon_type: BrandIconType;
+  icon_type: IconName;
   slug: string;
   title: string;
   count: number;

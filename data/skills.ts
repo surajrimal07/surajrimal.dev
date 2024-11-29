@@ -23,7 +23,7 @@ export const skillsData: Skill[] = [
   },
   {
     name: 'Next.js',
-    id: 'nextdotjs',
+    id: 'nextjs',
     category: 'Web Dev',
     field: 'Fullstack',
     subfield: 'Frameworks',
@@ -90,7 +90,7 @@ export const skillsData: Skill[] = [
   },
   {
     name: 'Node.js',
-    id: 'nodedotjs',
+    id: 'nodejs',
     category: 'Web Dev',
     field: 'Backend',
     level: 'familiar',
@@ -120,7 +120,7 @@ export const skillsData: Skill[] = [
   },
   {
     name: 'AWS',
-    id: 'amazonwebservices',
+    id: 'aws',
     category: 'DevOps & Tools',
     field: 'Cloud Providers',
     level: 'advanced',
@@ -141,7 +141,7 @@ export const skillsData: Skill[] = [
   },
   {
     name: 'Bash',
-    id: 'gnubash',
+    id: 'bash',
     category: 'DevOps & Tools',
     field: 'Shell',
     level: 'advanced',
@@ -367,13 +367,6 @@ export const skillsData: Skill[] = [
     category: 'DevOps & Tools',
     field: 'DevOps & Tools',
     level: 'advanced',
-  },
-  {
-    name: 'Github Actions',
-    id: 'githubactions',
-    category: 'DevOps & Tools',
-    field: 'DevOps & Tools',
-    level: 'familiar',
   },
   {
     name: 'jenkins',

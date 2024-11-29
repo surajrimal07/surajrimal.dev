@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { motion } from 'framer-motion';
 import { LuLineChart } from 'react-icons/lu';
 
@@ -5,7 +7,7 @@ import siteMetadata from '@/data/siteMetadata';
 import usePlaySound from '@/lib/hooks/PlaySound';
 import { useSoundStore } from '@/lib/hooks/soundState';
 
-const AnalyticsLink = () => {
+const AnalyticsLink = memo(() => {
   const { isSoundEnabled } = useSoundStore();
 
   const { playSound } = usePlaySound({
@@ -39,6 +41,8 @@ const AnalyticsLink = () => {
       </motion.button>
     </div>
   );
-};
+});
+
+AnalyticsLink.displayName = 'AnalyticsLink';
 
 export default AnalyticsLink;

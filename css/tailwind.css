@@ -69,28 +69,28 @@ html.lightbox-loading * {
 
 /* START: CSS popular tags */
 
-.popular-tags .javascript {
-  @apply bg-amber-400/20;
+.popular-tags .python {
+  @apply bg-yellow-400/20; /* Python's official yellow */
 }
 
 .popular-tags .typescript {
-  @apply bg-blue-500/20;
+  @apply bg-blue-600/20; /* TypeScript's official blue */
 }
 
-.popular-tags .nestjs {
-  @apply bg-rose-500/20;
+.popular-tags .nextjs {
+  @apply bg-gray-900; /* Next.js official dark gray */
 }
 
-.popular-tags .react {
-  @apply bg-sky-500/20;
+.popular-tags .langchain {
+  @apply bg-teal-400/20; /* LangChain's logo has a teal tone */
 }
 
 .popular-tags .devops {
-  @apply bg-sky-600/20;
+  @apply bg-indigo-600/20; /* DevOps often aligns with tools using indigo tones */
 }
 
-.popular-tags .database {
-  @apply bg-green-900/20;
+.popular-tags .nodejs {
+  @apply bg-green-600/20; /* Node.js official green */
 }
 
 /* END: CSS popular tags */

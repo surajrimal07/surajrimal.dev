@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { Monitor } from 'lucide-react';
@@ -55,7 +55,7 @@ const ThemeOption = memo(
 
 ThemeOption.displayName = 'ThemeOption';
 
-const ThemeSwitch = () => {
+const ThemeSwitch = memo(() => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
   const { isSoundEnabled } = useSoundStore();
@@ -88,29 +88,34 @@ const ThemeSwitch = () => {
     };
   }, [isThemeChanged]);
 
-  const getCurrentIcon = () => {
+  const getCurrentIcon = useCallback(() => {
     if (!mounted) return <BsMoonStarsFill />;
     return resolvedTheme === 'dark' ? <BsMoonStarsFill /> : <HiSun />;
-  };
+  }, [mounted, resolvedTheme]);
+
+  const memoizedButton = useMemo(
+    () => (
+      <Button
+        variant="ghost"
+        className="relative ml-2 h-8 w-8 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
+      >
+        <motion.div
+          className="flex h-8 w-8 items-center justify-center p-2"
+          animate={isThemeChanged ? { scale: 1.2, rotate: 180 } : {}}
+          transition={{ duration: 0.1, ease: 'easeIn' }}
+          whileHover={{ scale: 1.1 }}
+        >
+          {getCurrentIcon()}
+          <span className="sr-only">Toggle theme</span>
+        </motion.div>
+      </Button>
+    ),
+    [isThemeChanged, getCurrentIcon]
+  );
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="relative ml-2 h-8 w-8 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
-        >
-          <motion.div
-            className="flex h-8 w-8 items-center justify-center p-2"
-            animate={isThemeChanged ? { scale: 1.2, rotate: 180 } : {}}
-            transition={{ duration: 0.1, ease: 'easeIn' }}
-            whileHover={{ scale: 1.1 }}
-          >
-            {getCurrentIcon()}
-            <span className="sr-only">Toggle theme</span>
-          </motion.div>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{memoizedButton}</DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" sideOffset={10} className="w-32">
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
@@ -130,6 +135,8 @@ const ThemeSwitch = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+});
 
-export default memo(ThemeSwitch);
+ThemeSwitch.displayName = 'ThemeSwitch';
+
+export default ThemeSwitch;

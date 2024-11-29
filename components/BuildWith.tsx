@@ -14,7 +14,7 @@ const BuildWith = () => (
 
     <div className="flex space-x-1.5">
       <IconsBundle
-        kind="nextdotjs"
+        kind="nextjs"
         href="https://nextjs.org?ref=surajr.com.np"
         size={6}
         className="h-5 w-5"

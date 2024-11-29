@@ -42,7 +42,7 @@ const useChatStore = create<ChatState>()(
   persist(
     (set, get) => ({
       // Chat UI states
-      chatEnabled: true,
+      chatEnabled: false,
       setChatEnabled: (enabled: boolean) => {
         set({ chatEnabled: enabled });
       },

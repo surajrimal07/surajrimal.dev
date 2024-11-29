@@ -27,7 +27,7 @@ export const EMOJI_SIZES = {
 export type EmojiSize = keyof typeof EMOJI_SIZES | number;
 
 export type TwemojiProps = {
-  hexcode: string;
+  name: string;
   size?: EmojiSize;
   className?: string;
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import clsx from 'clsx';
 
@@ -18,6 +18,8 @@ import siteMetadata from '@/data/siteMetadata';
 import { useAvailabilityStore } from '@/lib/hooks/availablityState';
 import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
 
+//const DropMenu = dynamic(() => import('@/components/DropMenu'));
+
 const Header = () => {
   const currentPath = useCurrentPath();
   const completion = useReadingProgress();
@@ -28,6 +30,8 @@ const Header = () => {
       fetchAvailabilityData();
     }
   }, [availabilityData, fetchAvailabilityData]);
+
+  const memoizedAnalyticsLink = useMemo(() => <AnalyticsLink />, []);
 
   return (
     <header
@@ -132,7 +136,7 @@ const Header = () => {
               </Link>
             ))}
         </div>
-        <AnalyticsLink />
+        {memoizedAnalyticsLink}
         <SearchButton />
         <ThemeSwitch />
         <DropMenu />

@@ -23,7 +23,7 @@ const supabase = createClient();
 const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   avatarUrl: null,
-  isLoading: true,
+  isLoading: false,
 
   setUser: (user) => set({ user }),
   setAvatarUrl: (url) => set({ avatarUrl: url }),
@@ -33,8 +33,8 @@ const useAuthStore = create<AuthState>((set, get) => ({
     PROTECTED_ROUTES.some((route) => pathname.startsWith(route)),
 
   initialize: async () => {
+    set({ isLoading: true });
     try {
-      set({ isLoading: true });
       const {
         data: { session },
         error,
@@ -42,14 +42,20 @@ const useAuthStore = create<AuthState>((set, get) => ({
 
       if (error) throw error;
 
-      if (session?.user) {
-        set({ user: session.user });
-        if (session.user.user_metadata?.avatar_url) {
-          const cachedUrl = await cacheAndServeImage(
-            session.user.user_metadata.avatar_url
-          );
-          set({ avatarUrl: cachedUrl });
-        }
+      if (!session?.user) {
+        set({ user: null, avatarUrl: null, isLoading: false });
+        return;
+      }
+
+      // Set user immediately
+      set({ user: session.user });
+
+      // Handle avatar caching in parallel if it exists
+      if (session.user.user_metadata?.avatar_url) {
+        // Don't await here - let it process in parallel
+        cacheAndServeImage(session.user.user_metadata.avatar_url)
+          .then((cachedUrl) => set({ avatarUrl: cachedUrl }))
+          .catch((error) => console.error('Error caching avatar:', error));
       }
     } catch (error) {
       console.error('Error initializing auth:', error);
@@ -60,13 +66,13 @@ const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signOut: async (pathname: string) => {
+    set({ isLoading: true });
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
 
       set({ user: null, avatarUrl: null });
 
-      // Check if current path is protected
       const shouldRedirect = get().isProtectedRoute(pathname);
 
       return { shouldRedirect };
