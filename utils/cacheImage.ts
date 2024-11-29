@@ -23,8 +23,8 @@ export async function cacheAndServeImage(originalUrl: string): Promise<string> {
     const response = await fetch(originalUrl);
     const arrayBuffer = await response.arrayBuffer();
 
-    // Ensure the cache directory exists
-    await fs.mkdir(CACHE_DIR, { recursive: true });
+    // // Ensure the cache directory exists
+    // await fs.mkdir(CACHE_DIR, { recursive: true });
 
     // Write the image to the cache
     await fs.writeFile(cachedPath, new Uint8Array(arrayBuffer));
