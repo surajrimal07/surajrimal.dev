@@ -9,6 +9,8 @@
     <a href="https://github.com/surajrimal07/surajrimal.dev/stargazers"><img src="https://img.shields.io/github/stars/surajrimal07/surajrimal.dev?style=flat-square" alt="Stars"/></a>
     <a href="https://github.com/surajrimal07/surajrimal.dev/network/members"><img src="https://img.shields.io/github/forks/surajrimal07/surajrimal.dev?style=flat-square" alt="Forks"/></a>
     <a href="https://github.com/surajrimal07/surajrimal.dev/issues"><img src="https://img.shields.io/github/issues/surajrimal07/surajrimal.dev?style=flat-square" alt="Issues"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/graphs/contributors"><img src="https://img.shields.io/github/contributors/surajrimal07/surajrimal.dev?style=flat-square" alt="Contributors"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/pulls"><img src="https://img.shields.io/github/issues-pr/surajrimal07/surajrimal.dev?style=flat-square" alt="Pull Requests"/></a>
 </div>
 
 <div align="center">
@@ -20,6 +22,11 @@
     <img src="https://img.shields.io/badge/Supabase-latest-green?style=flat-square&logo=supabase" alt="Supabase"/>
     <img src="https://img.shields.io/badge/Upstash-Redis-red?style=flat-square&logo=redis" alt="Upstash Redis"/>
 </div>
+
+## Website
+
+<a href="https://karhdo-blog.vercel.app"><img src="https://raw.githubusercontent.com/surajrimal07/surajrimal.dev/refs/heads/main/public/static/images/suraj-blog.webp" alt="Suraj's personal website" /></a>
+
 
 ## 🌟 Features
 
