@@ -2,13 +2,13 @@
 <p align="center"><i>A full-stack personal platform combining blogging, portfolio, and interactive features</i></p>
 
 <div align="center">
-    <a href="https://github.com/surajrimal07/surajr.com.np"><img src="https://img.shields.io/badge/version-2.5.1-blue?style=for-the-badge" alt="Version"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev"><img src="https://img.shields.io/badge/version-2.5.1-blue?style=for-the-badge" alt="Version"/></a>
     <a href="https://www.surajrimal.dev"><img src="https://img.shields.io/badge/website-live-brightgreen?style=for-the-badge" alt="Website"/></a>
     <br />
-    <a href="https://github.com/surajrimal07/surajr.com.np/blob/main/LICENSE"><img src="https://img.shields.io/github/license/surajrimal07/surajr.com.np?style=flat-square" alt="License"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/stargazers"><img src="https://img.shields.io/github/stars/surajrimal07/surajr.com.np?style=flat-square" alt="Stars"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/network/members"><img src="https://img.shields.io/github/forks/surajrimal07/surajr.com.np?style=flat-square" alt="Forks"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/issues"><img src="https://img.shields.io/github/issues/surajrimal07/surajr.com.np?style=flat-square" alt="Issues"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/blob/main/LICENSE"><img src="https://img.shields.io/github/license/surajrimal07/surajrimal.dev?style=flat-square" alt="License"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/stargazers"><img src="https://img.shields.io/github/stars/surajrimal07/surajrimal.dev?style=flat-square" alt="Stars"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/network/members"><img src="https://img.shields.io/github/forks/surajrimal07/surajrimal.dev?style=flat-square" alt="Forks"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/issues"><img src="https://img.shields.io/github/issues/surajrimal07/surajrimal.dev?style=flat-square" alt="Issues"/></a>
 </div>
 
 <div align="center">
@@ -74,7 +74,7 @@ OPENAI_API_KEY=your_openai_api_key
 
 ```bash
 # Clone the repository
-git clone https://github.com/surajrimal07/surajr.com.np.git
+git clone https://github.com/surajrimal07/surajrimal.dev.git
 
 # Install dependencies
 npm install
