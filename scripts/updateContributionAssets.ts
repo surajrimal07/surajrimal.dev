@@ -1,14 +1,34 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { S3Client } from '@ejekanshjain/cloud-storage';
+import 'dotenv/config';
 import sharp from 'sharp';
 
-const BADGES_DIR = path.join(
-  process.cwd(),
-  'public',
-  'contributions',
-  'badges'
-);
-const GRAPH_DIR = path.join(process.cwd(), 'public', 'contributions', 'graph');
+// Environment configuration handling
+function getEnvValue(key: string): string {
+  const sources = [
+    // First, check GitHub Actions secrets (prefixed with INPUT_)
+    process.env[`INPUT_${key.toUpperCase()}`],
+
+    // Then check standard environment variables
+    process.env[key.toUpperCase()],
+    process.env[key],
+    process.env[key.toLowerCase()],
+    process.env[`INPUT_${key.toLowerCase()}`],
+  ];
+
+  const value = sources.find((val) => val !== undefined && val.trim() !== '');
+
+  if (value) return value;
+
+  throw new Error(`Missing required environment variable: ${key}`);
+}
+
+const supabase = S3Client({
+  region: getEnvValue('SUPABASE_REGION'),
+  accessKey: getEnvValue('SUPABASE_ACCESS_ID'),
+  accessSecret: getEnvValue('SUPABASE_ACCESS_KEY'),
+  bucket: getEnvValue('SUPABASE_BUCKET'),
+  host: getEnvValue('SUPABASE_ENDPOINT'),
+});
 
 function modifySvg(svgString: string): string {
   if (!svgString) return '';
@@ -28,11 +48,20 @@ function modifySvg(svgString: string): string {
     });
 }
 
-async function ensureDirectories() {
-  await fs.mkdir(BADGES_DIR, { recursive: true });
-  await fs.mkdir(GRAPH_DIR, { recursive: true });
+async function uploadToS3(file: Buffer, fileName: string) {
+  try {
+    await supabase.addFile({
+      filename: fileName,
+      data: file,
+    });
+    console.log(`Successfully uploaded ${fileName}`);
+  } catch (error) {
+    console.error(`Upload error for ${fileName}:`, error);
+    throw error;
+  }
 }
 
+// Rest of the implementation remains the same as in the original script
 async function fetchAndSaveGraph() {
   try {
     const res = await fetch(
@@ -44,13 +73,14 @@ async function fetchAndSaveGraph() {
     const svg = await res.text();
     const modifiedSvg = modifySvg(svg);
 
-    // Convert SVG to PNG using sharp
-    await sharp(Buffer.from(modifiedSvg))
+    const pngBuffer = await sharp(Buffer.from(modifiedSvg))
       .resize(1219, 186)
       .png()
-      .toFile(path.join(GRAPH_DIR, 'contributions.png'));
+      .toBuffer();
 
-    console.log('Successfully saved contribution graph as PNG');
+    await uploadToS3(pngBuffer, 'contributions.png');
+
+    console.log('Successfully uploaded contribution graph');
   } catch (error) {
     console.error('Error saving contribution graph:', error);
     throw error;
@@ -72,10 +102,16 @@ async function fetchAndSaveBadges() {
           );
         }
         const svg = await res.text();
-        await fs.writeFile(path.join(BADGES_DIR, `${interval}.svg`), svg);
+
+        const pngBuffer = await sharp(Buffer.from(svg))
+          .resize(240, 30)
+          .png()
+          .toBuffer();
+
+        await uploadToS3(pngBuffer, `${interval}.png`);
       })
     );
-    console.log('Successfully saved all badges');
+    console.log('Successfully uploaded all badges');
   } catch (error) {
     console.error('Error saving badges:', error);
     throw error;
@@ -84,13 +120,18 @@ async function fetchAndSaveBadges() {
 
 async function main() {
   try {
-    await ensureDirectories();
     await Promise.all([fetchAndSaveGraph(), fetchAndSaveBadges()]);
     console.log('Successfully updated all contribution assets');
+    process.exit(0);
   } catch (error) {
     console.error('Error updating contribution assets:', error);
     process.exit(1);
   }
 }
 
-main();
+// Only run main if script is directly executed
+if (require.main === module) {
+  main();
+}
+
+export { main };

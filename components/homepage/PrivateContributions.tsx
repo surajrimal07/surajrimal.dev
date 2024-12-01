@@ -5,12 +5,30 @@ import { TfiArrowTopRight } from 'react-icons/tfi';
 
 import Twemoji from '@/components/Twemoji';
 
+const BUCKET_NAME = process.env.SUPABASE_BUCKET!;
+const BUCKET_URL = process.env.SUPABASE_NORMAL_BUCKET_URL!;
+
 const BADGES = [
-  { path: '/contributions/badges/today.svg', label: 'Today' },
-  { path: '/contributions/badges/week.svg', label: 'Week' },
-  { path: '/contributions/badges/30_days.svg', label: 'Month' },
-  { path: '/contributions/badges/last_12_months.svg', label: 'Year' },
-  { path: '/contributions/badges/all_time.svg', label: 'All Time' },
+  {
+    path: `${BUCKET_URL}${BUCKET_NAME}/today.png`,
+    label: 'Today',
+  },
+  {
+    path: `${BUCKET_URL}${BUCKET_NAME}/week.png`,
+    label: 'Week',
+  },
+  {
+    path: `${BUCKET_URL}${BUCKET_NAME}/30_days.png`,
+    label: 'Month',
+  },
+  {
+    path: `${BUCKET_URL}${BUCKET_NAME}/last_12_months.png`,
+    label: 'Year',
+  },
+  {
+    path: `${BUCKET_URL}${BUCKET_NAME}/all_time.png`,
+    label: 'All Time',
+  },
 ] as const;
 
 export default function PrivateContributions() {
@@ -37,21 +55,19 @@ export default function PrivateContributions() {
       <div className="pt-3">
         <div className="max-w-full overflow-hidden">
           <Image
-            src="/contributions/graph/contributions.png"
+            src={`${BUCKET_URL}${BUCKET_NAME}/contributions.png`}
             alt="Contribution graph"
             width={1219}
             height={186}
             className="h-full w-full"
-            unoptimized={true}
           />
         </div>
-        <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-4">
+        <div className="mt-0 flex flex-wrap justify-center sm:gap-2">
           {BADGES.map((badge) => (
             <Image
               key={badge.label}
               src={badge.path}
               alt={`${badge.label} contributions`}
-              unoptimized={true}
               width={150}
               height={30}
               className="h-auto w-auto max-w-[80px] sm:max-w-none"

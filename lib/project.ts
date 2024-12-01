@@ -2,7 +2,10 @@ import { localCache } from '@/lib/cache';
 import { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
+const BUCKET_NAME = process.env.SUPABASE_BUCKET!;
+
 const CACHE_KEY = 'projects';
+
 export async function getProjects(): Promise<Tables<'projects'>[]> {
   const cached = localCache.get(CACHE_KEY);
   if (cached) {
@@ -87,7 +90,7 @@ export async function deleteProject(id: string): Promise<void> {
 
 export async function getProjectImages(): Promise<string[]> {
   const { data, error } = await supabase.storage
-    .from('surajr')
+    .from(BUCKET_NAME)
     .list('project-images');
 
   if (error) throw error;
@@ -97,7 +100,7 @@ export async function getProjectImages(): Promise<string[]> {
       const {
         data: { publicUrl },
       } = supabase.storage
-        .from('surajr')
+        .from(BUCKET_NAME)
         .getPublicUrl(`project-images/${image.name}`);
       return publicUrl;
     }) || []
@@ -107,7 +110,7 @@ export async function getProjectImages(): Promise<string[]> {
 export async function uploadProjectImage(file: File): Promise<string> {
   const fileName = `project-images/${Date.now()}_${file.name}`;
   const { error } = await supabase.storage
-    .from('surajr')
+    .from(BUCKET_NAME)
     .upload(fileName, file, {
       upsert: true,
     });
@@ -116,7 +119,7 @@ export async function uploadProjectImage(file: File): Promise<string> {
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from('surajr').getPublicUrl(fileName);
+  } = supabase.storage.from(BUCKET_NAME).getPublicUrl(fileName);
 
   return publicUrl;
 }
