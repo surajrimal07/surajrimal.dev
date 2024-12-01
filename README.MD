@@ -204,6 +204,7 @@ Contributions are welcome! Please check the [Contributing Guide](CONTRIBUTING.md
 ---
 
 <p align="center">
-    Built with ❤️ by <b>Suraj Rimal</b><br>
+    Built with ❤️ by <b>Suraj Rimal</b> 👋<br>
+    This blog was heavily inspired by <a href="https://karhdo-blog.vercel.app">Karhdo's Blog</a> (<a href="https://github.com/Karhdo/karhdo.dev">GitHub</a>). Special thanks to <a href="https://github.com/timlrx/tailwind-nextjs-starter-blog">Timothy Lin</a> for the original template and boilerplate code.<br>
     <a href="https://www.surajrimal.dev">www.surajrimal.dev</a>
 </p>
