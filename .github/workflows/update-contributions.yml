@@ -20,8 +20,8 @@ jobs:
       - name: Update contribution assets
         env:
           SUPABASE_REGION: ${{ secrets.SUPABASE_REGION }}
-          SUPABASE_ACCESS_KEY: ${{ secrets.SUPABASE_ACCESS_KEY }}
-          SUPABASE_ACCESS_ID: ${{ secrets.SUPABASE_ACCESS_ID }}
+          SUPABASE_ACCESS_KEY: ${{ secrets.SUPABASE_ACCESS_ID }}
+          SUPABASE_ACCESS_ID: ${{ secrets.SUPABASE_ACCESS_KEY }}
           SUPABASE_BUCKET: ${{ secrets.SUPABASE_BUCKET }}
           SUPABASE_ENDPOINT: ${{ secrets.SUPABASE_ENDPOINT }}
         run: npm run update-contributions
