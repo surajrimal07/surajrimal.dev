@@ -2,7 +2,7 @@
 <p align="center"><i>A full-stack personal platform combining blogging, portfolio, and interactive features</i></p>
 
 <div align="center">
-    <a href="https://github.com/surajrimal07/surajr.com.np"><img src="https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge" alt="Version"/></a>
+    <a href="https://github.com/surajrimal07/surajr.com.np"><img src="https://img.shields.io/badge/version-2.5.1-blue?style=for-the-badge" alt="Version"/></a>
     <a href="https://www.surajrimal.dev"><img src="https://img.shields.io/badge/website-live-brightgreen?style=for-the-badge" alt="Website"/></a>
     <br />
     <a href="https://github.com/surajrimal07/surajr.com.np/blob/main/LICENSE"><img src="https://img.shields.io/github/license/surajrimal07/surajr.com.np?style=flat-square" alt="License"/></a>
@@ -205,6 +205,6 @@ Contributions are welcome! Please check the [Contributing Guide](CONTRIBUTING.md
 
 <p align="center">
     Built with ❤️ by <b>Suraj Rimal</b> 👋<br>
-    This blog was heavily inspired by <a href="https://karhdo-blog.vercel.app">Karhdo's Blog</a> (<a href="https://github.com/Karhdo/karhdo.dev">GitHub</a>). Special thanks to <a href="https://github.com/timlrx/tailwind-nextjs-starter-blog">Timothy Lin</a> for the original template and boilerplate code.<br>
+    This blog was heavily inspired by <a href="https://karhdo-blog.vercel.app">Karhdo's Blog</a> (<a href="https://github.com/Karhdo/karhdo.dev">GitHub</a>). Special thanks to <a href="https://github.com/timlrx/tailwind-nextjs-starter-blog">Timothy Lin</a> for the original template.<br>
     <a href="https://www.surajrimal.dev">www.surajrimal.dev</a>
 </p>
