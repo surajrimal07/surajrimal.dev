@@ -16,7 +16,7 @@ const siteMetadata = {
   siteRepo: 'https://github.com/surajrimal07/surajr.com.np',
   siteLogo: '/static/images/avatar.webp',
   image: '/static/images/avatar.webp',
-  socialBanner: '/static/images/projects/karhdo-blog.png',
+  socialBanner: '/static/images/suraj-blog.webp',
   email: 'davidparkedme@gmail.com',
   github: 'https://github.com/surajrimal07',
   locale: 'en-US',
