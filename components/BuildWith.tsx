@@ -10,8 +10,6 @@ import siteMetadata from '@/data/siteMetadata';
 
 const BuildWith = () => (
   <div className="flex items-center space-x-1">
-    <span className="mr-1 text-gray-500 dark:text-gray-300">Build with</span>
-
     <div className="flex space-x-1.5">
       <IconsBundle
         kind="nextjs"

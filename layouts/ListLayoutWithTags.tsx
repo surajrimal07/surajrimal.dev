@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
 import { Blog } from 'contentlayer/generated';
 import { slug } from 'github-slugger';
+import debounce from 'lodash.debounce';
 import { CoreContent } from 'pliny/utils/contentlayer';
 
 import Link from '@/components/Link';
@@ -96,37 +97,67 @@ export default function ListLayoutWithTags({
   const [viewCounts, setViewCounts] = useState(new Map());
   const [shareCounts, setShareCounts] = useState(new Map());
 
-  const filteredBlogPosts = posts.filter((post) => {
-    const searchContent = post.title + post.summary + post.tags.join(' ');
-    return searchContent.toLowerCase().includes(searchValue.toLowerCase());
-  });
+  // Memoize the filtered blog posts based on the search value
+  const filteredBlogPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const searchContent = post.title + post.summary + post.tags.join(' ');
+      return searchContent.toLowerCase().includes(searchValue.toLowerCase());
+    });
+  }, [posts, searchValue]);
 
-  const tagCounts = tagData as Record<string, number>;
-  const tagKeys = Object.keys(tagCounts);
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a]);
+  // Memoize tag counts and sorted tags
+  const tagCounts = useMemo(() => tagData as Record<string, number>, []);
+  const sortedTags = useMemo(() => {
+    const tagKeys = Object.keys(tagCounts);
+    return tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a]);
+  }, [tagCounts]);
 
-  const displayPosts =
-    initialDisplayPosts.length > 0 && !searchValue
+  // Memoize the posts to be displayed
+  const displayPosts = useMemo(() => {
+    return initialDisplayPosts.length > 0 && !searchValue
       ? initialDisplayPosts
       : filteredBlogPosts;
+  }, [initialDisplayPosts, searchValue, filteredBlogPosts]);
+
+  // Debounced fetchCounts to prevent excessive API calls
+  const debouncedFetch = useMemo(
+    () =>
+      debounce(async (slug: string) => {
+        const views = await getPageViews(`/${slug}`, false);
+        const { total } = await getBlogShares(slug);
+        setViewCounts((prev) => new Map(prev).set(slug, views));
+        setShareCounts((prev) => new Map(prev).set(slug, total));
+      }, 300),
+    []
+  );
+
+  const fetchCounts = useCallback(
+    (slug: string) => {
+      debouncedFetch(slug);
+    },
+    [debouncedFetch]
+  );
 
   useEffect(() => {
-    const fetchCounts = async (slug: string) => {
-      const views = await getPageViews(`/${slug}`, false);
-      const { total } = await getBlogShares(slug);
-      setViewCounts((prev) => new Map(prev).set(slug, views));
-      setShareCounts((prev) => new Map(prev).set(slug, total));
-    };
-
     displayPosts.forEach((post) => {
       fetchCounts(post.path);
     });
-  }, [displayPosts]);
+    // Cleanup the debounced function on unmount
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, [displayPosts, fetchCounts, debouncedFetch]);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Memoized onChange handler
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  }, []);
+
+  // Memoized onSubmit handler
+  const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchValue('');
-  };
+  }, []);
 
   return (
     <>
@@ -141,7 +172,7 @@ export default function ListLayoutWithTags({
           </p>
           <PlaceholdersAndVanishInput
             placeholders={blogSearchPlaceholders}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={onChange}
             onSubmit={onSubmit}
           />
         </div>

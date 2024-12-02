@@ -53,7 +53,7 @@ export function Technologies() {
     <div className="w-full space-y-2 py-1 md:space-y-5">
       <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
         Technologies I Work With {''}
-        <Twemoji size="md" name="tools" />
+        <Twemoji size="sd" name="tools" />
       </h1>
       <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">
         Tools and technologies that I am familiar with and use daily.

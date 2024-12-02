@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { m, useAnimationControls } from 'framer-motion';
 import toast from 'react-hot-toast';
@@ -26,7 +26,7 @@ interface ReactionProps {
   ip: string;
 }
 
-export default function Reactions({ slug, ip }: ReactionProps) {
+function PageReactions({ slug, ip }: ReactionProps) {
   const [viewCounts, setViewCounts] = useState(0);
   const [shareCounts, setShareCounts] = useState<BlogShares>({
     twittershare: 0,
@@ -40,35 +40,34 @@ export default function Reactions({ slug, ip }: ReactionProps) {
   const { showScrollToTop } = useScrollProgress();
   const controls = useAnimationControls();
   const [userReaction, setUserReaction] = useState<string | null>(null);
-
   const [reactionCounts, setReactionCounts] = useState<{
     [key: string]: number;
   }>({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [views, shares, reactionData] = await Promise.all([
-          getPageViews(`/${slug}`, false),
-          getBlogShares(slug),
-          getReactionCount(slug),
-        ]);
+  const fetchData = useCallback(async () => {
+    try {
+      const [views, shares, reactionData] = await Promise.all([
+        getPageViews(`/${slug}`, false),
+        getBlogShares(slug),
+        getReactionCount(slug),
+      ]);
 
-        setViewCounts(views);
-        setShareCounts(shares);
+      setViewCounts(views);
+      setShareCounts(shares);
 
-        if (reactionData.success && reactionData.counts) {
-          setReactionCounts(reactionData.counts);
-        }
-
-        setIsLoaded(true);
-      } catch (error) {
-        toast.error(`Failed to fetch data: ${error}`, toastOptions);
+      if (reactionData.success && reactionData.counts) {
+        setReactionCounts(reactionData.counts);
       }
-    };
 
+      setIsLoaded(true);
+    } catch (error) {
+      toast.error(`Failed to fetch data: ${error}`, toastOptions);
+    }
+  }, [slug]);
+
+  useEffect(() => {
     fetchData();
-  }, [ip, slug]);
+  }, [fetchData]);
 
   useEffect(() => {
     if (!hasBeenShown.current && isLoaded && showScrollToTop) {
@@ -77,35 +76,48 @@ export default function Reactions({ slug, ip }: ReactionProps) {
     }
   }, [isLoaded, showScrollToTop]);
 
-  const addReaction = debounce(async (type: ReactionType) => {
-    const reactionResponse = await handleReaction(slug, ip, type);
-    if (reactionResponse.success) {
-      if (reactionResponse.message === 'Reaction removed') {
-        setUserReaction(null);
-        setReactionCounts((prevCounts) => ({
-          ...prevCounts,
-          [type]: Math.max((prevCounts[type] || 0) - 1, 0),
-        }));
-      } else {
-        if (userReaction) {
-          setReactionCounts((prevCounts) => ({
-            ...prevCounts,
-            [userReaction]: Math.max((prevCounts[userReaction] || 0) - 1, 0),
-          }));
-        }
-        setUserReaction(type);
-        setReactionCounts((prevCounts) => ({
-          ...prevCounts,
-          [type]: (prevCounts[type] || 0) + 1,
-        }));
-      }
+  const addReaction = useCallback(
+    async (type: ReactionType) => {
+      const debouncedReaction = debounce(async () => {
+        const reactionResponse = await handleReaction(slug, ip, type);
+        if (reactionResponse.success) {
+          if (reactionResponse.message === 'Reaction removed') {
+            setUserReaction(null);
+            setReactionCounts((prevCounts) => ({
+              ...prevCounts,
+              [type]: Math.max((prevCounts[type] || 0) - 1, 0),
+            }));
+          } else {
+            if (userReaction) {
+              setReactionCounts((prevCounts) => ({
+                ...prevCounts,
+                [userReaction]: Math.max(
+                  (prevCounts[userReaction] || 0) - 1,
+                  0
+                ),
+              }));
+            }
+            setUserReaction(type);
+            setReactionCounts((prevCounts) => ({
+              ...prevCounts,
+              [type]: (prevCounts[type] || 0) + 1,
+            }));
+          }
 
-      const reactionData = await getReactionCount(slug);
-      if (reactionData.success && reactionData.counts) {
-        setReactionCounts(reactionData.counts);
-      }
-    }
-  }, 1500);
+          const reactionData = await getReactionCount(slug);
+          if (reactionData.success && reactionData.counts) {
+            setReactionCounts(reactionData.counts);
+          }
+        }
+      }, 1500);
+      debouncedReaction();
+    },
+    [slug, ip, userReaction]
+  );
+
+  const handleShareComplete = useCallback((updatedShares: BlogShares) => {
+    setShareCounts(updatedShares);
+  }, []);
 
   if (!isVisible) {
     return null;
@@ -157,9 +169,7 @@ export default function Reactions({ slug, ip }: ReactionProps) {
                   slug={slug}
                   shares={shareCounts}
                   ip={ip}
-                  onShareComplete={(updatedShares: BlogShares) => {
-                    setShareCounts(updatedShares);
-                  }}
+                  onShareComplete={handleShareComplete}
                 />
               </button>
             </div>
@@ -172,3 +182,5 @@ export default function Reactions({ slug, ip }: ReactionProps) {
     </div>
   );
 }
+
+export default React.memo(PageReactions);

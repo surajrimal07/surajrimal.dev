@@ -1,4 +1,11 @@
-import { Fragment, memo, useEffect, useRef, useState } from 'react';
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   Dialog,
@@ -18,7 +25,7 @@ import headerNavLinks from '@/data/headerNavLinks';
 import usePlaySound from '@/lib/hooks/PlaySound';
 import { useSoundStore } from '@/lib/hooks/soundState';
 
-const MobileNav = () => {
+const MobileNav = memo(() => {
   const [navShow, setNavShow] = useState(false);
   const { isSoundEnabled } = useSoundStore();
   const navRef = useRef(null);
@@ -29,7 +36,7 @@ const MobileNav = () => {
     volume: 0.7,
   });
 
-  const onToggleNav = () => {
+  const onToggleNav = useCallback(() => {
     setNavShow((status) => {
       if (isSoundEnabled) playSound();
       if (status) {
@@ -39,7 +46,7 @@ const MobileNav = () => {
       }
       return !status;
     });
-  };
+  }, [isSoundEnabled, playSound]);
 
   useEffect(() => {
     return clearAllBodyScrollLocks;
@@ -106,9 +113,7 @@ const MobileNav = () => {
                         ? 'bg-gray-800 text-red-400'
                         : 'text-gray-100'
                     } outline outline-0`}
-                    onClick={() => {
-                      onToggleNav();
-                    }}
+                    onClick={onToggleNav}
                   >
                     {link.title}
                   </Link>
@@ -144,6 +149,8 @@ const MobileNav = () => {
       </Transition>
     </>
   );
-};
+});
+
+MobileNav.displayName = 'MobileNav';
 
 export default memo(MobileNav);

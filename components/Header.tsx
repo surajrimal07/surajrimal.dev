@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import clsx from 'clsx';
 
@@ -9,27 +9,17 @@ import MobileNav from '@/components//MobileNav';
 import { useCurrentPath } from '@/components//PathProvider';
 import SearchButton from '@/components//SearchButton';
 import ThemeSwitch from '@/components//ThemeSwitch';
-import { HoverBorderGradient } from '@/components//ui/shimmer-button';
-import Tooltip from '@/components//ui/tooltip';
 import AnalyticsLink from '@/components/AnalyticsLink';
 import DropMenu from '@/components/DropMenu';
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
-import { useAvailabilityStore } from '@/lib/hooks/availablityState';
 import { useReadingProgress } from '@/lib/hooks/useReadingProgressbar';
 
-//const DropMenu = dynamic(() => import('@/components/DropMenu'));
+import OpenToWorkBadge from './work-status';
 
 const Header = () => {
   const currentPath = useCurrentPath();
   const completion = useReadingProgress();
-  const { availabilityData, fetchAvailabilityData } = useAvailabilityStore();
-
-  useEffect(() => {
-    if (!availabilityData) {
-      fetchAvailabilityData();
-    }
-  }, [availabilityData, fetchAvailabilityData]);
 
   const memoizedAnalyticsLink = useMemo(() => <AnalyticsLink />, []);
 
@@ -94,27 +84,7 @@ const Header = () => {
           </div>
         </Link>
 
-        {availabilityData?.is_available && (
-          <Link
-            href="/available"
-            aria-label={siteMetadata.headerTitle}
-            className="flex items-center"
-          >
-            <div className="m-0 mt-0 hidden justify-center p-0.5 text-center md:block">
-              <HoverBorderGradient
-                containerClassName="rounded-full"
-                as="button"
-                className="flex items-center space-x-2 bg-white text-black dark:bg-gray-600/70 dark:text-white"
-              >
-                <span className="text-xs"> Open to work</span>
-              </HoverBorderGradient>
-            </div>
-
-            <Tooltip content="Open to work">
-              <span className="m-0 mt-1 block h-2 w-2 animate-pulse rounded-full bg-green-400 duration-1000 md:hidden" />
-            </Tooltip>
-          </Link>
-        )}
+        <OpenToWorkBadge headerTitle={siteMetadata.headerTitle} />
       </div>
 
       <div className="z-10 flex items-center text-base leading-5">

@@ -37,23 +37,8 @@ import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 
-interface MessageTimeProps {
-  time: string;
-  isVisible: boolean;
-}
-
-interface TimeSeparatorProps {
-  time: string;
-}
-
-interface AuthorStatusPayload {
-  new: {
-    last_active: string;
-  };
-}
-
-const MessageTime: React.FC<MessageTimeProps> = React.memo(
-  ({ time, isVisible }) => (
+const MessageTime = React.memo(
+  ({ time, isVisible }: { time: string; isVisible: boolean }) => (
     <AnimatePresence>
       {isVisible && (
         <motion.div
@@ -68,17 +53,15 @@ const MessageTime: React.FC<MessageTimeProps> = React.memo(
     </AnimatePresence>
   )
 );
-
 MessageTime.displayName = 'MessageTime';
 
-const TimeSeparator: React.FC<TimeSeparatorProps> = React.memo(({ time }) => (
+const TimeSeparator = React.memo(({ time }: { time: string }) => (
   <div className="my-2 flex items-center justify-center">
     <div className="h-px flex-grow bg-gray-500"></div>
     <span className="mx-2 text-xs text-gray-500">{time}</span>
     <div className="h-px flex-grow bg-gray-500"></div>
   </div>
 ));
-
 TimeSeparator.displayName = 'TimeSeparator';
 
 const formatMessageTime = (timestamp: number) => {
@@ -106,10 +89,17 @@ const Chatbox: React.FC = () => {
     isEmailSubmitted,
     setIsEmailSubmitted,
   } = useChatStore();
-  const [selectedMessageId, setSelectedMessageId] = useState(null);
+  const [selectedMessageId, setSelectedMessageId] = useState<number | null>(
+    null
+  );
+  interface AuthorStatusPayload {
+    new: {
+      last_active: string;
+    };
+  }
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const fetchInitialMessages = useCallback(async (email: string) => {
@@ -138,6 +128,7 @@ const Chatbox: React.FC = () => {
 
       if (newMessages && newMessages.length > 0) {
         const lastMessage = newMessages[newMessages.length - 1];
+
         if (lastMessage && lastMessage.sender === 'author') {
           updateAuthorStatus(new Date());
           setMessages((prev) => {
@@ -175,11 +166,11 @@ const Chatbox: React.FC = () => {
         scrollToBottom();
         setNewMessage(false);
       }, 200);
+
       return () => clearTimeout(timer);
     }
   }, [isCollapsed, messages, scrollToBottom]);
 
-  //author status
   useEffect(() => {
     const fetchAuthorStatus = async () => {
       const { data } = await supabase
@@ -277,24 +268,29 @@ const Chatbox: React.FC = () => {
   );
 
   const handleSendMessage = useCallback(async () => {
-    if (inputMessage.trim()) {
-      const userMessage: Message = {
-        id: Date.now(),
-        text: inputMessage.trim(),
-        sender: 'user',
-      };
-      setMessages((prev) => [...prev, userMessage]);
-      setInputMessage('');
-      await saveChat(email, userMessage);
-      setIsLoading(true);
-      //send user message to author on telegram
-      await sendMessage(email, userMessage.text);
+    if (!inputMessage.trim()) return;
 
+    const userMessage: Message = {
+      id: Date.now(),
+      text: inputMessage.trim(),
+      sender: 'user',
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputMessage('');
+
+    const saveAndSendMessage = async () => {
       try {
+        await Promise.all([
+          saveChat(email, userMessage),
+          sendMessage(email, userMessage.text),
+        ]);
+
         const formattedHistory = messages.map((msg) => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
           content: msg.text,
         }));
+
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
@@ -306,7 +302,9 @@ const Chatbox: React.FC = () => {
             chatHistory: formattedHistory,
           }),
         });
+
         const data = await response.json();
+
         if (!response.ok) {
           setMessages((prev) => [
             ...prev,
@@ -316,7 +314,10 @@ const Chatbox: React.FC = () => {
               sender: 'bot',
             },
           ]);
+
+          return;
         }
+
         if (data.isAutomated) {
           const aiMessage: Message = {
             id: Date.now(),
@@ -332,14 +333,17 @@ const Chatbox: React.FC = () => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
+
+    setIsLoading(true);
+    saveAndSendMessage();
   }, [inputMessage, email, messages]);
 
   const handleHide = useCallback(() => {
     setChatEnabled(false);
   }, [setChatEnabled]);
 
-  const handleMessageClick = useCallback((id: any) => {
+  const handleMessageClick = useCallback((id: number) => {
     setSelectedMessageId((prevId) => (prevId === id ? null : id));
   }, []);
 
@@ -352,7 +356,7 @@ const Chatbox: React.FC = () => {
     []
   );
 
-  const handleDeleteChat = async () => {
+  const handleDeleteChat = useCallback(async () => {
     setEmail('');
     setMessages([]);
     setIsEmailSubmitted(false);
@@ -362,16 +366,58 @@ const Chatbox: React.FC = () => {
     } catch (error) {
       toast.error(`Error deleting chat ${error}`, toastOptions);
     }
-
     setShowOptions(false);
-  };
+  }, [email, setEmail, setIsEmailSubmitted]);
 
-  const handleDeleteEmail = () => {
+  const handleDeleteEmail = useCallback(() => {
     setEmail('');
     setMessages([]);
     setIsEmailSubmitted(false);
+
     setShowOptions(false);
-  };
+  }, [setEmail, setIsEmailSubmitted]);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputMessage(e.target.value);
+    },
+    []
+  );
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        handleSendMessage();
+      }
+    },
+    [handleSendMessage]
+  );
+
+  const handleCollapse = useCallback(() => {
+    setIsCollapsed(true);
+  }, [setIsCollapsed]);
+
+  const motionExpandedProps = useMemo(
+    () => ({
+      initial: { opacity: 0, scale: 0.8, y: 20 },
+      animate: { opacity: 1, scale: 1, y: 0 },
+      exit: { opacity: 0, scale: 0.8, y: 20 },
+      transition: { duration: 0.2, ease: 'easeInOut' },
+    }),
+    []
+  );
+
+  const motionRippleProps = useMemo(
+    () => ({
+      boxShadow: [
+        '0 0 0 0 rgba(59, 130, 246, 0)',
+        '0 0 0 10px rgba(59, 130, 246, 0.1)',
+        '0 0 0 20px rgba(59, 130, 246, 0)',
+      ],
+      transition: { repeat: Infinity, duration: 1.5 },
+    }),
+    []
+  );
 
   const LoadingDots = () => (
     <div className="flex items-center space-x-1 p-2">
@@ -381,7 +427,7 @@ const Chatbox: React.FC = () => {
     </div>
   );
 
-  const renderMessages = useMemo(() => {
+  const renderedMessages = useMemo(() => {
     const renderedMessages = messages.map((message, index) => {
       const messageKey = `message-${message.id}-${index}`;
 
@@ -413,7 +459,6 @@ const Chatbox: React.FC = () => {
               <AvatarFallback>SR</AvatarFallback>
             </Avatar>
           )}
-
           {message.sender === 'bot' && (
             <div className="mr-2 flex h-8 w-8 items-center justify-center">
               <span className="text-2xl">🤖</span>
@@ -429,12 +474,14 @@ const Chatbox: React.FC = () => {
               }`}
             >
               {message.text}
+
               {message.sender === 'bot' && (
                 <span className="ml-2 text-xs text-gray-300">
                   (AI Response)
                 </span>
               )}
             </div>
+
             <MessageTime
               time={formatMessageTime(message.id)}
               isVisible={selectedMessageId === message.id}
@@ -478,7 +525,7 @@ const Chatbox: React.FC = () => {
     handleMessageClick,
   ]);
 
-  const renderCollapsedState = () => {
+  const renderCollapsedState = useCallback(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       return (
         <div key="collapsed-icon" className="relative">
@@ -486,7 +533,9 @@ const Chatbox: React.FC = () => {
             onClick={() => {
               setIsCollapsed(false);
             }}
-            className={`h-12 w-12 rounded-full p-0 ${isAuthorOnline ? 'bg-green-500' : 'bg-red-500'}`}
+            className={`h-12 w-12 rounded-full p-0 ${
+              isAuthorOnline ? 'bg-green-500' : 'bg-red-500'
+            }`}
           >
             <MessageCircle className="h-6 w-6 text-white" />
           </Button>
@@ -500,18 +549,13 @@ const Chatbox: React.FC = () => {
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
+          className="relative"
         >
           <motion.div
-            animate={{
-              boxShadow: [
-                '0 0 0 0 rgba(59, 130, 246, 0)',
-                '0 0 0 10px rgba(59, 130, 246, 0.1)',
-                '0 0 0 20px rgba(59, 130, 246, 0)',
-              ],
-            }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+            animate={motionRippleProps}
             className="absolute inset-0 rounded-lg"
           />
+
           <div
             className={clsx(
               'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
@@ -536,19 +580,18 @@ const Chatbox: React.FC = () => {
                     </Badge>
                   )}
                 </div>
+
                 <span className="text-xs text-white opacity-80">
                   Active {lastOnlineTimeAgo}
                 </span>
               </div>
             </Button>
+
             <Button
               variant="ghost"
               size="sm"
               aria-label="Disable the chat"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleHide();
-              }}
+              onClick={handleHide}
               className="bg-transparent text-white hover:bg-white/20"
             >
               <X className="h-4 w-4" />
@@ -557,7 +600,14 @@ const Chatbox: React.FC = () => {
         </motion.div>
       );
     }
-  };
+  }, [
+    isAuthorOnline,
+    setIsCollapsed,
+    motionRippleProps,
+    newMessage,
+    lastOnlineTimeAgo,
+    handleHide,
+  ]);
 
   if (!chatEnabled) return null;
 
@@ -569,10 +619,7 @@ const Chatbox: React.FC = () => {
         ) : (
           <motion.div
             key="expanded"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            {...motionExpandedProps}
             className="sm:max-w-70 flex h-[32rem] w-96 flex-col overflow-hidden rounded-lg border border-gray-200 bg-black shadow-2xl"
           >
             <div
@@ -585,12 +632,14 @@ const Chatbox: React.FC = () => {
                 <h2 className="font-bold text-white">
                   Chat with {siteMetadata.headerTitle}
                 </h2>
+
                 <p className="text-sm text-white">Active {lastOnlineTimeAgo}</p>
               </div>
+
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsCollapsed(true)}
+                onClick={handleCollapse}
                 className="hover:bg-white/20"
               >
                 <X className="h-4 w-4 text-white" />
@@ -608,6 +657,7 @@ const Chatbox: React.FC = () => {
                 >
                   Please enter your email to start chatting
                 </label>
+
                 <Input
                   type="email"
                   id="email"
@@ -616,6 +666,7 @@ const Chatbox: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+
                 <Button className="mt-4" type="submit">
                   Start Chatting
                 </Button>
@@ -623,9 +674,10 @@ const Chatbox: React.FC = () => {
             ) : (
               <>
                 <ScrollArea className="h-[calc(100%-4rem)] flex-1 overflow-y-auto p-4">
-                  {renderMessages}
+                  {renderedMessages}
                   <div ref={messagesEndRef} />
                 </ScrollArea>
+
                 <div className="border-t border-gray-200 p-2">
                   <div className="flex space-x-2">
                     <div className="flex-grow">
@@ -633,19 +685,19 @@ const Chatbox: React.FC = () => {
                         type="text"
                         placeholder="Type your message..."
                         value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                        onKeyPress={(e) =>
-                          e.key === 'Enter' && handleSendMessage()
-                        }
+                        onChange={handleInputChange}
+                        onKeyPress={handleKeyPress}
                         className="w-full"
                       />
                     </div>
+
                     <Button
                       onClick={handleSendMessage}
                       className="h-10 px-2 py-2"
                     >
                       <Send className="h-4 w-4" />
                     </Button>
+
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button className="h-10 px-2 py-1">
@@ -665,6 +717,7 @@ const Chatbox: React.FC = () => {
                         ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
+
                     <div className="relative">
                       <DropdownMenu
                         open={showOptions}
@@ -684,6 +737,7 @@ const Chatbox: React.FC = () => {
                           <DropdownMenuItem onClick={handleDeleteChat}>
                             <span>Delete Chat</span>
                           </DropdownMenuItem>
+
                           <DropdownMenuItem onClick={handleDeleteEmail}>
                             <span>Delete Email</span>
                           </DropdownMenuItem>

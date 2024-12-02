@@ -17,6 +17,7 @@ export interface ImageLightBoxProps extends Pick<NextImageProps, 'src'> {
 export const EMOJI_SIZES = {
   xs: 16,
   sm: 24,
+  sd: 28,
   md: 32,
   lg: 48,
   xl: 56,

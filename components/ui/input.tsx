@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
@@ -9,6 +10,17 @@ import * as React from 'react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
