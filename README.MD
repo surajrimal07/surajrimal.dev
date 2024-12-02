@@ -27,10 +27,10 @@
 
 <a href="https://karhdo-blog.vercel.app"><img src="https://raw.githubusercontent.com/surajrimal07/surajrimal.dev/refs/heads/main/public/static/images/suraj-blog.webp" alt="Suraj's personal website" /></a>
 
+
 ## 🌟 Features
 
 ### 💻 Core Platform
-
 - **Next.js 15** with App Router and Server Components
 - **Supabase** for Authentication, Database, and Storage
 - **Upstash Redis** for Caching and Rate Limiting
@@ -41,7 +41,6 @@
 - **Cookie Consent** Management
 
 ### 🤖 AI Integration
-
 ```bash
 # Required AI Configuration
 QDRANT_URL=your_qdrant_url
@@ -49,14 +48,12 @@ QDRANT_API_KEY=your_qdrant_api_key
 OPENAI_BASE_URL=your_openai_base_url
 OPENAI_API_KEY=your_openai_api_key
 ```
-
 - AI-powered chatbot trained on personal data
 - Vector search for content discovery
 - Real-time chat monitoring via Telegram/Admin
 - Intelligent response system
 
 ### 📝 Content & Interaction
-
 - **Admin Panel** for all content management
 - **WalineJS** comment system with reactions
 - Interactive Guestbook
@@ -67,7 +64,6 @@ OPENAI_API_KEY=your_openai_api_key
 - Private code contribution tracking
 
 ### 👤 User Features
-
 - Supabase Authentication
 - Personal profiles
 - Activity tracking
@@ -75,7 +71,6 @@ OPENAI_API_KEY=your_openai_api_key
 - Comment management
 
 ### 📊 Analytics & Tracking
-
 - Page views & visitor stats
 - User engagement metrics
 - Content performance
@@ -104,7 +99,6 @@ npm run dev
 ## 📑 Content Management
 
 ### Admin Dashboard Features
-
 - Blog post creation/editing
 - Media management
 - Live chat monitoring
@@ -115,14 +109,11 @@ npm run dev
 - Proposal management
 
 ### Vector Database Content
-
 ```bash
 # Update vector database
 npm run ingest-content
 ```
-
 Processes:
-
 - Blog posts
 - Projects
 - Technologies
@@ -140,7 +131,6 @@ Processes:
 ## 🎨 Sections
 
 ### Main Features
-
 - 📚 Blog with reactions
 - 💻 Code snippets
 - ✍️ Guestbook
@@ -151,7 +141,6 @@ Processes:
 - 📞 Contact system
 
 ### Interactive Elements
-
 - Real-time chat
 - Comment system
 - Reaction system
