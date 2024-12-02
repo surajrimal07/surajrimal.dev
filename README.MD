@@ -1,171 +1,217 @@
-<h1 align="center">Suraj's Personal Blog & Portfolio</h1>
-<p align="center"><i>An interactive space where technology meets personalization - featuring AI-powered interactions and real-time engagement.</i></p>
+<h1 align="center">🚀 Suraj's Digital Space</h1>
+<p align="center"><i>A full-stack personal platform combining blogging, portfolio, and interactive features</i></p>
 
 <div align="center">
-    <a href="https://github.com/surajrimal07/surajr.com.np/stargazers"><img src="https://img.shields.io/github/stars/surajrimal07/surajr.com.np" alt="Stars Badge"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/network/members"><img src="https://img.shields.io/github/forks/surajrimal07/surajr.com.np" alt="Forks Badge"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/pulls"><img src="https://img.shields.io/github/issues-pr/surajrimal07/surajr.com.np" alt="Pull Requests Badge"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/issues"><img src="https://img.shields.io/github/issues/surajrimal07/surajr.com.np" alt="Issues Badge"/></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/surajrimal07/surajr.com.np?color=2b9348"></a>
-    <a href="https://github.com/surajrimal07/surajr.com.np/blob/master/LICENSE"><img src="https://img.shields.io/github/license/surajrimal07/surajr.com.np?color=2b9348" alt="License Badge"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev"><img src="https://img.shields.io/badge/version-2.5.1-blue?style=for-the-badge" alt="Version"/></a>
+    <a href="https://www.surajrimal.dev"><img src="https://img.shields.io/badge/website-live-brightgreen?style=for-the-badge" alt="Website"/></a>
+    <br />
+    <a href="https://github.com/surajrimal07/surajrimal.dev/blob/main/LICENSE"><img src="https://img.shields.io/github/license/surajrimal07/surajrimal.dev?style=flat-square" alt="License"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/stargazers"><img src="https://img.shields.io/github/stars/surajrimal07/surajrimal.dev?style=flat-square" alt="Stars"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/network/members"><img src="https://img.shields.io/github/forks/surajrimal07/surajrimal.dev?style=flat-square" alt="Forks"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/issues"><img src="https://img.shields.io/github/issues/surajrimal07/surajrimal.dev?style=flat-square" alt="Issues"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/graphs/contributors"><img src="https://img.shields.io/github/contributors/surajrimal07/surajrimal.dev?style=flat-square" alt="Contributors"/></a>
+    <a href="https://github.com/surajrimal07/surajrimal.dev/pulls"><img src="https://img.shields.io/github/issues-pr/surajrimal07/surajrimal.dev?style=flat-square" alt="Pull Requests"/></a>
 </div>
 
 <div align="center">
-    <br>
-    <a href="https://www.surajrimal.dev">
-        <img src="https://img.shields.io/badge/🌐_Live_Demo-surajrimal.dev-2ea44f?style=for-the-badge" alt="Live Demo">
-    </a>
+    <h3>🛠️ Built With</h3>
+    <img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js" alt="Next.js"/>
+    <img src="https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react" alt="React"/>
+    <img src="https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript" alt="TypeScript"/>
+    <img src="https://img.shields.io/badge/Tailwind-3-blue?style=flat-square&logo=tailwindcss" alt="Tailwind"/>
+    <img src="https://img.shields.io/badge/Supabase-latest-green?style=flat-square&logo=supabase" alt="Supabase"/>
+    <img src="https://img.shields.io/badge/Upstash-Redis-red?style=flat-square&logo=redis" alt="Upstash Redis"/>
 </div>
 
-## ✨ Features
+## Website
 
-### 🤖 AI-Powered Interaction
+<a href="https://karhdo-blog.vercel.app"><img src="https://raw.githubusercontent.com/surajrimal07/surajrimal.dev/refs/heads/main/public/static/images/suraj-blog.webp" alt="Suraj's personal website" /></a>
 
-- **Smart Chatbot**: Personalized AI assistant trained on my experiences and knowledge
-- **Vector Database**: Uses Qdrant for efficient similarity search of content
-- **Real-time Chat**: Monitor and respond to visitors through Telegram or admin dashboard
-- **Content Understanding**: OpenAI integration for intelligent responses
 
-### 💬 Interactive Comments
+## 🌟 Features
 
-- **[Waline](https://github.com/walinejs/waline) Integration**:
-  - Emoji reactions
-  - Nested comments
-  - Markdown support
-  - User avatars
-  - Comment notifications
-  - Multi-platform login
+### 💻 Core Platform
+- **Next.js 15** with App Router and Server Components
+- **Supabase** for Authentication, Database, and Storage
+- **Upstash Redis** for Caching and Rate Limiting
+- **shadcn/ui** for Beautiful UI Components
+- **Framer Motion** for Smooth Animations
+- **Zustand** for State Management
+- **MDX** for Rich Content
+- **Cookie Consent** Management
 
-### 🎯 Core Features
-
-- 🚀 Built with Next.js 15 & TypeScript
-- 🎨 Beautiful UI with shadcn/ui components
-- 🔐 Supabase Authentication & Storage
-- 📝 Custom Admin Dashboard
-- 🌓 Dark/Light mode
-- 📱 Fully Responsive
-- 🔄 Zustand State Management
-
-## 🛠️ Tech Stack
-
-[![Next][Next.js]][Next-url] [![MDX][MDX]][MDX-url] [![Vercel][Vercel]][Vercel-url] [![React][React]][React-url] [![Typescript][Typescript]][Typescript-url] [![Tailwind CSS][Tailwind CSS]][Tailwind CSS-url]
-
-## 🚀 Quick Start
-
+### 🤖 AI Integration
 ```bash
-# Clone repository
-git clone https://github.com/surajrimal07/surajr.com.np.git
-
-# Install dependencies
-yarn install
-
-# Setup environment variables
-cp .env.example .env.local
-
-# Required environment variables:
+# Required AI Configuration
 QDRANT_URL=your_qdrant_url
 QDRANT_API_KEY=your_qdrant_api_key
 OPENAI_BASE_URL=your_openai_base_url
 OPENAI_API_KEY=your_openai_api_key
+```
+- AI-powered chatbot trained on personal data
+- Vector search for content discovery
+- Real-time chat monitoring via Telegram/Admin
+- Intelligent response system
 
-# Ingest content into vector database
+### 📝 Content & Interaction
+- **Admin Panel** for all content management
+- **WalineJS** comment system with reactions
+- Interactive Guestbook
+- Code Snippets with reactions
+- Contact form with availability status
+- Page view analytics
+- GitHub contribution map
+- Private code contribution tracking
+
+### 👤 User Features
+- Supabase Authentication
+- Personal profiles
+- Activity tracking
+- Reaction history
+- Comment management
+
+### 📊 Analytics & Tracking
+- Page views & visitor stats
+- User engagement metrics
+- Content performance
+- Availability status
+- Work proposal system
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/surajrimal07/surajrimal.dev.git
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env.local
+
+# Ingest content to vector DB
 npm run ingest-content
 
-# Start development server
+# Start development
 npm run dev
 ```
 
-## 📝 Content Management
+## 📑 Content Management
 
-### Vector Database Content Ingestion
+### Admin Dashboard Features
+- Blog post creation/editing
+- Media management
+- Live chat monitoring
+- User management
+- Analytics dashboard
+- Comment moderation
+- Availability settings
+- Proposal management
 
+### Vector Database Content
 ```bash
-# Ingest your content into Qdrant
+# Update vector database
 npm run ingest-content
 ```
-
-This command processes and stores:
-
+Processes:
 - Blog posts
-- Project details
-- Personal information
-- Professional experience
-- Skills and expertise
+- Projects
+- Technologies
+- Experience
+- Certifications
 
-### Admin Features
+## 🔒 Security & Privacy
 
-- Content management dashboard
-- Real-time chat monitoring
-- Comment moderation
-- Analytics dashboard
-- Media asset management
+- Cookie consent management
+- Terms and conditions customization
+- Privacy policy templates
+- Data protection measures
+- User data management
 
-## 🤖 AI Chat Integration
+## 🎨 Sections
 
-The AI chatbot is trained on personal and professional information including:
+### Main Features
+- 📚 Blog with reactions
+- 💻 Code snippets
+- ✍️ Guestbook
+- 🛠️ Technologies showcase
+- 📈 GitHub activity
+- 🎓 Certifications
+- 📅 Availability calendar
+- 📞 Contact system
 
-- Work experience
-- Technical skills
-- Blog content
-- Project details
-- Common queries
+### Interactive Elements
+- Real-time chat
+- Comment system
+- Reaction system
+- Guest book entries
+- Work proposals
+- Contact form
 
-Visitors can interact through:
+## 🛠️ Development
 
-- Website chat widget
-- Telegram bot
-- Admin dashboard
+```bash
+# Run tests
+npm run test
 
-## 💭 Comments & Reactions
+# Build production
+npm run build
 
-Powered by WalineJS, offering:
+# Start production server
+npm run start
 
-```js
-{
-  "features": [
-    "Emoji reactions",
-    "Nested comments",
-    "Markdown support",
-    "User avatars",
-    "Real-time updates",
-    "Spam protection",
-    "Multi-language support"
-  ]
-}
+# Lint code
+npm run lint
 ```
 
-## 🌟 Show Your Support
+## ⚙️ Environment Setup
 
-If you find this project interesting, please consider:
+```env
+# Core
+NEXT_PUBLIC_SITE_URL=
+DATABASE_URL=
 
-- Giving it a ⭐ on GitHub
-- Sharing it with others
-- Contributing to its improvement
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 
-## 📸 Image Credits
+# Redis
+UPSTASH_REDIS_URL=
+UPSTASH_REDIS_TOKEN=
 
-Assets sourced from:
+# AI Integration
+QDRANT_URL=
+QDRANT_API_KEY=
+OPENAI_BASE_URL=
+OPENAI_API_KEY=
 
-- [Unsplash](https://unsplash.com/)
-- [GIPHY](https://giphy.com/)
-- [Storyset](https://storyset.com/)
+# Optional
+NEXT_PUBLIC_GA_TRACKING_ID=
+```
+
+## 📝 Important Notes
+
+- Customize Terms & Conditions
+- Update Privacy Policy
+- Configure Cookie Consent
+- Set up Availability Status
+- Customize Contact Forms
+
+## 🤝 Contributing
+
+Contributions are welcome! Please check the [Contributing Guide](CONTRIBUTING.md).
+
+## 📸 Credits
+
+- Images: [Unsplash](https://unsplash.com)
+- Icons: [Lucide](https://lucide.dev)
+- Illustrations: [Storyset](https://storyset.com)
 
 ---
 
-<p align="center">Built with ❤️ by <b>Suraj Rimal</b></p>
-<p align="center"><b>Copyright © 2024</b></p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[Typescript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
-[Typescript-url]: https://www.typescriptlang.org/
-[Tailwind CSS]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
-[Tailwind CSS-url]: https://tailwindcss.com/
-[MDX]: https://img.shields.io/badge/MDX-000000?style=for-the-badge&logo=mdx&logoColor=white
-[MDX-url]: https://mdxjs.com/
-[React]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vercel]: https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white
-[Vercel-url]: https://vercel.com/
+<p align="center">
+    Built with ❤️ by <b>Suraj Rimal</b> 👋<br>
+    This blog was heavily inspired by <a href="https://karhdo-blog.vercel.app">Karhdo's Blog</a> (<a href="https://github.com/Karhdo/karhdo.dev">GitHub</a>). Special thanks to <a href="https://github.com/timlrx/tailwind-nextjs-starter-blog">Timothy Lin</a> for the original template.<br>
+    <a href="https://www.surajrimal.dev">www.surajrimal.dev</a>
+</p>
