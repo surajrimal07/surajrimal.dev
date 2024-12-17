@@ -10,7 +10,7 @@ export default async function Projects() {
   const workProjects = projects.filter(({ type }) => type === 'work');
   const sideProjects = projects.filter(({ type }) => type === 'self');
   const selfHostedProjects = projects.filter(
-    ({ type }) => type === 'selfhosted'
+    ({ type }) => type === 'selfhosted',
   );
 
   return (

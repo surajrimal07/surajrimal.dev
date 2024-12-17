@@ -62,10 +62,10 @@ export default function BlogPage() {
               <TableCell>{new Date(post.date).toLocaleDateString()}</TableCell>
               <TableCell className="text-right">
                 <div className="flex space-x-2">
-                  <Button variant="outline" asChild>
+                  <Button asChild variant="outline">
                     <Link href={`/admin/${post._raw.flattenedPath}`}>Edit</Link>
                   </Button>
-                  <DeleteButton id={post.slug} content="post" />
+                  <DeleteButton content="post" id={post.slug} />
                 </div>
               </TableCell>
             </TableRow>

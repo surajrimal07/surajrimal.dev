@@ -1,4 +1,4 @@
-import { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
+import type { Toc } from 'pliny/mdx-plugins/remark-toc-headings';
 
 export type TOC = {
   value: string;

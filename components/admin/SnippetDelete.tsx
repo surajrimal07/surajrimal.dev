@@ -43,7 +43,7 @@ export default function DeleteButton({ id, content }: DeleteButtonProps) {
     } catch (error) {
       toast.error(
         `Failed to delete snippet: ${error instanceof Error ? error.message : String(error)}`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsOpen(false);

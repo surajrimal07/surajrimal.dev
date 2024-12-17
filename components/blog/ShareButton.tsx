@@ -32,7 +32,7 @@ export default function ShareMenu({
 }: ShareMenuProps) {
   const handleShareClick = async (
     type: ShareType,
-    shareFunction: () => void
+    shareFunction: () => void,
   ) => {
     shareFunction();
 
@@ -66,7 +66,7 @@ export default function ShareMenu({
     handleShareClick('facebookshare', () => {
       window.open(
         `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-        '_blank'
+        '_blank',
       );
     });
   };
@@ -77,11 +77,11 @@ export default function ShareMenu({
         <ShareIcon className="h-5 w-5 text-gray-300" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-56 rounded-lg border border-gray-700 bg-gray-900 p-0 text-white shadow-lg"
         align="end"
+        avoidCollisions={false}
+        className="w-56 rounded-lg border border-gray-700 bg-gray-900 p-0 text-white shadow-lg"
         side="top"
         sideOffset={20}
-        avoidCollisions={false}
       >
         <div className="border-b border-gray-700 p-3">
           <h3 className="text-base font-semibold">Share this on</h3>
@@ -89,24 +89,24 @@ export default function ShareMenu({
         </div>
         <div className="p-1.5">
           <DropdownMenuItem
-            onClick={handleTwitter}
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+            onClick={handleTwitter}
           >
             <FaXTwitter className="mr-2 h-4 w-4" />
             <span>Twitter - {shares.twittershare}</span>
             <LuExternalLink className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={handleFacebook}
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+            onClick={handleFacebook}
           >
             <FaFacebookF className="mr-2 h-4 w-4" />
             <span>Facebook - {shares.facebookshare}</span>
             <LuExternalLink className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={handleCopy}
             className="flex cursor-pointer items-center rounded-md px-2 py-1.5 hover:bg-gray-800"
+            onClick={handleCopy}
           >
             <LuLink className="mr-2 h-4 w-4" />
             <span>Copy link - {shares.clipboardshare}</span>

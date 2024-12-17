@@ -29,11 +29,11 @@ export default function AuthorLayout({ children }: Props) {
           <div className="prose max-w-none pb-2 pt-8 dark:prose-invert xl:col-span-2">
             {children}
             <Image
-              src="https://cdn.surajrimal.dev/image.png"
               alt="Signature"
-              width={96}
-              height={96}
               className="h-24 w-auto"
+              height={96}
+              src="https://cdn.surajrimal.dev/image.png"
+              width={96}
             />
           </div>
         </div>

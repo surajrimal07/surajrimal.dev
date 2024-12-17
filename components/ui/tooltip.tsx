@@ -13,12 +13,14 @@ const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
 
   return (
     <div className="relative inline-block">
-      <div
+      <button
+        type="button"
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
+        className="focus:outline-none"
       >
         {children}
-      </div>
+      </button>
       {isVisible && (
         <div className="absolute z-10 mt-2 rounded-md bg-muted/90 px-2 py-1 text-sm font-thin text-white shadow-lg">
           {content}

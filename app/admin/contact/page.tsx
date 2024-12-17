@@ -39,7 +39,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminContactsComponent() {
@@ -102,8 +102,8 @@ export default function AdminContactsComponent() {
                   responded: newcontacts.responded,
                   responded_at: newcontacts.responded_at,
                 }
-              : contact
-          )
+              : contact,
+          ),
         );
 
         toast.success(`Contact marked as ${type}`, toastOptions);
@@ -123,7 +123,7 @@ export default function AdminContactsComponent() {
     (contact) =>
       (contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (showResponded ? contact.responded : !contact.responded)
+      (showResponded ? contact.responded : !contact.responded),
   );
 
   return (
@@ -141,16 +141,16 @@ export default function AdminContactsComponent() {
       </Breadcrumb>
       <div className="mb-4 flex items-center space-x-4">
         <Input
-          type="text"
+          className="flex-grow"
           placeholder="Search contacts..."
+          type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow"
         />
         <div className="flex items-center space-x-2">
           <Checkbox
-            id="responded"
             checked={showResponded}
+            id="responded"
             onCheckedChange={(checked) => setShowResponded(checked as boolean)}
           />
           <label htmlFor="responded">Show Responded</label>
@@ -194,7 +194,7 @@ export default function AdminContactsComponent() {
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button size="sm" variant="ghost">
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -285,8 +285,8 @@ export default function AdminContactsComponent() {
                     <Dialog>
                       <DialogTrigger asChild>
                         <DropdownMenuItem
-                          onSelect={(e) => e.preventDefault()}
                           className="text-red-600"
+                          onSelect={(e) => e.preventDefault()}
                         >
                           Delete
                         </DropdownMenuItem>

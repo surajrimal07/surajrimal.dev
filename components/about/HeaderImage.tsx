@@ -20,36 +20,36 @@ export default function AboutHeaderImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[300px] w-[300px] stroke-purple-500 opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Animated Header Image</title>
           <motion.circle
-            variants={animation}
             custom={1}
             cx="256"
             cy="160"
             r="64"
+            variants={animation}
           />
           <motion.path
-            variants={animation}
             custom={2}
             d="M256 256c-70.7 0-128 57.3-128 128v32c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-32c0-70.7-57.3-128-128-128z"
+            variants={animation}
           />
           <motion.path
-            variants={animation}
             custom={3}
             d="M160 96c-26.5 0-48 21.5-48 48s21.5 48 48 48M352 96c26.5 0 48 21.5 48 48s-21.5 48-48 48"
+            variants={animation}
           />
         </motion.svg>
       </div>

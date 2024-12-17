@@ -13,7 +13,7 @@ export default function Snippet() {
   const pageNumber = 1;
   const initialDisplayPosts = posts.slice(
     POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
+    POSTS_PER_PAGE * pageNumber,
   );
   const pagination = {
     currentPage: pageNumber,
@@ -22,10 +22,10 @@ export default function Snippet() {
 
   return (
     <SnippetsLayout
-      posts={posts}
-      title="All Snippets"
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}
+      posts={posts}
+      title="All Snippets"
     />
   );
 }

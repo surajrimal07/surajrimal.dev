@@ -44,9 +44,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!prevPage ? (
             <PaginationPrevious
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationPrevious
@@ -77,9 +77,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!nextPage ? (
             <PaginationNext
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationNext
@@ -142,9 +142,9 @@ export default function ListLayout({
             {heading}
           </p>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Here you'll find{' '}
+            Here you&apos;ll find{' '}
             <span className="font-bold text-red-500">{posts.length}</span>{' '}
-            pieces of content I've written about{' '}
+            pieces of content I&apos;ve written about{' '}
             <span className="font-bold text-red-500">{tagTitle}</span>
           </p>
 
@@ -163,16 +163,16 @@ export default function ListLayout({
             return (
               <PostCard
                 key={path}
-                highlightTag={tagTitle.toLowerCase()}
-                path={path}
                 date={date}
-                title={title}
+                highlightTag={tagTitle.toLowerCase()}
+                language={post.language || 'English'}
+                path={path}
+                shares={shares}
                 summary={summary || ''}
                 tags={tags}
-                language={post.language || 'English'}
-                views={views}
-                shares={shares}
                 thumbnail={thumbnail}
+                title={title}
+                views={views}
               />
             );
           })}

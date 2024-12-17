@@ -36,7 +36,7 @@ export default function PrivateContributions() {
     <>
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Private Contributions <Twemoji size="md" name="keyboard" />
+          Private Contributions <Twemoji name="keyboard" size="md" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
           <span className="mr-1">
@@ -44,8 +44,8 @@ export default function PrivateContributions() {
             from
           </span>
           <Link
-            href="https://wakapi.dev"
             className="special-underline-new inline-flex items-center"
+            href="https://wakapi.dev"
           >
             Wakapi <TfiArrowTopRight className="ml-1" />
           </Link>
@@ -55,22 +55,22 @@ export default function PrivateContributions() {
       <div className="pt-3">
         <div className="max-w-full overflow-hidden">
           <Image
-            src={`${BUCKET_URL}${BUCKET_NAME}/contributions.png`}
             alt="Contribution graph"
-            width={1219}
-            height={186}
             className="h-full w-full"
+            height={186}
+            src={`${BUCKET_URL}${BUCKET_NAME}/contributions.png`}
+            width={1219}
           />
         </div>
         <div className="mt-0 flex flex-wrap justify-center sm:gap-2">
           {BADGES.map((badge) => (
             <Image
               key={badge.label}
-              src={badge.path}
               alt={`${badge.label} contributions`}
-              width={150}
-              height={30}
               className="h-auto w-auto max-w-[80px] sm:max-w-none"
+              height={30}
+              src={badge.path}
+              width={150}
             />
           ))}
         </div>

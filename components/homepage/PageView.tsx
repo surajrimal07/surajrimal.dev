@@ -39,7 +39,7 @@ const PageView: React.FC<PageViewProps> = ({
 
       const views = await getPageViews(
         pathname,
-        shouldIncrement && !shouldDebounce
+        shouldIncrement && !shouldDebounce,
       );
 
       if (shouldIncrement && !shouldDebounce) {
@@ -59,7 +59,7 @@ const PageView: React.FC<PageViewProps> = ({
 
   const memoizedCounter = useMemo(
     () => <MemoizedAnimatedCounter targetValue={pageView} />,
-    [pageView]
+    [pageView],
   );
 
   return (

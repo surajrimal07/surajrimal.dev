@@ -11,9 +11,9 @@ const TermsOfService: FC = () => {
         </CardHeader>
         <CardContent>
           <p className="text-gray-700 dark:text-gray-300">
-            These Terms of Service ("Terms") govern your use of the personal
-            blog website of Suraj Rimal. By accessing or using the website, you
-            agree to comply with these Terms.
+            These Terms of Service (&quot;Terms&quot;) govern your use of the
+            personal blog website of Suraj Rimal. By accessing or using the
+            website, you agree to comply with these Terms.
           </p>
 
           <h2 className="mt-6 text-lg font-semibold text-gray-900 dark:text-gray-200">

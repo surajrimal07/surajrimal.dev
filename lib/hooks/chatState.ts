@@ -88,8 +88,8 @@ const useChatStore = create<ChatState>()(
         email: state.email,
         isEmailSubmitted: state.isEmailSubmitted,
       }),
-    }
-  )
+    },
+  ),
 );
 
 if (typeof window !== 'undefined' && useChatStore.getState().chatEnabled) {

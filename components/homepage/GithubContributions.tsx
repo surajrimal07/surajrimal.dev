@@ -36,15 +36,15 @@ const GithubContributions = () => {
     <div className="w-full">
       <div className="w-full space-y-2 py-2 md:space-y-5">
         <h1 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Github Contributions <Twemoji size="md" name="keyboard" />
+          Github Contributions <Twemoji name="keyboard" size="md" />
         </h1>
         <p className="!mt-2 text-base leading-7 text-gray-500 dark:text-gray-400 sm:text-lg">
           <span className="mr-1">
             My Github contributions calendar throughout the year, fetched from
           </span>
           <Link
-            href={'https://github.com/surajrimal07'}
             className="special-underline-new inline-flex items-center"
+            href="https://github.com/surajrimal07"
           >
             Github <TfiArrowTopRight className="ml-1" />
           </Link>
@@ -55,8 +55,8 @@ const GithubContributions = () => {
         <div className="min-w-full">
           <GitHubCalendar
             blockSize={blockSize}
-            username="surajrimal07"
             fontSize={10}
+            username="surajrimal07"
           />
         </div>
       </div>

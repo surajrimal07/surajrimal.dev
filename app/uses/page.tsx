@@ -20,9 +20,9 @@ export default function Uses() {
   return (
     <UsesLayout>
       <MDXLayoutRenderer
-        content={author}
         code={author.body.code}
         components={components}
+        content={author}
       />
     </UsesLayout>
   );

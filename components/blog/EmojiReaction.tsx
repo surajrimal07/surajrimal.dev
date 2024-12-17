@@ -38,7 +38,7 @@ function EmojiReaction({
   onClick = () => {},
 }: EmojiReactionProps) {
   const [src, setSrc] = useState<string>(
-    disabled ? disabledImage : defaultImage
+    disabled ? disabledImage : defaultImage,
   );
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -91,16 +91,16 @@ function EmojiReaction({
   return (
     <>
       <Head>
-        <link rel="preload" as="image" href={animatedImage} />
-        <link rel="preload" as="image" href={disabledImage} />
+        <link as="image" href={animatedImage} rel="preload" />
+        <link as="image" href={disabledImage} rel="preload" />
       </Head>
       <m.button
-        disabled={disabled}
-        title={title}
         aria-label={title}
         className={clsx('relative cursor-pointer select-none', [
           disabled && 'cursor-not-allowed',
         ])}
+        disabled={disabled}
+        title={title}
         whileTap={disabled ? undefined : 'tap'}
         onClick={handleClick}
         onMouseEnter={handleHoverStart}
@@ -108,13 +108,13 @@ function EmojiReaction({
       >
         <m.div className={clsx('h-8 w-8')} variants={emojiMotion}>
           <Image
-            className={clsx('pointer-events-none h-full w-full')}
+            priority
+            unoptimized
             alt={title}
+            className={clsx('pointer-events-none h-full w-full')}
+            height={48}
             src={src}
             width={48}
-            height={48}
-            unoptimized
-            priority
           />
         </m.div>
       </m.button>

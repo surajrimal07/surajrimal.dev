@@ -41,7 +41,7 @@ import {
   insertJourneyEvent,
   updateJourneyEvent,
 } from '@/lib/journey';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 const JourneyEventManager = () => {
@@ -64,7 +64,9 @@ const JourneyEventManager = () => {
       const events = await getJourneyEvents();
       setJourneyEvents(events);
     } catch (err) {
-      const error = `Failed to fetch journey events: ${err instanceof Error ? err.message : String(err)}`;
+      const error = `Failed to fetch journey events: ${
+        err instanceof Error ? err.message : String(err)
+      }`;
       setError(error);
       toast.error(error, toastOptions);
     }
@@ -80,7 +82,7 @@ const JourneyEventManager = () => {
       setCurrentEvent((prev) => (prev ? { ...prev, [name]: value } : null));
       setValidationErrors((prev) => ({ ...prev, [name]: '' }));
     },
-    []
+    [],
   );
 
   const handleCheckboxChange = useCallback((checked: boolean) => {
@@ -112,14 +114,16 @@ const JourneyEventManager = () => {
           `Journey event ${
             'id' in currentEvent ? 'updated' : 'added'
           } successfully`,
-          toastOptions
+          toastOptions,
         );
         setIsDialogOpen(false);
         setCurrentEvent(null);
         setValidationErrors({});
       }
     } catch (err) {
-      const error = `Failed to save journey event: ${err instanceof Error ? err.message : String(err)}`;
+      const error = `Failed to save journey event: ${
+        err instanceof Error ? err.message : String(err)
+      }`;
       setError(error);
       toast.error(error, toastOptions);
     }
@@ -136,7 +140,7 @@ const JourneyEventManager = () => {
       setEventToDelete(event);
       setIsDeleteDialogOpen(true);
     },
-    []
+    [],
   );
 
   const confirmDeleteEvent = useCallback(async () => {
@@ -146,7 +150,9 @@ const JourneyEventManager = () => {
         toast.success('Journey event deleted successfully', toastOptions);
         await fetchJourneyEvents();
       } catch (err) {
-        const error = `Failed to delete journey event: ${err instanceof Error ? err.message : String(err)}`;
+        const error = `Failed to delete journey event: ${
+          err instanceof Error ? err.message : String(err)
+        }`;
         setError(error);
         toast.error(error, toastOptions);
       } finally {
@@ -191,7 +197,7 @@ const JourneyEventManager = () => {
       </CardHeader>
       <CardContent>
         {error && (
-          <Alert variant="destructive" className="mb-4">
+          <Alert className="mb-4" variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -216,15 +222,15 @@ const JourneyEventManager = () => {
                 <TableCell>{event.is_current ? 'Yes' : 'No'}</TableCell>
                 <TableCell>
                   <Button
-                    variant="ghost"
                     size="icon"
+                    variant="ghost"
                     onClick={() => handleEditEvent(event)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button
-                    variant="ghost"
                     size="icon"
+                    variant="ghost"
                     onClick={() => handleDeleteEvent(event)}
                   >
                     <Trash className="h-4 w-4" />
@@ -292,8 +298,8 @@ const JourneyEventManager = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="is_current"
                   checked={currentEvent?.is_current || false}
+                  id="is_current"
                   onCheckedChange={handleCheckboxChange}
                 />
                 <label htmlFor="is_current">Current Event</label>
@@ -321,8 +327,8 @@ const JourneyEventManager = () => {
             <DialogHeader>
               <DialogTitle>Confirm Deletion</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete the event "
-                {eventToDelete?.title}"? This action cannot be undone.
+                Are you sure you want to delete the event &quot;
+                {eventToDelete?.title}&quot;? This action cannot be undone.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>

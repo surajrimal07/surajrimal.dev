@@ -34,11 +34,11 @@ export default function CookieConsent() {
     <AnimatePresence>
       {isBannerVisible && (
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
           className="fixed bottom-5 left-4 right-4 z-50 mx-auto max-w-sm"
+          exit={{ y: 50, opacity: 0 }}
+          initial={{ y: 50, opacity: 0 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
         >
           <Card className="border-none bg-gray-900 shadow-lg">
             <CardContent className="p-4">
@@ -46,22 +46,22 @@ export default function CookieConsent() {
               <p className="mb-2 text-sm text-gray-200">
                 We use cookies to enhance your experience. This site uses{' '}
                 <Link
-                  href="https://supabase.com"
                   className="text-red-300 underline hover:text-red-200"
+                  href="https://supabase.com"
                 >
                   Supabase <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
                 for data storage{' '}
                 <Link
-                  href="https://vercel.com/analytics"
                   className="text-red-300 underline hover:text-red-200"
+                  href="https://vercel.com/analytics"
                 >
                   Vercel Analytics <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
                 for performance monitoring{' '}
                 <Link
-                  href="https://umami.is"
                   className="text-red-300 underline hover:text-red-200"
+                  href="https://umami.is"
                 >
                   Umami <ExternalLink className="inline h-3 w-3" />
                 </Link>{' '}
@@ -71,16 +71,16 @@ export default function CookieConsent() {
                 <p className="text-xs text-gray-300">
                   By accepting, you agree to our{' '}
                   <Link
-                    href="/privacy"
                     className="text-red-300 underline hover:text-red-200"
+                    href="/privacy"
                   >
                     Privacy Policy
                   </Link>
                 </p>
                 <Button
-                  onClick={handleAccept}
-                  size="sm"
                   className="ml-4 bg-red-600 text-white hover:bg-red-700"
+                  size="sm"
+                  onClick={handleAccept}
                 >
                   Accept
                 </Button>

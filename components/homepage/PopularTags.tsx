@@ -13,7 +13,7 @@ export default async function PopularTags() {
     <>
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-xl font-extrabold leading-tight text-gray-900 dark:text-gray-100 sm:text-2xl md:text-3xl lg:text-4xl">
-          Popular Tags <Twemoji size="sd" name="popular-tags" />
+          Popular Tags <Twemoji name="popular-tags" size="sd" />
         </h1>
         <p className="!mt-2 text-sm leading-7 text-gray-500 dark:text-gray-400 sm:text-base lg:text-lg">
           Popular tags feature the most widely discussed topics.
@@ -24,18 +24,18 @@ export default async function PopularTags() {
           ? limitedTags.map(({ slug, icon_type, href, title }) => (
               <Link
                 key={slug}
-                href={href}
                 className={`${slug} group flex h-12 items-center justify-center space-x-2 rounded-lg bg-gray-800 p-2 sm:h-12 sm:p-3`}
+                href={href}
                 style={{ minWidth: '100px' }}
               >
                 <div className="relative flex-shrink-0">
                   <IconsBundle
+                    className="h-6 w-6 sm:h-8 sm:w-8"
+                    hover={false}
+                    iconColor="white"
+                    iconType="icon"
                     kind={icon_type}
                     size={6}
-                    iconType="icon"
-                    hover={false}
-                    className="h-6 w-6 sm:h-8 sm:w-8"
-                    iconColor="white"
                   />
                 </div>
                 <span className="whitespace-nowrap text-xs text-white sm:text-sm md:text-base">

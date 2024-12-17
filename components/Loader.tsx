@@ -12,11 +12,11 @@ export default function Loader() {
   }, []);
   return (
     <l-line-wobble
-      size="80"
-      stroke="5"
       bg-opacity="0.2"
-      speed="1.75"
       color="#dc2626"
+      size="80"
+      speed="1.75"
+      stroke="5"
     />
   );
 }

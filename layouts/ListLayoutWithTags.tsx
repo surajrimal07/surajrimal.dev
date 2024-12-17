@@ -38,9 +38,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!prevPage ? (
             <PaginationPrevious
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationPrevious
@@ -71,9 +71,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!nextPage ? (
             <PaginationNext
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationNext
@@ -129,14 +129,14 @@ export default function ListLayoutWithTags({
         setViewCounts((prev) => new Map(prev).set(slug, views));
         setShareCounts((prev) => new Map(prev).set(slug, total));
       }, 300),
-    []
+    [],
   );
 
   const fetchCounts = useCallback(
     (slug: string) => {
       debouncedFetch(slug);
     },
-    [debouncedFetch]
+    [debouncedFetch],
   );
 
   useEffect(() => {
@@ -187,8 +187,8 @@ export default function ListLayoutWithTags({
               </h3>
             ) : (
               <Link
-                href={'/blog'}
                 className="font-bold uppercase text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
+                href="/blog"
               >
                 All Posts
               </Link>
@@ -202,9 +202,9 @@ export default function ListLayoutWithTags({
                     </h3>
                   ) : (
                     <Link
-                      href={`/tags/${slug(t)}`}
-                      className="px-3 py-2 text-sm font-medium uppercase text-gray-500 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500"
                       aria-label={`View posts tagged ${t}`}
+                      className="px-3 py-2 text-sm font-medium uppercase text-gray-500 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500"
+                      href={`/tags/${slug(t)}`}
                     >
                       {`${t} (${tagCounts[t]})`}
                     </Link>
@@ -224,15 +224,15 @@ export default function ListLayoutWithTags({
             return (
               <PostCard
                 key={path}
-                path={path}
                 date={date}
-                title={title}
+                language={post.language || 'English'}
+                path={path}
+                shares={shares}
                 summary={summary || ''}
                 tags={tags}
-                language={post.language || 'English'}
-                views={views}
-                shares={shares}
                 thumbnail={thumbnail}
+                title={title}
+                views={views}
               />
             );
           })}

@@ -46,7 +46,7 @@ export default async function PostLayout({
                   <time dateTime={date}>
                     {new Date(date).toLocaleDateString(
                       siteMetadata.locale,
-                      postDateTemplate
+                      postDateTemplate,
                     )}
                   </time>
                 </dd>
@@ -59,9 +59,9 @@ export default async function PostLayout({
                   <dd>
                     <BlogMeta
                       className="flex justify-center"
-                      slug={slugNormalized}
-                      readingTime={readingTime}
                       language={content.language || 'English'}
+                      readingTime={readingTime}
+                      slug={slugNormalized}
                     />
                   </dd>
                 </div>
@@ -75,16 +75,16 @@ export default async function PostLayout({
                 <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
                   {authorDetails.map((author) => (
                     <li
-                      className="flex items-center space-x-2"
                       key={author.name}
+                      className="flex items-center space-x-2"
                     >
                       {author.avatar && (
                         <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
                           alt="avatar"
                           className="h-10 w-10 rounded-full"
+                          height={38}
+                          src={author.avatar}
+                          width={38}
                         />
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
@@ -96,8 +96,8 @@ export default async function PostLayout({
                         <dd>
                           {author.twitter && (
                             <Link
-                              href={author.twitter}
                               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              href={author.twitter}
                             >
                               {author.twitter
                                 .replace('https://twitter.com/', '@')
@@ -121,7 +121,7 @@ export default async function PostLayout({
                 {children}
               </div>
               <div className="sticky bottom-4 z-10 mb-2 w-full max-w-md transform border-none outline-none lg:sticky lg:bottom-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/4">
-                <Reactions slug={slugNormalized} ip={ip} />
+                <Reactions ip={ip} slug={slugNormalized} />
               </div>
 
               <div
@@ -129,6 +129,7 @@ export default async function PostLayout({
                 id="comment"
               >
                 <WalineComment
+                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
                   serverURL={process.env.NEXT_PUBLIC_COMMENT_SERVER_URL!}
                 />
               </div>
@@ -172,9 +173,9 @@ export default async function PostLayout({
               </div>
               <div className="pt-1 xl:pt-4">
                 <Link
-                  href="/blog"
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="Back to the blog"
+                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                  href="/blog"
                 >
                   &larr; Back to the blog
                 </Link>

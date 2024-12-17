@@ -75,7 +75,7 @@ async function upsertTagInSupabase(tagSlug: string, count: number) {
       title: title,
       count: count,
     },
-    { onConflict: 'slug' }
+    { onConflict: 'slug' },
   );
 
   if (error) {

@@ -24,9 +24,9 @@ const ProfileCardInfo = () => {
             Fullstack Engineer @{' '}
             <a
               className="hover:underline"
-              target="_blank"
               href="https://younetmedia.com/"
               rel="noreferrer"
+              target="_blank"
             >
               Zorsha Technologies
             </a>
@@ -35,7 +35,7 @@ const ProfileCardInfo = () => {
         <div className="flex items-center">
           <MapPin name="map-pin" size={20} strokeWidth={1} />
           <p className="px-2">
-            Kathmandu, Nepal, <Twemoji name="nepal" size={'sm'} />
+            Kathmandu, Nepal, <Twemoji name="nepal" size="sm" />
           </p>
         </div>
         <div className="flex items-center">
@@ -46,11 +46,11 @@ const ProfileCardInfo = () => {
         </div>
         <div className="flex items-center gap-1.5">
           <a
-            target="_blank"
-            href={siteMetadata.github}
-            rel="noreferrer"
             className="flex items-center text-sm hover:underline"
             data-umami-event="profile-card-github"
+            href={siteMetadata.github}
+            rel="noreferrer"
+            target="_blank"
           >
             <Github size={20} strokeWidth={1} />
             <span className="ml-px text-gray-500">/</span>
@@ -58,11 +58,11 @@ const ProfileCardInfo = () => {
           </a>
           <span className="text-gray-400 dark:text-gray-500">|</span>
           <a
-            target="_blank"
-            href={siteMetadata.linkedin}
-            rel="noreferrer"
             className="flex items-center text-sm hover:underline"
             data-umami-event="profile-card-linkedin"
+            href={siteMetadata.linkedin}
+            rel="noreferrer"
+            target="_blank"
           >
             <Linkedin size={20} strokeWidth={1} />
             <span className="ml-px text-gray-500">/</span>
@@ -72,11 +72,11 @@ const ProfileCardInfo = () => {
           </a>
           <span className="text-gray-400 dark:text-gray-500">|</span>
           <a
-            target="_blank"
-            href={siteMetadata.linkedin}
-            rel="noreferrer"
             className="flex items-center text-sm hover:underline"
             data-umami-event="profile-card-facebook"
+            href={siteMetadata.linkedin}
+            rel="noreferrer"
+            target="_blank"
           >
             <Facebook size={20} strokeWidth={1} />
             <span className="ml-px text-gray-500">/</span>

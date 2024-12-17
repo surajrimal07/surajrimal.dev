@@ -6,14 +6,14 @@ import {
   DotsHorizontalIcon,
 } from '@radix-ui/react-icons';
 
-import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { type ButtonProps, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
-    role="navigation"
     aria-label="pagination"
     className={cn('mx-auto flex w-full justify-center', className)}
+    role="navigation"
     {...props}
   />
 );
@@ -59,7 +59,7 @@ const PaginationLink = ({
         variant: isActive ? 'outline' : 'ghost',
         size,
       }),
-      className
+      className,
     )}
     {...props}
   >
@@ -74,8 +74,8 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="default"
     className={cn('gap-1 pl-2.5', className)}
+    size="default"
     {...props}
   >
     <ChevronLeftIcon className="h-4 w-4" />
@@ -90,8 +90,8 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="default"
     className={cn('gap-1 pr-2.5', className)}
+    size="default"
     {...props}
   >
     <span>Next</span>

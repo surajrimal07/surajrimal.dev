@@ -34,9 +34,9 @@ export const Separator = ({
             gradient
               ? 'bg-gradient-to-r from-transparent to-zinc-500 dark:from-zinc-800 dark:to-zinc-400'
               : 'bg-zinc-300 dark:bg-zinc-800',
-            className
+            className,
           )}
-        ></div>
+        />
         <div className="w-fit text-nowrap uppercase text-gray-600 dark:text-gray-300">
           {label}
         </div>
@@ -46,9 +46,9 @@ export const Separator = ({
             gradient
               ? 'bg-gradient-to-r from-zinc-500 to-transparent dark:from-zinc-200 dark:to-zinc-700'
               : 'bg-zinc-300 dark:bg-zinc-800',
-            className
+            className,
           )}
-        ></div>
+        />
       </div>
     );
   }
@@ -60,7 +60,7 @@ export const Separator = ({
         gradient
           ? 'bg-gradient-to-r from-transparent via-zinc-500 to-transparent dark:from-zinc-800 dark:via-zinc-200 dark:to-zinc-700'
           : 'bg-zinc-300 dark:bg-zinc-800',
-        className
+        className,
       )}
       style={marginTopStyle}
     />

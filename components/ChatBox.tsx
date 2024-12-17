@@ -28,7 +28,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
-import { clearChat, saveChat } from '@/lib/chat';
+import { clearChat, handleChatRequest, saveChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
@@ -42,16 +42,16 @@ const MessageTime = React.memo(
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -10 }}
           className="text-xs text-gray-500"
+          exit={{ opacity: 0, x: -10 }}
+          initial={{ opacity: 0, x: -10 }}
         >
           {time}
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  ),
 );
 MessageTime.displayName = 'MessageTime';
 
@@ -90,7 +90,7 @@ const Chatbox: React.FC = () => {
     setIsEmailSubmitted,
   } = useChatStore();
   const [selectedMessageId, setSelectedMessageId] = useState<number | null>(
-    null
+    null,
   );
   interface AuthorStatusPayload {
     new: {
@@ -143,7 +143,7 @@ const Chatbox: React.FC = () => {
         }
       }
     },
-    [isCollapsed, updateAuthorStatus]
+    [isCollapsed, updateAuthorStatus],
   );
 
   const handleFAQClick = useCallback((question: string, answer: string) => {
@@ -199,7 +199,7 @@ const Chatbox: React.FC = () => {
         (payload) => {
           const newPayload = payload as unknown as AuthorStatusPayload;
           updateAuthorStatus(new Date(newPayload.new.last_active));
-        }
+        },
       )
       .subscribe();
 
@@ -223,7 +223,7 @@ const Chatbox: React.FC = () => {
             filter: `email=eq.${email}`,
           },
           (payload) =>
-            handleDatabaseChange(payload as unknown as DatabaseChangePayload)
+            handleDatabaseChange(payload as unknown as DatabaseChangePayload),
         )
         .on(
           'postgres_changes',
@@ -234,7 +234,7 @@ const Chatbox: React.FC = () => {
             filter: `email=eq.${email}`,
           },
           (payload) =>
-            handleDatabaseChange(payload as unknown as DatabaseChangePayload)
+            handleDatabaseChange(payload as unknown as DatabaseChangePayload),
         )
         .subscribe();
 
@@ -264,7 +264,7 @@ const Chatbox: React.FC = () => {
         }
       }
     },
-    [email, fetchInitialMessages, setEmail, setIsEmailSubmitted]
+    [email, fetchInitialMessages, setEmail, setIsEmailSubmitted],
   );
 
   const handleSendMessage = useCallback(async () => {
@@ -281,31 +281,21 @@ const Chatbox: React.FC = () => {
 
     const saveAndSendMessage = async () => {
       try {
-        await Promise.all([
-          saveChat(email, userMessage),
-          sendMessage(email, userMessage.text),
-        ]);
+        try {
+          await saveChat(email, userMessage);
+        } catch (error) {
+          console.error('Error saving chat:', error);
+        }
 
-        const formattedHistory = messages.map((msg) => ({
-          role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text,
-        }));
+        try {
+          await sendMessage(email, userMessage.text);
+        } catch (error) {
+          console.error('Error sending message:', error);
+        }
 
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            message: userMessage.text,
-            chatHistory: formattedHistory,
-          }),
-        });
+        const data = await handleChatRequest(inputMessage);
 
-        const data = await response.json();
-
-        if (!response.ok) {
+        if (!data.success) {
           setMessages((prev) => [
             ...prev,
             {
@@ -337,7 +327,7 @@ const Chatbox: React.FC = () => {
 
     setIsLoading(true);
     saveAndSendMessage();
-  }, [inputMessage, email, messages]);
+  }, [inputMessage, email]);
 
   const handleHide = useCallback(() => {
     setChatEnabled(false);
@@ -353,7 +343,7 @@ const Chatbox: React.FC = () => {
       const timeDiff = nextMessage.id - currentMessage.id;
       return timeDiff > 600000;
     },
-    []
+    [],
   );
 
   const handleDeleteChat = useCallback(async () => {
@@ -381,7 +371,7 @@ const Chatbox: React.FC = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputMessage(e.target.value);
     },
-    []
+    [],
   );
 
   const handleKeyPress = useCallback(
@@ -390,7 +380,7 @@ const Chatbox: React.FC = () => {
         handleSendMessage();
       }
     },
-    [handleSendMessage]
+    [handleSendMessage],
   );
 
   const handleCollapse = useCallback(() => {
@@ -404,7 +394,7 @@ const Chatbox: React.FC = () => {
       exit: { opacity: 0, scale: 0.8, y: 20 },
       transition: { duration: 0.2, ease: 'easeInOut' },
     }),
-    []
+    [],
   );
 
   const motionRippleProps = useMemo(
@@ -416,7 +406,7 @@ const Chatbox: React.FC = () => {
       ],
       transition: { repeat: Number.POSITIVE_INFINITY, duration: 1.5 },
     }),
-    []
+    [],
   );
 
   const LoadingDots = () => (
@@ -448,14 +438,14 @@ const Chatbox: React.FC = () => {
         >
           {message.sender === 'user' && (
             <Avatar className="mr-2 h-8 w-8">
-              <AvatarImage src={gravatarURL(email)} alt="@user image" />
+              <AvatarImage alt="@user image" src={gravatarURL(email)} />
               <AvatarFallback>{email.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
           )}
 
           {message.sender === 'author' && (
             <Avatar className="mr-2 h-8 w-8">
-              <AvatarImage src={LOGO_IMAGE_PATH} alt="@author image" />
+              <AvatarImage alt="@author image" src={LOGO_IMAGE_PATH} />
               <AvatarFallback>SR</AvatarFallback>
             </Avatar>
           )}
@@ -483,8 +473,8 @@ const Chatbox: React.FC = () => {
             </div>
 
             <MessageTime
-              time={formatMessageTime(message.id)}
               isVisible={selectedMessageId === message.id}
+              time={formatMessageTime(message.id)}
             />
           </div>
 
@@ -510,7 +500,7 @@ const Chatbox: React.FC = () => {
             <span className="text-2xl">🤖</span>
           </div>
           <LoadingDots />
-        </div>
+        </div>,
       );
     }
 
@@ -530,12 +520,12 @@ const Chatbox: React.FC = () => {
       return (
         <div key="collapsed-icon" className="relative">
           <Button
-            onClick={() => {
-              setIsCollapsed(false);
-            }}
             className={`h-12 w-12 rounded-full p-0 ${
               isAuthorOnline ? 'bg-green-500' : 'bg-red-500'
             }`}
+            onClick={() => {
+              setIsCollapsed(false);
+            }}
           >
             <MessageCircle className="h-6 w-6 text-white" />
           </Button>
@@ -545,11 +535,11 @@ const Chatbox: React.FC = () => {
     return (
       <motion.div
         key="collapsed"
-        initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
-        transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="relative"
+        exit={{ scale: 0 }}
+        initial={{ scale: 0 }}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
       >
         <motion.div
           animate={motionRippleProps}
@@ -562,12 +552,12 @@ const Chatbox: React.FC = () => {
             {
               'bg-green-800': isAuthorOnline,
               'bg-primary-600': !isAuthorOnline,
-            }
+            },
           )}
         >
           <Button
-            onClick={() => setIsCollapsed(false)}
             className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
+            onClick={() => setIsCollapsed(false)}
           >
             <div className="flex flex-col items-start">
               <div className="flex items-center">
@@ -575,7 +565,7 @@ const Chatbox: React.FC = () => {
                   Chat with {siteMetadata.headerTitle}
                 </span>
                 {newMessage && (
-                  <Badge variant="neutral" className="ml-1 p-0 text-xs">
+                  <Badge className="ml-1 p-0 text-xs" variant="neutral">
                     New
                   </Badge>
                 )}
@@ -588,11 +578,11 @@ const Chatbox: React.FC = () => {
           </Button>
 
           <Button
-            variant="ghost"
-            size="sm"
             aria-label="Disable the chat"
-            onClick={handleHide}
             className="bg-transparent text-white hover:bg-white/20"
+            size="sm"
+            variant="ghost"
+            onClick={handleHide}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -636,10 +626,10 @@ const Chatbox: React.FC = () => {
               </div>
 
               <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleCollapse}
                 className="hover:bg-white/20"
+                size="icon"
+                variant="ghost"
+                onClick={handleCollapse}
               >
                 <X className="h-4 w-4 text-white" />
               </Button>
@@ -647,23 +637,23 @@ const Chatbox: React.FC = () => {
 
             {!isEmailSubmitted ? (
               <form
-                onSubmit={handleEmailSubmit}
                 className="flex flex-1 flex-col justify-center p-4"
+                onSubmit={handleEmailSubmit}
               >
                 <label
-                  htmlFor="email"
                   className="mb-2 text-sm font-medium text-gray-700"
+                  htmlFor="email"
                 >
                   Please enter your email to start chatting
                 </label>
 
                 <Input
-                  type="email"
+                  required
                   id="email"
                   placeholder="your@email.com"
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
 
                 <Button className="mt-4" type="submit">
@@ -681,18 +671,18 @@ const Chatbox: React.FC = () => {
                   <div className="flex space-x-2">
                     <div className="flex-grow">
                       <Input
-                        type="text"
+                        className="w-full"
                         placeholder="Type your message..."
+                        type="text"
                         value={inputMessage}
                         onChange={handleInputChange}
                         onKeyPress={handleKeyPress}
-                        className="w-full"
                       />
                     </div>
 
                     <Button
-                      onClick={handleSendMessage}
                       className="h-10 px-2 py-2"
+                      onClick={handleSendMessage}
                     >
                       <Send className="h-4 w-4" />
                     </Button>
@@ -706,6 +696,7 @@ const Chatbox: React.FC = () => {
                       <DropdownMenuContent align="end" className="w-72">
                         {simpleFAQs.map((faq, index) => (
                           <DropdownMenuItem
+                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                             key={index}
                             onClick={() =>
                               handleFAQClick(faq.question, faq.answer)
@@ -724,9 +715,9 @@ const Chatbox: React.FC = () => {
                       >
                         <DropdownMenuTrigger asChild>
                           <Button
-                            variant="ghost"
-                            size="icon"
                             className="h-10 w-10"
+                            size="icon"
+                            variant="ghost"
                           >
                             <MoreVertical className="h-4 w-4" />
                             <span className="sr-only">Open options</span>

@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getMedia } from '@/lib/media';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export default async function CertificationsList() {
   const mediaItems = await getMedia();
@@ -64,7 +64,7 @@ export default async function CertificationsList() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild size="sm" variant="outline">
                       <Link href={`/admin/media/${media.id}`}>Edit</Link>
                     </Button>
                     <DeleteButton id={media.id} title={media.title} />

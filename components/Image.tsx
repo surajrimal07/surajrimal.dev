@@ -26,7 +26,7 @@ const Image = ({ shouldOpenLightbox = true, ...rest }: ImageProps) => {
   const className = clsx(
     'flex justify-center',
     isThumb && 'thumbnail-image',
-    shouldOpenLightbox && 'cursor-zoom-in'
+    shouldOpenLightbox && 'cursor-zoom-in',
   );
 
   return (

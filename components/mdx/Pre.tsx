@@ -38,28 +38,28 @@ const Pre = ({ children }: PreProps) => {
   return (
     <div
       ref={textInput}
-      onMouseLeave={onExit}
       className="relative rounded-lg bg-black"
+      onMouseLeave={onExit}
     >
       <button
         aria-label="Copy code"
-        type="button"
         className={`absolute right-0 top-[2px] z-10 h-8 w-8 rounded bg-transparent ring-0 ${
           copied
             ? 'border-green-400 focus:border-green-400 focus:outline-none'
             : 'border-gray-300'
         }`}
+        type="button"
         onClick={onCopy}
       >
         {copied ? (
           <CopyCheck
-            size={20}
             className={copied ? 'text-green-400' : 'text-white'}
+            size={20}
           />
         ) : (
           <Copy
-            size={20}
             className={copied ? 'text-green-400' : 'text-white'}
+            size={20}
           />
         )}
       </button>

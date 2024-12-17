@@ -10,7 +10,7 @@ const Divider = ({ marginTop = '0' }: DividerProps) => {
       className={cn(
         'w-full border-gray-300 dark:border-gray-600',
         `mt-${marginTop}`,
-        'mb-0'
+        'mb-0',
       )}
     />
   );

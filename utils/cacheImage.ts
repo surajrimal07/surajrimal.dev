@@ -5,12 +5,14 @@ import crypto from 'node:crypto';
 import { supabase } from '@/utils/supabase/client';
 
 const CACHE_FOLDER = 'cache-image';
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const BUCKET_NAME = process.env.SUPABASE_BUCKET!;
 
 function getFileExtension(url: string): string {
   const urlExtension = url.split('.').pop()?.toLowerCase();
   const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
 
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return validExtensions.includes(urlExtension || '') ? urlExtension! : 'jpg';
 }
 
@@ -41,7 +43,7 @@ export async function cacheAndServeImage(originalUrl: string): Promise<string> {
     const response = await fetch(originalUrl);
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch the image from URL: ${response.statusText}`
+        `Failed to fetch the image from URL: ${response.statusText}`,
       );
     }
     const arrayBuffer = await response.arrayBuffer();

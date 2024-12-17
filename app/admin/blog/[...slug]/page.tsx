@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { LANGUAGES, LAYOUTS, PostData } from '@/types/post';
+import { LANGUAGES, LAYOUTS, type PostData } from '@/types/post';
 import { toastOptions } from '@/utils/toast';
 
 export default function EditSnippet() {
@@ -87,7 +87,7 @@ export default function EditSnippet() {
         .catch((error) => {
           toast.error(
             `Failed to load blog data: ${error.message}`,
-            toastOptions
+            toastOptions,
           );
           router.push('/admin/blog');
         })
@@ -108,7 +108,7 @@ export default function EditSnippet() {
           type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
       }));
     },
-    []
+    [],
   );
 
   const handleLanguageChange = useCallback((value: string) => {
@@ -155,7 +155,7 @@ export default function EditSnippet() {
       ) {
         toast.error(
           'Please fill in all fields, including at least one tag.',
-          toastOptions
+          toastOptions,
         );
         return;
       }
@@ -182,11 +182,11 @@ export default function EditSnippet() {
       } catch (error) {
         toast.error(
           `Failed to save blog: ${error instanceof Error ? error.message : String(error)}`,
-          toastOptions
+          toastOptions,
         );
       }
     },
-    [postData, postId, router]
+    [postData, postId, router],
   );
 
   if (isLoading) {
@@ -213,15 +213,15 @@ export default function EditSnippet() {
         </Breadcrumb>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2 pt-5">
           <Label htmlFor="title">Title</Label>
           <Input
+            required
             id="title"
             type="text"
             value={postData.title}
             onChange={handleInputChange}
-            required
           />
         </div>
 
@@ -229,12 +229,12 @@ export default function EditSnippet() {
           <div className="flex-1 space-y-2">
             <Label htmlFor="date">Date</Label>
             <Input
+              required
               disabled={!isNewPost}
               id="date"
               type="date"
               value={postData.date}
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -242,11 +242,11 @@ export default function EditSnippet() {
             <div className="flex-1 space-y-2">
               <Label htmlFor="lastmod">Last Modified</Label>
               <Input
+                required
                 id="lastmod"
                 type="date"
                 value={postData.lastmod}
                 onChange={handleInputChange}
-                required
               />
             </div>
           )}
@@ -275,9 +275,9 @@ export default function EditSnippet() {
                 >
                   {tag}
                   <button
+                    className="ml-2 rounded px-2 text-red-500 hover:bg-zinc-700 focus:outline-none"
                     type="button"
                     onClick={() => handleDeleteTag(tag)}
-                    className="ml-2 rounded px-2 text-red-500 hover:bg-zinc-700 focus:outline-none"
                   >
                     &times;
                   </button>
@@ -324,11 +324,11 @@ export default function EditSnippet() {
           </div>
           <div className="mt-8 flex flex-1 items-center space-x-2">
             <input
+              checked={postData.draft}
+              className="h-4 w-4 rounded"
               id="draft"
               type="checkbox"
-              checked={postData.draft}
               onChange={handleInputChange}
-              className="h-4 w-4 rounded"
             />
             <Label htmlFor="draft">Draft</Label>
           </div>
@@ -337,11 +337,11 @@ export default function EditSnippet() {
         <div className="space-y-2">
           <Label htmlFor="summary">Summary</Label>
           <Textarea
+            className="min-h-[100px] w-full resize-y"
             id="summary"
+            placeholder="Write your blog summary here..."
             value={postData.summary}
             onChange={handleInputChange}
-            className="min-h-[100px] w-full resize-y"
-            placeholder="Write your blog summary here..."
           />
         </div>
 
@@ -350,11 +350,11 @@ export default function EditSnippet() {
         </div>
         <div className="rounded-md border">
           <Textarea
+            className="min-h-[500px] w-full resize-y"
             id="content"
+            placeholder="Write your blog content here..."
             value={postData.content}
             onChange={handleInputChange}
-            className="min-h-[500px] w-full resize-y"
-            placeholder="Write your blog content here..."
           />
         </div>
         <Button type="submit">

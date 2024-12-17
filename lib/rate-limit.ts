@@ -50,7 +50,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
       },
       {
         onConflict: 'ipaddress',
-      }
+      },
     );
 
     return {

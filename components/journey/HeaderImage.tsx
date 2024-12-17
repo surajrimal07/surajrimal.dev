@@ -49,93 +49,93 @@ export default function JourneyHeaderImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Journey Header Image</title>
           <motion.path
-            variants={pathAnimation}
+            className="stroke-rose-500"
             custom={1}
             d="M96 96c0 0 64 32 160 32s160-32 160-32v320c0 0-64-32-160-32s-160 32-160 32V96"
-            className="stroke-rose-500"
+            variants={pathAnimation}
           />
 
           <motion.circle
-            variants={circleAnimation}
+            className="fill-amber-500 stroke-amber-600"
             custom={1}
             cx="96"
             cy="96"
             r="16"
-            className="fill-amber-500 stroke-amber-600"
+            variants={circleAnimation}
           />
           <motion.circle
-            variants={circleAnimation}
+            className="fill-green-500 stroke-green-600"
             custom={2}
             cx="96"
             cy="208"
             r="16"
-            className="fill-green-500 stroke-green-600"
+            variants={circleAnimation}
           />
           <motion.circle
-            variants={circleAnimation}
+            className="fill-blue-500 stroke-blue-600"
             custom={3}
             cx="96"
             cy="320"
             r="16"
-            className="fill-blue-500 stroke-blue-600"
+            variants={circleAnimation}
           />
           <motion.circle
-            variants={circleAnimation}
+            className="fill-purple-500 stroke-purple-600"
             custom={4}
             cx="96"
             cy="416"
             r="16"
-            className="fill-purple-500 stroke-purple-600"
+            variants={circleAnimation}
           />
 
           <motion.path
-            variants={symbolAnimation}
+            className="stroke-amber-500"
             custom={1}
             d="M384 96l-32-16-32 16 32 16z"
-            className="stroke-amber-500"
+            variants={symbolAnimation}
           />
 
           <motion.path
-            variants={symbolAnimation}
+            className="stroke-green-500"
             custom={2}
             d="M352 192h64m-32 32v-64"
-            className="stroke-green-500"
+            variants={symbolAnimation}
           />
 
           <motion.path
-            variants={symbolAnimation}
+            className="stroke-blue-500"
             custom={3}
             d="M352 304l32 32 32-32-32-32z"
-            className="stroke-blue-500"
+            variants={symbolAnimation}
           />
 
           <motion.path
-            variants={symbolAnimation}
+            className="stroke-purple-500"
             custom={4}
             d="M384 416l-16-32 16-16 16 16z"
-            className="stroke-purple-500"
+            variants={symbolAnimation}
           />
 
           <motion.path
-            variants={pathAnimation}
+            className="stroke-gray-400"
             custom={5}
             d="M112 96h240M112 208h240M112 320h240M112 416h240"
-            className="stroke-gray-400"
+            variants={pathAnimation}
           />
         </motion.svg>
       </div>

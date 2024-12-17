@@ -7,13 +7,16 @@ import { clearChat, loadChat, saveChat } from '@/lib/chat';
 import type { Message as ChatMessage } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const botToken = process.env.TELEGRAM_BOT_TOKEN!;
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const channelId = process.env.TELEGRAM_CHANNEL_ID!;
 
 // Initialize bot globally
 let bot: Telegraf | null = null;
 let isRunning = false;
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function isTextMessage(message: any): message is Message.TextMessage {
   return 'text' in message;
 }
@@ -36,6 +39,7 @@ export async function launchBot() {
 
   try {
     if (!bot) {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 
       bot.on('message', async (ctx) => {

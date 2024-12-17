@@ -30,9 +30,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!prevPage ? (
             <PaginationPrevious
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationPrevious
@@ -63,9 +63,9 @@ function Paginations({ totalPages, currentPage }: PaginationProps) {
         <PaginationItem>
           {!nextPage ? (
             <PaginationNext
-              href="#"
               aria-disabled="true"
               className="pointer-events-none opacity-50"
+              href="#"
             />
           ) : (
             <PaginationNext
@@ -132,8 +132,8 @@ export default function SnippetsLayout({
                 <article>
                   <h2 className="text-2xl font-bold leading-8 tracking-tight">
                     <Link
-                      href={`/snippets/${post.slug}`}
                       className="text-gray-900 transition duration-500 ease-in-out hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-500"
+                      href={`/snippets/${post.slug}`}
                     >
                       {post.title}
                     </Link>

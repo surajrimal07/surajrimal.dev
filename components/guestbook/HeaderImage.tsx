@@ -33,57 +33,57 @@ export default function GuestbookHeaderImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Guestbook Header Image</title>
           {/* Book base */}
           <motion.path
-            variants={pathAnimation}
+            className="fill-none stroke-gray-600 dark:stroke-gray-400"
             custom={0}
             d="M100 150 L412 150 L412 400 L100 400 C80 400 60 380 60 360 L60 190 C60 170 80 150 100 150Z"
-            className="fill-none stroke-gray-600 dark:stroke-gray-400"
+            variants={pathAnimation}
           />
 
           {/* Book pages */}
           <motion.path
-            variants={pathAnimation}
+            className="fill-none stroke-gray-400 dark:stroke-gray-500"
             custom={1}
             d="M120 170 L392 170 L392 380 L120 380 Z"
-            className="fill-none stroke-gray-400 dark:stroke-gray-500"
+            variants={pathAnimation}
           />
 
           {/* Writing lines */}
           <motion.g className="stroke-gray-500 dark:stroke-gray-400">
             <motion.path
-              variants={pathAnimation}
               custom={2}
               d="M140 220 L372 220"
+              variants={pathAnimation}
             />
             <motion.path
-              variants={pathAnimation}
               custom={2.2}
               d="M140 260 L372 260"
+              variants={pathAnimation}
             />
             <motion.path
-              variants={pathAnimation}
               custom={2.4}
               d="M140 300 L372 300"
+              variants={pathAnimation}
             />
             <motion.path
-              variants={pathAnimation}
               custom={2.6}
               d="M140 340 L272 340"
+              variants={pathAnimation}
             />
           </motion.g>
 
@@ -94,13 +94,14 @@ export default function GuestbookHeaderImage() {
             { cx: 480, cy: 240, r: 7, color: 'fill-green-500' },
           ].map((circle, i) => (
             <motion.circle
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={i}
-              variants={floatAnimation}
+              className={circle.color}
               custom={i + 4}
               cx={circle.cx}
               cy={circle.cy}
               r={circle.r}
-              className={circle.color}
+              variants={floatAnimation}
             />
           ))}
         </motion.svg>

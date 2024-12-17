@@ -27,10 +27,10 @@ export default async function Page() {
           {sortedTags.map((t) => {
             return (
               <div key={t} className="mb-2 mr-5 mt-2">
-                <Tag text={t} count={tagCounts[t]} />
+                <Tag count={tagCounts[t]} text={t} />
                 <Link
-                  href={`/tags/${slug(t)}`}
                   aria-label={`View posts tagged ${t}`}
+                  href={`/tags/${slug(t)}`}
                 />
               </div>
             );

@@ -55,28 +55,28 @@ const MobileNav = memo(() => {
   return (
     <>
       <button
-        type="button"
         aria-label="Toggle Menu"
-        onClick={onToggleNav}
         className="sm:hidden"
+        type="button"
+        onClick={onToggleNav}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="h-8 w-8 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
           aria-labelledby="toggleMenuTitle"
+          className="h-8 w-8 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title id="toggleMenuTitle">Toggle Navigation Menu</title>
           <path
-            fillRule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
             clipRule="evenodd"
+            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            fillRule="evenodd"
           />
         </svg>
       </button>
-      <Transition appear show={navShow} as={Fragment} unmount={false}>
-        <Dialog as="div" onClose={onToggleNav} unmount={false}>
+      <Transition appear as={Fragment} show={navShow} unmount={false}>
+        <Dialog as="div" unmount={false} onClose={onToggleNav}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -108,14 +108,16 @@ const MobileNav = memo(() => {
                 {headerNavLinks.map((link) => (
                   <Link
                     key={link.title}
-                    href={link.href}
                     className={`mb-4 w-full rounded-lg px-4 py-3 text-2xl font-bold tracking-widest ${
                       pathname === link.href ||
-                      (link.href.startsWith('/blog') &&
-                        pathname.startsWith('/blog'))
+                      (
+                        link.href.startsWith('/blog') &&
+                          pathname.startsWith('/blog')
+                      )
                         ? 'bg-gray-800 text-red-400'
                         : 'text-gray-100'
                     } outline outline-0`}
+                    href={link.href}
                     onClick={onToggleNav}
                   >
                     {link.title}
@@ -130,22 +132,22 @@ const MobileNav = memo(() => {
               </div>
 
               <button
-                type="button"
-                className="fixed right-4 top-7 z-80 h-16 w-16 p-4 text-gray-100"
                 aria-label="Toggle Menu"
+                className="fixed right-4 top-7 z-80 h-16 w-16 p-4 text-gray-100"
+                type="button"
                 onClick={onToggleNav}
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
                   aria-labelledby="closeMenuTitle"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <title id="closeMenuTitle">Close Navigation Menu</title>
                   <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                     clipRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    fillRule="evenodd"
                   />
                 </svg>
               </button>

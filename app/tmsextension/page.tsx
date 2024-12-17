@@ -30,19 +30,19 @@ export default function ExtensionPage() {
           </p>
           <div className="mt-8 space-x-4">
             <a
-              href="https://chrome.google.com/webstore/detail/[your-extension-id]"
               className="inline-flex items-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white hover:bg-primary-700"
-              target="_blank"
+              href="https://chrome.google.com/webstore/detail/[your-extension-id]"
               rel="noopener noreferrer"
+              target="_blank"
             >
               <FaChrome className="mr-2 h-5 w-5" />
               Add to Chrome
             </a>
             <a
-              href="https://addons.mozilla.org/en-US/firefox/addon/nepse-account-manager/"
               className="inline-flex items-center rounded-md border border-transparent bg-[#FF9500] px-6 py-3 text-base font-medium text-white hover:bg-[#E66000]"
-              target="_blank"
+              href="https://addons.mozilla.org/en-US/firefox/addon/nepse-account-manager/"
               rel="noopener noreferrer"
+              target="_blank"
             >
               <TbBrandFirefox className="mr-2 h-5 w-5" />
               Add to Firefox
@@ -84,19 +84,19 @@ export default function ExtensionPage() {
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <li key={index} className="flex items-start">
                   <svg
+                    aria-label="Checkmark"
                     className="mt-0.5 h-6 w-6 text-green-500"
                     fill="none"
+                    role="img"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    aria-label="Checkmark"
-                    role="img"
                   >
                     <title>Checkmark</title>
                     <path
+                      d="M5 13l4 4L19 7"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      d="M5 13l4 4L19 7"
                     />
                   </svg>
                   <span className="ml-3 text-gray-700 dark:text-gray-300">
@@ -170,22 +170,22 @@ export default function ExtensionPage() {
         <div className="mt-12 text-center">
           <div className="space-x-4">
             <Link
-              href="/tmsextension/privacy"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="/tmsextension/privacy"
             >
               Privacy Policy
             </Link>
             <Link
-              href="/tmsextension/terms"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="/tmsextension/terms"
             >
               Terms of Service
             </Link>
             <a
-              href="https://github.com/surajrimal07/tms-captcha"
               className="text-primary-600 hover:underline dark:text-primary-400"
-              target="_blank"
+              href="https://github.com/surajrimal07/tms-captcha"
               rel="noopener noreferrer"
+              target="_blank"
             >
               GitHub
             </a>

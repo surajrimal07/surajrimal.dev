@@ -41,7 +41,7 @@ export default function Guestbook() {
         'get_latest_guestbook_entries',
         {
           limit_count: GUESTBOOK_ENTRIES_LIMIT,
-        }
+        },
       );
 
       if (error) throw error;
@@ -69,7 +69,7 @@ export default function Guestbook() {
     if (userExistingEntry) {
       toast.error(
         'You have existing entry, user can only post one guestbook, consider editing existing entry.',
-        toastOptions
+        toastOptions,
       );
       return;
     }
@@ -88,7 +88,7 @@ export default function Guestbook() {
 
       toast.success(
         'Your message has been added to the guestbook!',
-        toastOptions
+        toastOptions,
       );
       setMessage('');
       fetchEntries();
@@ -97,7 +97,7 @@ export default function Guestbook() {
         error instanceof Error
           ? error.message
           : 'Failed to submit entry. Please try again.',
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsSubmitting(false);
@@ -126,7 +126,7 @@ export default function Guestbook() {
         error instanceof Error
           ? error.message
           : 'Failed to delete entry. Please try again.',
-        toastOptions
+        toastOptions,
       );
     }
   };
@@ -156,7 +156,7 @@ export default function Guestbook() {
         error instanceof Error
           ? error.message
           : 'Failed to update entry. Please try again.',
-        toastOptions
+        toastOptions,
       );
     }
   };
@@ -185,12 +185,12 @@ export default function Guestbook() {
       {isUserEntry && <div className="mb-2 font-medium">Your post</div>}
       <div className="flex items-start space-x-4">
         <Image
-          src={gravatarURL(entry.email)}
           alt={entry.name}
-          width={40}
-          height={40}
           className="rounded-full"
+          height={40}
           priority={isUserEntry}
+          src={gravatarURL(entry.email)}
+          width={40}
         />
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex items-center justify-between">
@@ -203,30 +203,30 @@ export default function Guestbook() {
                   <div className="flex items-center">
                     {user.email === entry.email && editingEntry === entry.id ? (
                       <Button
-                        onClick={() => setEditingEntry(null)}
-                        variant="ghost"
-                        size="sm"
                         className="text-gray-400 hover:text-white"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setEditingEntry(null)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
                     ) : (
                       user.email === entry.email && (
                         <Button
-                          onClick={() => startEdit(entry)}
-                          variant="ghost"
-                          size="sm"
                           className="text-gray-400 hover:text-white"
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => startEdit(entry)}
                         >
                           <Edit2 className="h-4 w-4" />
                         </Button>
                       )
                     )}
                     <Button
-                      onClick={() => handleDelete(entry.id)}
-                      variant="ghost"
-                      size="sm"
                       className="text-gray-400 hover:text-red-500"
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDelete(entry.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -240,24 +240,24 @@ export default function Guestbook() {
           {editingEntry === entry.id ? (
             <div className="space-y-2">
               <Textarea
+                className="min-h-[60px] w-full resize-none border-gray-700 bg-gray-800 text-white focus:border-blue-500 focus:ring-blue-500"
                 value={editMessage}
                 onChange={(e) => setEditMessage(e.target.value)}
-                className="min-h-[60px] w-full resize-none border-gray-700 bg-gray-800 text-white focus:border-blue-500 focus:ring-blue-500"
               />
               <div className="flex justify-end gap-2">
                 <Button
-                  onClick={() => setEditingEntry(null)}
-                  variant="ghost"
-                  size="sm"
                   className="text-gray-400 hover:text-white"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setEditingEntry(null)}
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => handleEdit(entry.id)}
-                  size="sm"
                   className="bg-blue-500 hover:bg-blue-600"
                   disabled={!editMessage.trim()}
+                  size="sm"
+                  onClick={() => handleEdit(entry.id)}
                 >
                   Save
                 </Button>
@@ -288,10 +288,10 @@ export default function Guestbook() {
             <span className="font-semibold">Pinned</span>
           </div>
           <p>
-            Hey there! Thanks for visiting my website. If you have a moment, I'd
-            love to hear your thoughts on my work. Please log in with your
-            account to leave a comment. Remember to keep language respectful and
-            avoid using any inappropriate words. Thanks!
+            Hey there! Thanks for visiting my website. If you have a moment,
+            I&apos;d love to hear your thoughts on my work. Please log in with
+            your account to leave a comment. Remember to keep language
+            respectful and avoid using any inappropriate words. Thanks!
           </p>
         </div>
 
@@ -307,20 +307,20 @@ export default function Guestbook() {
             </span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form className="space-y-3" onSubmit={handleSubmit}>
             <Textarea
+              required
+              className="max-h-[100px] min-h-[100px] w-full resize-none border-gray-700 bg-gray-900 text-white"
+              disabled={isSubmitting}
               placeholder="Leave a message..."
+              rows={2}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              required
-              disabled={isSubmitting}
-              className="max-h-[100px] min-h-[100px] w-full resize-none border-gray-700 bg-gray-900 text-white"
-              rows={2}
             />
             <Button
-              type="submit"
-              disabled={isSubmitting || !message.trim()}
               className="w-full rounded-full bg-gradient-to-r from-pink-500 to-orange-500 px-6 py-2 font-semibold text-white hover:opacity-90 disabled:opacity-50"
+              disabled={isSubmitting || !message.trim()}
+              type="submit"
             >
               {isSubmitting ? (
                 <div className="flex items-center gap-2">

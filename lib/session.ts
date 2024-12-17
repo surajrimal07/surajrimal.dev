@@ -13,6 +13,7 @@ export const getSessionId = (req: NextRequest) => {
   }
 
   const currentSessionId = createHash('md5')
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     .update(ipAddress + process.env.SALT_IP_ADDRESS!, 'utf-8')
     .digest('hex');
 

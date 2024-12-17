@@ -1,10 +1,10 @@
 import type { ImageProps as NextImageProps } from 'next/image';
 
-import { Authors } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import type { Authors } from 'contentlayer/generated';
+import type { CoreContent } from 'pliny/utils/contentlayer';
 import type readingTime from 'reading-time';
 
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export interface ImageProps extends NextImageProps {
   shouldOpenLightbox?: boolean;

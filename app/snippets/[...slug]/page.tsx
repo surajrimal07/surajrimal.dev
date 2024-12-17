@@ -48,8 +48,8 @@ export default async function Page(props: {
 
   return (
     <PostLayout
-      content={mainContent}
       authorDetails={authorDetails}
+      content={mainContent}
       next={next}
       prev={prev}
     >

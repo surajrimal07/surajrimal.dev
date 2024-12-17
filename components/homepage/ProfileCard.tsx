@@ -51,25 +51,25 @@ const ProfileCard = () => {
 
   return (
     <div
+      ref={ref}
       className="z-10 scale-100 transition-all duration-200 ease-out hover:z-50 hover:scale-[1.11]"
       style={{ perspective: '600px' }}
-      ref={ref}
     >
       <div
-        style={style}
         className="overflow-hidden rounded shadow-lg shadow-slate-300 transition-all duration-200 ease-out dark:shadow-sky-700/50"
+        style={style}
       >
         <Image
-          src={'/static/images/avatar.webp'}
           alt="avatar"
-          width={550}
           height={350}
+          src="/static/images/avatar.webp"
           style={{
             objectPosition: '50% 0%',
             objectFit: 'cover',
             width: '100%',
             aspectRatio: '20/16',
           }}
+          width={550}
         />
         <ProfileInfo />
         <div className="h-1.5 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600" />

@@ -8,12 +8,12 @@ export default function Unauthorized() {
           Unauthorized Access
         </h1>
         <p className="mb-6">
-          You are not authorized to navigate to this page as you don't have the
-          necessary permissions.
+          You are not authorized to navigate to this page as you don&apos;t have
+          the necessary permissions.
         </p>
         <Link
-          href="/"
           className="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-white transition duration-300 hover:bg-primary-700"
+          href="/"
         >
           Go Back Home
         </Link>

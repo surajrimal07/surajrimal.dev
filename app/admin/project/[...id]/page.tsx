@@ -56,7 +56,7 @@ import {
   updateProject,
   uploadProjectImage,
 } from '@/lib/project';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 // Types
@@ -84,7 +84,7 @@ const initialState: ProjectState = {
 // Reducer
 function projectReducer(
   state: ProjectState,
-  action: ProjectAction
+  action: ProjectAction,
 ): ProjectState {
   switch (action.type) {
     case 'SET_PROJECT':
@@ -117,9 +117,9 @@ export default function EditProject() {
   const filteredImages = useMemo(
     () =>
       projectImages.filter((image) =>
-        image.toLowerCase().includes(searchTerm.toLowerCase())
+        image.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
-    [projectImages, searchTerm]
+    [projectImages, searchTerm],
   );
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function EditProject() {
           error instanceof Error ? error.message : String(error);
         toast.error(
           `Failed to load project data: ${errorMessage}`,
-          toastOptions
+          toastOptions,
         );
         router.push('/admin/project');
       } finally {
@@ -171,7 +171,7 @@ export default function EditProject() {
         },
       });
     },
-    []
+    [],
   );
 
   const handleImageSelect = useCallback((image: string) => {
@@ -192,7 +192,7 @@ export default function EditProject() {
         setSelectedImage('');
       }
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(
@@ -232,7 +232,7 @@ export default function EditProject() {
         toast.error(`Failed to save project: ${errorMessage}`, toastOptions);
       }
     },
-    [state, selectedImage, uploadedImage, isNewProject, projectId, router]
+    [state, selectedImage, uploadedImage, isNewProject, projectId, router],
   );
 
   if (isLoading) {
@@ -263,17 +263,17 @@ export default function EditProject() {
         </Breadcrumb>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-2 space-y-4">
+      <form className="mt-2 space-y-4" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Left Column */}
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
+                required
                 id="title"
                 value={state.title}
                 onChange={handleInputChange}
-                required
               />
             </div>
 
@@ -306,17 +306,17 @@ export default function EditProject() {
                   <div className="space-y-4">
                     <div className="relative">
                       <Image
-                        src={selectedImage || previewUrl}
-                        alt="Project image"
-                        width={300}
-                        height={200}
-                        className="h-full w-full rounded-md object-cover"
                         priority
+                        alt="Project image"
+                        className="h-full w-full rounded-md object-cover"
+                        height={200}
+                        src={selectedImage || previewUrl}
+                        width={300}
                       />
                       <Button
-                        variant="destructive"
-                        size="sm"
                         className="absolute right-2 top-2"
+                        size="sm"
+                        variant="destructive"
                         onClick={() => {
                           setSelectedImage('');
                           setPreviewUrl('');
@@ -326,9 +326,9 @@ export default function EditProject() {
                         <X className="h-4 w-4" />
                       </Button>
                       <Button
-                        variant="secondary"
-                        size="sm"
                         className="absolute bottom-2 right-2"
+                        size="sm"
+                        variant="secondary"
                         onClick={(e) => {
                           e.preventDefault();
                           setZoomImage(selectedImage || previewUrl);
@@ -339,12 +339,12 @@ export default function EditProject() {
                       </Button>
                     </div>
                     <ImageSelectionDrawer
+                      filteredImages={filteredImages}
                       isOpen={isDrawerOpen}
-                      onOpenChange={setIsDrawerOpen}
                       searchTerm={searchTerm}
                       setSearchTerm={setSearchTerm}
-                      filteredImages={filteredImages}
                       onImageSelect={handleImageSelect}
+                      onOpenChange={setIsDrawerOpen}
                       onZoomImage={(image) => {
                         setZoomImage(image);
                         setIsFullImageViewOpen(true);
@@ -354,12 +354,12 @@ export default function EditProject() {
                 ) : (
                   <div className="space-y-4">
                     <ImageSelectionDrawer
+                      filteredImages={filteredImages}
                       isOpen={isDrawerOpen}
-                      onOpenChange={setIsDrawerOpen}
                       searchTerm={searchTerm}
                       setSearchTerm={setSearchTerm}
-                      filteredImages={filteredImages}
                       onImageSelect={handleImageSelect}
+                      onOpenChange={setIsDrawerOpen}
                       onZoomImage={(image) => {
                         setZoomImage(image);
                         setIsFullImageViewOpen(true);
@@ -371,9 +371,9 @@ export default function EditProject() {
                         <Label htmlFor="imageUpload">Upload New Image</Label>
                       </div>
                       <Input
+                        accept="image/*"
                         id="imageUpload"
                         type="file"
-                        accept="image/*"
                         onChange={handleImageUpload}
                       />
                     </div>
@@ -427,10 +427,10 @@ export default function EditProject() {
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
+                className="h-32"
                 id="description"
                 value={state.description}
                 onChange={handleInputChange}
-                className="h-32"
               />
             </div>
 
@@ -454,8 +454,8 @@ export default function EditProject() {
 
             <div className="flex items-center space-x-2">
               <Switch
-                id="isDarkBadgeNeeded"
                 checked={state.is_dark_badge_needed!}
+                id="isDarkBadgeNeeded"
                 onCheckedChange={(checked) =>
                   dispatch({
                     type: 'SET_PROJECT',
@@ -468,7 +468,7 @@ export default function EditProject() {
           </div>
         </div>
 
-        <Button type="submit" className="w-full md:w-auto">
+        <Button className="w-full md:w-auto" type="submit">
           {isNewProject ? 'Create Project' : 'Update Project'}
         </Button>
       </form>
@@ -481,20 +481,20 @@ export default function EditProject() {
           </DialogDescription>
           <DialogClose asChild>
             <Button
-              variant="destructive"
-              size="sm"
               className="absolute right-0 top-0 z-10"
+              size="sm"
+              variant="destructive"
               onClick={() => setIsFullImageViewOpen(false)}
             >
               <X className="h-6 w-6" />
             </Button>
           </DialogClose>
           <Image
-            src={zoomImage}
             alt="Full size project image"
-            width={800}
-            height={600}
             className="h-[600px] w-[800px] object-cover"
+            height={600}
+            src={zoomImage}
+            width={800}
           />
         </DialogContent>
       </Dialog>
@@ -524,8 +524,8 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
   <Drawer open={isOpen} onOpenChange={onOpenChange}>
     <DrawerTrigger asChild>
       <Button
-        variant="outline"
         className="w-full"
+        variant="outline"
         onClick={(e) => {
           e.preventDefault();
           onOpenChange(true);
@@ -544,11 +544,11 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
         </DrawerHeader>
         <div className="mb-4">
           <Input
-            type="text"
+            className="w-full"
             placeholder="Search images..."
+            type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
           />
         </div>
         <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
@@ -559,17 +559,17 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
                 className="group relative cursor-pointer overflow-hidden rounded-lg border-2 border-transparent hover:border-white"
               >
                 <Image
-                  src={image}
                   alt="Project image"
-                  width={410}
-                  height={200}
                   className="h-[200px] w-[410px] object-cover"
+                  height={200}
+                  src={image}
+                  width={410}
                 />
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 p-2 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
-                    variant="secondary"
-                    size="sm"
                     className="h-8 px-3"
+                    size="sm"
+                    variant="secondary"
                     onClick={(e) => {
                       e.stopPropagation();
                       onZoomImage(image);
@@ -579,9 +579,9 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
                     Zoom
                   </Button>
                   <Button
-                    variant="secondary"
-                    size="sm"
                     className="h-8 px-3"
+                    size="sm"
+                    variant="secondary"
                     onClick={() => onImageSelect(image)}
                   >
                     <Check className="mr-1 h-4 w-4" />

@@ -33,93 +33,93 @@ export default function AvailabilityImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Availability Image</title>
           <motion.rect
-            variants={pathAnimation}
+            className="stroke-blue-500"
             custom={0}
-            x="112"
-            y="64"
-            width="288"
             height="384"
             rx="20"
-            className="stroke-blue-500"
+            variants={pathAnimation}
+            width="288"
+            x="112"
+            y="64"
           />
           <motion.line
-            variants={pathAnimation}
-            custom={1}
-            x1="112"
-            y1="128"
-            x2="400"
-            y2="128"
             className="stroke-blue-500"
+            custom={1}
+            variants={pathAnimation}
+            x1="112"
+            x2="400"
+            y1="128"
+            y2="128"
           />
 
           <motion.rect
-            variants={pathAnimation}
+            className="fill-yellow-400"
             custom={2}
+            height="24"
+            variants={pathAnimation}
+            width="256"
             x="128"
             y="200"
-            width="256"
-            height="24"
-            className="fill-yellow-400"
           />
           <motion.rect
-            variants={pathAnimation}
+            className="fill-yellow-400"
             custom={3}
+            height="24"
+            variants={pathAnimation}
+            width="180"
             x="128"
             y="240"
-            width="180"
-            height="24"
-            className="fill-yellow-400"
           />
           <motion.rect
-            variants={pathAnimation}
+            className="fill-yellow-400"
             custom={4}
+            height="24"
+            variants={pathAnimation}
+            width="220"
             x="128"
             y="280"
-            width="220"
-            height="24"
-            className="fill-yellow-400"
           />
 
-          <motion.g variants={floatAnimation} custom={0}>
-            <motion.circle cx="400" cy="350" r="30" className="fill-gray-600" />
+          <motion.g custom={0} variants={floatAnimation}>
+            <motion.circle className="fill-gray-600" cx="400" cy="350" r="30" />
             <motion.path
-              d="M400 320v60M370 350h60M385 335l30 30"
               className="stroke-white"
+              d="M400 320v60M370 350h60M385 335l30 30"
             />
           </motion.g>
 
-          <motion.g variants={floatAnimation} custom={1}>
-            <motion.circle cx="360" cy="250" r="20" className="fill-gray-600" />
+          <motion.g custom={1} variants={floatAnimation}>
+            <motion.circle className="fill-gray-600" cx="360" cy="250" r="20" />
             <motion.path
-              d="M360 235v30M350 250h20M355 245l10 10"
               className="stroke-white"
+              d="M360 235v30M350 250h20M355 245l10 10"
             />
           </motion.g>
 
           {[0, 1, 2].map((i) => (
             <motion.circle
               key={i}
-              variants={floatAnimation}
+              className="fill-indigo-500"
               custom={i + 2}
               cx={120 + i * 60}
               cy="460"
               r="6"
-              className="fill-indigo-500"
+              variants={floatAnimation}
             />
           ))}
         </motion.svg>

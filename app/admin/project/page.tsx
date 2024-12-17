@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { deleteProject, getProjects } from '@/lib/project';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { formatDate } from '@/utils/timeAgo';
 import { toastOptions } from '@/utils/toast';
 
@@ -81,7 +81,7 @@ export default function AdminProjectsListPage() {
               <strong className="text-sm">Built with:</strong>
               <div className="mt-1 flex flex-wrap gap-1">
                 {project.built_with.map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-xs">
+                  <Badge key={tech} className="text-xs" variant="secondary">
                     {tech}
                   </Badge>
                 ))}
@@ -97,15 +97,15 @@ export default function AdminProjectsListPage() {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
-              variant="outline"
               size="sm"
+              variant="outline"
               onClick={() => router.push(`/admin/project/${project.id}`)}
             >
               Edit
             </Button>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="destructive" size="sm">
+                <Button size="sm" variant="destructive">
                   Delete
                 </Button>
               </DialogTrigger>
@@ -159,8 +159,8 @@ export default function AdminProjectsListPage() {
               {['all', 'work', 'self', 'self-hosted'].map((tab) => (
                 <TabsTrigger
                   key={tab}
-                  value={tab}
                   className="flex-1 capitalize"
+                  value={tab}
                 >
                   {tab.replace('-', ' ')}
                 </TabsTrigger>
@@ -175,7 +175,7 @@ export default function AdminProjectsListPage() {
                       : projects.filter(
                           (p) =>
                             p.type ===
-                            (tab === 'self-hosted' ? 'selfhosted' : tab)
+                            (tab === 'self-hosted' ? 'selfhosted' : tab),
                         )
                   }
                 />

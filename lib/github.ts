@@ -8,8 +8,10 @@ import siteMetadata from '@/data/siteMetadata';
 import type { Repository, UserData } from '@/types/github';
 import type { GithubRepository } from '@/types/server';
 
-export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
-  if (!repo) {
+export async function fetchGithubRepo(
+  repoPath: string,
+): Promise<GithubRepository> {
+  if (!repoPath) {
     throw new Error('Missing repo parameter');
   }
 
@@ -18,8 +20,10 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
   }
 
   let owner = siteMetadata.socialAccounts.github;
-  if (repo.includes('/')) {
-    [owner, repo] = repo.split('/');
+  let repoName = repoPath;
+
+  if (repoPath.includes('/')) {
+    [owner, repoName] = repoPath.split('/');
   }
 
   try {
@@ -60,11 +64,11 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
       `,
       {
         owner,
-        repo,
+        repo: repoName,
         headers: {
           authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_API_TOKEN}`,
         },
-      }
+      },
     );
 
     repository.languages = repository.languages.edges.map((edge) => ({
@@ -73,7 +77,7 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
     }));
 
     repository.repositoryTopics = repository.repositoryTopics.edges.map(
-      (edge) => edge.node.topic.name
+      (edge) => edge.node.topic.name,
     );
 
     return {
@@ -125,7 +129,7 @@ export async function useRepoData() {
       'https://api.github.com/user/repos?per_page=200',
       {
         headers: getHeaders(),
-      }
+      },
     )
       .then((res) => res.json())
       .catch((error) => {

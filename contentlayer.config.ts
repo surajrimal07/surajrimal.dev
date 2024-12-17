@@ -1,5 +1,5 @@
 import {
-  ComputedFields,
+  type ComputedFields,
   defineDocumentType,
   makeSource,
 } from 'contentlayer2/source-files';
@@ -42,7 +42,7 @@ const icon = fromHtmlIsomorphic(
   </svg>
   </span>
 `,
-  { fragment: true }
+  { fragment: true },
 );
 
 const computedFields: ComputedFields = {
@@ -98,7 +98,7 @@ function createSearchIndex(allBlogs, allSnippets) {
 
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(combinedIndex)
+      JSON.stringify(combinedIndex),
     );
     console.log('Local search index generated...');
   }

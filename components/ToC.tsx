@@ -45,7 +45,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
       if (firstActiveId && activeIdRef.current !== firstActiveId) {
         if (activeIdRef.current && navRef.current) {
           const previousActiveAnchor = navRef.current.querySelector(
-            `li a[href="#${activeIdRef.current}"]`
+            `li a[href="#${activeIdRef.current}"]`,
           );
           if (previousActiveAnchor) {
             previousActiveAnchor.classList.remove('text-gray-600');
@@ -54,7 +54,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
 
         if (navRef.current) {
           const currentActiveAnchor = navRef.current.querySelector(
-            `li a[href="#${firstActiveId}"]`
+            `li a[href="#${firstActiveId}"]`,
           );
           if (currentActiveAnchor) {
             currentActiveAnchor.classList.add('text-gray-600');
@@ -96,9 +96,9 @@ export function ToC({ toc }: { toc: TOC[] }) {
         {modifiedToc.map((item, index) => (
           <li key={index}>
             <a
+              className="block text-gray-400 transition duration-150 ease-in-out hover:text-gray-600"
               href={item.url}
               onClick={(e) => handleLinkClick(e, item.url)}
-              className="block text-gray-400 transition duration-150 ease-in-out hover:text-gray-600"
             >
               {item.value}
             </a>

@@ -21,7 +21,7 @@ const NewsletterForm = () => {
   const [message, setMessage] = useState('');
   const [subscribedEmail, setSubscribedEmail] = useLocalStorage<string | null>(
     'newsletter-email',
-    null
+    null,
   );
   const [totalSubscribers, setTotalSubscribers] = useState(0);
 
@@ -48,7 +48,7 @@ const NewsletterForm = () => {
 
     toast.success(
       response.message || 'Successfully unsubscribed!',
-      toastOptions
+      toastOptions,
     );
     setSubscribedEmail(null);
   };
@@ -68,11 +68,11 @@ const NewsletterForm = () => {
       if (apiError) {
         setError(true);
         setMessage(
-          'Your e-mail address is invalid or you are already subscribed!'
+          'Your e-mail address is invalid or you are already subscribed!',
         );
         toast.error(
           'Your e-mail address is invalid or you are already subscribed!',
-          toastOptions
+          toastOptions,
         );
         return;
       }
@@ -99,9 +99,9 @@ const NewsletterForm = () => {
     <p>
       You have already joined newsletter.{' '}
       <button
-        onClick={handleUnsubscribe}
         className="cursor-pointer text-primary-300 underline hover:text-primary-600 dark:hover:text-primary-400"
         type="button"
+        onClick={handleUnsubscribe}
       >
         Unsubscribe
       </button>{' '}
@@ -124,13 +124,13 @@ const NewsletterForm = () => {
             <label htmlFor="email-input">
               <span className="sr-only">Email address</span>
               <input
+                ref={inputEl}
+                required
                 autoComplete="email"
                 className="w-72 rounded-md px-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-600 dark:bg-black"
                 id="email-input"
                 name="email"
                 placeholder="Enter your email"
-                ref={inputEl}
-                required
                 type="email"
               />
             </label>

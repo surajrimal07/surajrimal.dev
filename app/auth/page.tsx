@@ -32,7 +32,7 @@ const AuthScreen = () => {
   const [error, setError] = useState('');
   const [lastProvider, setLastProvider] = useLocalStorage<LastAuth | null>(
     'lastAuthProvider',
-    null
+    null,
   );
 
   const errorMessageRef = useRef<string | null>(null);
@@ -81,9 +81,9 @@ const AuthScreen = () => {
     children: React.ReactNode;
   }) => (
     <button
-      type="button"
       className={`relative flex w-full items-center justify-center gap-2 rounded-md bg-background p-3 text-sm transition-colors hover:bg-accent disabled:opacity-50 ${pending ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} border border-border`}
       disabled={pending}
+      type="button"
       onClick={() =>
         provider === 'magiclink'
           ? router.push('/auth/magiclink')
@@ -94,8 +94,8 @@ const AuthScreen = () => {
       <span className="ml-2">{children}</span>
       {lastProvider === provider && (
         <Badge
-          variant="outline"
           className="absolute right-1 top-1 bg-background/80 px-1 py-0 text-[10px] font-normal leading-3"
+          variant="outline"
         >
           Last used
         </Badge>
@@ -119,17 +119,17 @@ const AuthScreen = () => {
           )}
           <CardContent className="space-y-5 px-0 pb-0">
             <div className="flex flex-col gap-y-2.5">
-              <AuthButton provider="magiclink" icon={PiMagicWandBold}>
+              <AuthButton icon={PiMagicWandBold} provider="magiclink">
                 Continue with Magic Link
               </AuthButton>
-              <AuthButton provider="google" icon={GrGoogle}>
+              <AuthButton icon={GrGoogle} provider="google">
                 Continue with Google
               </AuthButton>
 
-              <AuthButton provider="twitter" icon={FaTwitter}>
+              <AuthButton icon={FaTwitter} provider="twitter">
                 Continue with Twitter
               </AuthButton>
-              <AuthButton provider="github" icon={FaGithub}>
+              <AuthButton icon={FaGithub} provider="github">
                 Continue with GitHub
               </AuthButton>
               <p className="text-center text-xs text-muted-foreground">

@@ -18,7 +18,7 @@ function getFilePath(contentType: ContentType): string {
 
 async function handleRequest(
   req: NextRequest,
-  method: 'GET' | 'POST' | 'DELETE'
+  method: 'GET' | 'POST' | 'DELETE',
 ) {
   const url = new URL(req.url);
   const contentType = url.searchParams.get('type') as ContentType;
@@ -26,14 +26,14 @@ async function handleRequest(
   if (!contentType || !CONTENT_TYPES[contentType]) {
     return NextResponse.json(
       { error: 'Invalid content type' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (method !== 'POST' && !contentType) {
     return NextResponse.json(
       { error: 'ContentType is required' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -48,14 +48,14 @@ async function handleRequest(
       default:
         return NextResponse.json(
           { error: 'Method not allowed' },
-          { status: 405 }
+          { status: 405 },
         );
     }
   } catch (error) {
     console.error(`Error in ${method} function:`, error);
     return NextResponse.json(
       { success: false, error: `Operation failed: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

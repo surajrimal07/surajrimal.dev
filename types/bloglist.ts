@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { Authors, Blog, Snippets } from 'contentlayer/generated';
-import { Toc } from 'pliny/mdx-plugins';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import type { Authors, Blog, Snippets } from 'contentlayer/generated';
+import type { Toc } from 'pliny/mdx-plugins';
+import type { CoreContent } from 'pliny/utils/contentlayer';
 
 export interface PaginationProps {
   totalPages: number;

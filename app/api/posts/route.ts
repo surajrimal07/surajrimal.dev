@@ -23,13 +23,13 @@ function getFilePath(contentType: ContentType, id: string): string {
     process.cwd(),
     'data',
     CONTENT_TYPES[contentType],
-    `${id}.mdx`
+    `${id}.mdx`,
   );
 }
 
 async function handleRequest(
   req: NextRequest,
-  method: 'GET' | 'POST' | 'DELETE'
+  method: 'GET' | 'POST' | 'DELETE',
 ) {
   const url = new URL(req.url);
   const contentType = url.searchParams.get('type') as ContentType;
@@ -38,7 +38,7 @@ async function handleRequest(
   if (!contentType || !CONTENT_TYPES[contentType]) {
     return NextResponse.json(
       { error: 'Invalid content type' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -57,14 +57,14 @@ async function handleRequest(
       default:
         return NextResponse.json(
           { error: 'Method not allowed' },
-          { status: 405 }
+          { status: 405 },
         );
     }
   } catch (error) {
     console.error(`Error in ${method} function:`, error);
     return NextResponse.json(
       { success: false, error: `Operation failed: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -79,7 +79,7 @@ async function handleGet(contentType: ContentType, id: string) {
 async function handlePost(
   req: NextRequest,
   contentType: ContentType,
-  id: string | null
+  id: string | null,
 ) {
   const { content: fileContent } = await req.json();
   const { data: frontmatter, content } = matter(fileContent);

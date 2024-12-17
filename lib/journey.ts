@@ -26,7 +26,7 @@ export const getJourneyEvents = async (): Promise<
 };
 
 export const insertJourneyEvent = async (
-  event: Omit<Tables<'journey_events'>, 'id'>
+  event: Omit<Tables<'journey_events'>, 'id'>,
 ): Promise<Tables<'journey_events'> | null> => {
   const { data, error } = await supabase.from('journey_events').insert([event]);
 
@@ -51,7 +51,7 @@ export const deleteJourneyEvent = async (id: number): Promise<void> => {
 
 export const updateJourneyEvent = async (
   id: number,
-  updates: Partial<Omit<Tables<'journey_events'>, 'id'>>
+  updates: Partial<Omit<Tables<'journey_events'>, 'id'>>,
 ): Promise<Tables<'journey_events'> | null> => {
   const { data, error } = await supabase
     .from('journey_events')

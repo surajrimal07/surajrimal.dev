@@ -52,7 +52,7 @@ export default async function Page() {
                     `absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-${event.color}-200 ring-8 ring-white dark:bg-${event.color}-900 dark:ring-gray-900`,
                     {
                       'animate-pulse': event.is_current,
-                    }
+                    },
                   )}
                 >
                   {iconMap[event.icon]}

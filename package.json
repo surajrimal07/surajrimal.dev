@@ -11,17 +11,15 @@
     "bump-deps": "npx npm-check-updates --deep -u && npm install",
     "prepare": "husky",
     "update-contributions": "tsx --require dotenv/config scripts/updateContributionAssets.ts dotenv_config_path=.env.local",
-    "lint": "next lint --fix --dir app --dir components --dir lib --dir scripts --dir types --dir utils --dir layouts --dir scripts",
-    "ingest-content": "tsx --require dotenv/config scripts/ingest-content.ts dotenv_config_path=.env.local"
+    "lint": "biome check --apply .",
+    "format": "biome format --write ."
   },
   "dependencies": {
     "@ejekanshjain/cloud-storage": "^3.2.0",
     "@emotion/is-prop-valid": "^1.3.1",
     "@headlessui/react": "^2.2.0",
-    "@million/lint": "^1.0.14",
     "@next/bundle-analyzer": "^15.1.0",
     "@octokit/graphql": "^8.1.1",
-    "@qdrant/js-client-rest": "^1.12.0",
     "@radix-ui/react-alert-dialog": "^1.1.3",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-checkbox": "^1.1.3",
@@ -63,7 +61,6 @@
     "next-contentlayer2": "^0.5.3",
     "next-themes": "^0.4.4",
     "nextjs-toploader": "^3.7.15",
-    "openai": "^4.76.3",
     "pliny": "^0.4.0",
     "postcss": "^8.4.49",
     "react": "^19.0.0",
@@ -96,33 +93,21 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@svgr/webpack": "^8.1.0",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/react": "npm:types-react@rc",
     "@types/react-dom": "npm:types-react-dom@rc",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
     "cross-env": "^7.0.3",
     "dedent": "^1.5.3",
     "esbuild-register": "3.6.0",
-    "eslint": "^9.17.0",
-    "eslint-config-next": "^15.1.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.13.0",
     "globby": "14.0.2",
-    "husky": "^9.1.7",
     "js-yaml": "4.1.0",
-    "lint-staged": "^15.2.11",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
     "typescript": "^5.7.2"
   },
   "lint-staged": {
-    "*.+(js|jsx|ts|tsx)": [
-      "eslint --fix"
-    ],
     "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
-      "prettier --write"
+      "biome check --apply"
     ]
   },
   "overrides": {

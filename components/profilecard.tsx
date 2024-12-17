@@ -36,11 +36,11 @@ export default async function ProfileCard() {
     const privateRepos = repos.filter((repo) => repo.private).length;
     const lastCommit = repos.reduce(
       (acc, repo) => (repo.pushed_at > acc ? repo.pushed_at : acc),
-      ''
+      '',
     );
     const totalStars = repos.reduce(
       (total, repo) => total + (repo.stargazers_count || 0),
-      0
+      0,
     );
 
     githubStats = {
@@ -61,14 +61,14 @@ export default async function ProfileCard() {
       Object.entries(languageCount).map(([lang, count]) => [
         lang,
         `${((count / totalRepos) * 100).toFixed(2)}%`,
-      ])
+      ]),
     );
 
     languages = Object.keys(languagePercentages)
       .sort(
         (a, b) =>
           Number.parseFloat(languagePercentages[b]) -
-          Number.parseFloat(languagePercentages[a])
+          Number.parseFloat(languagePercentages[a]),
       )
       .slice(0, 6);
   };
@@ -129,11 +129,11 @@ export default async function ProfileCard() {
   return (
     <div className="mx-auto flex w-full max-w-full flex-col items-center space-y-4 rounded-lg border p-6 dark:border-gray-700 dark:bg-black sm:max-w-xs">
       <Image
-        src={LOGO_IMAGE_PATH}
         alt="avatar"
-        width={192}
-        height={192}
         className="h-48 w-48 rounded-full"
+        height={192}
+        src={LOGO_IMAGE_PATH}
+        width={192}
       />
       <h3 className="text-center text-2xl font-bold leading-8 tracking-tight">
         {name}
@@ -146,13 +146,13 @@ export default async function ProfileCard() {
         {company}
       </div>
       <div className="flex flex-wrap justify-center space-x-3">
-        <IconsBundle kind="mail" href={`mailto:${siteMetadata.email}`} />
-        <IconsBundle kind="github" href={siteMetadata.github} />
+        <IconsBundle href={`mailto:${siteMetadata.email}`} kind="mail" />
+        <IconsBundle href={siteMetadata.github} kind="github" />
         <IconsBundle
-          kind="linkedin"
           href={siteMetadata.socialAccounts.linkedin}
+          kind="linkedin"
         />
-        <IconsBundle kind="x" href={siteMetadata.socialAccounts.twitter} />
+        <IconsBundle href={siteMetadata.socialAccounts.twitter} kind="x" />
       </div>
       {userData && (
         <>

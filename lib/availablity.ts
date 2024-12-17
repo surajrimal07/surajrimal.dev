@@ -6,7 +6,7 @@ import { supabase } from '@/utils/supabase/client';
 const authorAvailabilityKey = 'author:availability';
 
 export const saveAvailabilityData = async (
-  data: AvailabilityData
+  data: AvailabilityData,
 ): Promise<void> => {
   const cacheKey = 'availability-data';
   await redis.set(authorAvailabilityKey, JSON.stringify(data));

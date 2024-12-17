@@ -9,7 +9,7 @@ function ContributionError({ reset }: { reset: () => void }) {
         <h2 className="text-lg font-semibold text-red-500">
           Failed to load contributions
         </h2>
-        <Button onClick={reset} type="button">
+        <Button type="button" onClick={reset}>
           Try again
         </Button>
       </div>

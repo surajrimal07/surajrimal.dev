@@ -40,7 +40,7 @@ export async function createMedia(media: Omit<Tables<'in_media'>, 'id'>) {
 
 export async function updateMedia(
   id: number,
-  updatedData: Partial<Omit<Tables<'in_media'>, 'id'>>
+  updatedData: Partial<Omit<Tables<'in_media'>, 'id'>>,
 ) {
   const { data, error } = await supabase
     .from('in_media')

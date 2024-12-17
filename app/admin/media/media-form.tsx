@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createMedia, updateMedia } from '@/lib/media';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 type FormData = Omit<Tables<'in_media'>, 'id'>;
@@ -25,12 +25,12 @@ export default function MediaForm({ media }: { media?: Tables<'in_media'> }) {
       url: '',
       description: '',
       category: '',
-    }
+    },
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -54,7 +54,7 @@ export default function MediaForm({ media }: { media?: Tables<'in_media'> }) {
         `Failed to save media: ${
           error instanceof Error ? error.message : String(error)
         }`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsSubmitting(false);
@@ -62,57 +62,57 @@ export default function MediaForm({ media }: { media?: Tables<'in_media'> }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="title">Title</Label>
         <Input
+          required
           id="title"
           name="title"
           value={formData.title}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
         <Label htmlFor="publication">Publication</Label>
         <Input
+          required
           id="publication"
           name="publication"
           value={formData.publication}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
         <Label htmlFor="date">Publication Date</Label>
         <Input
+          required
           id="date"
           name="date"
           type="date"
           value={formData.date}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
         <Label htmlFor="url">URL</Label>
         <Input
+          required
           id="url"
           name="url"
           type="url"
           value={formData.url}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
         <Label htmlFor="category">Category</Label>
         <Input
+          required
           id="category"
           name="category"
           value={formData.category}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
@@ -124,7 +124,7 @@ export default function MediaForm({ media }: { media?: Tables<'in_media'> }) {
           onChange={handleChange}
         />
       </div>
-      <Button type="submit" disabled={isSubmitting}>
+      <Button disabled={isSubmitting} type="submit">
         {isSubmitting ? 'Saving...' : media ? 'Update Media' : 'Create Media'}
       </Button>
     </form>

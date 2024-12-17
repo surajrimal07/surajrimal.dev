@@ -23,8 +23,8 @@ export default function TermsPage() {
           <p className="font-medium">Extension Information:</p>
           <ul className="mb-2 list-disc pl-6">
             <li>
-              These terms apply exclusively to the browser extension "Nepse
-              Account Manager"
+              These terms apply exclusively to the browser extension &quot;Nepse
+              Account Manager&quot;
             </li>
             <li>
               This Extension functions only on specific domains:
@@ -91,7 +91,7 @@ export default function TermsPage() {
         </h2>
         <p>Users acknowledge and accept that:</p>
         <ul className="mb-4 list-disc pl-6">
-          <li>All credentials are stored locally on the user's device</li>
+          <li>All credentials are stored locally on the user&apos;s device</li>
           <li>
             Backup files contain plain text credentials - users are responsible
             for keeping backups secure
@@ -106,7 +106,7 @@ export default function TermsPage() {
         </ul>
 
         <h2 className="mb-3 mt-6 text-xl font-semibold">4. Analytics Usage</h2>
-        <p>The Extension's analytics feature:</p>
+        <p>The Extension&apos;s analytics feature:</p>
         <ul className="mb-4 list-disc pl-6">
           <li>Only tracks successful login events</li>
           <li>Does not collect any personal data or credentials</li>
@@ -142,7 +142,8 @@ export default function TermsPage() {
         </h2>
         <ul className="mb-4 list-disc pl-6">
           <li>
-            The Extension is provided "as is" without warranties of any kind
+            The Extension is provided &quot;as is&quot; without warranties of
+            any kind
           </li>
           <li>
             No guarantee of continuous, uninterrupted access to the service
@@ -177,28 +178,28 @@ export default function TermsPage() {
         <ul className="mb-4 list-disc pl-6">
           <li>
             <a
-              href="https://github.com/surajrimal07/tms-captcha"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="https://github.com/surajrimal07/tms-captcha"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Visit our GitHub repository
             </a>
           </li>
           <li>
             <a
-              href="https://github.com/surajrimal07/tms-captcha/issues"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="https://github.com/surajrimal07/tms-captcha/issues"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              Submit issues through the repository's issue tracker
+              Submit issues through the repository&apos;s issue tracker
             </a>
           </li>
           <li>
             <a
-              href="mailto:davidparkedme@gmail.com"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="mailto:davidparkedme@gmail.com"
             >
               Contact the author directly for urgent concerns
             </a>
@@ -207,20 +208,20 @@ export default function TermsPage() {
 
         <div className="mb-4 mt-8">
           <Link
-            href="/tmsextension/privacy"
             className="inline-flex items-center gap-2 text-primary-600 hover:underline dark:text-primary-400"
+            href="/tmsextension/privacy"
           >
             View Privacy Policy
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
               fill="none"
+              height="20"
               stroke="currentColor"
-              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>

@@ -50,8 +50,8 @@ function BlogPost({ post, views }: PostWithViews) {
               <div>
                 <h2 className="text-2xl font-bold leading-8 tracking-tight">
                   <Link
-                    href={`/blog/${slug}`}
                     className="text-gray-900 dark:text-gray-100"
+                    href={`/blog/${slug}`}
                   >
                     {title}
                   </Link>
@@ -91,7 +91,7 @@ function BlogPost({ post, views }: PostWithViews) {
 export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
   const popularSlugs = await getPopularPosts(
     posts.map((post) => post.slug),
-    MAX_DISPLAY
+    MAX_DISPLAY,
   );
 
   const popularPosts: PostWithViews[] = posts
@@ -132,7 +132,7 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       <div className="space-y-2 py-1 md:space-y-5">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
           Popular Posts
-          <Twemoji name="popular-post" size={'md'} />
+          <Twemoji name="popular-post" size="md" />
         </h1>
         <p className="!mt-2 text-lg leading-7 text-gray-500 dark:text-gray-400">
           Here are some of my most popular posts sorted by engagement.
@@ -149,9 +149,9 @@ export default async function Home({ posts }: { posts: CoreContent<Blog>[] }) {
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
-            href="/blog"
-            className="text-primary hover:text-red-400 dark:hover:text-red-400"
             aria-label="All posts"
+            className="text-primary hover:text-red-400 dark:hover:text-red-400"
+            href="/blog"
           >
             All Posts &rarr;
           </Link>

@@ -37,10 +37,10 @@ export default async function PostMinimal({
               <Bleed>
                 <div className="relative aspect-[2/1] w-full">
                   <Image
-                    src={displayImage}
-                    alt={title}
                     fill
+                    alt={title}
                     className="object-cover"
+                    src={displayImage}
                   />
                 </div>
               </Bleed>
@@ -53,7 +53,7 @@ export default async function PostMinimal({
             {children}
           </div>
           <div className="sticky bottom-4 z-10 mb-2 w-full max-w-md transform border-none outline-none lg:sticky lg:bottom-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
-            <Reactions slug={slugNormalized} ip={ip} />
+            <Reactions ip={ip} slug={slugNormalized} />
           </div>
 
           <div
@@ -61,6 +61,7 @@ export default async function PostMinimal({
             id="comment"
           >
             <WalineComment
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               serverURL={process.env.NEXT_PUBLIC_COMMENT_SERVER_URL!}
             />
           </div>
@@ -69,9 +70,9 @@ export default async function PostMinimal({
               {prev?.path && (
                 <div className="pt-4 xl:pt-8">
                   <Link
-                    href={`/${prev.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     aria-label={`Previous post: ${prev.title}`}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    href={`/${prev.path}`}
                   >
                     &larr; {prev.title}
                   </Link>
@@ -80,9 +81,9 @@ export default async function PostMinimal({
               {next?.path && (
                 <div className="pt-4 xl:pt-8">
                   <Link
-                    href={`/${next.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     aria-label={`Next post: ${next.title}`}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    href={`/${next.path}`}
                   >
                     {next.title} &rarr;
                   </Link>

@@ -29,22 +29,22 @@ const BlogMeta = async ({
       {authorDetails && (
         <div className="flex items-center space-x-2">
           {authorDetails.map((author) => (
-            <div className="flex items-center space-x-2" key={author.name}>
+            <div key={author.name} className="flex items-center space-x-2">
               {author.avatar && (
                 <Image
-                  src={author.avatar}
-                  width={38}
-                  height={38}
                   alt={`${author.name}'s avatar`}
                   className="h-10 w-10 rounded-full"
+                  height={38}
+                  src={author.avatar}
+                  width={38}
                 />
               )}
               <div className="flex flex-col text-sm font-medium md:text-base">
                 <span>{author.name}</span>
                 {author.twitter && (
                   <Link
-                    href={author.twitter}
                     className="text-xs text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    href={author.twitter}
                   >
                     {author.twitter
                       .replace('https://twitter.com/', '@')

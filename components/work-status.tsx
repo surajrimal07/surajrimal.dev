@@ -24,15 +24,15 @@ const OpenToWorkBadge = memo(function OpenToWorkBadge({
   const memoizedBadge = useMemo(
     () => (
       <Link
-        href="/available"
         aria-label={headerTitle}
         className="flex items-center"
+        href="/available"
       >
         <div className="m-0 mt-0 hidden justify-center p-0.5 text-center md:block">
           <HoverBorderGradient
-            containerClassName="rounded-full"
             as="button"
             className="flex items-center space-x-2 bg-white text-black dark:bg-gray-600/70 dark:text-white"
+            containerClassName="rounded-full"
           >
             <span className="text-xs">Open to work</span>
           </HoverBorderGradient>
@@ -43,7 +43,7 @@ const OpenToWorkBadge = memo(function OpenToWorkBadge({
         </Tooltip>
       </Link>
     ),
-    [headerTitle]
+    [headerTitle],
   );
 
   return memoizedBadge;

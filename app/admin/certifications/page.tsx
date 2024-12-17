@@ -66,7 +66,7 @@ export default async function CertificationsList() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild size="sm" variant="outline">
                       <Link href={`/admin/certifications/${cert.id}`}>
                         Edit
                       </Link>

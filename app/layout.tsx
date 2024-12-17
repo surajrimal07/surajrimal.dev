@@ -27,7 +27,7 @@ const Chatbox = dynamic(() => import('@/components/ChatBox'));
 const CookieConsent = dynamic(() => import('@/components/CookieConsent'));
 
 const ConsoleLabrador = dynamic(
-  () => import('@/components/homepage/ConsoleLabrador')
+  () => import('@/components/homepage/ConsoleLabrador'),
 );
 
 const VercelAnalytics = dynamic(() => import('@/components/VercelAnalytics'));
@@ -90,47 +90,47 @@ export default function RootLayout({
 
   return (
     <html
-      lang={siteMetadata.language}
-      className={`${spaceGrotesk.variable} scroll-smooth`}
       suppressHydrationWarning
+      className={`${spaceGrotesk.variable} scroll-smooth`}
+      lang={siteMetadata.language}
     >
       <link
+        href={`${basePath}/static/favicons/apple-touch-icon.png`}
         rel="apple-touch-icon"
         sizes="180x180"
-        href={`${basePath}/static/favicons/apple-touch-icon.png`}
       />
       <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
         href={`${basePath}/static/favicons/favicon-32x32.png`}
-      />
-      <link
         rel="icon"
+        sizes="32x32"
         type="image/png"
-        sizes="16x16"
-        href={`${basePath}/static/favicons/favicon-16x16.png`}
       />
       <link
-        rel="manifest"
+        href={`${basePath}/static/favicons/favicon-16x16.png`}
+        rel="icon"
+        sizes="16x16"
+        type="image/png"
+      />
+      <link
         href={`${basePath}/static/favicons/site.webmanifest`}
+        rel="manifest"
       />
 
-      <meta name="msapplication-TileColor" content="#da532c" />
+      <meta content="#da532c" name="msapplication-TileColor" />
       <meta
-        name="theme-color"
-        media="(prefers-color-scheme: light)"
         content="#ffffff"
+        media="(prefers-color-scheme: light)"
+        name="theme-color"
       />
       <meta
-        name="theme-color"
-        media="(prefers-color-scheme: dark)"
         content="#ffffff"
+        media="(prefers-color-scheme: dark)"
+        name="theme-color"
       />
       <link
+        href={`${basePath}/feed.xml`}
         rel="alternate"
         type="application/rss+xml"
-        href={`${basePath}/feed.xml`}
       />
 
       <body className="pl-[calc(100vw-100%)] antialiased">

@@ -109,7 +109,7 @@ export default function EditAuthorPage() {
   }, []);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setAuthor((prev) => ({ ...prev, [name]: value }));
@@ -121,12 +121,12 @@ export default function EditAuthorPage() {
     try {
       const requiredFields = ['name', 'occupation', 'company', 'email', 'body'];
       const missingFields = requiredFields.filter(
-        (field) => !author[field as keyof Author]
+        (field) => !author[field as keyof Author],
       );
 
       if (missingFields.length > 0) {
         throw new Error(
-          `Please fill in all required fields: ${missingFields.join(', ')}`
+          `Please fill in all required fields: ${missingFields.join(', ')}`,
         );
       }
 
@@ -175,7 +175,7 @@ export default function EditAuthorPage() {
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={author.avatar} alt={author.name} />
+                <AvatarImage alt={author.name} src={author.avatar} />
                 <AvatarFallback>{author.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
@@ -191,11 +191,11 @@ export default function EditAuthorPage() {
             <div>
               <Label htmlFor="name">Name</Label>
               <Input
+                required
                 id="name"
                 name="name"
                 value={author.name}
                 onChange={handleInputChange}
-                required
               />
             </div>
             <div>
@@ -256,16 +256,16 @@ export default function EditAuthorPage() {
             <div>
               <Label htmlFor="body">Bio</Label>
               <Textarea
+                className="h-[700px] min-h-96"
                 id="body"
                 name="body"
                 value={author.body}
                 onChange={handleInputChange}
-                className="h-[700px] min-h-96"
               />
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading}>
+            <Button disabled={isLoading} type="submit">
               {isLoading ? 'Saving...' : 'Save Changes'}
               <Save className="ml-2 h-4 w-4" />
             </Button>

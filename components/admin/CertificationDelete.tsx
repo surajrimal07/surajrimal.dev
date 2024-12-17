@@ -37,7 +37,7 @@ export default function DeleteButton({ id, name }: DeleteButtonProps) {
     } catch (error) {
       toast.error(
         `Failed to delete certification: ${error instanceof Error ? error.message : String(error)}`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsDeleting(false);
@@ -48,7 +48,7 @@ export default function DeleteButton({ id, name }: DeleteButtonProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" size="sm">
+        <Button size="sm" variant="destructive">
           Delete
         </Button>
       </DialogTrigger>
@@ -67,9 +67,9 @@ export default function DeleteButton({ id, name }: DeleteButtonProps) {
             Cancel
           </Button>
           <Button
+            disabled={isDeleting}
             variant="destructive"
             onClick={handleDelete}
-            disabled={isDeleting}
           >
             {isDeleting ? 'Deleting...' : 'Delete'}
           </Button>

@@ -34,68 +34,68 @@ export default function UnauthorizedImage() {
     <div className="pointer-events-none fixed inset-0 flex items-end justify-center">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Unauthorized Access Image</title>
           {/* Circle for no entry sign */}
           <motion.circle
-            variants={pathAnimation}
+            className="stroke-red-600"
             custom={0}
             cx="256"
             cy="256"
             r="200"
-            className="stroke-red-600"
+            variants={pathAnimation}
           />
 
           {/* Horizontal bar */}
           <motion.rect
-            variants={pathAnimation}
+            className="fill-red-600"
             custom={1}
+            height="30"
+            variants={pathAnimation}
+            width="200"
             x="156"
             y="230"
-            width="200"
-            height="30"
-            className="fill-red-600"
           />
 
           {/* Vertical bar */}
           <motion.rect
-            variants={pathAnimation}
+            className="fill-red-600"
             custom={2}
+            height="200"
+            variants={pathAnimation}
+            width="30"
             x="256"
             y="156"
-            width="30"
-            height="200"
-            className="fill-red-600"
           />
 
           {/* Pulsating circles */}
           <motion.circle
-            variants={pulseAnimation}
+            className="fill-transparent stroke-red-400"
             custom={3}
             cx="256"
             cy="256"
             r="80"
-            className="fill-transparent stroke-red-400"
+            variants={pulseAnimation}
           />
           <motion.circle
-            variants={pulseAnimation}
+            className="fill-transparent stroke-red-300"
             custom={4}
             cx="256"
             cy="256"
             r="100"
-            className="fill-transparent stroke-red-300"
+            variants={pulseAnimation}
           />
         </motion.svg>
       </div>

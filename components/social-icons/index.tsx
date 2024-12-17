@@ -73,10 +73,10 @@ import {
   SiTableau,
 } from 'react-icons/si';
 import { TbBrandMongodb, TbBrandStripe, TbBrandVite } from 'react-icons/tb';
-import { VscTerminalPowershell } from 'react-icons/vsc';
 import {
   VscAzureDevops,
   VscTerminalBash,
+  VscTerminalPowershell,
   VscVscodeInsiders,
 } from 'react-icons/vsc';
 
@@ -207,12 +207,12 @@ const CdnIcon = memo(function CdnIcon({
 
   return (
     <Image
-      src={cdnUrl}
       alt={`${kind} icon`}
-      width={size * 4}
-      height={size * 4}
       className={className}
+      height={size * 4}
       loading="lazy"
+      src={cdnUrl}
+      width={size * 4}
     />
   );
 });
@@ -251,21 +251,21 @@ const IconsBundle = memo(function IconsBundle({
   const combinedParentClass = cn(
     'flex items-center justify-center transition-transform duration-200',
     hover && 'hover:scale-150',
-    parentClassName
+    parentClassName,
   );
 
   const IconElement = isLocalIcon ? (
     <LocalIcon
-      iconName={kind as IconName}
       className={combinedClass}
+      iconName={kind as IconName}
       strokeWidth={strokeWidth}
     />
   ) : (
     <CdnIcon
+      className={combinedClass}
+      iconColor={iconColor}
       kind={kind.toString()}
       size={size}
-      iconColor={iconColor}
-      className={combinedClass}
     />
   );
 
@@ -278,10 +278,10 @@ const IconsBundle = memo(function IconsBundle({
   if (iconType === 'LinkButton' && href) {
     return (
       <Button
-        variant={variant}
-        size={text ? 'default' : 'icon'}
-        className={combinedParentClass}
         asChild
+        className={combinedParentClass}
+        size={text ? 'default' : 'icon'}
+        variant={variant}
       >
         <Link href={href} target={target}>
           <span className="sr-only">{kind}</span>
@@ -294,7 +294,7 @@ const IconsBundle = memo(function IconsBundle({
 
   if (iconType === 'Link' && href) {
     return (
-      <Link href={href} className={combinedParentClass} target={target}>
+      <Link className={combinedParentClass} href={href} target={target}>
         <span className="sr-only">{kind}</span>
         {IconElement}
         {text}
@@ -309,10 +309,10 @@ const IconsBundle = memo(function IconsBundle({
   if (iconType === 'linkButton' && href) {
     return (
       <Button
-        variant={variant}
-        size={text ? 'default' : 'icon'}
-        className={parentClassName}
         asChild
+        className={parentClassName}
+        size={text ? 'default' : 'icon'}
+        variant={variant}
       >
         <a
           className={cn('text-sm transition', combinedParentClass)}

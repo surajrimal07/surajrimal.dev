@@ -45,8 +45,8 @@ export default async function TagPage(props: {
 
   const filteredPosts = allCoreContent(
     sortPosts(
-      allBlogs.filter((post) => post.tags?.map((t) => slug(t)).includes(tag))
-    )
+      allBlogs.filter((post) => post.tags?.map((t) => slug(t)).includes(tag)),
+    ),
   );
 
   if (filteredPosts.length === 0) {

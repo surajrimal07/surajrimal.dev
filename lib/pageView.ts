@@ -11,7 +11,7 @@ const POPULAR_POSTS_CACHE_KEY = 'popular-posts-cache';
 
 export async function getPageViews(
   slug: string,
-  shouldIncrement?: boolean
+  shouldIncrement?: boolean,
 ): Promise<number> {
   const cacheKey = `views:${slug}`;
 
@@ -35,7 +35,7 @@ export async function getPageViews(
   } catch (error) {
     console.error(
       `Error ${shouldIncrement ? 'updating' : 'fetching'} page views for ${slug}:`,
-      error
+      error,
     );
     return localCache.get(cacheKey) || 0;
   }
@@ -90,7 +90,7 @@ async function updatePopularPostsCache(slug: string, newViews: number) {
 
 export async function getPopularPosts(
   slugs: string[],
-  limit = 5
+  limit = 5,
 ): Promise<Array<{ slug: string; views: number }>> {
   try {
     const cachedPopularPosts = localCache.get(POPULAR_POSTS_CACHE_KEY) as
@@ -131,7 +131,7 @@ export async function getPopularPosts(
 export async function updateBlogShares(
   slug: string,
   ip: string,
-  shareType: ShareType
+  shareType: ShareType,
 ): Promise<BlogShares> {
   const BLOG_SHARES_CACHE_KEY = `shares-data:${slug}`;
   const sharesKey = `shares:${slug}`;
@@ -187,7 +187,7 @@ export async function updateBlogShares(
 export async function handleReaction(
   slug: string,
   userIdentifier: string,
-  reactionType: ReactionType
+  reactionType: ReactionType,
 ) {
   // Check if the user has already reacted to this post
   const { data: existingReaction, error: checkError } = await supabase

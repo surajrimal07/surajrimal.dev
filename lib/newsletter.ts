@@ -69,7 +69,7 @@ export const getConvertkitTotalSubscribers = async () => {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     if (!response.ok) {

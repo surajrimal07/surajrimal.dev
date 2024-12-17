@@ -35,9 +35,9 @@ const PrivacyPolicy: FC = () => {
               experience.
             </li>
             <li>
-              Browser Cache: Some data may be stored in your browser's cache to
-              optimize loading times and improve the overall responsiveness of
-              the site.
+              Browser Cache: Some data may be stored in your browser&apos;s
+              cache to optimize loading times and improve the overall
+              responsiveness of the site.
             </li>
           </ul>
 

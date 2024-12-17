@@ -2,6 +2,7 @@ import { localCache } from '@/lib/cache';
 import type { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const BUCKET_NAME = process.env.SUPABASE_BUCKET!;
 
 const CACHE_KEY = 'projects';
@@ -43,7 +44,7 @@ export async function getProject(id: string): Promise<Tables<'projects'>> {
 }
 
 export async function createProject(
-  project: Omit<Tables<'projects'>, 'id'>
+  project: Omit<Tables<'projects'>, 'id'>,
 ): Promise<Tables<'projects'>> {
   console.log('project', project);
 
@@ -62,7 +63,7 @@ export async function createProject(
 
 export async function updateProject(
   id: string,
-  project: Partial<Tables<'projects'>>
+  project: Partial<Tables<'projects'>>,
 ): Promise<Tables<'projects'>> {
   console.log('project', project);
 

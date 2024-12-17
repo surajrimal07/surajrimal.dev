@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <ul className="mb-2 list-disc pl-6">
             <li>
               This privacy policy applies exclusively to the browser extension
-              "Nepse Account Manager"
+              &quot;Nepse Account Manager&quot;
             </li>
             <li>
               The Extension operates only on:
@@ -44,14 +44,14 @@ export default function PrivacyPage() {
               This Extension is NOT affiliated with NEPSE, TMS, or
               Meroshare/CDSC
             </li>
-            <li>All user data remains strictly on the user's device</li>
+            <li>All user data remains strictly on the user&apos;s device</li>
             <li>No credentials are ever transmitted to external servers</li>
             <li>
               Users are solely responsible for securing their backup files
             </li>
             <li>
-              The Extension's functionality is limited to form auto-filling and
-              CAPTCHA solving on specified domains only
+              The Extension&apos;s functionality is limited to form auto-filling
+              and CAPTCHA solving on specified domains only
             </li>
           </ul>
         </div>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
           <li>Broker/DP numbers</li>
           <li>Account aliases</li>
           <li>Primary account preferences</li>
-          <li>All data is stored using Chrome's secure storage API</li>
+          <li>All data is stored using Chrome&apos;s secure storage API</li>
           <li>
             Data remains on your device and is never transmitted externally
           </li>
@@ -110,7 +110,9 @@ export default function PrivacyPage() {
           4. Data Security Measures
         </h2>
         <ul className="mb-4 list-disc pl-6">
-          <li>All credentials are stored using Chrome's secure storage API</li>
+          <li>
+            All credentials are stored using Chrome&apos;s secure storage API
+          </li>
           <li>
             No external data transmission except anonymous login success metrics
           </li>
@@ -159,28 +161,28 @@ export default function PrivacyPage() {
         <ul className="mb-4 list-disc pl-6">
           <li>
             <a
-              href="https://github.com/surajrimal07/tms-captcha"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="https://github.com/surajrimal07/tms-captcha"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Visit our GitHub repository
             </a>
           </li>
           <li>
             <a
-              href="https://github.com/surajrimal07/tms-captcha/issues"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="https://github.com/surajrimal07/tms-captcha/issues"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              Submit issues through the repository's issue tracker
+              Submit issues through the repository&apos;s issue tracker
             </a>
           </li>
           <li>
             <a
-              href="mailto:davidparkedme@gmail.com"
               className="text-primary-600 hover:underline dark:text-primary-400"
+              href="mailto:davidparkedme@gmail.com"
             >
               Contact the author directly for urgent concerns
             </a>
@@ -189,20 +191,20 @@ export default function PrivacyPage() {
 
         <div className="mb-4 mt-8">
           <Link
-            href="/tmsextension/terms"
             className="inline-flex items-center gap-2 text-primary-600 hover:underline dark:text-primary-400"
+            href="/tmsextension/terms"
           >
             View Terms of Service
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
               fill="none"
+              height="20"
               stroke="currentColor"
-              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>

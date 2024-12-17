@@ -23,7 +23,7 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
 
     document.documentElement.classList.remove(
       'prevent-scroll',
-      'lightbox-loading'
+      'lightbox-loading',
     );
 
     setTimeout(() => closeLightbox(), 400);
@@ -35,7 +35,7 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
         handleClose();
       }
     },
-    [handleClose]
+    [handleClose],
   );
 
   useEffect(() => {
@@ -61,31 +61,31 @@ const ImageLightbox = ({ src, closeLightbox }: ImageLightBoxProps) => {
 
   return (
     <div
-      role="button"
-      tabIndex={0}
       className="lightbox-overlay fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-300 ease-out"
+      role="button"
       style={style}
+      tabIndex={0}
       onClick={handleClose}
       onKeyDown={handleKeydown}
     >
       <div className="relative flex h-full w-full items-center justify-center">
         <div className="absolute inset-x-0 top-0 flex justify-between">
           <button
-            type="button"
             className="p-4 text-xl text-white"
+            type="button"
             onClick={handleClose}
           >
             Esc
           </button>
-          <button type="button" className="p-4" onClick={handleClose}>
-            <Twemoji name="cross" size={'sm'} />
+          <button className="p-4" type="button" onClick={handleClose}>
+            <Twemoji name="cross" size="sm" />
           </button>
         </div>
         <img
+          alt="Lightbox"
+          className="max-h-[80vh] max-w-[90vw] cursor-zoom-out"
           src={src.toString()}
           onLoad={() => setImgLoaded(true)}
-          className="max-h-[80vh] max-w-[90vw] cursor-zoom-out"
-          alt="Lightbox"
         />
       </div>
     </div>

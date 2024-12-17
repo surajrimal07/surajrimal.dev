@@ -20,6 +20,6 @@ export const useSoundStore = create<SoundState>()(
     {
       name: 'sound-settings',
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

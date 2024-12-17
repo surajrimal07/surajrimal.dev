@@ -1,5 +1,5 @@
 export async function fetcher(...args: unknown[]) {
-  // @ts-ignore
+  // @ts-expect-error fetch is a global function
   const res = await fetch(...args);
 
   return res.json();

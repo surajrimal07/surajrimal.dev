@@ -39,17 +39,17 @@ const SearchButton = memo(() => {
             aria-label="Open analytics"
             className="flex h-8 w-8 items-center justify-center p-2"
             data-umami-event="nav-analytics"
-            onClick={handleClick}
             transition={{ duration: 0.2, ease: 'easeIn' }}
+            whileHover={{ scale: 1.1 }}
             whileTap={{
               scale: 0.7,
               rotate: 360,
               transition: { duration: 0.2 },
             }}
-            whileHover={{ scale: 1.1 }}
+            onClick={handleClick}
           >
             <FiCommand className="h-6 w-6 text-current" />
-            <span className="sr-only">{'Search Button'}</span>
+            <span className="sr-only">Search Button</span>
           </motion.div>
         </div>
       </SearchButtonWrapper>

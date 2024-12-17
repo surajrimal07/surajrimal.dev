@@ -33,8 +33,8 @@ const WalineComment = (props: WalineOptions) => {
     walineInstanceRef.current?.update(props);
   }, [props]);
 
-  // @ts-ignore
-  return <div id="waline" ref={containerRef} />;
+  // @ts-expect-error walineInstanceRef is always initialized
+  return <div ref={containerRef} id="waline" />;
 };
 
 export default WalineComment;

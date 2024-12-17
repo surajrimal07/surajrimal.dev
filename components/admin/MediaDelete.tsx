@@ -35,7 +35,7 @@ export default function DeleteButton({ id, title }: DeleteButtonProps) {
     } catch (error) {
       toast.error(
         `Failed to delete media: ${error instanceof Error ? error.message : String(error)}`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsOpen(false);
@@ -45,7 +45,7 @@ export default function DeleteButton({ id, title }: DeleteButtonProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" size="sm">
+        <Button size="sm" variant="destructive">
           Delete
         </Button>
       </DialogTrigger>

@@ -45,9 +45,11 @@ import usePlaySound from '@/lib/hooks/PlaySound';
 import useChatStore from '@/lib/hooks/chatState';
 import { useSoundStore } from '@/lib/hooks/soundState';
 import useAuthStore from '@/lib/store/authStore';
+import type { WeatherApiResponse } from '@/types/weather';
 import { fetcher } from '@/utils/fetcher';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
 import { toastOptions } from '@/utils/toast';
+import type { User } from '@supabase/supabase-js';
 
 interface MemoizedAvatarProps {
   isAuthLoading: boolean;
@@ -55,7 +57,7 @@ interface MemoizedAvatarProps {
 }
 
 interface DropdownMenuContentProps {
-  user: any;
+  user: User | null;
   isSuperadmin: boolean;
   isLoadingSuperadminStatus: boolean;
   handleSignOut: () => void;
@@ -63,8 +65,7 @@ interface DropdownMenuContentProps {
   chatEnabled: boolean;
   setChatEnabled: (enabled: boolean) => void;
   isLoading: boolean;
-  error: any;
-  weatherData: any;
+  weatherData: WeatherApiResponse | undefined;
   isSoundEnabled: boolean;
   toggleSound: () => void;
 }
@@ -85,14 +86,14 @@ const MemoizedAvatar = memo(
           <LoaderCircle className="h-6 w-6 animate-spin text-white" />
         </div>
       ) : avatarUrl ? (
-        <AvatarImage src={avatarUrl} alt="User avatar" />
+        <AvatarImage alt="User avatar" src={avatarUrl} />
       ) : (
         <div className="flex h-full w-full items-center justify-center">
           <UserIcon size={22} />
         </div>
       )}
     </Avatar>
-  )
+  ),
 );
 MemoizedAvatar.displayName = 'MemoizedAvatar';
 
@@ -106,16 +107,15 @@ const MemoizedDropdownMenuContent = memo(
     chatEnabled,
     setChatEnabled,
     isLoading,
-    error,
     weatherData,
     isSoundEnabled,
     toggleSound,
   }: DropdownMenuContentProps) => (
     <DropdownMenuContent
-      className="w-56"
-      align="end"
-      sideOffset={10}
       forceMount
+      align="end"
+      className="w-56"
+      sideOffset={10}
     >
       <DropdownMenuLabel>
         {user?.email ? user.email : 'My Account'}
@@ -127,9 +127,9 @@ const MemoizedDropdownMenuContent = memo(
             {isSuperadmin && !isLoadingSuperadminStatus && (
               <DropdownMenuItem asChild>
                 <button
+                  className="flex w-full items-center"
                   type="button"
                   onClick={() => router.push('/admin')}
-                  className="flex w-full items-center"
                 >
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
@@ -138,9 +138,9 @@ const MemoizedDropdownMenuContent = memo(
             )}
             <DropdownMenuItem asChild>
               <button
+                className="flex w-full items-center"
                 type="button"
                 onClick={() => router.push('/profile')}
-                className="flex w-full items-center"
               >
                 <UserRoundPen className="mr-2 h-4 w-4" />
                 <span>Profile</span>
@@ -150,9 +150,9 @@ const MemoizedDropdownMenuContent = memo(
         )}
         <DropdownMenuItem asChild>
           <button
+            className="flex w-full items-center"
             type="button"
             onClick={handleSignOut}
-            className="flex w-full items-center"
           >
             <LogOut className="mr-2 h-4 w-4" />
             <span>{user ? 'Sign Out' : 'Sign In'}</span>
@@ -163,68 +163,68 @@ const MemoizedDropdownMenuContent = memo(
       <DropdownMenuLabel>Pages</DropdownMenuLabel>
       <DropdownMenuGroup>
         <DropdownMenuItem asChild>
-          <Link href="/uses" className="flex items-center">
+          <Link className="flex items-center" href="/uses">
             <Computer className="mr-2 h-4 w-4" />
             <span>Uses</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/tags" className="flex items-center">
+          <Link className="flex items-center" href="/tags">
             <Tags className="mr-2 h-4 w-4" />
             <span>Tags</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/snippets" className="flex items-center">
+          <Link className="flex items-center" href="/snippets">
             <Code className="mr-2 h-4 w-4" />
             <span>Snippets</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/media" className="flex items-center">
+          <Link className="flex items-center" href="/media">
             <MicVocal className="mr-2 h-4 w-4" />
             <span>In Media</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/journey" className="flex items-center">
+          <Link className="flex items-center" href="/journey">
             <Route className="mr-2 h-4 w-4" />
             <span>Journey</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/contact" className="flex items-center">
+          <Link className="flex items-center" href="/contact">
             <Contact className="mr-2 h-4 w-4" />
             <span>Contact</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/certificates" className="flex items-center">
+          <Link className="flex items-center" href="/certificates">
             <ShieldCheck className="mr-2 h-4 w-4" />
             <span>Certificates</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/available" className="flex items-center">
+          <Link className="flex items-center" href="/available">
             <BriefcaseBusiness className="mr-2 h-4 w-4" />
             <span>Availablity</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/guestbook" className="flex items-center">
+          <Link className="flex items-center" href="/guestbook">
             <BookHeart className="mr-2 h-4 w-4" />
             <span>Guestbook</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/privacy" className="flex items-center">
+          <Link className="flex items-center" href="/privacy">
             <Cookie className="mr-2 h-4 w-4" />
             <span>Privacy</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/terms" className="flex items-center">
+          <Link className="flex items-center" href="/terms">
             <HeartHandshake className="mr-2 h-4 w-4" />
             <span>Terms of service</span>
           </Link>
@@ -234,7 +234,7 @@ const MemoizedDropdownMenuContent = memo(
       <DropdownMenuLabel>Weather</DropdownMenuLabel>
       <DropdownMenuGroup>
         {isLoading && <DropdownMenuItem>Loading weather data</DropdownMenuItem>}
-        {error && (
+        {!weatherData && (
           <DropdownMenuItem>Error loading weather data</DropdownMenuItem>
         )}
         {weatherData && (
@@ -242,11 +242,11 @@ const MemoizedDropdownMenuContent = memo(
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Image
-                  src={`https:${weatherData.icon}`}
                   alt={weatherData.condition}
-                  width={24}
-                  height={24}
                   className="h-6 w-6"
+                  height={24}
+                  src={`https:${weatherData.icon}`}
+                  width={24}
                 />
                 <span className="font-medium">{weatherData.city}</span>
               </div>
@@ -258,30 +258,30 @@ const MemoizedDropdownMenuContent = memo(
       <DropdownMenuSeparator />
       <DropdownMenuItem>
         <div className="flex w-full items-center justify-between">
-          <Label htmlFor="chat-toggle" className="cursor-pointer">
+          <Label className="cursor-pointer" htmlFor="chat-toggle">
             Enable Chat
           </Label>
           <Switch
-            id="chat-toggle"
             checked={chatEnabled}
+            id="chat-toggle"
             onCheckedChange={setChatEnabled}
           />
         </div>
       </DropdownMenuItem>
       <DropdownMenuItem>
         <div className="flex w-full items-center justify-between">
-          <Label htmlFor="sound-toggle" className="cursor-pointer">
+          <Label className="cursor-pointer" htmlFor="sound-toggle">
             Enable Sound
           </Label>
           <Switch
-            id="sound-toggle"
             checked={isSoundEnabled}
+            id="sound-toggle"
             onCheckedChange={toggleSound}
           />
         </div>
       </DropdownMenuItem>
     </DropdownMenuContent>
-  )
+  ),
 );
 MemoizedDropdownMenuContent.displayName = 'MemoizedDropdownMenuContent';
 
@@ -293,29 +293,29 @@ const MemoizedDropdownMenuTrigger = memo(
     const memoizedButton = useMemo(
       () => (
         <Button
-          variant="ghost"
           aria-label="User dropdown menu"
           className="relative ml-2 h-9 w-9 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
+          variant="ghost"
         >
           <motion.div {...memoizedMotionProps}>{memoizedAvatar}</motion.div>
         </Button>
       ),
-      [memoizedMotionProps, memoizedAvatar]
+      [memoizedMotionProps, memoizedAvatar],
     );
 
     return <DropdownMenuTrigger asChild>{memoizedButton}</DropdownMenuTrigger>;
-  }
+  },
 );
 MemoizedDropdownMenuTrigger.displayName = 'MemoizedDropdownMenuTrigger';
 
 interface UserDropdownMenuProps {
-  user?: any;
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
+const UserDropdownMenu = memo<UserDropdownMenuProps>(() => {
   const {
+    user,
     avatarUrl,
     isLoading: isAuthLoading,
     initialize,
@@ -327,15 +327,14 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
   const currentPath = useCurrentPath();
 
   const { isSuperadmin, isLoading: isLoadingSuperadminStatus } =
-    useSuperadminStatus(user);
+    useSuperadminStatus(user ?? null);
 
   const { isSoundEnabled, toggleSound } = useSoundStore();
 
-  const {
-    data: weatherData,
-    error,
-    isLoading,
-  } = useSWR('/api/weather', fetcher);
+  const { data: weatherData, isLoading } = useSWR<WeatherApiResponse>(
+    '/api/weather',
+    fetcher,
+  );
 
   const { playSound } = usePlaySound({
     filePath: '/static/sounds/page-change.mp3',
@@ -349,11 +348,11 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
   const memoizedAvatar = useMemo(
     () => (
       <MemoizedAvatar
-        isAuthLoading={isAuthLoading}
         avatarUrl={avatarUrl ?? undefined}
+        isAuthLoading={isAuthLoading}
       />
     ),
-    [isAuthLoading, avatarUrl]
+    [isAuthLoading, avatarUrl],
   );
 
   const handleSignOut = useCallback(async () => {
@@ -384,24 +383,23 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
         playSound();
       }
     },
-    [isSoundEnabled, playSound]
+    [isSoundEnabled, playSound],
   );
 
   const memoizedDropdownMenuContent = useMemo(
     () => (
       <MemoizedDropdownMenuContent
-        user={user}
-        isSuperadmin={isSuperadmin}
-        isLoadingSuperadminStatus={isLoadingSuperadminStatus}
-        handleSignOut={handleSignOut}
-        router={router}
         chatEnabled={chatEnabled}
-        setChatEnabled={setChatEnabled}
+        handleSignOut={handleSignOut}
         isLoading={isLoading}
-        error={error}
-        weatherData={weatherData}
+        isLoadingSuperadminStatus={isLoadingSuperadminStatus}
         isSoundEnabled={isSoundEnabled}
+        isSuperadmin={isSuperadmin}
+        router={router}
+        setChatEnabled={setChatEnabled}
         toggleSound={toggleSound}
+        user={user}
+        weatherData={weatherData}
       />
     ),
     [
@@ -413,11 +411,10 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
       chatEnabled,
       setChatEnabled,
       isLoading,
-      error,
       weatherData,
       isSoundEnabled,
       toggleSound,
-    ]
+    ],
   );
 
   const memoizedMotionProps = useMemo(
@@ -426,17 +423,17 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
       whileTap: { scale: 0.95 },
       transition: { duration: 0.1, ease: 'easeIn' },
     }),
-    []
+    [],
   );
 
   const memoizedDropdownMenuTrigger = useMemo(
     () => (
       <MemoizedDropdownMenuTrigger
-        memoizedMotionProps={memoizedMotionProps}
         memoizedAvatar={memoizedAvatar}
+        memoizedMotionProps={memoizedMotionProps}
       />
     ),
-    [memoizedMotionProps, memoizedAvatar]
+    [memoizedMotionProps, memoizedAvatar],
   );
 
   return (

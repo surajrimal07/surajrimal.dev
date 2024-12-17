@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Variants, motion } from 'framer-motion';
+import { type Variants, motion } from 'framer-motion';
 
 const animation: Variants = {
   hide: { pathLength: 0, opacity: 0 },
@@ -20,42 +20,43 @@ export default function UsageHeaderImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] stroke-cyan-500 opacity-60',
-            'dark:opacity-40'
+            'dark:opacity-40',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <motion.path variants={animation} custom={1} d="M48 96h416v256H48z" />
+          <title>Header Image</title>
+          <motion.path custom={1} d="M48 96h416v256H48z" variants={animation} />
           <motion.path
-            variants={animation}
             custom={2}
             d="M160 416h192M256 352v64"
+            variants={animation}
           />
 
           <motion.path
-            variants={animation}
             custom={3}
             d="M96 144l48 32-48 32M288 144h80M96 240l48 32-48 32M288 240h80"
+            variants={animation}
           />
 
           <motion.path
-            variants={animation}
             custom={4}
             d="M400 192h48v64h-48M400 208h32"
+            variants={animation}
           />
 
           <motion.path
-            variants={animation}
             custom={5}
             d="M96 464h320M112 440h32M176 440h32M240 440h32M304 440h32M368 440h32"
+            variants={animation}
           />
         </motion.svg>
       </div>

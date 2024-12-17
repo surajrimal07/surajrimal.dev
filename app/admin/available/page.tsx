@@ -102,8 +102,8 @@ export default function AdminAvailabilityPage() {
       </Breadcrumb>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
         <Card className="mb-8 mt-5">
@@ -118,8 +118,8 @@ export default function AdminAvailabilityPage() {
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="availability">Available for work</Label>
                 <Switch
-                  id="availability"
                   checked={availableData?.is_available}
+                  id="availability"
                   onCheckedChange={(checked) =>
                     setAvailabilityData((prev) => ({
                       ...prev!,
@@ -131,6 +131,7 @@ export default function AdminAvailabilityPage() {
               <div className="flex w-1/2 flex-col space-y-1.5">
                 <Label htmlFor="hours">Hours per week</Label>
                 <Input
+                  disabled={!availableData?.is_available}
                   id="hours"
                   type="number"
                   value={availableData?.hours_per_week || ''}
@@ -140,7 +141,6 @@ export default function AdminAvailabilityPage() {
                       hours_per_week: Number.parseInt(e.target.value) || null,
                     }))
                   }
-                  disabled={!availableData?.is_available}
                 />
               </div>
             </div>
@@ -156,7 +156,7 @@ export default function AdminAvailabilityPage() {
           <CardHeader>
             <CardTitle>Subscribers</CardTitle>
             <CardDescription>
-              People who want to be notified when you're available
+              People who want to be notified when you&apos;re available
             </CardDescription>
           </CardHeader>
           <CardContent>

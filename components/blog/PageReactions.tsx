@@ -93,7 +93,7 @@ function PageReactions({ slug, ip }: ReactionProps) {
                 ...prevCounts,
                 [userReaction]: Math.max(
                   (prevCounts[userReaction] || 0) - 1,
-                  0
+                  0,
                 ),
               }));
             }
@@ -112,7 +112,7 @@ function PageReactions({ slug, ip }: ReactionProps) {
       }, 1500);
       debouncedReaction();
     },
-    [slug, ip, userReaction]
+    [slug, ip, userReaction],
   );
 
   const handleShareComplete = useCallback((updatedShares: BlogShares) => {
@@ -135,11 +135,11 @@ function PageReactions({ slug, ip }: ReactionProps) {
             <div key={reaction.type} className="flex flex-col items-center">
               <m.div animate={controls}>
                 <EmojiReaction
-                  disabled={false}
-                  title={reaction.title}
-                  defaultImage={reaction.defaultImage}
                   animatedImage={reaction.animatedImage}
+                  defaultImage={reaction.defaultImage}
+                  disabled={false}
                   disabledImage={reaction.disabledImage}
+                  title={reaction.title}
                   onClick={() => addReaction(reaction.type)}
                 />
               </m.div>
@@ -153,7 +153,7 @@ function PageReactions({ slug, ip }: ReactionProps) {
         <div className="flex items-center space-x-3">
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
-              <button type="button" className="p-1" title="View Counts">
+              <button className="p-1" title="View Counts" type="button">
                 <FaFire className="h-5 w-5 text-gray-300" />
               </button>
             </div>
@@ -163,12 +163,12 @@ function PageReactions({ slug, ip }: ReactionProps) {
           </div>
           <div className="flex flex-col items-center">
             <div className="h-7.5 w-7.5 flex items-center justify-center rounded-full bg-gray-700/40 transition-colors hover:bg-gray-700/60">
-              <button type="button" className="p-1" title="Share Article">
+              <button className="p-1" title="Share Article" type="button">
                 <ShareMenu
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/${slug}`}
-                  slug={slug}
-                  shares={shareCounts}
                   ip={ip}
+                  shares={shareCounts}
+                  slug={slug}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/${slug}`}
                   onShareComplete={handleShareComplete}
                 />
               </button>

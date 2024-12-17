@@ -21,7 +21,7 @@ const getURL = () => {
 };
 
 export async function magiclinklogin(
-  email: string
+  email: string,
 ): Promise<{ error?: string }> {
   const supabase = await createClient();
 

@@ -32,7 +32,7 @@ const buttonVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -46,7 +46,7 @@ export interface ButtonProps
 const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, asChild = false, loading, children, ...props },
-    ref
+    ref,
   ) => {
     if (asChild) {
       return (
@@ -63,7 +63,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         <Loader2
                           className={cn(
                             'h-4 w-4 animate-spin',
-                            children && 'mr-2'
+                            children && 'mr-2',
                           )}
                         />
                       )}
@@ -71,7 +71,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     </>
                   ),
                 });
-              }
+              },
             )}
           </>
         </Slot>
@@ -95,7 +95,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         </>
       </button>
     );
-  }
+  },
 );
 
 LoadingButton.displayName = 'LoadingButton';

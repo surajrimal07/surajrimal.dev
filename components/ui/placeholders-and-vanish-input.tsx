@@ -1,33 +1,18 @@
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
+/* eslint-disable prettier/prettier */
+
 import { cn } from '@/lib/utils';
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export const PlaceholdersAndVanishInput = React.memo(
   function PlaceholdersAndVanishInput({
@@ -67,7 +52,7 @@ export const PlaceholdersAndVanishInput = React.memo(
         }
         document.removeEventListener(
           'visibilitychange',
-          handleVisibilityChange
+          handleVisibilityChange,
         );
       };
     }, [handleVisibilityChange, startAnimation]);
@@ -97,7 +82,9 @@ export const PlaceholdersAndVanishInput = React.memo(
       ctx.clearRect(0, 0, 800, 800);
       const computedStyles = getComputedStyle(inputRef.current);
 
-      const fontSize = parseFloat(computedStyles.getPropertyValue('font-size'));
+      const fontSize = Number.parseFloat(
+        computedStyles.getPropertyValue('font-size'),
+      );
       ctx.font = `${fontSize * 2}px ${computedStyles.fontFamily}`;
       ctx.fillStyle = '#FFF';
       ctx.fillText(value, 16, 40);
@@ -142,7 +129,7 @@ export const PlaceholdersAndVanishInput = React.memo(
     }, [value, draw]);
 
     const animate = useCallback((start: number) => {
-      const animateFrame = (pos: number = 0) => {
+      const animateFrame = (pos = 0) => {
         requestAnimationFrame(() => {
           const newArr: PixelData[] = [];
           for (let i = 0; i < newDataRef.current.length; i++) {
@@ -165,7 +152,7 @@ export const PlaceholdersAndVanishInput = React.memo(
           if (ctx) {
             ctx.clearRect(pos, 0, 800, 800);
             newDataRef.current.forEach((t) => {
-              const { x: n, y: i, r: s, color: color } = t;
+              const { x: n, y: i, r: s, color } = t;
               if (n > pos) {
                 ctx.beginPath();
                 ctx.rect(n, i, s, s);
@@ -194,7 +181,7 @@ export const PlaceholdersAndVanishInput = React.memo(
       if (currentValue && inputRef.current) {
         const maxX = newDataRef.current.reduce(
           (prev, current) => (current.x > prev ? current.x : prev),
-          0
+          0,
         );
         animate(maxX);
       }
@@ -206,7 +193,7 @@ export const PlaceholdersAndVanishInput = React.memo(
           vanishAndSubmit();
         }
       },
-      [animating, vanishAndSubmit]
+      [animating, vanishAndSubmit],
     );
 
     const handleSubmit = useCallback(
@@ -215,31 +202,31 @@ export const PlaceholdersAndVanishInput = React.memo(
         vanishAndSubmit();
         onSubmit(e);
       },
-      [vanishAndSubmit, onSubmit]
+      [vanishAndSubmit, onSubmit],
     );
 
     const memoizedPlaceholder = useMemo(() => {
       return (
         !value && (
           <motion.p
-            initial={{
-              y: 5,
-              opacity: 0,
-            }}
             key={`current-placeholder-${currentPlaceholder}`}
             animate={{
               y: 0,
               opacity: 1,
             }}
+            className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 dark:text-zinc-500 sm:pl-12 sm:text-base"
             exit={{
               y: -15,
+              opacity: 0,
+            }}
+            initial={{
+              y: 5,
               opacity: 0,
             }}
             transition={{
               duration: 0.3,
               ease: 'linear',
             }}
-            className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 dark:text-zinc-500 sm:pl-12 sm:text-base"
           >
             {placeholders[currentPlaceholder]}
           </motion.p>
@@ -252,14 +239,14 @@ export const PlaceholdersAndVanishInput = React.memo(
         strokeDasharray: '50%',
         strokeDashoffset: '50%',
       }),
-      []
+      [],
     );
 
     const motionPathAnimate = useMemo(
       () => ({
         strokeDashoffset: value ? 0 : '50%',
       }),
-      [value]
+      [value],
     );
 
     const motionPathTransition = useMemo(
@@ -267,25 +254,32 @@ export const PlaceholdersAndVanishInput = React.memo(
         duration: 0.3,
         ease: 'linear',
       }),
-      []
+      [],
     );
 
     return (
       <form
         className={cn(
           'relative mx-auto h-11 w-full overflow-hidden rounded-md bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 dark:bg-zinc-800',
-          value && 'bg-gray-50'
+          value && 'bg-gray-50',
         )}
         onSubmit={handleSubmit}
       >
         <canvas
+          ref={canvasRef}
           className={cn(
             'pointer-events-none absolute left-2 top-[20%] origin-top-left scale-50 transform pr-20 text-base invert filter dark:invert-0 sm:left-8',
-            !animating ? 'opacity-0' : 'opacity-100'
+            !animating ? 'opacity-0' : 'opacity-100',
           )}
-          ref={canvasRef}
         />
         <input
+          ref={inputRef}
+          className={cn(
+            'relative z-50 h-full w-full rounded-full border-none bg-transparent pl-4 pr-20 text-sm text-black focus:outline-none focus:ring-0 dark:text-white sm:pl-10 sm:text-base',
+            animating && 'text-transparent dark:text-transparent',
+          )}
+          type="text"
+          value={value}
           onChange={(e) => {
             if (!animating) {
               setValue(e.target.value);
@@ -295,37 +289,30 @@ export const PlaceholdersAndVanishInput = React.memo(
             }
           }}
           onKeyDown={handleKeyDown}
-          ref={inputRef}
-          value={value}
-          type="text"
-          className={cn(
-            'relative z-50 h-full w-full rounded-full border-none bg-transparent pl-4 pr-20 text-sm text-black focus:outline-none focus:ring-0 dark:text-white sm:pl-10 sm:text-base',
-            animating && 'text-transparent dark:text-transparent'
-          )}
         />
 
         <button
+          className="absolute right-2 top-1/2 z-50 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black transition duration-200 disabled:bg-gray-100 dark:bg-zinc-900 dark:disabled:bg-zinc-800"
           disabled={!value}
           type="submit"
-          className="absolute right-2 top-1/2 z-50 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black transition duration-200 disabled:bg-gray-100 dark:bg-zinc-900 dark:disabled:bg-zinc-800"
         >
           <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            className="h-4 w-4 text-gray-300"
             fill="none"
+            height="24"
             stroke="currentColor"
-            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-4 w-4 text-gray-300"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M0 0h24v24H0z" fill="none" stroke="none" />
             <motion.path
+              animate={motionPathAnimate}
               d="M5 12l14 0"
               initial={motionPathInitial}
-              animate={motionPathAnimate}
               transition={motionPathTransition}
             />
             <path d="M13 18l6 -6" />
@@ -338,5 +325,5 @@ export const PlaceholdersAndVanishInput = React.memo(
         </div>
       </form>
     );
-  }
+  },
 );

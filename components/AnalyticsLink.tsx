@@ -24,20 +24,20 @@ const AnalyticsLink = memo(() => {
     <div className="ml-1 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800">
       <motion.button
         aria-label="Open analytics"
-        type="button"
         className="flex h-8 w-8 items-center justify-center p-2"
         data-umami-event="nav-analytics"
-        onClick={handleClick}
+        transition={{ duration: 0.2, ease: 'easeIn' }}
+        type="button"
+        whileHover={{ scale: 1.2 }}
         whileTap={{
           scale: 0.7,
           rotate: 90,
           transition: { duration: 0.2 },
         }}
-        whileHover={{ scale: 1.2 }}
-        transition={{ duration: 0.2, ease: 'easeIn' }}
+        onClick={handleClick}
       >
         <BiLineChart className="h-4 w-4 text-current" />
-        <span className="sr-only">{'Umami Analytics'}</span>
+        <span className="sr-only">Umami Analytics</span>
       </motion.button>
     </div>
   );

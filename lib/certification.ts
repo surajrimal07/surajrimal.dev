@@ -27,7 +27,7 @@ export async function createCertification(
   certification: Omit<
     Tables<'certifications'>,
     'id' | 'created_at' | 'updated_at'
-  >
+  >,
 ) {
   const { data, error } = await supabase
     .from('certifications')
@@ -46,7 +46,7 @@ export async function updateCertification(
   id: number,
   updatedData: Partial<
     Omit<Tables<'certifications'>, 'id' | 'created_at' | 'updated_at'>
-  >
+  >,
 ) {
   const { data, error } = await supabase
     .from('certifications')

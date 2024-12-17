@@ -70,9 +70,9 @@ export default function CertificationPage(props: {
   const filteredImages = useMemo(
     () =>
       projectImages.filter((image) =>
-        image.toLowerCase().includes(searchTerm.toLowerCase())
+        image.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
-    [projectImages, searchTerm]
+    [projectImages, searchTerm],
   );
 
   const [formData, setFormData] = useState<FormData>({
@@ -94,7 +94,9 @@ export default function CertificationPage(props: {
 
         if (params.id !== 'new') {
           const certifications = await getCertifications();
-          const cert = certifications.find((c) => c.id === parseInt(params.id));
+          const cert = certifications.find(
+            (c) => c.id === Number.parseInt(params.id),
+          );
           if (cert) {
             setCertification(cert);
             setFormData(cert);
@@ -108,7 +110,7 @@ export default function CertificationPage(props: {
           `Failed to load data: ${
             error instanceof Error ? error.message : String(error)
           }`,
-          toastOptions
+          toastOptions,
         );
       } finally {
         setIsLoading(false);
@@ -119,7 +121,7 @@ export default function CertificationPage(props: {
   }, [params.id]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -143,7 +145,7 @@ export default function CertificationPage(props: {
         setSelectedImage('');
       }
     },
-    []
+    [],
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -174,7 +176,7 @@ export default function CertificationPage(props: {
         `Failed to save certification: ${
           error instanceof Error ? error.message : String(error)
         }`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsSubmitting(false);
@@ -213,7 +215,7 @@ export default function CertificationPage(props: {
           : 'Edit Certification'}
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <Label>Certification Image</Label>
           <div className="rounded-lg border p-4">
@@ -221,17 +223,17 @@ export default function CertificationPage(props: {
               <div className="space-y-4">
                 <div className="relative">
                   <Image
-                    src={selectedImage || previewUrl}
                     alt="Certification image"
-                    priority={true}
-                    width={300}
-                    height={200}
                     className="h-[200px] w-full rounded-md object-cover"
+                    height={200}
+                    priority={true}
+                    src={selectedImage || previewUrl}
+                    width={300}
                   />
                   <Button
-                    variant="destructive"
-                    size="sm"
                     className="absolute right-2 top-2"
+                    size="sm"
+                    variant="destructive"
                     onClick={() => {
                       setSelectedImage('');
                       setPreviewUrl('');
@@ -242,9 +244,9 @@ export default function CertificationPage(props: {
                     <X className="h-4 w-4" />
                   </Button>
                   <Button
-                    variant="secondary"
-                    size="sm"
                     className="absolute bottom-2 right-2"
+                    size="sm"
+                    variant="secondary"
                     onClick={(e) => {
                       e.preventDefault();
                       setZoomImage(selectedImage || previewUrl);
@@ -255,12 +257,12 @@ export default function CertificationPage(props: {
                   </Button>
                 </div>
                 <ImageSelectionDrawer
+                  filteredImages={filteredImages}
                   isOpen={isDrawerOpen}
-                  onOpenChange={setIsDrawerOpen}
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
-                  filteredImages={filteredImages}
                   onImageSelect={handleImageSelect}
+                  onOpenChange={setIsDrawerOpen}
                   onZoomImage={(image) => {
                     setZoomImage(image);
                     setIsFullImageViewOpen(true);
@@ -270,12 +272,12 @@ export default function CertificationPage(props: {
             ) : (
               <div className="space-y-4">
                 <ImageSelectionDrawer
+                  filteredImages={filteredImages}
                   isOpen={isDrawerOpen}
-                  onOpenChange={setIsDrawerOpen}
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
-                  filteredImages={filteredImages}
                   onImageSelect={handleImageSelect}
+                  onOpenChange={setIsDrawerOpen}
                   onZoomImage={(image) => {
                     setZoomImage(image);
                     setIsFullImageViewOpen(true);
@@ -287,9 +289,9 @@ export default function CertificationPage(props: {
                     <Label htmlFor="imageUpload">Upload New Image</Label>
                   </div>
                   <Input
+                    accept="image/*"
                     id="imageUpload"
                     type="file"
-                    accept="image/*"
                     onChange={handleImageUpload}
                   />
                 </div>
@@ -301,32 +303,32 @@ export default function CertificationPage(props: {
         <div>
           <Label htmlFor="name">Name</Label>
           <Input
+            required
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
           <Label htmlFor="platform">Platform</Label>
           <Input
+            required
             id="platform"
             name="platform"
             value={formData.platform}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
           <Label htmlFor="completion_date">Completion Date</Label>
           <Input
+            required
             id="completion_date"
             name="completion_date"
             type="date"
             value={formData.completion_date}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -348,7 +350,7 @@ export default function CertificationPage(props: {
           />
         </div>
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button disabled={isSubmitting} type="submit">
           {isSubmitting ? 'Saving...' : 'Save Certification'}
         </Button>
       </form>
@@ -361,20 +363,20 @@ export default function CertificationPage(props: {
           </DialogDescription>
           <DialogClose asChild>
             <Button
-              variant="destructive"
-              size="sm"
               className="absolute right-0 top-0 z-10"
+              size="sm"
+              variant="destructive"
               onClick={() => setIsFullImageViewOpen(false)}
             >
               <X className="h-6 w-6" />
             </Button>
           </DialogClose>
           <Image
-            src={zoomImage}
             alt="Full size certification image"
-            width={800}
-            height={600}
             className="h-[600px] w-[800px] object-cover"
+            height={600}
+            src={zoomImage}
+            width={800}
           />
         </DialogContent>
       </Dialog>
@@ -404,8 +406,8 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
   <Drawer open={isOpen} onOpenChange={onOpenChange}>
     <DrawerTrigger asChild>
       <Button
-        variant="outline"
         className="w-full"
+        variant="outline"
         onClick={(e) => {
           e.preventDefault();
           onOpenChange(true);
@@ -424,11 +426,11 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
         </DrawerHeader>
         <div className="mb-4">
           <Input
-            type="text"
+            className="w-full"
             placeholder="Search images..."
+            type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
           />
         </div>
         <div className="grid max-h-[60vh] grid-cols-2 gap-4 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
@@ -439,17 +441,17 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
                 className="group relative cursor-pointer overflow-hidden rounded-lg border-2 border-transparent hover:border-white"
               >
                 <Image
-                  src={image}
                   alt="Certification image"
-                  width={410}
-                  height={200}
                   className="h-[200px] w-[410px] object-cover"
+                  height={200}
+                  src={image}
+                  width={410}
                 />
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 p-2 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
-                    variant="secondary"
-                    size="sm"
                     className="h-8 px-3"
+                    size="sm"
+                    variant="secondary"
                     onClick={(e) => {
                       e.stopPropagation();
                       onZoomImage(image);
@@ -459,9 +461,9 @@ const ImageSelectionDrawer: React.FC<ImageSelectionDrawerProps> = ({
                     Zoom
                   </Button>
                   <Button
-                    variant="secondary"
-                    size="sm"
                     className="h-8 px-3"
+                    size="sm"
+                    variant="secondary"
                     onClick={() => onImageSelect(image)}
                   >
                     <Check className="mr-1 h-4 w-4" />

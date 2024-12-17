@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
           message:
             'Rate limit exceeded. You cannot submit more than 3 forms per session.',
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -89,7 +89,7 @@ export async function PUT(req: NextRequest) {
     if (!id || responded === undefined) {
       return NextResponse.json(
         { message: 'id and responded  is required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -121,7 +121,7 @@ export async function DELETE(req: NextRequest) {
     if (!id) {
       return NextResponse.json(
         { message: 'Contact ID is required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

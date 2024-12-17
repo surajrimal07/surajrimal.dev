@@ -105,7 +105,7 @@ export default async function AdminDashboard() {
       </h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {sections.map((section) => (
-          <Link href={section.href} key={section.name}>
+          <Link key={section.name} href={section.href}>
             <Card className="transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:shadow-lg">
               <CardHeader className="flex items-center space-x-2 text-lg font-semibold">
                 <section.icon className="h-5 w-5" />

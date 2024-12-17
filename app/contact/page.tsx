@@ -33,7 +33,7 @@ export default function ContactPage() {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const contactData = Object.fromEntries(
-      formData
+      formData,
     ) as unknown as Tables<'contacts'>;
 
     try {
@@ -53,14 +53,14 @@ export default function ContactPage() {
         const errorData = await response.json();
         toast.error(
           errorData.message || 'An error occurred. Please try again.',
-          toastOptions
+          toastOptions,
         );
         return;
       }
 
       toast.success(
         "Message sent! We'll get back to you as soon as possible.",
-        toastOptions
+        toastOptions,
       );
 
       if (formRef.current) {
@@ -71,7 +71,7 @@ export default function ContactPage() {
     } catch (error) {
       toast.error(
         `Failed to send message. Please try again. ${error}`,
-        toastOptions
+        toastOptions,
       );
     } finally {
       setIsSubmitting(false);
@@ -85,8 +85,8 @@ export default function ContactPage() {
           Contact
         </h1>
         <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Let's get in touch! Fill out the form below and we'll get back to you
-          as soon as possible.
+          Let&apos;s get in touch! Fill out the form below and we&apos;ll get
+          back to as soon as possible.
         </p>
       </div>
       <div className="mb-8 rounded-md border border-gray-300 bg-gray-300 p-4 text-gray-700">
@@ -103,7 +103,7 @@ export default function ContactPage() {
         <p className="text-sm">Timezone: {siteMetadata.timezone}</p>
         <p className="text-sm">
           E-mail:{' '}
-          <a href="mailto:business@enji.dev" className="text-red-600">
+          <a className="text-red-600" href="mailto:business@enji.dev">
             business@surajr.com.np
           </a>
         </p>
@@ -113,29 +113,29 @@ export default function ContactPage() {
           do not hesitate to send me an email first.
         </p>
       </div>
-      <form ref={formRef} onSubmit={onSubmit} className="space-y-8">
+      <form ref={formRef} className="space-y-8" onSubmit={onSubmit}>
         <div>
           <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" placeholder="Your name" required />
+          <Input required id="name" name="name" placeholder="Your name" />
         </div>
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
+            required
             id="email"
             name="email"
-            type="email"
             placeholder="Your email"
-            required
+            type="email"
           />
         </div>
         <div>
           <Label htmlFor="purpose">Purpose</Label>
           <Select
+            required
             value={purpose}
             onValueChange={(value) =>
               setPurpose(value as Tables<'contacts'>['purpose'])
             }
-            required
           >
             <SelectTrigger id="purpose">
               <SelectValue placeholder="Select a purpose for contact" />
@@ -153,11 +153,11 @@ export default function ContactPage() {
             <div>
               <Label htmlFor="stack">Project Stack</Label>
               <Select
+                required
                 value={stack || 'null'}
                 onValueChange={(value) =>
                   setStack(value as Tables<'contacts'>['stack'])
                 }
-                required
               >
                 <SelectTrigger id="stack">
                   <SelectValue placeholder="Select your project stack" />
@@ -175,30 +175,30 @@ export default function ContactPage() {
               <div>
                 <Label htmlFor="custom_stack">Specify Stack</Label>
                 <Input
+                  required
                   id="custom_stack"
                   name="custom_stack"
                   placeholder="Please specify your stack"
-                  required
                 />
               </div>
             )}
             <div>
               <Label htmlFor="project_description">Project Description</Label>
               <Textarea
+                required
+                className="resize-none"
                 id="project_description"
                 name="project_description"
                 placeholder="Please describe your project"
-                className="resize-none"
-                required
               />
             </div>
             <div>
               <Label htmlFor="cost_expectations">Cost Expectations</Label>
               <Input
+                required
                 id="cost_expectations"
                 name="cost_expectations"
                 placeholder="~ $Your budget range"
-                required
               />
             </div>
           </>
@@ -207,15 +207,15 @@ export default function ContactPage() {
           <div>
             <Label htmlFor="message">Message</Label>
             <Textarea
+              required
+              className="resize-none"
               id="message"
               name="message"
               placeholder="Your message"
-              className="resize-none"
-              required
             />
           </div>
         )}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button disabled={isSubmitting} type="submit">
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
       </form>

@@ -48,7 +48,7 @@ export default function AdminChat() {
   const scrollToBottom = useCallback(() => {
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector(
-        '[data-radix-scroll-area-viewport]'
+        '[data-radix-scroll-area-viewport]',
       );
       if (scrollElement) {
         scrollElement.scrollTo({
@@ -73,7 +73,7 @@ export default function AdminChat() {
           acc[item.email] = item.messages;
           return acc;
         },
-        {} as { [email: string]: Message[] }
+        {} as { [email: string]: Message[] },
       );
       setConversations(conversationsMap);
     }
@@ -89,7 +89,7 @@ export default function AdminChat() {
         { event: '*', schema: 'public', table: 'chat_messages' },
         () => {
           fetchConversations();
-        }
+        },
       )
       .subscribe();
 
@@ -103,7 +103,7 @@ export default function AdminChat() {
       (count, messages) => {
         return count + (isClientActive(messages) ? 1 : 0);
       },
-      0
+      0,
     );
     setTotalActive(activeCount);
   }, [conversations, isClientActive]);
@@ -180,14 +180,14 @@ export default function AdminChat() {
             {Object.entries(conversations).map(([email, messages]) => (
               <Button
                 key={email}
+                className="h-auto w-full justify-start rounded-none px-3 py-2"
+                variant={activeEmail === email ? 'secondary' : 'ghost'}
                 onClick={() => {
                   setActiveEmail(email);
                 }}
-                variant={activeEmail === email ? 'secondary' : 'ghost'}
-                className="h-auto w-full justify-start rounded-none px-3 py-2"
               >
                 <Avatar className="mr-2 h-8 w-8">
-                  <AvatarImage src={gravatarURL(email)} alt={email} />
+                  <AvatarImage alt={email} src={gravatarURL(email)} />
                   <AvatarFallback>
                     {email.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
@@ -221,7 +221,7 @@ export default function AdminChat() {
                   </span>
                 )}
               </div>
-              <ScrollArea className="flex-1" ref={scrollAreaRef}>
+              <ScrollArea ref={scrollAreaRef} className="flex-1">
                 <div className="p-4">
                   {conversations[activeEmail].map((message) => (
                     <div
@@ -235,8 +235,8 @@ export default function AdminChat() {
                       {message.sender !== 'author' && (
                         <Avatar className="mr-2 h-8 w-8">
                           <AvatarImage
-                            src={gravatarURL(activeEmail)}
                             alt={activeEmail}
+                            src={gravatarURL(activeEmail)}
                           />
                           <AvatarFallback>
                             {activeEmail.slice(0, 2).toUpperCase()}
@@ -255,8 +255,8 @@ export default function AdminChat() {
                       {message.sender === 'author' && (
                         <Avatar className="ml-2 h-8 w-8">
                           <AvatarImage
-                            src={LOGO_IMAGE_PATH}
                             alt="@author image"
+                            src={LOGO_IMAGE_PATH}
                           />
                           <AvatarFallback>SR</AvatarFallback>
                         </Avatar>
@@ -267,21 +267,21 @@ export default function AdminChat() {
               </ScrollArea>
               <div className="w-full border-t p-3">
                 <form
+                  className="flex w-full gap-2"
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleSendReply();
                   }}
-                  className="flex w-full gap-2"
                 >
                   <div className="flex-grow">
                     <Input
+                      className="w-full"
+                      placeholder="Type your reply..."
                       value={replyMessage}
                       onChange={(e) => setReplyMessage(e.target.value)}
-                      placeholder="Type your reply..."
-                      className="w-full"
                     />
                   </div>
-                  <Button type="submit" size="lg" className="flex-shrink-0">
+                  <Button className="flex-shrink-0" size="lg" type="submit">
                     <Send className="h-5 w-5" />
                   </Button>
                 </form>

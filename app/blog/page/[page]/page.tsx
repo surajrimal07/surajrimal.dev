@@ -22,7 +22,7 @@ export default async function Page(props: {
   const pageNumber = Number.parseInt(params.page as string);
   const initialDisplayPosts = posts.slice(
     POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
+    POSTS_PER_PAGE * pageNumber,
   );
   const pagination = {
     currentPage: pageNumber,
@@ -31,9 +31,9 @@ export default async function Page(props: {
 
   return (
     <ListLayout
-      posts={posts}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}
+      posts={posts}
       title="All Posts"
     />
   );

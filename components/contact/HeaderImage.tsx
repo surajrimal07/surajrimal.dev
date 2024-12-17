@@ -47,115 +47,115 @@ export default function ContactHeaderImage() {
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute bottom-0 left-0 pl-1">
         <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="none"
-          initial="hide"
           animate="show"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className={clsx(
             'h-[350px] w-[350px] opacity-60 dark:opacity-40',
-            'hidden md:block'
+            'hidden md:block',
           )}
+          fill="none"
+          initial="hide"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <title>Contact Header Image</title>
           <motion.circle
-            variants={pulseAnimation}
+            className="fill-teal-500 stroke-teal-600"
             custom={0}
             cx="256"
             cy="256"
             r="48"
-            className="fill-teal-500 stroke-teal-600"
+            variants={pulseAnimation}
           />
 
           {/* Email envelope */}
           <motion.path
-            variants={pathAnimation}
+            className="stroke-blue-500"
             custom={1}
             d="M96 128h128l64 64 64-64h64v256H96V128z"
-            className="stroke-blue-500"
+            variants={pathAnimation}
           />
           <motion.path
-            variants={pathAnimation}
+            className="stroke-blue-500"
             custom={2}
             d="M96 128l160 128 160-128M96 384l128-96M416 384l-128-96"
-            className="stroke-blue-500"
+            variants={pathAnimation}
           />
 
           {/* Social media icons */}
-          <motion.g variants={floatAnimation} custom={0}>
+          <motion.g custom={0} variants={floatAnimation}>
             <motion.circle
-              variants={pulseAnimation}
+              className="fill-purple-500 stroke-purple-600"
               custom={1}
               cx="128"
               cy="192"
               r="24"
-              className="fill-purple-500 stroke-purple-600"
+              variants={pulseAnimation}
             />
             <motion.path
-              variants={pathAnimation}
+              className="stroke-white"
               custom={3}
               d="M116 192h24M128 180v24"
-              className="stroke-white"
+              variants={pathAnimation}
             />
           </motion.g>
 
-          <motion.g variants={floatAnimation} custom={1}>
+          <motion.g custom={1} variants={floatAnimation}>
             <motion.circle
-              variants={pulseAnimation}
+              className="fill-red-500 stroke-red-600"
               custom={2}
               cx="384"
               cy="192"
               r="24"
-              className="fill-red-500 stroke-red-600"
+              variants={pulseAnimation}
             />
             <motion.path
-              variants={pathAnimation}
+              className="stroke-white"
               custom={4}
               d="M372 192h24"
-              className="stroke-white"
+              variants={pathAnimation}
             />
           </motion.g>
 
           {/* Message bubbles */}
-          <motion.g variants={floatAnimation} custom={2}>
+          <motion.g custom={2} variants={floatAnimation}>
             <motion.path
-              variants={pulseAnimation}
+              className="fill-green-500 stroke-green-600"
               custom={3}
               d="M128 352h96v48l24-48h32v-64H128v64z"
-              className="fill-green-500 stroke-green-600"
+              variants={pulseAnimation}
             />
           </motion.g>
 
-          <motion.g variants={floatAnimation} custom={3}>
+          <motion.g custom={3} variants={floatAnimation}>
             <motion.path
-              variants={pulseAnimation}
+              className="fill-amber-500 stroke-amber-600"
               custom={4}
               d="M384 352h-96v48l-24-48h-32v-64h152v64z"
-              className="fill-amber-500 stroke-amber-600"
+              variants={pulseAnimation}
             />
           </motion.g>
 
           {/* Connecting lines */}
           <motion.path
-            variants={pathAnimation}
+            className="stroke-gray-400"
             custom={5}
             d="M256 208v-80M184 256h-80M328 256h80"
-            className="stroke-gray-400"
+            variants={pathAnimation}
           />
 
           {/* Floating dots */}
           {[0, 1, 2].map((i) => (
             <motion.circle
               key={i}
-              variants={floatAnimation}
+              className="fill-indigo-500"
               custom={i + 4}
               cx={176 + i * 32}
               cy="128"
               r="4"
-              className="fill-indigo-500"
+              variants={floatAnimation}
             />
           ))}
         </motion.svg>

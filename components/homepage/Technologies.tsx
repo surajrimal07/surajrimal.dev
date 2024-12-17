@@ -40,7 +40,7 @@ export function Technologies() {
   const filteredSkillsData = useMemo(() => filterSkillsData(skillsData), []);
   const categories = useMemo(
     () => Object.keys(filteredSkillsData),
-    [filteredSkillsData]
+    [filteredSkillsData],
   );
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -52,27 +52,27 @@ export function Technologies() {
   return (
     <div className="w-full space-y-2 py-1 md:space-y-5">
       <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
-        Technologies I Work With {''}
-        <Twemoji size="sd" name="tools" />
+        Technologies I Work With
+        <Twemoji name="tools" size="sd" />
       </h1>
       <p className="!mt-2 flex items-center text-lg leading-7 text-gray-500 dark:text-gray-400">
         Tools and technologies that I am familiar with and use daily.
       </p>
       <Tabs
+        defaultValue={categories[0]}
         value={categories[tabIndex]}
         onValueChange={onTabChange}
-        defaultValue={categories[0]}
       >
         <TabsList className="h-27 grid w-full grid-cols-2 gap-2 md:h-9 md:grid-cols-5 md:gap-1 lg:grid-cols-5 xl:gap-2">
           {categories.map((category, index) => (
             <TabsTrigger
-              role="tab"
-              id={`tab-${category}`}
+              key={`trigger-${category}`}
               aria-controls={`panel-${category}`}
               aria-selected={index === tabIndex ? 'true' : 'false'}
-              key={`trigger-${category}`}
-              value={category}
               className={`${index === tabIndex ? 'bg-primary-500/60 text-white dark:bg-primary-500/60' : 'bg-gray text-white-900'} hover:bg-gray-700/40 hover:text-white hover:dark:bg-gray-700/40`}
+              id={`tab-${category}`}
+              role="tab"
+              value={category}
             >
               {category}
             </TabsTrigger>
@@ -80,11 +80,11 @@ export function Technologies() {
         </TabsList>
         {categories.map((category) => (
           <TabsContent
-            id={`panel-${category}`}
             key={category}
-            value={category}
-            role="tabpanel"
             aria-labelledby={`tab-${category}`}
+            id={`panel-${category}`}
+            role="tabpanel"
+            value={category}
           >
             <Card className="w-full">
               <CardHeader>
@@ -103,15 +103,15 @@ export function Technologies() {
                     <Tooltip key={skill.id} content={skill.name}>
                       <Button
                         aria-label={skill.name}
-                        type="button"
                         className={`relative h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
+                        type="button"
                         variant="outline"
                       >
                         <Suspense fallback={<Skeleton />}>
                           <IconsBundle
+                            iconType="icon"
                             kind={skill.id}
                             size={8}
-                            iconType="icon"
                           />
                         </Suspense>
                         {skill.level === 'advanced' && (

@@ -42,15 +42,15 @@ const ThemeOption = memo(
     onClick: (value: string) => void;
   }) => (
     <DropdownMenuItem
-      onClick={() => onClick(value)}
       className={`${
         theme === value ? 'bg-red-500 text-white dark:bg-red-500' : ''
       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+      onClick={() => onClick(value)}
     >
       <div className="mr-2">{icon}</div>
       {label}
     </DropdownMenuItem>
-  )
+  ),
 );
 
 ThemeOption.displayName = 'ThemeOption';
@@ -71,7 +71,7 @@ const ThemeSwitch = memo(() => {
       setTheme(value);
       setIsThemeChanged(true);
     },
-    [isSoundEnabled, playSound, setTheme]
+    [isSoundEnabled, playSound, setTheme],
   );
 
   useEffect(() => {
@@ -96,12 +96,12 @@ const ThemeSwitch = memo(() => {
   const memoizedButton = useMemo(
     () => (
       <Button
-        variant="ghost"
         className="relative ml-2 h-8 w-8 cursor-pointer rounded-full bg-zinc-300 ring-zinc-400 transition-all hover:bg-zinc-300 hover:ring-1 dark:bg-zinc-700 dark:ring-white dark:hover:bg-zinc-800"
+        variant="ghost"
       >
         <motion.div
-          className="flex h-8 w-8 items-center justify-center p-2"
           animate={isThemeChanged ? { scale: 1.2, rotate: 180 } : {}}
+          className="flex h-8 w-8 items-center justify-center p-2"
           transition={{ duration: 0.1, ease: 'easeIn' }}
           whileHover={{ scale: 1.1 }}
         >
@@ -110,24 +110,24 @@ const ThemeSwitch = memo(() => {
         </motion.div>
       </Button>
     ),
-    [isThemeChanged, getCurrentIcon]
+    [isThemeChanged, getCurrentIcon],
   );
 
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>{memoizedButton}</DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" sideOffset={10} className="w-32">
+      <DropdownMenuContent align="end" className="w-32" sideOffset={10}>
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {THEME_OPTIONS.map(({ value, icon, label }) => (
             <ThemeOption
               key={value}
-              value={value}
               icon={icon}
               label={label}
               theme={theme}
+              value={value}
               onClick={handleClick}
             />
           ))}

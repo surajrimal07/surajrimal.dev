@@ -53,7 +53,7 @@ export default function AuthorAdminPage() {
             <div className="space-y-8">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src={author.avatar} alt={author.name} />
+                  <AvatarImage alt={author.name} src={author.avatar} />
                   <AvatarFallback>{author.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>

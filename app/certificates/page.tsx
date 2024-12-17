@@ -27,8 +27,8 @@ export default async function CertificationsPage() {
             Certifications
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Here's a collection of certifications I've earned from various
-            online learning platforms. These represent my commitment to
+            Here&apos;s a collection of certifications I&apos;ve earned from
+            various online learning platforms. These represent my commitment to
             continuous learning and skill development.
           </p>
         </div>
@@ -39,11 +39,11 @@ export default async function CertificationsPage() {
               <Card key={cert.id} className="flex flex-col">
                 <CardHeader>
                   <Image
-                    src={cert.image_url}
                     alt={`${cert.name} Certificate`}
-                    width={300}
-                    height={200}
                     className="h-48 w-full rounded-t-lg object-cover"
+                    height={200}
+                    src={cert.image_url}
+                    width={300}
                   />
                 </CardHeader>
                 <CardContent className="flex-grow">
@@ -60,15 +60,15 @@ export default async function CertificationsPage() {
                   </div>
                   {cert.verification_link && (
                     <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 w-full"
                       asChild
+                      className="mt-2 w-full"
+                      size="sm"
+                      variant="outline"
                     >
                       <Link
                         href={cert.verification_link}
-                        target="_blank"
                         rel="noopener noreferrer"
+                        target="_blank"
                       >
                         Verify Certificate
                         <ExternalLink className="ml-2 h-4 w-4" />

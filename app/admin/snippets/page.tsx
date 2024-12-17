@@ -69,12 +69,12 @@ export default function SnippetPage() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex space-x-2">
-                    <Button variant="outline" asChild>
+                    <Button asChild variant="outline">
                       <Link href={`/admin/${post._raw.flattenedPath}`}>
                         Edit
                       </Link>
                     </Button>
-                    <DeleteButton id={post.slug} content="snippet" />
+                    <DeleteButton content="snippet" id={post.slug} />
                   </div>
                 </TableCell>
               </TableRow>

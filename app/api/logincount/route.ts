@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     console.error('Error in login count route:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

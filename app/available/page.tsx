@@ -49,7 +49,7 @@ export default function AvailabilityPage() {
         await saveSubscriberEmail(validatedInput.email);
         toast.success(
           'You will receive an email when author becomes available for work.',
-          toastOptions
+          toastOptions,
         );
         setEmail('');
       } catch (error) {
@@ -68,8 +68,8 @@ export default function AvailabilityPage() {
   return (
     <div className="container mx-auto flex items-center justify-center p-4">
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
+        initial={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
         <Card className="mx-auto w-full max-w-md overflow-hidden">
@@ -83,16 +83,16 @@ export default function AvailabilityPage() {
           </motion.div>
           <CardContent>
             <motion.div
+              animate={{ opacity: 1, y: 0 }}
               className="mb-4 flex items-center justify-between"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
               <Badge
+                className="flex items-center px-3 py-1 text-sm"
                 variant={
                   availabilityData?.is_available ? 'success' : 'destructive'
                 }
-                className="flex items-center px-3 py-1 text-sm"
               >
                 {availabilityData?.is_available ? (
                   <>
@@ -107,9 +107,9 @@ export default function AvailabilityPage() {
               {availabilityData?.is_available &&
                 availabilityData?.hours_per_week !== null && (
                   <motion.div
+                    animate={{ opacity: 1, x: 0 }}
                     className="flex items-center text-sm text-muted-foreground"
                     initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
                   >
                     <Clock className="mr-1 h-4 w-4" />
@@ -118,9 +118,9 @@ export default function AvailabilityPage() {
                 )}
             </motion.div>
             <motion.p
+              animate={{ opacity: 1 }}
               className="mb-4 text-sm text-muted-foreground"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
               Last updated:{' '}
@@ -131,15 +131,15 @@ export default function AvailabilityPage() {
             <AnimatePresence>
               {availabilityData?.is_available && showHireMe && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.5 }}
                 >
                   <Button
-                    onClick={() => router.push('/contact')}
                     className="w-full"
                     size="lg"
+                    onClick={() => router.push('/contact')}
                   >
                     <Briefcase className="mr-2 h-4 w-4" />
                     Hire Me
@@ -148,23 +148,23 @@ export default function AvailabilityPage() {
               )}
               {!availabilityData?.is_available && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.5 }}
                 >
                   <Input
-                    type="email"
                     required
                     placeholder="Enter your email"
+                    type="email"
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
                   />
                   <Button
-                    onClick={handleNotifyClick}
                     className="mt-4 w-full"
                     size="lg"
+                    onClick={handleNotifyClick}
                   >
                     <Bell className="mr-2 h-4 w-4" />
                     Notify Me

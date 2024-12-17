@@ -1,4 +1,4 @@
-import { ReactionType } from '@/types/reaction';
+import type { ReactionType } from '@/types/reaction';
 
 export const reactions: {
   title: string;

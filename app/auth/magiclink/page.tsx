@@ -56,7 +56,7 @@ const AuthScreen = () => {
       try {
         const validatedInput = emailSchema.parse({ email });
         const result: { error?: string } = await magiclinklogin(
-          validatedInput.email
+          validatedInput.email,
         );
 
         if (result?.error) {
@@ -78,7 +78,7 @@ const AuthScreen = () => {
         setPending(false);
       }
     },
-    [email]
+    [email],
   );
 
   return (
@@ -114,9 +114,9 @@ const AuthScreen = () => {
               />
 
               <LoadingButton
-                loading={pending}
                 className="w-full"
                 disabled={pending}
+                loading={pending}
                 size="lg"
                 type="submit"
               >
@@ -124,7 +124,7 @@ const AuthScreen = () => {
               </LoadingButton>
             </form>
             <p className="text-center text-xs text-muted-foreground">
-              Go back to {''}
+              Go back to
               <button
                 className="cursor-pointer border-none bg-transparent p-0 text-xs underline"
                 type="button"

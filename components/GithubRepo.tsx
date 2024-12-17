@@ -11,7 +11,7 @@ interface GithubRepoProps {
 
 const GithubRepo = ({ repo, projectUrl }: GithubRepoProps) => {
   const mainLanguage = repo.languages.find(
-    (language) => language.name !== 'CSS'
+    (language) => language.name !== 'CSS',
   );
 
   const hasProjectUrl = projectUrl && projectUrl !== repo.url;
@@ -45,11 +45,11 @@ const GithubRepo = ({ repo, projectUrl }: GithubRepoProps) => {
       <div className="flex items-center space-x-2">
         {hasProjectUrl && (
           <Link
-            href={projectUrl}
-            target="_blank"
-            rel="noreferrer"
             className="flex items-center"
             data-umami-event="project-demo"
+            href={projectUrl}
+            rel="noreferrer"
+            target="_blank"
           >
             <ExternalLink size={20} strokeWidth={1} />
           </Link>
@@ -59,11 +59,11 @@ const GithubRepo = ({ repo, projectUrl }: GithubRepoProps) => {
         )}
         {isPublic && (
           <Link
-            href={repo.url}
-            target="_blank"
-            rel="noreferrer"
             className="flex items-center space-x-1"
             data-umami-event="project-repo"
+            href={repo.url}
+            rel="noreferrer"
+            target="_blank"
           >
             <Github size={20} strokeWidth={1} />
           </Link>

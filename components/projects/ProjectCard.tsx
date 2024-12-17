@@ -37,10 +37,10 @@ async function ProjectCard({ project }: ProjectCardProps) {
         <div className="relative">
           <Image
             alt={title}
-            src={img_src}
             className="object-cover object-center md:h-36 lg:h-60"
-            width={1088}
             height={612}
+            src={img_src}
+            width={1088}
           />
           {stack && (
             <div className="absolute right-2 top-2">
@@ -59,6 +59,7 @@ async function ProjectCard({ project }: ProjectCardProps) {
             {built_with?.map((tool, index) => {
               return (
                 <span
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   className="m-1 inline-flex items-center overflow-hidden rounded-md border border-gray-700 bg-gray-800 bg-opacity-50 px-3 py-1 text-sm font-medium text-white transition-all duration-200 ease-in-out hover:border-white"
                 >
@@ -72,13 +73,13 @@ async function ProjectCard({ project }: ProjectCardProps) {
           </p>
 
           {repository && url ? (
-            <GithubRepo repo={repository} projectUrl={url} />
+            <GithubRepo projectUrl={url} repo={repository} />
           ) : (
             url && (
               <Link
-                href={url}
-                className="text-base font-medium leading-6 text-primary hover:text-primary-600 dark:hover:text-primary-400"
                 aria-label={`Link to ${title}`}
+                className="text-base font-medium leading-6 text-primary hover:text-primary-600 dark:hover:text-primary-400"
+                href={url}
               >
                 Learn more &rarr;
               </Link>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { genPageMetadata } from 'app/seo';
 import { allAuthors } from 'contentlayer/generated';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';

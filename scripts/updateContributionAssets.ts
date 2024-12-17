@@ -40,7 +40,7 @@ function modifySvg(svgString: string): string {
         /text\s?{([^}]*)}/,
         (_textMatch, properties) => {
           return `text {${properties.replace(/fill:\s?#([A-Fa-f0-9]{6})/, 'fill: #FFFFFF')}}`;
-        }
+        },
       );
     })
     .replace(/fill:\s?#([A-Fa-f0-9]{6})/g, (_match, color) => {
@@ -65,7 +65,7 @@ async function uploadToS3(file: Buffer, fileName: string) {
 async function fetchAndSaveGraph() {
   try {
     const res = await fetch(
-      'https://wakapi.dev/api/activity/chart/surajrimal.svg'
+      'https://wakapi.dev/api/activity/chart/surajrimal.svg',
     );
     if (!res.ok) {
       throw new Error(`Failed to fetch graph: ${res.status} ${res.statusText}`);
@@ -98,7 +98,7 @@ async function fetchAndSaveBadges() {
         const res = await fetch(url);
         if (!res.ok) {
           throw new Error(
-            `Failed to fetch badge ${interval}: ${res.status} ${res.statusText}`
+            `Failed to fetch badge ${interval}: ${res.status} ${res.statusText}`,
           );
         }
         const svg = await res.text();
@@ -109,7 +109,7 @@ async function fetchAndSaveBadges() {
           .toBuffer();
 
         await uploadToS3(pngBuffer, `${interval}.png`);
-      })
+      }),
     );
     console.log('Successfully uploaded all badges');
   } catch (error) {

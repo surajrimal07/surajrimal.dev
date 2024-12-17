@@ -17,7 +17,7 @@ export default async function EditMedia(props: {
 }) {
   const params = await props.params;
   const medias = await getMedia();
-  const media = medias.find((c) => c.id === parseInt(params.id));
+  const media = medias.find((c) => c.id === Number.parseInt(params.id));
 
   if (params.id !== 'new' && !media) {
     notFound();

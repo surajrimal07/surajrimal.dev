@@ -13,12 +13,12 @@ export default function Twemoji({
 
   return (
     <Image
-      src={emoji}
       alt={`Emoji ${name}`}
       className={`inline-block ${className || ''}`}
-      width={finalSize}
       height={finalSize}
       loading="eager"
+      src={emoji}
+      width={finalSize}
     />
   );
 }

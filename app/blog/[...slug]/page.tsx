@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import type { Authors, Blog } from 'contentlayer/generated';
 import { allAuthors, allBlogs } from 'contentlayer/generated';
+import type { Authors, Blog } from 'contentlayer/generated';
 import 'css/prism.css';
 import 'katex/dist/katex.css';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
@@ -122,8 +122,8 @@ export default async function Page(props: {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Layout
-        content={mainContent}
         authorDetails={authorDetails}
+        content={mainContent}
         next={next}
         prev={prev}
         toc={post.toc}

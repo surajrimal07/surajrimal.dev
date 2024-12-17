@@ -1,3 +1,4 @@
+import type { WeatherApiResponse, WeatherResponse } from '@/types/weather';
 import { NextResponse } from 'next/server';
 
 const DEV_IP = '110.44.115.214';
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
     }
 
     const locationResponse = await fetch(
-      `https://api.ip2location.io/?key=${locationAPI}&ip=${ip}&format=json`
+      `https://api.ip2location.io/?key=${locationAPI}&ip=${ip}&format=json`,
     );
     const locationData = await locationResponse.json();
 
@@ -30,24 +31,26 @@ export async function GET(request: Request) {
       locationData.city_name !== '-' ? locationData.city_name : 'London';
 
     const weatherResponse = await fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${city}&aqi=no`
+      `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${city}&aqi=no`,
     );
-    const weatherData = await weatherResponse.json();
+    const weatherData: WeatherResponse = await weatherResponse.json();
 
     const { temp_c, condition } = weatherData.current;
     const { text, icon } = condition;
 
-    return NextResponse.json({
+    const response: WeatherApiResponse = {
       city: city,
       temperature: temp_c,
       condition: text,
       icon: icon,
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
       { error: 'An error occurred while fetching weather data' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -33,7 +33,7 @@ export default async function InMediaPage() {
           <Card key={item.id} className="flex flex-col">
             <CardHeader>
               <div className="flex items-start justify-between">
-                <Badge variant="secondary" className="mb-2">
+                <Badge className="mb-2" variant="secondary">
                   {item.category}
                 </Badge>
                 <div className="flex items-center text-sm text-muted-foreground">
@@ -53,10 +53,10 @@ export default async function InMediaPage() {
             </CardContent>
             <CardFooter>
               <Link
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                href={item.url}
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 Read More
                 <ExternalLinkIcon className="-mr-1 ml-2 h-4 w-4" />

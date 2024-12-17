@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { motion } from 'framer-motion';
 
@@ -37,7 +38,7 @@ export function HoverBorderGradient({
         : (currentIndex + 1) % directions.length;
       return directions[nextIndex];
     },
-    [clockwise]
+    [clockwise],
   );
 
   const movingMap: Record<Direction, string> = useMemo(
@@ -49,13 +50,13 @@ export function HoverBorderGradient({
       RIGHT:
         'radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)',
     }),
-    []
+    [],
   );
 
   const highlight = useMemo(
     () =>
       'radial-gradient(75% 181.15942028985506% at 50% 50%, #3275F8 0%, rgba(255, 255, 255, 0) 100%)',
-    []
+    [],
   );
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export function HoverBorderGradient({
 
   const initialBackground = useMemo(
     () => ({ background: movingMap[direction] }),
-    [movingMap, direction]
+    [movingMap, direction],
   );
 
   const animateBackground = useMemo(
@@ -86,7 +87,7 @@ export function HoverBorderGradient({
         ? [movingMap[direction], highlight]
         : movingMap[direction],
     }),
-    [hovered, movingMap, direction, highlight]
+    [hovered, movingMap, direction, highlight],
   );
 
   const style = useMemo(
@@ -96,7 +97,7 @@ export function HoverBorderGradient({
       width: '100%',
       height: '100%',
     }),
-    []
+    [],
   );
 
   const transition = useMemo(
@@ -104,34 +105,34 @@ export function HoverBorderGradient({
       ease: 'linear',
       duration: duration ?? 1,
     }),
-    [duration]
+    [duration],
   );
 
   return (
     <Tag
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className={cn(
         'relative flex h-min w-fit flex-col flex-nowrap content-center items-center justify-center gap-10 overflow-visible rounded-full border bg-black/20 decoration-clone p-px transition duration-500 hover:bg-black/10 dark:bg-white/20',
-        containerClassName
+        containerClassName,
       )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       {...props}
     >
       <div
         className={cn(
           'z-10 w-auto rounded-[inherit] bg-zinc-900 px-1.5 py-1 text-white',
-          className
+          className,
         )}
       >
         {children}
       </div>
       <motion.div
-        className={cn(
-          'absolute inset-0 z-0 flex-none overflow-hidden rounded-[inherit]'
-        )}
-        style={style}
-        initial={initialBackground}
         animate={animateBackground}
+        className={cn(
+          'absolute inset-0 z-0 flex-none overflow-hidden rounded-[inherit]',
+        )}
+        initial={initialBackground}
+        style={style}
         transition={transition}
       />
       <div className="z-1 absolute inset-[2px] flex-none rounded-[100px] bg-zinc-900" />

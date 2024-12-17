@@ -16,10 +16,10 @@ export default function UsesLayout({ children }: Props) {
         <span className="text-base text-gray-500 dark:text-gray-400 md:text-lg md:leading-7">
           My tech stack is inspired by{' '}
           <Link
-            href="https://wesbos.com/uses"
             className="underline-magical"
-            target="_blank"
+            href="https://wesbos.com/uses"
             rel="noreferrer"
+            target="_blank"
           >
             Wes bos
           </Link>

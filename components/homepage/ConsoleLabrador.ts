@@ -39,7 +39,7 @@ const ConsoleLabrador = (): JSX.Element | null => {
     // console.log('%c' + labrador, style);
     console.log(
       "%cWoof! Looking for something? 🐾\nIf someone told you to paste something here, it's probably a scam!\nBut since you found my secret spot, say hi at davidparkedme@gmail.com",
-      'color: #FFD700; font-size: 14px; font-weight: bold;'
+      'color: #FFD700; font-size: 14px; font-weight: bold;',
     );
   }, []);
 

@@ -51,9 +51,9 @@ const TOCInline = ({
     () =>
       new RegExp(
         `^(${Array.isArray(exclude) ? exclude.join('|') : exclude})$`,
-        'i'
+        'i',
       ),
-    [exclude]
+    [exclude],
   );
 
   const filteredToc = useMemo(
@@ -68,14 +68,14 @@ const TOCInline = ({
           (heading) =>
             heading.depth >= fromHeading &&
             heading.depth <= toHeading &&
-            !re.test(heading.value)
+            !re.test(heading.value),
         ),
-    [toc, fromHeading, toHeading, re]
+    [toc, fromHeading, toHeading, re],
   );
 
   const nestedList = useMemo(
     () => createNestedList(filteredToc),
-    [filteredToc]
+    [filteredToc],
   );
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const TOCInline = ({
         className={cn(
           ulClassName,
           level === 0 && 'space-y-1',
-          level > 0 && `toc-indent-${level}`
+          level > 0 && `toc-indent-${level}`,
         )}
       >
         {items.map((item, index) => {
@@ -127,13 +127,13 @@ const TOCInline = ({
           return (
             <li key={index} className={liClassName}>
               <a
-                href={item.url}
                 className={cn(
                   'block rounded-md px-2 py-1 text-sm transition-all',
                   'text-muted-foreground hover:bg-slate-50 hover:dark:bg-[#242e45]',
                   isActiveHeader &&
-                    'active-header bg-slate-100 dark:bg-[#1e2638]'
+                    'active-header bg-slate-100 dark:bg-[#1e2638]',
                 )}
+                href={item.url}
               >
                 {item.value}
               </a>
@@ -149,28 +149,28 @@ const TOCInline = ({
     <div
       className={clsx(
         'border-divider-light hidden h-auto max-w-64 rounded-xl bg-gray-300 pb-1 sm:block',
-        'dark:border-divider-dark dark:bg-gray-900'
+        'dark:border-divider-dark dark:bg-gray-900',
       )}
     >
       <div className="flex items-center justify-between border-b p-2">
         <div className="ml-2 flex items-center text-base font-bold text-black dark:text-white">
           <span>On this page</span>
           <button
+            className="ml-2 p-1"
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="ml-2 p-1"
           >
             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
         </div>
         {isScrolled && (
           <button
-            type="button"
             className={clsx(
               'border-divider-light text-accent-700 flex h-6 cursor-pointer items-center rounded-full border px-2 text-xs font-normal',
-              'dark:border-divider-light bg-white text-black dark:bg-gray-800 dark:text-white'
+              'dark:border-divider-light bg-white text-black dark:bg-gray-800 dark:text-white',
             )}
             tabIndex={0}
+            type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             Scroll to top
