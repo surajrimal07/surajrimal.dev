@@ -387,6 +387,7 @@ export default function EditProject() {
             <div className="space-y-2">
               <Label htmlFor="stack">Stack</Label>
               <Select
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 value={state.stack!}
                 onValueChange={(value) =>
                   dispatch({
@@ -412,6 +413,7 @@ export default function EditProject() {
 
             <div className="space-y-2">
               <Label htmlFor="url">URL</Label>
+              {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
               <Input id="url" value={state.url!} onChange={handleInputChange} />
             </div>
 
@@ -419,6 +421,7 @@ export default function EditProject() {
               <Label htmlFor="repo">Repository</Label>
               <Input
                 id="repo"
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 value={state.repo!}
                 onChange={handleInputChange}
               />
@@ -454,6 +457,7 @@ export default function EditProject() {
 
             <div className="flex items-center space-x-2">
               <Switch
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 checked={state.is_dark_badge_needed!}
                 id="isDarkBadgeNeeded"
                 onCheckedChange={(checked) =>

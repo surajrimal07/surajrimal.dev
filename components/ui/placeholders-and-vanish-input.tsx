@@ -91,6 +91,7 @@ export const PlaceholdersAndVanishInput = React.memo(
 
       const imageData = ctx.getImageData(0, 0, 800, 800);
       const pixelData = imageData.data;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const newData: any[] = [];
 
       for (let t = 0; t < 800; t++) {
@@ -151,6 +152,7 @@ export const PlaceholdersAndVanishInput = React.memo(
           const ctx = canvasRef.current?.getContext('2d');
           if (ctx) {
             ctx.clearRect(pos, 0, 800, 800);
+            // biome-ignore lint/complexity/noForEach: <explanation>
             newDataRef.current.forEach((t) => {
               const { x: n, y: i, r: s, color } = t;
               if (n > pos) {
@@ -308,6 +310,7 @@ export const PlaceholdersAndVanishInput = React.memo(
             width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
+            <title>Submit</title>
             <path d="M0 0h24v24H0z" fill="none" stroke="none" />
             <motion.path
               animate={motionPathAnimate}

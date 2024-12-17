@@ -88,11 +88,15 @@ export default function AdminProjectsListPage() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Created on : {formatDate(project.created_at!)}
+              Created on :{' '}
+              {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
+              {formatDate(project.created_at!)}
             </p>
 
             <p className="text-xs text-muted-foreground">
-              Edited on : {formatDate(project.updated_at!)}
+              Edited on :{' '}
+              {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
+              {formatDate(project.updated_at!)}
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">

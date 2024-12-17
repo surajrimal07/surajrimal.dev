@@ -118,7 +118,7 @@
     }
   },
   "organizeImports": {
-    "enabled": false
+    "enabled": true
   },
   "overrides": [
     // Playwright requires an object destructure, even if empty

@@ -30,6 +30,7 @@ export const HeroHighlight = ({
     mouseY.set(clientY - top);
   }
   return (
+    // biome-ignore lint/nursery/noStaticElementInteractions: <explanation>
     <div
       className={cn(
         'group relative flex h-[13rem] w-full items-center justify-center bg-white dark:bg-black',

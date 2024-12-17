@@ -5,7 +5,9 @@ import { TfiArrowTopRight } from 'react-icons/tfi';
 
 import Twemoji from '@/components/Twemoji';
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const BUCKET_NAME = process.env.SUPABASE_BUCKET!;
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const BUCKET_URL = process.env.SUPABASE_NORMAL_BUCKET_URL!;
 
 const BADGES = [

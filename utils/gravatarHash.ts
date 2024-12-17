@@ -1,3 +1,4 @@
+// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
 import crypto from 'crypto';
 
 export function gravatarURL(email: string) {

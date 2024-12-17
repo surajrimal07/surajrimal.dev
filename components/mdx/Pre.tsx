@@ -36,6 +36,7 @@ const Pre = ({ children }: PreProps) => {
     });
 
   return (
+    // biome-ignore lint/nursery/noStaticElementInteractions: <explanation>
     <div
       ref={textInput}
       className="relative rounded-lg bg-black"

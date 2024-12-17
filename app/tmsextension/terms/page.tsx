@@ -213,6 +213,8 @@ export default function TermsPage() {
           >
             View Privacy Policy
             <svg
+              aria-label="Navigate to Privacy Policy"
+              role="img"
               fill="none"
               height="20"
               stroke="currentColor"

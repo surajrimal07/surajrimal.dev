@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import HeaderImage from "@/components/projects/HeaderImage";
+import HeaderImage from '@/components/projects/HeaderImage';
 
 export default function BlogLayout({ children }: { children: ReactNode }) {
   return (

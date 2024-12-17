@@ -1,5 +1,3 @@
-import MillionLint from '@million/lint';
-
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { withContentlayer } = require('next-contentlayer2');
 
@@ -57,10 +55,7 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
-module.exports = MillionLint.next({
-  enabled: true,
-  rsc: true,
-})(() => {
+module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer];
   return plugins.reduce((acc, next) => next(acc), {
     experimental: {
@@ -182,4 +177,4 @@ module.exports = MillionLint.next({
       return config;
     },
   });
-});
+};

@@ -8,7 +8,7 @@ import {
   ContactRound,
   FileSpreadsheet,
   FileText,
-  Map,
+  Map as MapIcon,
   MessageSquare,
   MicVocal,
   ShieldCheck,
@@ -39,7 +39,7 @@ export default async function AdminDashboard() {
     {
       name: 'Journey',
       href: '/admin/journey',
-      icon: Map,
+      icon: MapIcon,
       description: 'Update your professional journey',
     },
     {

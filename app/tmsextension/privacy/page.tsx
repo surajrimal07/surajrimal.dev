@@ -196,6 +196,7 @@ export default function PrivacyPage() {
           >
             View Terms of Service
             <svg
+              role="img"
               fill="none"
               height="20"
               stroke="currentColor"
@@ -205,6 +206,7 @@ export default function PrivacyPage() {
               viewBox="0 0 24 24"
               width="20"
               xmlns="http://www.w3.org/2000/svg"
+              aria-label="Arrow right"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>

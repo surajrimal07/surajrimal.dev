@@ -28,7 +28,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
-import { clearChat, handleChatRequest, saveChat } from '@/lib/chat';
+import { clearChat, saveChat } from '@/lib/chat';
+import { handleChatRequest } from '@/lib/chat-bot';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
@@ -257,7 +258,7 @@ const Chatbox: React.FC = () => {
         await fetchInitialMessages(validatedInput.email);
       } catch (err) {
         if (err instanceof z.ZodError) {
-          const errorMessage = err.errors[0].message;
+          const errorMessage = err.errors[0]?.message ?? 'Invalid email format';
           toast.error(errorMessage, toastOptions);
         } else {
           toast.error('An unexpected error occurred', toastOptions);

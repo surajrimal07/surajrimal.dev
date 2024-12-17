@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { allAuthors, allBlogs } from 'contentlayer/generated';
 import type { Authors, Blog } from 'contentlayer/generated';
+import { allAuthors, allBlogs } from 'contentlayer/generated';
 import 'css/prism.css';
 import 'katex/dist/katex.css';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
@@ -118,7 +118,6 @@ export default async function Page(props: {
     <>
       <script
         type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Layout

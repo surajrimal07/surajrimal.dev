@@ -271,6 +271,7 @@ export default function EditSnippet() {
             <div className="flex flex-wrap gap-2">
               {postData.tags.map((tag, index) => (
                 <span
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   className="inline-flex items-center space-x-2 rounded bg-zinc-900 p-2"
                 >

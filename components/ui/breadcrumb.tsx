@@ -68,6 +68,7 @@ const BreadcrumbPage = React.forwardRef<
     aria-disabled="true"
     className={cn('font-normal text-foreground', className)}
     role="link"
+    tabIndex={0}
     {...props}
   />
 ));

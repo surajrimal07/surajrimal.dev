@@ -1,12 +1,12 @@
+import { writeFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   type ComputedFields,
   defineDocumentType,
   makeSource,
 } from 'contentlayer2/source-files';
-import { writeFileSync } from 'fs';
 import { slug } from 'github-slugger';
 import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic';
-import path from 'path';
 // Remark packages
 import {
   extractTocHeadings,
@@ -69,18 +69,18 @@ async function createTagCount(allBlogs, allSnippets) {
   const tagCount: Record<string, number> = {};
   const allDocuments = [...allBlogs, ...allSnippets];
 
-  allDocuments.forEach((file) => {
+  for (const file of allDocuments) {
     if (file.tags && (!isProduction || file.draft !== true)) {
-      file.tags.forEach((tag) => {
+      for (const tag of file.tags) {
         const formattedTag = slug(tag);
         if (formattedTag in tagCount) {
           tagCount[formattedTag] += 1;
         } else {
           tagCount[formattedTag] = 1;
         }
-      });
+      }
     }
-  });
+  }
 
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount));
   return tagCount;

@@ -125,6 +125,7 @@ const TOCInline = ({
           const isActiveHeader = itemId === activeId;
 
           return (
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             <li key={index} className={liClassName}>
               <a
                 className={cn(

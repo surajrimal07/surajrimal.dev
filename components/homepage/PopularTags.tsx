@@ -45,6 +45,7 @@ export default async function PopularTags() {
             ))
           : Array.from({ length: MAX_TAGS_IN_HOME }).map((_, idx) => (
               <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={idx}
                 className="group flex h-12 items-center justify-center space-x-2 rounded-lg bg-gray-800 p-2 sm:h-12 sm:p-3"
                 style={{ minWidth: '100px' }}

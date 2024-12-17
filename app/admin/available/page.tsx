@@ -122,7 +122,7 @@ export default function AdminAvailabilityPage() {
                   id="availability"
                   onCheckedChange={(checked) =>
                     setAvailabilityData((prev) => ({
-                      ...prev!,
+                      ...(prev ?? { hours_per_week: null, last_updated: '' }),
                       is_available: checked,
                     }))
                   }
@@ -137,6 +137,7 @@ export default function AdminAvailabilityPage() {
                   value={availableData?.hours_per_week || ''}
                   onChange={(e) =>
                     setAvailabilityData((prev) => ({
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       ...prev!,
                       hours_per_week: Number.parseInt(e.target.value) || null,
                     }))

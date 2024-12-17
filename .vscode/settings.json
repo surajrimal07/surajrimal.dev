@@ -1,21 +1,21 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll": "always",
-        "source.organizeImports": "always"
-    },
-    "files.associations": {
-        "*.js": "javascriptreact",
-        "*.cjs": "javascriptreact",
-        "*.mjs": "javascriptreact",
-        "*.css": "tailwindcss",
-    },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "workbench.editor.customLabels.enabled": true,
-    "workbench.editor.customLabels.patterns": {
-        "**/app/**/page.tsx": "${dirname} - Page",
-        "**/components/**/layout.tsx": "${dirname} - Layout",
-        "**/app/**/component.tsx": "${dirname} - Component",
-        "**/app/**/layout.tsx": "${dirname} - Layout",
-    }
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "files.associations": {
+    "*.js": "javascriptreact",
+    "*.cjs": "javascriptreact",
+    "*.mjs": "javascriptreact",
+    "*.css": "tailwindcss"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.editor.customLabels.enabled": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/app/**/page.tsx": "${dirname} - Page",
+    "**/components/**/layout.tsx": "${dirname} - Layout",
+    "**/app/**/component.tsx": "${dirname} - Component",
+    "**/app/**/layout.tsx": "${dirname} - Layout"
+  }
 }

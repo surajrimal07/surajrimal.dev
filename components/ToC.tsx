@@ -94,6 +94,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
     <nav ref={navRef} className="top-24 self-start pl-0 md:sticky">
       <ul className="list-none space-y-1.5">
         {modifiedToc.map((item, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <li key={index}>
             <a
               className="block text-gray-400 transition duration-150 ease-in-out hover:text-gray-600"
