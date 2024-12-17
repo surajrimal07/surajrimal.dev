@@ -5,8 +5,8 @@ import {
 } from '@octokit/graphql';
 
 import siteMetadata from '@/data/siteMetadata';
-import { Repository, UserData } from '@/types/github';
-import { GithubRepository } from '@/types/server';
+import type { Repository, UserData } from '@/types/github';
+import type { GithubRepository } from '@/types/server';
 
 export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
   if (!repo) {
@@ -87,7 +87,7 @@ export async function fetchGithubRepo(repo: string): Promise<GithubRepository> {
       throw new Error(errorMessage);
     }
 
-    throw new Error('Unable to fetch repo data: ' + error?.toString());
+    throw new Error(`Unable to fetch repo data: ${error?.toString()}`);
   }
 }
 
@@ -104,7 +104,7 @@ const getHeaders = () => {
 
 export async function useUserData() {
   try {
-    const userResponse: UserData = await fetch(`https://api.github.com/user`, {
+    const userResponse: UserData = await fetch('https://api.github.com/user', {
       headers: getHeaders(),
     })
       .then((res) => res.json())
@@ -122,7 +122,7 @@ export async function useUserData() {
 export async function useRepoData() {
   try {
     const reposData: Repository[] = await fetch(
-      `https://api.github.com/user/repos?per_page=200`,
+      'https://api.github.com/user/repos?per_page=200',
       {
         headers: getHeaders(),
       }

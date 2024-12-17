@@ -9,7 +9,7 @@ interface ErrorProps {
   reset: () => void;
 }
 
-export default function Error({ error, reset }: ErrorProps) {
+export default function ErrorComponent({ error, reset }: ErrorProps) {
   return (
     <div className="flex h-[50vh] flex-col items-center justify-center gap-4">
       <div className="flex items-center gap-2 text-destructive">

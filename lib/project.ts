@@ -1,5 +1,5 @@
 import { localCache } from '@/lib/cache';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { supabase } from '@/utils/supabase/client';
 
 const BUCKET_NAME = process.env.SUPABASE_BUCKET!;

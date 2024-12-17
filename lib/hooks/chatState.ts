@@ -29,13 +29,12 @@ const ONLINE_THRESHOLD = 5 * MINUTE;
 const createStorage = () => {
   if (typeof window !== 'undefined') {
     return window.localStorage;
-  } else {
-    return {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
-    };
   }
+  return {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  };
 };
 
 const useChatStore = create<ChatState>()(

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { getAvailabilityData } from '@/lib/availablity';
-import { AvailabilityData } from '@/types/availablity';
+import type { AvailabilityData } from '@/types/availablity';
 
 interface AvailabilityStore {
   availabilityData: AvailabilityData | null;

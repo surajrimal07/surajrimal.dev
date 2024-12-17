@@ -7,7 +7,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import useOnScroll from '@/lib/hooks/useOnScroll';
 import { cn } from '@/lib/utils';
-import { TOCInlineProps, TocItem } from '@/types/toc';
+import type { TOCInlineProps, TocItem } from '@/types/toc';
 
 export interface NestedTocItem extends TocItem {
   children?: NestedTocItem[];
@@ -17,7 +17,7 @@ const createNestedList = (items: TocItem[]): NestedTocItem[] => {
   const nestedList: NestedTocItem[] = [];
   const stack: NestedTocItem[] = [];
 
-  items.forEach((item) => {
+  for (const item of items) {
     const newItem: NestedTocItem = { ...item };
     while (stack.length > 0 && stack[stack.length - 1].depth >= newItem.depth) {
       stack.pop();
@@ -30,7 +30,7 @@ const createNestedList = (items: TocItem[]): NestedTocItem[] => {
       nestedList.push(newItem);
     }
     stack.push(newItem);
-  });
+  }
 
   return nestedList;
 };
@@ -61,7 +61,7 @@ const TOCInline = ({
       toc
         .map((item) => {
           const parts = item.url.split('-');
-          if (!isNaN(Number(parts[parts.length - 1]))) parts.pop();
+          if (!Number.isNaN(Number(parts[parts.length - 1]))) parts.pop();
           return { ...item, url: parts.join('-') };
         })
         .filter(
@@ -85,7 +85,7 @@ const TOCInline = ({
       const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
       let currentId = '';
-      headings.forEach((heading) => {
+      for (const heading of headings) {
         const id = heading.getAttribute('id');
         if (
           id &&
@@ -94,7 +94,7 @@ const TOCInline = ({
         ) {
           currentId = id;
         }
-      });
+      }
 
       setActiveId(currentId);
     };
@@ -156,6 +156,7 @@ const TOCInline = ({
         <div className="ml-2 flex items-center text-base font-bold text-black dark:text-white">
           <span>On this page</span>
           <button
+            type="button"
             onClick={() => setIsExpanded(!isExpanded)}
             className="ml-2 p-1"
           >
@@ -164,6 +165,7 @@ const TOCInline = ({
         </div>
         {isScrolled && (
           <button
+            type="button"
             className={clsx(
               'border-divider-light text-accent-700 flex h-6 cursor-pointer items-center rounded-full border px-2 text-xs font-normal',
               'dark:border-divider-light bg-white text-black dark:bg-gray-800 dark:text-white'

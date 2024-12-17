@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getMedia } from '@/lib/media';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export default async function InMediaPage() {
   const mediaItems: Tables<'in_media'>[] = await getMedia();

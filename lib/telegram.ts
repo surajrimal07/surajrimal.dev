@@ -1,10 +1,10 @@
 'use server';
 
 import { Telegraf } from 'telegraf';
-import { Message } from 'telegraf/typings/core/types/typegram';
+import type { Message } from 'telegraf/typings/core/types/typegram';
 
 import { clearChat, loadChat, saveChat } from '@/lib/chat';
-import { Message as ChatMessage } from '@/types/chat';
+import type { Message as ChatMessage } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN!;
@@ -86,7 +86,11 @@ export async function sendMessage(email: string, message: string) {
   }
 
   try {
-    await bot!.telegram.sendMessage(channelId, `${email} says ${message}`);
+    if (bot) {
+      await bot.telegram.sendMessage(channelId, `${email} says ${message}`);
+    } else {
+      console.error('Bot is not initialized');
+    }
   } catch (error) {
     console.error('Failed to send Telegram message:', error);
   }

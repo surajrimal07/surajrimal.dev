@@ -1,10 +1,10 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Space_Grotesk } from 'next/font/google';
 
 import 'katex/dist/katex.css';
 import NextTopLoader from 'nextjs-toploader';
-import { Analytics, AnalyticsConfig } from 'pliny/analytics';
+import { Analytics, type AnalyticsConfig } from 'pliny/analytics';
 import 'pliny/search/algolia.css';
 import { Toaster } from 'react-hot-toast';
 import 'remark-github-blockquote-alert/alert.css';
@@ -135,7 +135,7 @@ export default function RootLayout({
 
       <body className="pl-[calc(100vw-100%)] antialiased">
         <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
-          <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50"></div>
+          <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50" />
         </div>
         <ConsoleLabrador />
         <NextTopLoader color="#ef4444" height={1} showSpinner={false} />

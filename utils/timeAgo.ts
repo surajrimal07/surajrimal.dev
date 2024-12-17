@@ -1,4 +1,4 @@
-export function timeAgo(timestamp: Date, locale: string = 'en'): string {
+export function timeAgo(timestamp: Date, locale = 'en'): string {
   const now = new Date();
   const diffInSeconds = (now.getTime() - timestamp.getTime()) / 1000;
 
@@ -18,17 +18,20 @@ export function timeAgo(timestamp: Date, locale: string = 'en'): string {
 
   if (diffInSeconds >= thresholds.year) {
     return rtf.format(-Math.floor(diffInSeconds / thresholds.year), 'year');
-  } else if (diffInSeconds >= thresholds.month) {
-    return rtf.format(-Math.floor(diffInSeconds / thresholds.month), 'month');
-  } else if (diffInSeconds >= thresholds.day) {
-    return rtf.format(-Math.floor(diffInSeconds / thresholds.day), 'day');
-  } else if (diffInSeconds >= thresholds.hour) {
-    return rtf.format(-Math.floor(diffInSeconds / thresholds.hour), 'hour');
-  } else if (diffInSeconds >= thresholds.minute) {
-    return rtf.format(-Math.floor(diffInSeconds / thresholds.minute), 'minute');
-  } else {
-    return rtf.format(-Math.floor(diffInSeconds), 'second');
   }
+  if (diffInSeconds >= thresholds.month) {
+    return rtf.format(-Math.floor(diffInSeconds / thresholds.month), 'month');
+  }
+  if (diffInSeconds >= thresholds.day) {
+    return rtf.format(-Math.floor(diffInSeconds / thresholds.day), 'day');
+  }
+  if (diffInSeconds >= thresholds.hour) {
+    return rtf.format(-Math.floor(diffInSeconds / thresholds.hour), 'hour');
+  }
+  if (diffInSeconds >= thresholds.minute) {
+    return rtf.format(-Math.floor(diffInSeconds / thresholds.minute), 'minute');
+  }
+  return rtf.format(-Math.floor(diffInSeconds), 'second');
 }
 
 export const formatDate = (date: string | Date): string => {

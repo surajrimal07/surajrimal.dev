@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import { updateAuthorStatus } from '@/lib/telegram';
-import { DBChatMessage, Message } from '@/types/chat';
+import type { DBChatMessage, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { timeAgo } from '@/utils/timeAgo';

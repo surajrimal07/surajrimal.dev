@@ -1,5 +1,5 @@
 import { localCache } from '@/lib/cache';
-import { AvailabilityData } from '@/types/availablity';
+import type { AvailabilityData } from '@/types/availablity';
 import redis from '@/utils/redis';
 import { supabase } from '@/utils/supabase/client';
 
@@ -8,14 +8,14 @@ const authorAvailabilityKey = 'author:availability';
 export const saveAvailabilityData = async (
   data: AvailabilityData
 ): Promise<void> => {
-  const cacheKey = `availability-data`;
+  const cacheKey = 'availability-data';
   await redis.set(authorAvailabilityKey, JSON.stringify(data));
   localCache.set(cacheKey, data);
 };
 
 export const getAvailabilityData =
   async (): Promise<AvailabilityData | null> => {
-    const cacheKey = `availability-data`;
+    const cacheKey = 'availability-data';
     const cachedData = localCache.get(cacheKey) as AvailabilityData | undefined;
 
     if (cachedData !== undefined && cachedData !== null) {

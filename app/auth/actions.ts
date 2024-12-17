@@ -1,6 +1,6 @@
 'use server';
 
-import { Provider } from '@supabase/supabase-js';
+import type { Provider } from '@supabase/supabase-js';
 
 import { AuthError } from '@/app/auth/autherror';
 import { createClient } from '@/utils/supabase/server';

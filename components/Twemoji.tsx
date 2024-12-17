@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { EMOJI_SIZES, TwemojiProps } from '@/types/components';
+import { EMOJI_SIZES, type TwemojiProps } from '@/types/components';
 
 export default function Twemoji({
   name,

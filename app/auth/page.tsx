@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Provider } from '@supabase/supabase-js';
+import type { Provider } from '@supabase/supabase-js';
 import { TriangleAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FaGithub, FaTwitter } from 'react-icons/fa';
@@ -21,7 +21,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import useLocalStorage from '@/lib/hooks/use-local-storage';
-import { LastAuth } from '@/types/lastauth';
+import type { LastAuth } from '@/types/lastauth';
 import { toastOptions } from '@/utils/toast';
 
 const AuthScreen = () => {
@@ -81,6 +81,7 @@ const AuthScreen = () => {
     children: React.ReactNode;
   }) => (
     <button
+      type="button"
       className={`relative flex w-full items-center justify-center gap-2 rounded-md bg-background p-3 text-sm transition-colors hover:bg-accent disabled:opacity-50 ${pending ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} border border-border`}
       disabled={pending}
       onClick={() =>

@@ -10,7 +10,7 @@ import WalineComment from '@/components/WalineComment';
 import BlogMeta from '@/components/blog/BlogMeta';
 import BlogTags from '@/components/blog/BlogTags';
 import Reactions from '@/components/blog/PageReactions';
-import { BlogPostProps } from '@/types/bloglist';
+import type { BlogPostProps } from '@/types/bloglist';
 
 export default async function PostLayout({
   content,

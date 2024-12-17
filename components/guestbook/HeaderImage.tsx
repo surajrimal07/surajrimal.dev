@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Variants, motion } from 'framer-motion';
+import { type Variants, motion } from 'framer-motion';
 
 const pathAnimation: Variants = {
   hide: { pathLength: 0, opacity: 0 },
@@ -23,7 +23,7 @@ const floatAnimation: Variants = {
       delay: i * 0.2,
       duration: 3,
       ease: 'easeInOut',
-      repeat: Infinity,
+      repeat: Number.POSITIVE_INFINITY,
     },
   }),
 };
@@ -46,6 +46,7 @@ export default function GuestbookHeaderImage() {
             'hidden md:block'
           )}
         >
+          <title>Guestbook Header Image</title>
           {/* Book base */}
           <motion.path
             variants={pathAnimation}

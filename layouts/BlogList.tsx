@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import clsx from 'clsx';
 import { formatDate } from 'pliny/utils/formatDate';
@@ -11,7 +11,7 @@ import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
 import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import siteMetadata from '@/data/siteMetadata';
-import { PostCardProps } from '@/types/bloglist';
+import type { PostCardProps } from '@/types/bloglist';
 
 const PostCard: React.FC<PostCardProps> = ({
   path,
@@ -42,13 +42,15 @@ const PostCard: React.FC<PostCardProps> = ({
       >
         {hasThumbnail && (
           <div className="flex-shrink-0 p-0.5 sm:w-[100px] md:w-[200px]">
-            <Image
-              src={thumbnail!}
-              alt={`${title} thumbnail`}
-              width={200}
-              height={200}
-              className="h-40 w-full rounded-md object-cover sm:order-1"
-            />
+            {thumbnail && (
+              <Image
+                src={thumbnail}
+                alt={`${title} thumbnail`}
+                width={200}
+                height={200}
+                className="h-40 w-full rounded-md object-cover sm:order-1"
+              />
+            )}
           </div>
         )}
         <div
@@ -71,7 +73,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </h2>
           <div className={clsx('flex flex-wrap', !hasThumbnail && 'mt-2')}>
             {tags.map((tag) => (
-              <Tag key={tag} text={tag} highlight={tag === highlightTag!} />
+              <Tag key={tag} text={tag} highlight={tag === highlightTag} />
             ))}
           </div>
           <div

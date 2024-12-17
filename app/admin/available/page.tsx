@@ -40,12 +40,13 @@ import {
   saveAvailabilityData,
 } from '@/lib/availablity';
 import { useAvailabilityStore } from '@/lib/hooks/availablityState';
-import { AvailabilityData } from '@/types/availablity';
+import type { AvailabilityData } from '@/types/availablity';
 import { toastOptions } from '@/utils/toast';
 
 export default function AdminAvailabilityPage() {
   const [availableData, setAvailabilityData] =
     useState<AvailabilityData | null>(null);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [subscribers, setSubscribers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { fetchAvailabilityData } = useAvailabilityStore();
@@ -136,7 +137,7 @@ export default function AdminAvailabilityPage() {
                   onChange={(e) =>
                     setAvailabilityData((prev) => ({
                       ...prev!,
-                      hours_per_week: parseInt(e.target.value) || null,
+                      hours_per_week: Number.parseInt(e.target.value) || null,
                     }))
                   }
                   disabled={!availableData?.is_available}

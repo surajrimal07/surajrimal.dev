@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { GUESTBOOK_ENTRIES_LIMIT } from '@/constants/index';
 import useAuthStore from '@/lib/store/authStore';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';
@@ -177,10 +177,7 @@ export default function Guestbook() {
 
   const { userEntry, otherEntries } = separateEntries();
 
-  const renderEntry = (
-    entry: Tables<'guestbook'>,
-    isUserEntry: boolean = false
-  ) => (
+  const renderEntry = (entry: Tables<'guestbook'>, isUserEntry = false) => (
     <div
       key={entry.id}
       className={`rounded-lg ${isUserEntry ? 'bg-gray-800' : 'bg-gray-900'} p-4 transition-all`}
@@ -341,6 +338,7 @@ export default function Guestbook() {
           {isLoadingEntries ? (
             <div className="space-y-4">
               {[...Array(10)].map((_, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <div key={index} className="flex items-center space-x-4">
                   <Skeleton className="h-12 w-12 rounded-full" />
                   <div className="space-y-2">

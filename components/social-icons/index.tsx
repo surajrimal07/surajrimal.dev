@@ -56,7 +56,6 @@ import {
   SiJupyter,
   SiLangchain,
   SiMeilisearch,
-  SiMicrosoftazure,
   SiN8N,
   SiNginx,
   SiNumpy,
@@ -64,7 +63,6 @@ import {
   SiPlotly,
   SiPostgresql,
   SiPostman,
-  SiPowershell,
   SiPrisma,
   SiRedis,
   SiSanity,
@@ -75,7 +73,12 @@ import {
   SiTableau,
 } from 'react-icons/si';
 import { TbBrandMongodb, TbBrandStripe, TbBrandVite } from 'react-icons/tb';
-import { VscTerminalBash, VscVscodeInsiders } from 'react-icons/vsc';
+import { VscTerminalPowershell } from 'react-icons/vsc';
+import {
+  VscAzureDevops,
+  VscTerminalBash,
+  VscVscodeInsiders,
+} from 'react-icons/vsc';
 
 import Link from '@/components/Link';
 import { Button } from '@/components/ui/button';
@@ -160,8 +163,8 @@ const iconMap = {
   search: LuSearch,
   searchHeart: BsSearchHeartFill,
   vscode: VscVscodeInsiders,
-  azuredevops: SiMicrosoftazure,
-  powershell: SiPowershell,
+  azuredevops: VscAzureDevops,
+  powershell: VscTerminalPowershell,
 } as const;
 
 export type IconName = keyof typeof iconMap;

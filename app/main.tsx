@@ -1,5 +1,5 @@
-import { Blog } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import type { Blog } from 'contentlayer/generated';
+import type { CoreContent } from 'pliny/utils/contentlayer';
 import { formatDate } from 'pliny/utils/formatDate';
 import { FaFire } from 'react-icons/fa';
 import { IoLanguage } from 'react-icons/io5';

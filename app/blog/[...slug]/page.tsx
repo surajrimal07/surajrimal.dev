@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import type { Authors, Blog } from 'contentlayer/generated';
@@ -105,7 +105,7 @@ export default async function Page(props: {
   });
   const mainContent = coreContent(post);
   const jsonLd = post.structuredData;
-  jsonLd['author'] = authorDetails.map((author) => {
+  jsonLd.author = authorDetails.map((author) => {
     return {
       '@type': 'Person',
       name: author.name,
@@ -118,6 +118,7 @@ export default async function Page(props: {
     <>
       <script
         type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Layout

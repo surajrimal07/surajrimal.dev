@@ -17,7 +17,7 @@ function ContributionError({ reset }: { reset: () => void }) {
   );
 }
 
-export default function Error({
+export default function CustomError({
   reset,
 }: {
   error: Error & { digest?: string };

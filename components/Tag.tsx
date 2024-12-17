@@ -29,7 +29,7 @@ export default function Tag({ text, count, highlight }: TagProps) {
       </span>
       {count !== undefined && (
         <>
-          <div className="h-5 w-px bg-gray-700 transition-colors duration-200 ease-in-out group-hover:bg-white sm:h-7"></div>
+          <div className="h-5 w-px bg-gray-700 transition-colors duration-200 ease-in-out group-hover:bg-white sm:h-7" />
           <span className="bg-gray-700 bg-opacity-50 px-1.5 py-0.5 text-xs font-medium sm:px-2 sm:py-1 sm:text-sm">
             {count}
           </span>

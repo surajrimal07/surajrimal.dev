@@ -18,7 +18,7 @@ export const convertkitSubscribe = async (email: string) => {
 
   if (response.status >= 400) {
     return {
-      error: `There was an error subscribing to the list.`,
+      error: 'There was an error subscribing to the list.',
     };
   }
   return {

@@ -113,9 +113,7 @@ export default function AvailabilityPage() {
                     transition={{ delay: 0.4, duration: 0.5 }}
                   >
                     <Clock className="mr-1 h-4 w-4" />
-                    {
-                      availabilityData?.hours_per_week
-                    } hours/week
+                    {availabilityData?.hours_per_week} hours/week
                   </motion.div>
                 )}
             </motion.div>

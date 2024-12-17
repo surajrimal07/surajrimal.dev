@@ -1,5 +1,5 @@
 import { genPageMetadata } from 'app/seo';
-import { Authors, allAuthors } from 'contentlayer/generated';
+import { type Authors, allAuthors } from 'contentlayer/generated';
 import { MDXLayoutRenderer } from 'pliny/mdx-components';
 import { coreContent } from 'pliny/utils/contentlayer';
 

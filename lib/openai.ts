@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 
-import { AIMessage, AIService, AIServiceConfig } from '@/types/ai';
+import type { AIMessage, AIService, AIServiceConfig } from '@/types/ai';
 
 export class OpenAIService implements AIService {
   private client: OpenAI;

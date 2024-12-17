@@ -32,7 +32,7 @@ import { clearChat, saveChat } from '@/lib/chat';
 import useChatStore from '@/lib/hooks/chatState';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
-import { DatabaseChangePayload, Message } from '@/types/chat';
+import type { DatabaseChangePayload, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
@@ -57,9 +57,9 @@ MessageTime.displayName = 'MessageTime';
 
 const TimeSeparator = React.memo(({ time }: { time: string }) => (
   <div className="my-2 flex items-center justify-center">
-    <div className="h-px flex-grow bg-gray-500"></div>
+    <div className="h-px flex-grow bg-gray-500" />
     <span className="mx-2 text-xs text-gray-500">{time}</span>
-    <div className="h-px flex-grow bg-gray-500"></div>
+    <div className="h-px flex-grow bg-gray-500" />
   </div>
 ));
 TimeSeparator.displayName = 'TimeSeparator';
@@ -109,7 +109,7 @@ const Chatbox: React.FC = () => {
       .eq('email', email)
       .single();
 
-    if ((data && data.messages) || !error) {
+    if (data?.messages || !error) {
       setMessages(data.messages);
     } else {
       setMessages([
@@ -414,16 +414,16 @@ const Chatbox: React.FC = () => {
         '0 0 0 10px rgba(59, 130, 246, 0.1)',
         '0 0 0 20px rgba(59, 130, 246, 0)',
       ],
-      transition: { repeat: Infinity, duration: 1.5 },
+      transition: { repeat: Number.POSITIVE_INFINITY, duration: 1.5 },
     }),
     []
   );
 
   const LoadingDots = () => (
     <div className="flex items-center space-x-1 p-2">
-      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
-      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
-      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]" />
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]" />
+      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" />
     </div>
   );
 
@@ -541,65 +541,64 @@ const Chatbox: React.FC = () => {
           </Button>
         </div>
       );
-    } else {
-      return (
-        <motion.div
-          key="collapsed"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className="relative"
-        >
-          <motion.div
-            animate={motionRippleProps}
-            className="absolute inset-0 rounded-lg"
-          />
-
-          <div
-            className={clsx(
-              'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
-              {
-                'bg-green-800': isAuthorOnline,
-                'bg-primary-600': !isAuthorOnline,
-              }
-            )}
-          >
-            <Button
-              onClick={() => setIsCollapsed(false)}
-              className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
-            >
-              <div className="flex flex-col items-start">
-                <div className="flex items-center">
-                  <span className="font-semibold text-white">
-                    Chat with {siteMetadata.headerTitle}
-                  </span>
-                  {newMessage && (
-                    <Badge variant="neutral" className="ml-1 p-0 text-xs">
-                      New
-                    </Badge>
-                  )}
-                </div>
-
-                <span className="text-xs text-white opacity-80">
-                  Active {lastOnlineTimeAgo}
-                </span>
-              </div>
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-label="Disable the chat"
-              onClick={handleHide}
-              className="bg-transparent text-white hover:bg-white/20"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        </motion.div>
-      );
     }
+    return (
+      <motion.div
+        key="collapsed"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
+        className="relative"
+      >
+        <motion.div
+          animate={motionRippleProps}
+          className="absolute inset-0 rounded-lg"
+        />
+
+        <div
+          className={clsx(
+            'relative flex items-center justify-between rounded-lg px-0 py-2 shadow-lg transition-all duration-300 hover:shadow-xl',
+            {
+              'bg-green-800': isAuthorOnline,
+              'bg-primary-600': !isAuthorOnline,
+            }
+          )}
+        >
+          <Button
+            onClick={() => setIsCollapsed(false)}
+            className="h-auto w-40 bg-transparent p-0 hover:bg-transparent"
+          >
+            <div className="flex flex-col items-start">
+              <div className="flex items-center">
+                <span className="font-semibold text-white">
+                  Chat with {siteMetadata.headerTitle}
+                </span>
+                {newMessage && (
+                  <Badge variant="neutral" className="ml-1 p-0 text-xs">
+                    New
+                  </Badge>
+                )}
+              </div>
+
+              <span className="text-xs text-white opacity-80">
+                Active {lastOnlineTimeAgo}
+              </span>
+            </div>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-label="Disable the chat"
+            onClick={handleHide}
+            className="bg-transparent text-white hover:bg-white/20"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      </motion.div>
+    );
   }, [
     isAuthorOnline,
     setIsCollapsed,

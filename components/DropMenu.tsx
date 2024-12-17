@@ -59,7 +59,7 @@ interface DropdownMenuContentProps {
   isSuperadmin: boolean;
   isLoadingSuperadminStatus: boolean;
   handleSignOut: () => void;
-  router: any;
+  router: ReturnType<typeof useRouter>;
   chatEnabled: boolean;
   setChatEnabled: (enabled: boolean) => void;
   isLoading: boolean;
@@ -69,7 +69,11 @@ interface DropdownMenuContentProps {
   toggleSound: () => void;
 }
 interface MemoizedDropdownMenuTriggerProps {
-  memoizedMotionProps: any;
+  memoizedMotionProps: {
+    whileHover: { scale: number };
+    whileTap: { scale: number };
+    transition: { duration: number; ease: string };
+  };
   memoizedAvatar: React.ReactNode;
 }
 
@@ -123,6 +127,7 @@ const MemoizedDropdownMenuContent = memo(
             {isSuperadmin && !isLoadingSuperadminStatus && (
               <DropdownMenuItem asChild>
                 <button
+                  type="button"
                   onClick={() => router.push('/admin')}
                   className="flex w-full items-center"
                 >
@@ -133,6 +138,7 @@ const MemoizedDropdownMenuContent = memo(
             )}
             <DropdownMenuItem asChild>
               <button
+                type="button"
                 onClick={() => router.push('/profile')}
                 className="flex w-full items-center"
               >
@@ -143,7 +149,11 @@ const MemoizedDropdownMenuContent = memo(
           </>
         )}
         <DropdownMenuItem asChild>
-          <button onClick={handleSignOut} className="flex w-full items-center">
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="flex w-full items-center"
+          >
             <LogOut className="mr-2 h-4 w-4" />
             <span>{user ? 'Sign Out' : 'Sign In'}</span>
           </button>
@@ -366,9 +376,7 @@ const UserDropdownMenu = memo<UserDropdownMenuProps>(({ user }) => {
     }
   }, [user, signOut, currentPath, router]);
 
-  interface DropdownChangeHandler {
-    (open: boolean): void;
-  }
+  type DropdownChangeHandler = (open: boolean) => void;
 
   const handleDropdownChange: DropdownChangeHandler = useCallback(
     (open: boolean): void => {

@@ -17,8 +17,8 @@ import {
   getReactionCount,
   handleReaction,
 } from '@/lib/pageView';
-import { ReactionType } from '@/types/reaction';
-import { BlogShares } from '@/types/share';
+import type { ReactionType } from '@/types/reaction';
+import type { BlogShares } from '@/types/share';
 import { toastOptions } from '@/utils/toast';
 
 interface ReactionProps {

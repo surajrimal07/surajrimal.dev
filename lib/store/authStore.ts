@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
 import { cacheAndServeImage } from '@/utils/cacheImage';

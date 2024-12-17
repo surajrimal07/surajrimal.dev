@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Variants, motion } from 'framer-motion';
+import { type Variants, motion } from 'framer-motion';
 
 const pathAnimation: Variants = {
   hide: { pathLength: 0, opacity: 0 },
@@ -62,6 +62,7 @@ export default function JourneyHeaderImage() {
             'hidden md:block'
           )}
         >
+          <title>Journey Header Image</title>
           <motion.path
             variants={pathAnimation}
             custom={1}

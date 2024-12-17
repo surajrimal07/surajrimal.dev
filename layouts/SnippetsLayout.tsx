@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/pagination';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { snippetSearchPlaceholders } from '@/data/snippetSearchData';
-import { PaginationProps, SnippetsLayoutProps } from '@/types/bloglist';
+import type { PaginationProps, SnippetsLayoutProps } from '@/types/bloglist';
 
 function Paginations({ totalPages, currentPage }: PaginationProps) {
   const pathname = useCurrentPath();
@@ -163,8 +163,4 @@ export default function SnippetsLayout({
       )}
     </div>
   );
-}
-
-{
-  /* <Separator className="mb-3 mt-3" /> */
 }

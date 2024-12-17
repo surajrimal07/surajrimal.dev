@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Authors, allAuthors } from 'contentlayer/generated';
+import { type Authors, allAuthors } from 'contentlayer/generated';
 import { ExternalLink, Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';

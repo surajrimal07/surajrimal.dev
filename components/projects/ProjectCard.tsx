@@ -71,8 +71,8 @@ async function ProjectCard({ project }: ProjectCardProps) {
             {enhancedDescription || repository?.description}
           </p>
 
-          {repository ? (
-            <GithubRepo repo={repository} projectUrl={url!} />
+          {repository && url ? (
+            <GithubRepo repo={repository} projectUrl={url} />
           ) : (
             url && (
               <Link

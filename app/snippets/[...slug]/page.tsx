@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 
 import {
-  Authors,
-  Snippets,
+  type Authors,
+  type Snippets,
   allAuthors,
   allSnippets,
 } from 'contentlayer/generated';

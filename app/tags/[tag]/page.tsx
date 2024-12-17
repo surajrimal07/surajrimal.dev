@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { genPageMetadata } from 'app/seo';
@@ -45,9 +45,7 @@ export default async function TagPage(props: {
 
   const filteredPosts = allCoreContent(
     sortPosts(
-      allBlogs.filter(
-        (post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)
-      )
+      allBlogs.filter((post) => post.tags?.map((t) => slug(t)).includes(tag))
     )
   );
 

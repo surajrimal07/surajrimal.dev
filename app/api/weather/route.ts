@@ -4,7 +4,10 @@ const DEV_IP = '110.44.115.214';
 
 const locationAPI = process.env.IP2LOCATION_API_KEY;
 
-const weatherAPI = process.env.WEATHER_API_KEY!;
+const weatherAPI = process.env.WEATHER_API_KEY;
+if (!weatherAPI) {
+  throw new Error('WEATHER_API_KEY is not defined');
+}
 
 export const dynamic = 'force-dynamic';
 

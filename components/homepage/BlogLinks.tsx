@@ -1,7 +1,7 @@
 import Link from '@/components/Link';
 import Twemoji from '@/components/Twemoji';
 import { HomepageLinks } from '@/data/homepageLinks';
-import { HomepageLink } from '@/types/components';
+import type { HomepageLink } from '@/types/components';
 
 const BlogLinks = () => {
   const renderItem = (item: HomepageLink, index: number) => {

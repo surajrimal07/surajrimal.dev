@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import OpenAI from 'openai';
 import { z } from 'zod';
@@ -16,8 +16,8 @@ const requestSchema = z.object({
 
 // Initialize OpenAI with Mistral config
 const openAIClient = new OpenAI({
-  baseURL: process.env.OPENAI_BASE_URL!,
-  apiKey: process.env.OPENAI_API_KEY!,
+  baseURL: process.env.OPENAI_BASE_URL || '',
+  apiKey: process.env.OPENAI_API_KEY || '',
   defaultHeaders: {
     'Content-Type': 'application/json',
   },

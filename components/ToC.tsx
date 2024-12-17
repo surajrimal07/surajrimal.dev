@@ -8,7 +8,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
   const modifiedToc = toc.map((item) => {
     const parts = item.url.split('-');
     const lastPart = parts[parts.length - 1];
-    if (!isNaN(Number(lastPart))) {
+    if (!Number.isNaN(Number(lastPart))) {
       // If the last part is a number, remove it
       parts.pop();
     }
@@ -18,7 +18,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
     };
   });
   const navRef = useRef<HTMLDivElement>(null);
-  const activeIdRef = useRef(null);
+  const activeIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -27,7 +27,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
     };
     const observer = new IntersectionObserver((entries) => {
       let firstActiveId: string | null = null;
-      entries.forEach((entry) => {
+      for (const entry of entries) {
         const firstElement = document.querySelector(`#${firstActiveId}`);
 
         if (entry.intersectionRatio > 0) {
@@ -40,7 +40,7 @@ export function ToC({ toc }: { toc: TOC[] }) {
             firstActiveId = entry.target.getAttribute('id');
           }
         }
-      });
+      }
 
       if (firstActiveId && activeIdRef.current !== firstActiveId) {
         if (activeIdRef.current && navRef.current) {
@@ -66,12 +66,12 @@ export function ToC({ toc }: { toc: TOC[] }) {
     }, observerOptions);
 
     // Track only the headers that are in the ToC
-    modifiedToc.forEach((item) => {
+    for (const item of modifiedToc) {
       const header = document.querySelector(item.url);
       if (header) {
         observer.observe(header);
       }
-    });
+    }
 
     // Cleanup the observer when the component is unmounted
     return () => observer.disconnect();

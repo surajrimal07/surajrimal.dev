@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import tagData from 'app/tag-data.json';
-import { Blog } from 'contentlayer/generated';
+import type { Blog } from 'contentlayer/generated';
 import { slug } from 'github-slugger';
 import debounce from 'lodash.debounce';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import type { CoreContent } from 'pliny/utils/contentlayer';
 
 import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
@@ -23,7 +24,7 @@ import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-van
 import { blogSearchPlaceholders } from '@/data/blogSearchData';
 import PostCard from '@/layouts/BlogList';
 import { getBlogShares, getPageViews } from '@/lib/pageView';
-import { ListLayoutProps, PaginationProps } from '@/types/bloglist';
+import type { ListLayoutProps, PaginationProps } from '@/types/bloglist';
 
 function Paginations({ totalPages, currentPage }: PaginationProps) {
   const pathname = useCurrentPath();
@@ -139,9 +140,9 @@ export default function ListLayoutWithTags({
   );
 
   useEffect(() => {
-    displayPosts.forEach((post) => {
+    for (const post of displayPosts) {
       fetchCounts(post.path);
-    });
+    }
     // Cleanup the debounced function on unmount
     return () => {
       debouncedFetch.cancel();
@@ -186,7 +187,7 @@ export default function ListLayoutWithTags({
               </h3>
             ) : (
               <Link
-                href={`/blog`}
+                href={'/blog'}
                 className="font-bold uppercase text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
               >
                 All Posts

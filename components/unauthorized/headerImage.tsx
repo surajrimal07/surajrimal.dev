@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Variants, motion } from 'framer-motion';
+import { type Variants, motion } from 'framer-motion';
 
 const pathAnimation: Variants = {
   hide: { pathLength: 0, opacity: 0 },
@@ -47,6 +47,7 @@ export default function UnauthorizedImage() {
             'hidden md:block'
           )}
         >
+          <title>Unauthorized Access Image</title>
           {/* Circle for no entry sign */}
           <motion.circle
             variants={pathAnimation}

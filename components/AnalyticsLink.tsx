@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import { motion } from 'framer-motion';
-import { LuLineChart } from 'react-icons/lu';
+import { BiLineChart } from 'react-icons/bi';
 
 import siteMetadata from '@/data/siteMetadata';
 import usePlaySound from '@/lib/hooks/PlaySound';
@@ -36,7 +36,7 @@ const AnalyticsLink = memo(() => {
         whileHover={{ scale: 1.2 }}
         transition={{ duration: 0.2, ease: 'easeIn' }}
       >
-        <LuLineChart className="h-4 w-4 text-current" />
+        <BiLineChart className="h-4 w-4 text-current" />
         <span className="sr-only">{'Umami Analytics'}</span>
       </motion.button>
     </div>

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { updateBlogShares } from '@/lib/pageView';
-import { BlogShares, ShareType } from '@/types/share';
+import type { BlogShares, ShareType } from '@/types/share';
 import { toastOptions } from '@/utils/toast';
 
 interface ShareMenuProps {

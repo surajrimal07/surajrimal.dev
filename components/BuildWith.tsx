@@ -51,7 +51,7 @@ const BuildWith = () => (
         className="h-5 w-5"
       />
     </div>
-    <div>{` • `}</div>
+    <div>{' • '}</div>
     <CustomLink
       href={siteMetadata.siteRepo}
       className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
@@ -61,7 +61,7 @@ const BuildWith = () => (
         <GoRepoForked size={12} />
       </span>
     </CustomLink>
-    <div>{` • `}</div>
+    <div>{' • '}</div>
     <CustomLink
       href={`${siteMetadata.siteUrl}/feed`}
       className="text-gray-500 underline underline-offset-4 dark:text-gray-300"
@@ -71,7 +71,7 @@ const BuildWith = () => (
         <RiRssLine size={13} className="ml-0.5" />
       </span>
     </CustomLink>
-    <div>{` • `}</div>
+    <div>{' • '}</div>
     <Link
       href="https://stats.surajrimal.dev/status/servers"
       target="_blank"

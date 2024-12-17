@@ -31,7 +31,7 @@ export default async function Page() {
                 <Link
                   href={`/tags/${slug(t)}`}
                   aria-label={`View posts tagged ${t}`}
-                ></Link>
+                />
               </div>
             );
           })}

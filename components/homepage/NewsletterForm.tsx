@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -34,7 +35,11 @@ const NewsletterForm = () => {
   }, []);
 
   const handleUnsubscribe = async () => {
-    const response = await convertkitUnsubscribe(subscribedEmail!);
+    if (!subscribedEmail) {
+      toast.error('No email to unsubscribe', toastOptions);
+      return;
+    }
+    const response = await convertkitUnsubscribe(subscribedEmail);
 
     if (response.error) {
       toast.error(response.error, toastOptions);
@@ -72,9 +77,13 @@ const NewsletterForm = () => {
         return;
       }
 
-      setMessage(apiMessage!);
-      toast.success(apiMessage!, toastOptions);
-      inputEl.current!.value = '';
+      if (apiMessage) {
+        setMessage(apiMessage);
+        toast.success(apiMessage, toastOptions);
+      }
+      if (inputEl.current) {
+        inputEl.current.value = '';
+      }
       setError(false);
       setSubscribedEmail(validatedInput.email);
     } catch (err) {

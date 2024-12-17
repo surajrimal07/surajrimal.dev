@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 
 import { localCache } from '@/lib/cache';
 

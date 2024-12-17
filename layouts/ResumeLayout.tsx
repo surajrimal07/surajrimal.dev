@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import { ToC } from '@/components/ToC';

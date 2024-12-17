@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Variants, motion } from 'framer-motion';
+import { type Variants, motion } from 'framer-motion';
 
 const animation: Variants = {
   hide: { pathLength: 0, opacity: 0 },
@@ -33,6 +33,7 @@ export default function SnippetsHeaderImage() {
             'hidden md:block'
           )}
         >
+          <title>Snippet Header Image</title>
           <motion.path
             variants={animation}
             custom={1}

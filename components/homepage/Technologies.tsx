@@ -15,14 +15,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tooltip from '@/components/ui/tooltip';
 import { skillsData } from '@/data/skills';
-import { type Skill } from '@/types/skills';
+import type { Skill } from '@/types/skills';
 
 const IconsBundle = lazy(() => import('@/components/social-icons'));
 
 const filterSkillsData = (skillsData: Skill[]) => {
   const acc: Record<string, Skill[]> = { 'Most Used': [] };
 
-  skillsData.forEach((skill) => {
+  for (const skill of skillsData) {
     if (!skill.hidden) {
       acc[skill.category] = acc[skill.category] || [];
       acc[skill.category].push(skill);
@@ -31,7 +31,7 @@ const filterSkillsData = (skillsData: Skill[]) => {
         acc['Most Used'].push(skill);
       }
     }
-  });
+  }
 
   return acc;
 };
@@ -103,7 +103,6 @@ export function Technologies() {
                     <Tooltip key={skill.id} content={skill.name}>
                       <Button
                         aria-label={skill.name}
-                        role="button"
                         type="button"
                         className={`relative h-14 p-2 sm:p-2 ${skill.level === 'learning' ? 'border border-red-300' : ''}`}
                         variant="outline"
@@ -117,7 +116,6 @@ export function Technologies() {
                         </Suspense>
                         {skill.level === 'advanced' && (
                           <span
-                            role="status"
                             aria-label="Advanced skill"
                             className="absolute -right-1 -top-1 scale-75 text-xs"
                           >
@@ -132,7 +130,7 @@ export function Technologies() {
               {category !== 'Most Used' && (
                 <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
                   <div className="flex items-center text-xs text-muted-foreground">
-                    <span className="mx-1 inline-block h-3 w-3 rounded-full bg-red-300"></span>
+                    <span className="mx-1 inline-block h-3 w-3 rounded-full bg-red-300" />
                     <span>Currently Learning</span>
                   </div>
                 </CardFooter>

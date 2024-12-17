@@ -8,7 +8,7 @@ import AnimatedCounter from '@/components/animata/text/counter';
 import PageView from '@/components/homepage/PageView';
 import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
 import { getBlogShares } from '@/lib/pageView';
-import { BlogMetaProps } from '@/types/components';
+import type { BlogMetaProps } from '@/types/components';
 import { timeAgo } from '@/utils/timeAgo';
 
 const BlogMeta = async ({

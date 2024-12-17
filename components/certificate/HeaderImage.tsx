@@ -28,6 +28,7 @@ const UsageHeaderImage = () => {
           initial="hidden"
           animate="visible"
         >
+          <title>Decorative SVG Header Image</title>
           <motion.path
             variants={pathVariants}
             custom={0}

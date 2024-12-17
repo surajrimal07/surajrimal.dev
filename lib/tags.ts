@@ -1,7 +1,7 @@
 //not used as of now
 import tagData from 'app/tag-data.json';
 
-import { PopularTag } from '@/types/tag';
+import type { PopularTag } from '@/types/tag';
 import { supabase } from '@/utils/supabase/client';
 
 export const getAllTags = async () => {

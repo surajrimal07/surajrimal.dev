@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { readFile, unlink, writeFile } from 'fs/promises';
 import matter from 'gray-matter';
-import path from 'path';
+import { readFile, unlink, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 
 const CONTENT_TYPES = {
   default: 'default',

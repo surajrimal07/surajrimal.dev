@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Blog, Snippets } from 'contentlayer/generated';
+import type { Blog, Snippets } from 'contentlayer/generated';
 import { KBarSearchProvider } from 'pliny/search/KBar';
 
 export const SearchProvider = ({ children }) => {
@@ -116,7 +116,7 @@ export const SearchProvider = ({ children }) => {
             keywords: post.body,
             section: 'Blog',
             subtitle: post.tags.join(', '),
-            perform: () => router.push('/' + post.path),
+            perform: () => router.push(`/${post.path}`),
           }));
 
           const snippetResults = json.map((snippet: Snippets) => ({
@@ -125,7 +125,7 @@ export const SearchProvider = ({ children }) => {
             keywords: snippet.body,
             section: 'Blog and Snippets',
             subtitle: snippet.tags.join(', '),
-            perform: () => router.push('/' + snippet.path),
+            perform: () => router.push(`/${snippet.path}`),
           }));
 
           return [...blogResults, ...snippetResults];

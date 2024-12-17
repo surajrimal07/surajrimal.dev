@@ -55,6 +55,7 @@ const MobileNav = memo(() => {
   return (
     <>
       <button
+        type="button"
         aria-label="Toggle Menu"
         onClick={onToggleNav}
         className="sm:hidden"
@@ -64,7 +65,9 @@ const MobileNav = memo(() => {
           viewBox="0 0 20 20"
           fill="currentColor"
           className="h-8 w-8 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+          aria-labelledby="toggleMenuTitle"
         >
+          <title id="toggleMenuTitle">Toggle Navigation Menu</title>
           <path
             fillRule="evenodd"
             d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
@@ -127,6 +130,7 @@ const MobileNav = memo(() => {
               </div>
 
               <button
+                type="button"
                 className="fixed right-4 top-7 z-80 h-16 w-16 p-4 text-gray-100"
                 aria-label="Toggle Menu"
                 onClick={onToggleNav}
@@ -135,7 +139,9 @@ const MobileNav = memo(() => {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
+                  aria-labelledby="closeMenuTitle"
                 >
+                  <title id="closeMenuTitle">Close Navigation Menu</title>
                   <path
                     fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"

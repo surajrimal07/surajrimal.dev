@@ -10,7 +10,7 @@ import { SiLeetcode } from 'react-icons/si';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
 
 import { getJourneyEvents } from '@/lib/journey';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 const iconMap: { [key: string]: JSX.Element } = {
   FaBlackTie: <FaBlackTie />,

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import siteMetadata from '@/data/siteMetadata';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { toastOptions } from '@/utils/toast';
 
 export default function ContactPage() {

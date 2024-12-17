@@ -28,6 +28,7 @@ const UsageHeaderImage = () => {
           initial="hidden"
           animate="visible"
         >
+          <title>Animated Header Image</title>
           {/* Newspaper Background */}
           <motion.path
             variants={pathVariants}

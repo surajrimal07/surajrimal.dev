@@ -9,7 +9,7 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 import SectionContainer from '@/components/SectionContainer';
 import WalineComment from '@/components/WalineComment';
 import Reactions from '@/components/blog/PageReactions';
-import { BlogPostProps } from '@/types/bloglist';
+import type { BlogPostProps } from '@/types/bloglist';
 
 export default async function PostMinimal({
   content,
@@ -66,7 +66,7 @@ export default async function PostMinimal({
           </div>
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-              {prev && prev.path && (
+              {prev?.path && (
                 <div className="pt-4 xl:pt-8">
                   <Link
                     href={`/${prev.path}`}
@@ -77,7 +77,7 @@ export default async function PostMinimal({
                   </Link>
                 </div>
               )}
-              {next && next.path && (
+              {next?.path && (
                 <div className="pt-4 xl:pt-8">
                   <Link
                     href={`/${next.path}`}

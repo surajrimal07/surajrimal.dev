@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getCertifications } from '@/lib/certification';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export default async function CertificationsPage() {
   const certifications =

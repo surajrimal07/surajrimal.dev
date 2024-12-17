@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { readFile, unlink, writeFile } from 'fs/promises';
 import matter from 'gray-matter';
-import path from 'path';
+import { readFile, unlink, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 
 const CONTENT_TYPES = {
   snippet: 'snippets',
@@ -42,18 +42,18 @@ async function handleRequest(
     );
   }
 
-  if (method !== 'POST' && !id) {
+  if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
 
   try {
     switch (method) {
       case 'GET':
-        return await handleGet(contentType, id!);
+        return await handleGet(contentType, id);
       case 'POST':
         return await handlePost(req, contentType, id);
       case 'DELETE':
-        return await handleDelete(contentType, id!);
+        return await handleDelete(contentType, id);
       default:
         return NextResponse.json(
           { error: 'Method not allowed' },

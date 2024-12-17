@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LOGO_IMAGE_PATH } from '@/constants';
-import { DBChatMessage, Message } from '@/types/chat';
+import type { DBChatMessage, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { timeAgo } from '@/utils/timeAgo';
@@ -110,7 +110,7 @@ export default function AdminChat() {
       scrollToBottom();
     }, 100);
     return () => clearTimeout(timer);
-  }, [conversations, activeEmail, scrollToBottom]);
+  }, [scrollToBottom]);
 
   const handleSendReply = async () => {
     if (activeEmail && replyMessage.trim()) {

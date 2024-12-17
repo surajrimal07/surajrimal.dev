@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Authors, allAuthors } from 'contentlayer/generated';
+import { type Authors, allAuthors } from 'contentlayer/generated';
 import { coreContent } from 'pliny/utils/contentlayer';
 import { FaRegStar, FaUserFriends, FaUserPlus } from 'react-icons/fa';
 import {
@@ -12,8 +12,8 @@ import IconsBundle from '@/components/social-icons';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 import { useRepoData, useUserData } from '@/lib/github';
-import { GithubStats, LanguageStats } from '@/types/about';
-import { Repository, UserData } from '@/types/github';
+import type { GithubStats, LanguageStats } from '@/types/about';
+import type { Repository, UserData } from '@/types/github';
 import { timeAgo } from '@/utils/timeAgo';
 
 export default async function ProfileCard() {
@@ -50,11 +50,11 @@ export default async function ProfileCard() {
     };
 
     const languageCount: { [key: string]: number } = {};
-    repos.forEach((repo) => {
+    for (const repo of repos) {
       if (repo.language) {
         languageCount[repo.language] = (languageCount[repo.language] || 0) + 1;
       }
-    });
+    }
 
     const totalRepos = repos.length;
     languagePercentages = Object.fromEntries(
@@ -67,8 +67,8 @@ export default async function ProfileCard() {
     languages = Object.keys(languagePercentages)
       .sort(
         (a, b) =>
-          parseFloat(languagePercentages[b]) -
-          parseFloat(languagePercentages[a])
+          Number.parseFloat(languagePercentages[b]) -
+          Number.parseFloat(languagePercentages[a])
       )
       .slice(0, 6);
   };
@@ -88,7 +88,7 @@ export default async function ProfileCard() {
             <div
               className="h-2 rounded-full bg-red-500"
               style={{ width: languagePercentages[lang] }}
-            ></div>
+            />
           </div>
         </div>
       ))}

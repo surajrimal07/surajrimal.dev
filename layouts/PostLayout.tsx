@@ -11,7 +11,7 @@ import WalineComment from '@/components/WalineComment';
 import BlogMeta from '@/components/blog/BlogMeta';
 import Reactions from '@/components/blog/PageReactions';
 import siteMetadata from '@/data/siteMetadata';
-import { BlogPostProps } from '@/types/bloglist';
+import type { BlogPostProps } from '@/types/bloglist';
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -147,7 +147,7 @@ export default async function PostLayout({
                 )}
                 {(next || prev) && (
                   <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && prev.path && (
+                    {prev?.path && (
                       <div>
                         <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                           Previous Article
@@ -157,7 +157,7 @@ export default async function PostLayout({
                         </div>
                       </div>
                     )}
-                    {next && next.path && (
+                    {next?.path && (
                       <div>
                         <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                           Next Article

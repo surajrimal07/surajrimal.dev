@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 
 import { Copy, CopyCheck } from 'lucide-react';
 import toast from 'react-hot-toast';

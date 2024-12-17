@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 import type { Blog } from 'contentlayer/generated';
-import { CoreContent } from 'pliny/utils/contentlayer';
+import type { CoreContent } from 'pliny/utils/contentlayer';
 
 import { useCurrentPath } from '@/components/PathProvider';
 import {
@@ -123,9 +124,9 @@ export default function ListLayout({
       setShareCounts((prev) => new Map(prev).set(slug, total));
     };
 
-    displayPosts.forEach((post) => {
+    for (const post of displayPosts) {
       fetchCounts(post.path);
-    });
+    }
   }, [displayPosts]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -2,8 +2,8 @@
 
 import { MAX_SHARES_PER_SESSION } from '@/constants';
 import { localCache } from '@/lib/cache';
-import { ReactionType } from '@/types/reaction';
-import { BlogShares, ShareType } from '@/types/share';
+import type { ReactionType } from '@/types/reaction';
+import type { BlogShares, ShareType } from '@/types/share';
 import redis from '@/utils/redis';
 import { supabase } from '@/utils/supabase/client';
 
@@ -29,7 +29,7 @@ export async function getPageViews(
       return cachedViews;
     }
 
-    const views = parseInt((await redis.get(slug)) as string) || 0;
+    const views = Number.parseInt((await redis.get(slug)) as string) || 0;
     localCache.set(cacheKey, views);
     return views;
   } catch (error) {
@@ -54,9 +54,9 @@ export async function getBlogShares(slug: string): Promise<BlogShares> {
   const shares = await redis.hgetall(sharesKey);
 
   const updatedShares: BlogShares = {
-    twittershare: parseInt(shares?.twittershare as string) || 0,
-    facebookshare: parseInt(shares?.facebookshare as string) || 0,
-    clipboardshare: parseInt(shares?.clipboardshare as string) || 0,
+    twittershare: Number.parseInt(shares?.twittershare as string) || 0,
+    facebookshare: Number.parseInt(shares?.facebookshare as string) || 0,
+    clipboardshare: Number.parseInt(shares?.clipboardshare as string) || 0,
     total: 0,
   };
   updatedShares.total =
@@ -90,7 +90,7 @@ async function updatePopularPostsCache(slug: string, newViews: number) {
 
 export async function getPopularPosts(
   slugs: string[],
-  limit: number = 5
+  limit = 5
 ): Promise<Array<{ slug: string; views: number }>> {
   try {
     const cachedPopularPosts = localCache.get(POPULAR_POSTS_CACHE_KEY) as
@@ -103,9 +103,9 @@ export async function getPopularPosts(
     const modifiedSlugs = slugs.map((slug) => `/blog/${slug}`);
     const pipeline = redis.pipeline();
 
-    modifiedSlugs.forEach((slug) => {
+    for (const slug of modifiedSlugs) {
       pipeline.get(slug);
-    });
+    }
 
     const results = await pipeline.exec();
     if (!results) return [];
@@ -144,7 +144,7 @@ export async function updateBlogShares(
 
   try {
     if (cachedIpCount === undefined) {
-      const currentCount = parseInt((await redis.get(ipKey)) || '0');
+      const currentCount = Number.parseInt((await redis.get(ipKey)) || '0');
       if (currentCount >= MAX_SHARES_PER_SESSION) {
         throw new Error('Max shares limit reached');
       }
@@ -163,9 +163,10 @@ export async function updateBlogShares(
     const finalShares = results[results.length - 1] as Record<string, string>;
 
     const updatedShares: BlogShares = {
-      twittershare: parseInt(finalShares?.twittershare as string) || 0,
-      facebookshare: parseInt(finalShares?.facebookshare as string) || 0,
-      clipboardshare: parseInt(finalShares?.clipboardshare as string) || 0,
+      twittershare: Number.parseInt(finalShares?.twittershare as string) || 0,
+      facebookshare: Number.parseInt(finalShares?.facebookshare as string) || 0,
+      clipboardshare:
+        Number.parseInt(finalShares?.clipboardshare as string) || 0,
       total: 0,
     };
     updatedShares.total =
@@ -279,12 +280,12 @@ export async function getReactionCount(slug: string) {
     VOMIT: 0,
   };
 
-  data.forEach((reaction) => {
+  for (const reaction of data) {
     const reactionType = reaction.reaction as ReactionType;
     if (reactionCounts[reactionType] !== undefined) {
       reactionCounts[reactionType] += 1;
     }
-  });
+  }
 
   localCache.set(reactionCacheKey, reactionCounts);
 

@@ -81,13 +81,17 @@ export default function ExtensionPage() {
           <div className="rounded-lg bg-indigo-50 p-6 dark:bg-gray-800">
             <ul className="space-y-4">
               {extensionPrivacyFeatures.map((feature, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <li key={index} className="flex items-start">
                   <svg
                     className="mt-0.5 h-6 w-6 text-green-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-label="Checkmark"
+                    role="img"
                   >
+                    <title>Checkmark</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -134,6 +138,7 @@ export default function ExtensionPage() {
           <div className="mx-auto max-w-3xl">
             {extensionFAQS.map((faq, index) => (
               <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={index}
                 className="mb-6 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800"
               >

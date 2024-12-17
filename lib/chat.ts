@@ -1,4 +1,4 @@
-import { Message } from '@/types/chat';
+import type { Message } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 
 type DatabaseMessage = {
@@ -37,7 +37,8 @@ export async function saveChat(
       console.error('Error inserting new chat:', insertError);
     }
     return;
-  } else if (fetchError) {
+  }
+  if (fetchError) {
     console.error('Error fetching conversation:', fetchError);
     return;
   }

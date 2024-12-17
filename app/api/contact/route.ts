@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import { MAX_SUBMISSIONS_PER_SESSION } from '@/constants/index';
 import { getSessionId } from '@/lib/session';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     ]);
 
     if (error) {
-      throw new Error('Failed to submit the form: ' + error.message);
+      throw new Error(`Failed to submit the form: ${error.message}`);
     }
 
     return NextResponse.json({ success: true });
@@ -68,7 +68,7 @@ export async function GET() {
       .order('created_at', { ascending: false });
 
     if (error) {
-      throw new Error('Failed to fetch contacts: ' + error.message);
+      throw new Error(`Failed to fetch contacts: ${error.message}`);
     }
 
     return NextResponse.json(data);
@@ -102,7 +102,7 @@ export async function PUT(req: NextRequest) {
       .eq('id', id);
 
     if (error) {
-      throw new Error('Failed to update the contact: ' + error.message);
+      throw new Error(`Failed to update the contact: ${error.message}`);
     }
 
     return NextResponse.json({ success: true });
@@ -128,7 +128,7 @@ export async function DELETE(req: NextRequest) {
     const { error } = await supabase.from('contacts').delete().eq('id', id);
 
     if (error) {
-      throw new Error('Failed to delete the contact: ' + error.message);
+      throw new Error(`Failed to delete the contact: ${error.message}`);
     }
 
     return NextResponse.json({ success: true });
