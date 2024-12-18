@@ -1,6 +1,11 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "Suraj's Blog",
+  "short_name": "Suraj's Blog",
+  "description": "My personal blog where I share my knowledge and experiences",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ef4444",
   "icons": [
     {
       "src": "/static/favicons/android-chrome-192x192.png",
@@ -13,7 +18,12 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "screenshots": [
+    {
+      "src": "/static/images/screenshot.png",
+      "type": "image/png",
+      "sizes": "1080x1920",
+      "form_factor": "narrow"
+    }
+  ]
 }

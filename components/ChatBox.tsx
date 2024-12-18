@@ -521,14 +521,17 @@ const Chatbox: React.FC = () => {
       return (
         <div key="collapsed-icon" className="relative">
           <Button
-            className={`h-12 w-12 rounded-full p-0 ${
+            className={`h-11 w-11 rounded-full p-0 ${
               isAuthorOnline ? 'bg-green-500' : 'bg-red-500'
             }`}
             onClick={() => {
               setIsCollapsed(false);
             }}
           >
-            <MessageCircle className="h-6 w-6 text-white" />
+            <MessageCircle className="h-5 w-5 text-white" />
+            {newMessage && (
+              <div className="absolute -right-1 -top-0 h-2 w-2 animate-pulse rounded-full bg-red-500 shadow-lg shadow-red-500/50 ring-[3px] ring-white dark:ring-black" />
+            )}
           </Button>
         </div>
       );
@@ -610,10 +613,10 @@ const Chatbox: React.FC = () => {
           <motion.div
             key="expanded"
             {...motionExpandedProps}
-            className="sm:max-w-70 flex h-[32rem] w-96 flex-col overflow-hidden rounded-lg border border-gray-200 bg-black shadow-2xl"
+            className="flex h-[60vh] w-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-black shadow-2xl sm:h-[32rem] sm:w-96 sm:max-w-[70vw]"
           >
             <div
-              className={clsx('flex items-center justify-between p-2', {
+              className={clsx('flex items-center justify-between p-1.5', {
                 'bg-green-800': isAuthorOnline,
                 'bg-primary-600': !isAuthorOnline,
               })}

@@ -10,7 +10,9 @@ const CustomLink = ({
   const isAnchorLink = href?.startsWith('#');
 
   if (isInternalLink) {
-    return <Link className="break-words" href={href} {...rest} />;
+    return (
+      <Link className="break-words" prefetch={true} href={href} {...rest} />
+    );
   }
 
   if (isAnchorLink) {

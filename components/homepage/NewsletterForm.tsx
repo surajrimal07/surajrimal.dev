@@ -127,7 +127,7 @@ const NewsletterForm = () => {
                 ref={inputEl}
                 required
                 autoComplete="email"
-                className="w-72 rounded-md px-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-600 dark:bg-black"
+                className="w-full rounded-md px-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-600 dark:bg-black sm:w-72"
                 id="email-input"
                 name="email"
                 placeholder="Enter your email"

@@ -33,7 +33,6 @@ const ConsoleLabrador = dynamic(
 const VercelAnalytics = dynamic(() => import('@/components/VercelAnalytics'));
 
 export const fetchCache = 'default-cache';
-//export const dynamic = 'auto';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -48,6 +47,12 @@ export const metadata: Metadata = {
     template: `%s | ${siteMetadata.title}`,
   },
   description: siteMetadata.description,
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: siteMetadata.title,
+  },
   openGraph: {
     title: siteMetadata.title,
     description: siteMetadata.description,
@@ -57,6 +62,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+
   alternates: {
     canonical: './',
     types: {
@@ -76,8 +82,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: siteMetadata.title,
-    card: 'summary_large_image',
+    card: 'summary',
     images: [siteMetadata.socialBanner],
+    description: siteMetadata.description,
   },
 };
 
@@ -134,14 +141,15 @@ export default function RootLayout({
       />
 
       <body className="pl-[calc(100vw-100%)] antialiased">
-        <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
-          <div className="absolute inset-0 bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50" />
-        </div>
-        <ConsoleLabrador />
-        <NextTopLoader color="#ef4444" height={1} showSpinner={false} />
-
-        <Toaster position="top-right" reverseOrder={false} />
         <ThemeProviders>
+          <div className="fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#00000009_1px,transparent_1px)] [background-size:20px_20px] dark:bg-black dark:bg-[radial-gradient(#ffffff09_1px,transparent_1px)]">
+            <div className="absolute inset-0  bg-white/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black/50" />
+          </div>
+          <ConsoleLabrador />
+          <NextTopLoader color="#ef4444" height={1} showSpinner={false} />
+
+          <Toaster position="top-right" reverseOrder={false} />
+
           <PathProvider>
             <VercelAnalytics />
             <Analytics

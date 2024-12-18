@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { withContentlayer } = require('next-contentlayer2');
+import withPWAInit from '@ducanh2912/next-pwa';
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -49,14 +50,43 @@ const securityHeaders = [
 ];
 
 const output = process.env.EXPORT ? 'export' : undefined;
-const basePath = process.env.BASE_PATH || undefined;
+const basePath = process.env.BASE_PATH ? process.env.BASE_PATH : '';
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined;
 
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = () => {
-  const plugins = [withContentlayer, withBundleAnalyzer];
+  const plugins = [
+    withContentlayer,
+    withBundleAnalyzer,
+    withPWAInit({
+      dest: 'public',
+      register: true,
+      cacheOnFrontEndNav: true,
+      cacheStartUrl: true,
+      dynamicStartUrl: true,
+      aggressiveFrontEndNavCaching: true,
+      reloadOnOnline: true,
+      disable: process.env.NODE_ENV === 'development',
+      workboxOptions: {
+        disableDevLogs: true,
+        runtimeCaching: [
+          {
+            urlPattern: '/',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'start-url',
+              expiration: {
+                maxEntries: 32,
+                maxAgeSeconds: 24 * 60 * 60,
+              },
+            },
+          },
+        ],
+      },
+    }),
+  ];
   return plugins.reduce((acc, next) => next(acc), {
     experimental: {
       staleTimes: {
@@ -75,7 +105,7 @@ module.exports = () => {
     compiler: {
       removeConsole: process.env.NODE_ENV === 'production',
     },
-    reactStrictMode: false,
+    reactStrictMode: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     transpilePackages: ['lucide-react'],
     eslint: {
