@@ -8,13 +8,13 @@ import {
   RiGitRepositoryPrivateLine,
 } from 'react-icons/ri';
 
-import IconsBundle from '@/components/social-icons';
+import IconsBundle from '@/components/icons';
 import { LOGO_IMAGE_PATH } from '@/constants';
 import siteMetadata from '@/data/siteMetadata';
 import { useRepoData, useUserData } from '@/lib/github';
 import type { GithubStats, LanguageStats } from '@/types/about';
 import type { Repository, UserData } from '@/types/github';
-import { timeAgo } from '@/utils/timeAgo';
+import { timeAgo } from '@/utils/time';
 
 export default async function ProfileCard() {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors;

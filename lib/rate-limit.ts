@@ -3,7 +3,7 @@ import { supabase } from '@/utils/supabase/client';
 
 interface RateLimitResult {
   success: boolean;
-  remaining?: number;
+  remaining: number;
   error?: string;
 }
 
@@ -14,7 +14,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   multi.expire(redisKey, 3600);
   const [count] = (await multi.exec()) as [number, number];
 
-  if (count > 30) {
+  if (count > 60) {
     const ttl = await redis.ttl(redisKey);
     return {
       success: false,
@@ -34,7 +34,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
       throw fetchError;
     }
 
-    if (ipRecord?.chat >= 60) {
+    if (ipRecord?.chat >= 100) {
       return {
         success: false,
         remaining: 0,
@@ -62,3 +62,17 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
     throw error;
   }
 }
+
+// import { Ratelimit } from "@upstash/ratelimit"
+
+// // Create a new ratelimiter, that allows 10 requests per 2 minutes
+// const ratelimit = new Ratelimit({
+//   redis: kv,
+//   limiter: Ratelimit.slidingWindow(10, "2 m"),
+// })
+
+// export async function rateLimit(identifier: string) {
+//   const { success, remaining } = await ratelimit.limit(identifier)
+
+//   return { success, remaining }
+// }

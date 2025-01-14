@@ -3,8 +3,8 @@
 import clsx from 'clsx';
 import { MessagesSquare } from 'lucide-react';
 
-import useChatStore from '@/lib/hooks/chatState';
 import { useScrollProgress } from '@/lib/hooks/useScrollProgress';
+import useChatStore from '@/lib/store/chatStore';
 
 interface ScrollTopAndCommentProps {
   showScrollToComment?: boolean;

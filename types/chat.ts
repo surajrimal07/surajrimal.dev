@@ -1,7 +1,11 @@
 export type Message = {
   id: number;
   text: string;
-  sender: 'user' | 'bot' | 'author';
+  sender: 'user' | 'ai' | 'author';
+};
+
+export type Question = {
+  content: string;
 };
 
 export type FAQ = {
@@ -11,17 +15,17 @@ export type FAQ = {
 
 export type ChatMessage = {
   text: string;
-  sender: 'user' | 'bot' | 'author';
+  sender: 'user' | 'ai' | 'author';
 };
 
 export type ChatConversation = {
-  email: string;
+  ipAddress: string;
   messages: ChatMessage[];
 };
 
 export type DBChatMessage = {
   id: number;
-  email: string;
+  ip_address: string;
   messages: Message[];
   created_at: string;
   updated_at: string;
@@ -35,3 +39,4 @@ export type DatabaseChangePayload = {
   schema: string;
   table: string;
 };
+

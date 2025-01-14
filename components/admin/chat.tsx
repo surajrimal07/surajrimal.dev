@@ -20,7 +20,7 @@ import { LOGO_IMAGE_PATH } from '@/constants';
 import type { DBChatMessage, Message } from '@/types/chat';
 import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
-import { timeAgo } from '@/utils/timeAgo';
+import { timeAgo } from '@/utils/time';
 
 export default function AdminChat() {
   const [conversations, setConversations] = useState<{
@@ -67,7 +67,7 @@ export default function AdminChat() {
     } else {
       const conversationsMap = (data as DBChatMessage[]).reduce(
         (acc, item) => {
-          acc[item.email] = item.messages;
+          acc[item.ip_address] = item.messages;
           return acc;
         },
         {} as { [email: string]: Message[] },

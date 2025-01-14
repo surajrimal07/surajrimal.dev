@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { User } from '@supabase/supabase-js';
 
-import useChatStore from '@/lib/hooks/chatState';
+import useChatStore from '@/lib/store/chatStore';
 import { updateAuthorStatus } from '@/lib/telegram';
 import { createClient } from '@/utils/supabase/client';
 

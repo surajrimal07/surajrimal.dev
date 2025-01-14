@@ -1,6 +1,6 @@
 import Link from '@/components/Link';
 import Twemoji from '@/components/Twemoji';
-import IconsBundle from '@/components/social-icons';
+import IconsBundle from '@/components/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MAX_TAGS_IN_HOME } from '@/constants/index';
 import { getAllTags } from '@/lib/tags';

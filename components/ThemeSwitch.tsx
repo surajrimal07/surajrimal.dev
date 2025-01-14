@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import usePlaySound from '@/lib/hooks/PlaySound';
-import { useSoundStore } from '@/lib/hooks/soundState';
+import { useSoundStore } from '@/lib/store/soundStore';
 
 const THEME_OPTIONS = [
   { value: 'light', icon: <HiSun />, label: 'Light' },

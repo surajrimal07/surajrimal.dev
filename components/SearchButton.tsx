@@ -10,7 +10,7 @@ import { FiCommand } from 'react-icons/fi';
 
 import siteMetadata from '@/data/siteMetadata';
 import usePlaySound from '@/lib/hooks/PlaySound';
-import { useSoundStore } from '@/lib/hooks/soundState';
+import { useSoundStore } from '@/lib/store/soundStore';
 
 const SearchButton = memo(() => {
   const { isSoundEnabled } = useSoundStore();

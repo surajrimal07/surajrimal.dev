@@ -1,5 +1,3 @@
-import { writeFileSync } from 'node:fs';
-import path from 'node:path';
 import {
   type ComputedFields,
   defineDocumentType,
@@ -7,6 +5,8 @@ import {
 } from 'contentlayer2/source-files';
 import { slug } from 'github-slugger';
 import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic';
+import { writeFileSync } from 'node:fs';
+import path from 'node:path';
 // Remark packages
 import {
   extractTocHeadings,
@@ -142,6 +142,47 @@ export const Blog = defineDocumentType(() => ({
   },
 }));
 
+export const Paper = defineDocumentType(() => ({
+  name: 'Paper',
+  filePathPattern: 'paper/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    paperauthors: { type: 'list', of: { type: 'string' }, required: true },
+    year: { type: 'number', required: true },
+    readingDate: { type: 'date', required: true },
+    category: { type: 'string', required: true },
+    conference: { type: 'string', required: true },
+    doi: { type: 'string' },
+    summary: { type: 'string', required: true },
+    draft: { type: 'boolean' },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
+    images: { type: 'json' },
+    thumbnail: { type: 'string' },
+    authors: { type: 'list', of: { type: 'string' } },
+    layout: { type: 'string' },
+    canonicalUrl: { type: 'string' },
+    date: { type: 'date', required: true },
+    lastmod: { type: 'date' },
+  },
+  computedFields: {
+    ...computedFields,
+    structuredData: {
+      type: 'json',
+      resolve: (doc) => ({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.lastmod || doc.date,
+        description: doc.summary,
+        image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+      }),
+    },
+  },
+}));
+
 export const Authors = defineDocumentType(() => ({
   name: 'Authors',
   filePathPattern: 'authors/**/*.mdx',
@@ -199,7 +240,7 @@ export const Snippets = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors, Snippets],
+  documentTypes: [Blog, Authors, Snippets, Paper],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [

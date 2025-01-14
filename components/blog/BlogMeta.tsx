@@ -6,10 +6,10 @@ import { IoMdShare } from 'react-icons/io';
 import Link from '@/components/Link';
 import AnimatedCounter from '@/components/animata/text/counter';
 import PageView from '@/components/homepage/PageView';
-import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
+import { CalendarIcon, LanguageIcon } from '@/components/icons/icons';
 import { getBlogShares } from '@/lib/pageView';
 import type { BlogMetaProps } from '@/types/components';
-import { timeAgo } from '@/utils/timeAgo';
+import { timeAgo } from '@/utils/time';
 
 const BlogMeta = async ({
   date,

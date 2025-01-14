@@ -9,7 +9,7 @@ import Image from '@/components/Image';
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import AnimatedCounter from '@/components/animata/text/counter';
-import { CalendarIcon, LanguageIcon } from '@/components/social-icons/icons';
+import { CalendarIcon, LanguageIcon } from '@/components/icons/icons';
 import siteMetadata from '@/data/siteMetadata';
 import type { PostCardProps } from '@/types/bloglist';
 

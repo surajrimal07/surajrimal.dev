@@ -22,8 +22,9 @@ const WalineComment = (props: WalineOptions) => {
       dark: '.dark',
       emoji: ['https://unpkg.com/@waline/emojis@1.2.0/tw-emoji'],
       requiredMeta: ['nick'],
-      pageview: false,
-      reaction: false,
+      pageview: true,
+      reaction: true,
+      comment: true,
     });
 
     return () => walineInstanceRef.current?.destroy();

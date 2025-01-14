@@ -36,11 +36,29 @@ const siteMetadata = {
     umamiAnalytics: {
       // @ts-ignore
       umamiWebsiteId: process.env.NEXT_PUBLIC_UMAMI_ID,
+      googleAnalytics: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
     },
   },
   newsletter: {
     provider: 'convertkit',
   },
+  keywords: [
+    'Suraj Rimal',
+    'AI chatbot',
+    'Frontend Engineer',
+    'portfolio',
+    'interactive resume',
+    'tech career',
+    'web development',
+    'personal AI',
+    'developer insights',
+    'career information',
+    'project showcase',
+    'professional background',
+    'software engineering',
+    'AI-powered portfolio',
+    'personalized chat experience',
+  ],
   search: {
     provider: 'kbar',
     kbarConfig: {

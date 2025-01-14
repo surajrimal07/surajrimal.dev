@@ -30,7 +30,7 @@ import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
 import { clearChat, saveChat } from '@/lib/chat';
 import { handleChatRequest } from '@/lib/chat-bot';
-import useChatStore from '@/lib/hooks/chatState';
+import useChatStore from '@/lib/store/chatStore';
 import { sendMessage } from '@/lib/telegram';
 import { emailSchema } from '@/lib/validation/email';
 import type { DatabaseChangePayload, Message } from '@/types/chat';
@@ -117,7 +117,7 @@ const Chatbox: React.FC = () => {
         {
           id: Date.now(),
           text: 'Hello! How can I help you with my blog today?',
-          sender: 'bot',
+          sender: 'ai',
         },
       ]);
     }
@@ -151,7 +151,7 @@ const Chatbox: React.FC = () => {
     setMessages((prev) => [
       ...prev,
       { id: Date.now(), text: question, sender: 'user' },
-      { id: Date.now() + 1, text: answer, sender: 'bot' },
+      { id: Date.now() + 1, text: answer, sender: 'ai' },
     ]);
   }, []);
 
@@ -302,7 +302,7 @@ const Chatbox: React.FC = () => {
             {
               id: Date.now(),
               text: data.error || 'Failed to send message',
-              sender: 'bot',
+              sender: 'ai',
             },
           ]);
 
@@ -313,7 +313,7 @@ const Chatbox: React.FC = () => {
           const aiMessage: Message = {
             id: Date.now(),
             text: data.message,
-            sender: 'bot',
+            sender: 'ai',
           };
           setMessages((prev) => [...prev, aiMessage]);
           await saveChat(email, aiMessage);
@@ -450,7 +450,7 @@ const Chatbox: React.FC = () => {
               <AvatarFallback>SR</AvatarFallback>
             </Avatar>
           )}
-          {message.sender === 'bot' && (
+          {message.sender === 'ai' && (
             <div className="mr-2 flex h-8 w-8 items-center justify-center">
               <span className="text-2xl">🤖</span>
             </div>
@@ -466,7 +466,7 @@ const Chatbox: React.FC = () => {
             >
               {message.text}
 
-              {message.sender === 'bot' && (
+              {message.sender === 'ai' && (
                 <span className="ml-2 text-xs text-gray-300">
                   (AI Response)
                 </span>

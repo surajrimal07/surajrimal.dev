@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
-import { createHash } from 'node:crypto';
+// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
+import { createHash } from 'crypto';
 
 import { localCache } from '@/lib/cache';
 
@@ -21,3 +22,19 @@ export const getSessionId = (req: NextRequest) => {
 
   return currentSessionId;
 };
+
+export function hashIpAddress(ipAddress: string): string {
+  const cacheKey = `ip-hash-${ipAddress}`;
+  const cached = localCache.get(cacheKey);
+  if (cached) return cached as string;
+
+  const salt = process.env.IP_HASH_SALT || 'default-salt';
+
+  const hash = createHash('md5')
+    .update(`${ipAddress}${salt}`)
+    .digest('hex')
+    .slice(0, 8);
+
+  localCache.set(cacheKey, hash);
+  return hash;
+}

@@ -5,7 +5,7 @@ import { GoRepoForked } from 'react-icons/go';
 import { RiRssLine } from 'react-icons/ri';
 
 import CustomLink from '@/components/Link';
-import IconsBundle from '@/components/social-icons/index';
+import IconsBundle from '@/components/icons/index';
 import siteMetadata from '@/data/siteMetadata';
 
 const BuildWith = () => (

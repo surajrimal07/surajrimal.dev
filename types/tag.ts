@@ -1,4 +1,4 @@
-import type { IconName } from '@/components/social-icons';
+import type { IconName } from '@/components/icons';
 
 export type PopularTag = {
   id?: number;

@@ -17,7 +17,7 @@ import Tooltip from '@/components/ui/tooltip';
 import { skillsData } from '@/data/skills';
 import type { Skill } from '@/types/skills';
 
-const IconsBundle = lazy(() => import('@/components/social-icons'));
+const IconsBundle = lazy(() => import('@/components/icons'));
 
 const filterSkillsData = (skillsData: Skill[]) => {
   const acc: Record<string, Skill[]> = { 'Most Used': [] };

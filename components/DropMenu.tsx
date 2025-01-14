@@ -42,9 +42,9 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import usePlaySound from '@/lib/hooks/PlaySound';
-import useChatStore from '@/lib/hooks/chatState';
-import { useSoundStore } from '@/lib/hooks/soundState';
 import useAuthStore from '@/lib/store/authStore';
+import useChatStore from '@/lib/store/chatStore';
+import { useSoundStore } from '@/lib/store/soundStore';
 import type { WeatherApiResponse } from '@/types/weather';
 import { fetcher } from '@/utils/fetcher';
 import { useSuperadminStatus } from '@/utils/supabase/superAdmin';

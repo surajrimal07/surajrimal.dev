@@ -5,7 +5,7 @@ import { BiLineChart } from 'react-icons/bi';
 
 import siteMetadata from '@/data/siteMetadata';
 import usePlaySound from '@/lib/hooks/PlaySound';
-import { useSoundStore } from '@/lib/hooks/soundState';
+import { useSoundStore } from '@/lib/store/soundStore';
 
 const AnalyticsLink = memo(() => {
   const { isSoundEnabled } = useSoundStore();

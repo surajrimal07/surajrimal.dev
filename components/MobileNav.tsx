@@ -23,7 +23,7 @@ import Link from '@/components/Link';
 import { useCurrentPath } from '@/components/PathProvider';
 import headerNavLinks from '@/data/headerNavLinks';
 import usePlaySound from '@/lib/hooks/PlaySound';
-import { useSoundStore } from '@/lib/hooks/soundState';
+import { useSoundStore } from '@/lib/store/soundStore';
 
 const MobileNav = memo(() => {
   const [navShow, setNavShow] = useState(false);
