@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
+import matter from 'gray-matter';
 import { readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import matter from 'gray-matter';
 
 const CONTENT_TYPES = {
   default: 'default',
@@ -62,8 +62,6 @@ async function handleRequest(
 
 async function handleGet(contentType: ContentType) {
   const filePath = getFilePath(contentType);
-
-  console.log('filePath', filePath);
 
   const fileContents = await readFile(filePath, 'utf8');
   const { data, content } = matter(fileContents);

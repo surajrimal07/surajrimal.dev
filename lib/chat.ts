@@ -2,7 +2,6 @@
 import type { Message } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 import { generateId } from 'ai';
-import { localCache } from './cache';
 import type { AIState, Conversation, ServerMessage } from './chat/type';
 import { getCountryName } from './location';
 import { hashIpAddress } from './session';
@@ -20,7 +19,7 @@ export async function saveChat(
   const { data: existingData, error: fetchError } = await supabase
     .from('chat_messages')
     .select('messages')
-    .eq('ip_address', location)
+    .eq('ip_address', ipAddress)
     .single();
 
   let messages: DatabaseMessage[] = [];
@@ -191,53 +190,53 @@ export async function getConversations(): Promise<Conversation[]> {
   }
 }
 
-//author information
-//later swap with vector db
-interface PersonalContent {
-  about: string;
-  education: string;
-  experience: string;
-  skills: string;
-  projects: string;
-  beliefs: string;
-}
+// //author information
+// //later swap with vector db
+// interface PersonalContent {
+//   about: string;
+//   education: string;
+//   experience: string;
+//   skills: string;
+//   projects: string;
+//   beliefs: string;
+// }
 
-function formatContent(content: PersonalContent): string {
-  return Object.entries(content)
-    .map(([key, value]) => `${key}:\n${value}`)
-    .join('\n\n');
-}
+// function formatContent(content: PersonalContent): string {
+//   return Object.entries(content)
+//     .map(([key, value]) => `${key}:\n${value}`)
+//     .join('\n\n');
+// }
 
-export async function getPersonalContent(): Promise<string> {
-  try {
-    const cached = localCache.get('PERSONAL_CONTENT');
-    if (cached) {
-      return typeof cached === 'string'
-        ? cached
-        : formatContent(cached as PersonalContent);
-    }
+// export async function getPersonalContent(): Promise<string> {
+//   try {
+//     const cached = localCache.get('PERSONAL_CONTENT');
+//     if (cached) {
+//       return typeof cached === 'string'
+//         ? cached
+//         : formatContent(cached as PersonalContent);
+//     }
 
-    const { data, error } = await supabase
-      .from('personal_content')
-      .select(`
-        about,
-        education,
-        experience,
-        skills,
-        projects,
-        beliefs
-      `)
-      .single();
+//     const { data, error } = await supabase
+//       .from('personal_content')
+//       .select(`
+//         about,
+//         education,
+//         experience,
+//         skills,
+//         projects,
+//         beliefs
+//       `)
+//       .single();
 
-    if (error) {
-      return '';
-    }
+//     if (error) {
+//       return '';
+//     }
 
-    const formattedContent = formatContent(data);
-    localCache.set('PERSONAL_CONTENT', formattedContent);
+//     const formattedContent = formatContent(data);
+//     localCache.set('PERSONAL_CONTENT', formattedContent);
 
-    return formattedContent;
-  } catch (error) {
-    return '';
-  }
-}
+//     return formattedContent;
+//   } catch (error) {
+//     return '';
+//   }
+// }

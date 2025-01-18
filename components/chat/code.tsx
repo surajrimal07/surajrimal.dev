@@ -24,7 +24,7 @@ export function CodeBlock({ ...props }) {
       language={props.className?.replace(/(?:lang(?:uage)?-)/, '')}
       style={resolvedTheme === 'dark' ? oneDark : oneLight}
       wrapLines={true}
-      showLineNumbers={false}
+      showLineNumbers={true}
       className="not-prose rounded-md text-sm"
     >
       {props.children}

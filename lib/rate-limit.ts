@@ -1,68 +1,93 @@
 import redis from '@/utils/redis';
 import { supabase } from '@/utils/supabase/client';
 
-interface RateLimitResult {
+export interface RateLimitResult {
   success: boolean;
-  remaining: number;
+  remaining_soft: number;
+  remaining_hard: number;
   error?: string;
+  retryAfter?: number;
 }
 
-export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
+export async function checkRateLimit(
+  ip: string,
+  update = true,
+): Promise<RateLimitResult> {
   const redisKey = `ratelimit:${ip}`;
+
+  // Soft limit check (Redis - daily)
   const multi = redis.multi();
   multi.incr(redisKey);
-  multi.expire(redisKey, 3600);
-  const [count] = (await multi.exec()) as [number, number];
+  multi.expire(redisKey, 24 * 60 * 60);
+  const [dailyCount] = (await multi.exec()) as [number, number];
+  const remaining_soft = Math.max(0, 50 - dailyCount);
 
-  if (count > 60) {
-    const ttl = await redis.ttl(redisKey);
-    return {
-      success: false,
-      remaining: 0,
-      error: `Soft limit reached. Please try again in ${Math.ceil(ttl / 60)} minutes.`,
-    };
-  }
-
-  try {
+  // Hard limit check (Supabase - lifetime)
+  let lifetimeCount = 0;
+  if (update) {
     const { data: ipRecord, error: fetchError } = await supabase
       .from('iprecord')
       .select('chat')
       .eq('ipaddress', ip)
       .single();
 
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      throw fetchError;
+    if (fetchError && fetchError.code === 'PGRST116') {
+      // New IP - create record
+      await supabase.from('iprecord').insert({ ipaddress: ip, chat: 1 });
+      lifetimeCount = 1;
+    } else if (!fetchError && ipRecord) {
+      // Existing IP - increment count
+      lifetimeCount = ipRecord.chat + 1;
+      await supabase
+        .from('iprecord')
+        .update({ chat: lifetimeCount })
+        .eq('ipaddress', ip);
     }
+  } else {
+    // If not updating, just fetch the current count
+    const { data: ipRecord, error: fetchError } = await supabase
+      .from('iprecord')
+      .select('chat')
+      .eq('ipaddress', ip)
+      .single();
 
-    if (ipRecord?.chat >= 100) {
-      return {
-        success: false,
-        remaining: 0,
-        error:
-          'You have reached the maximum allowed requests. Please contact me if you need more information.',
-      };
+    if (!fetchError && ipRecord) {
+      lifetimeCount = ipRecord.chat;
     }
-
-    await supabase.from('iprecord').upsert(
-      {
-        ipaddress: ip,
-        chat: (ipRecord?.chat || 0) + 1,
-      },
-      {
-        onConflict: 'ipaddress',
-      },
-    );
-
-    return {
-      success: true,
-      remaining: Math.min(5 - count, 10 - (ipRecord?.chat || 0)),
-    };
-  } catch (error) {
-    console.error('Rate limit check failed:', error);
-    throw error;
   }
-}
 
+  const remaining_hard = Math.max(0, 150 - lifetimeCount);
+
+  // Check soft limit
+  if (remaining_soft === 0) {
+    const ttl = await redis.ttl(redisKey);
+    const retryAfter = Math.ceil(ttl / 60);
+    return {
+      success: false,
+      remaining_soft: 0,
+      remaining_hard,
+      retryAfter,
+      error: `Daily limit reached. Try again in ${retryAfter} minutes.`,
+    };
+  }
+
+  // Check hard limit
+  if (remaining_hard === 0) {
+    return {
+      success: false,
+      remaining_soft,
+      remaining_hard: 0,
+      error: 'Lifetime chat limit reached.',
+    };
+  }
+
+  // Success case
+  return {
+    success: true,
+    remaining_soft,
+    remaining_hard,
+  };
+}
 // import { Ratelimit } from "@upstash/ratelimit"
 
 // // Create a new ratelimiter, that allows 10 requests per 2 minutes

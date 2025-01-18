@@ -54,7 +54,6 @@ async function uploadToS3(file: Buffer, fileName: string) {
       filename: fileName,
       data: file,
     });
-    console.log(`Successfully uploaded ${fileName}`);
   } catch (error) {
     console.error(`Upload error for ${fileName}:`, error);
     throw error;

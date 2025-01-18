@@ -12,7 +12,6 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HelpCircle, MessageCircle, MoreVertical, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -25,18 +24,22 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LOGO_IMAGE_PATH } from '@/constants';
 import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
 import { clearChat, saveChat } from '@/lib/chat';
-import { handleChatRequest } from '@/lib/chat-bot';
+import { handleChatRequest } from '@/lib/chat/chat-lib';
 import useChatStore from '@/lib/store/chatStore';
-import { sendMessage } from '@/lib/telegram';
-import { emailSchema } from '@/lib/validation/email';
 import type { DatabaseChangePayload, Message } from '@/types/chat';
-import { gravatarURL } from '@/utils/gravatarHash';
 import { supabase } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
+import { readStreamableValue } from 'ai/rsc';
+import Link from 'next/link';
+import { MdArrowOutward } from 'react-icons/md';
+import RateLimit from '../chat/rate-limit';
+
+interface ChatBoxProps {
+  ipAddress: string;
+}
 
 const MessageTime = React.memo(
   ({ time, isVisible }: { time: string; isVisible: boolean }) => (
@@ -70,7 +73,7 @@ const formatMessageTime = (timestamp: number) => {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
-const Chatbox: React.FC = () => {
+const Chatbox = ({ ipAddress }: ChatBoxProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -85,10 +88,6 @@ const Chatbox: React.FC = () => {
     isCollapsed,
     setIsCollapsed,
     updateAuthorStatus,
-    email,
-    setEmail,
-    isEmailSubmitted,
-    setIsEmailSubmitted,
   } = useChatStore();
   const [selectedMessageId, setSelectedMessageId] = useState<number | null>(
     null,
@@ -103,14 +102,18 @@ const Chatbox: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const fetchInitialMessages = useCallback(async (email: string) => {
-    const { data, error } = await supabase
+  const fetchInitialMessages = useCallback(async (ipAddress: string) => {
+    const { data } = await supabase
       .from('chat_messages')
       .select('messages')
-      .eq('email', email)
+      .eq('ip_address', ipAddress)
       .single();
 
-    if (data?.messages || !error) {
+    if (
+      data?.messages &&
+      Array.isArray(data.messages) &&
+      data.messages.length > 0
+    ) {
       setMessages(data.messages);
     } else {
       setMessages([
@@ -154,12 +157,6 @@ const Chatbox: React.FC = () => {
       { id: Date.now() + 1, text: answer, sender: 'ai' },
     ]);
   }, []);
-
-  useEffect(() => {
-    if (email) {
-      setIsEmailSubmitted(true);
-    }
-  }, [email, setIsEmailSubmitted]);
 
   useEffect(() => {
     if (!isCollapsed) {
@@ -210,18 +207,18 @@ const Chatbox: React.FC = () => {
   }, [updateAuthorStatus]);
 
   useEffect(() => {
-    if (email) {
-      fetchInitialMessages(email);
+    if (ipAddress) {
+      fetchInitialMessages(ipAddress);
 
       const channel = supabase
-        .channel(`chat:${email}`)
+        .channel(`chat:${ipAddress}`)
         .on(
           'postgres_changes',
           {
             event: 'INSERT',
             schema: 'public',
             table: 'chat_messages',
-            filter: `email=eq.${email}`,
+            filter: `ip_address=eq.${ipAddress}`,
           },
           (payload) =>
             handleDatabaseChange(payload as unknown as DatabaseChangePayload),
@@ -232,7 +229,7 @@ const Chatbox: React.FC = () => {
             event: 'UPDATE',
             schema: 'public',
             table: 'chat_messages',
-            filter: `email=eq.${email}`,
+            filter: `ip_address=eq.${ipAddress}`,
           },
           (payload) =>
             handleDatabaseChange(payload as unknown as DatabaseChangePayload),
@@ -243,30 +240,7 @@ const Chatbox: React.FC = () => {
         supabase.removeChannel(channel);
       };
     }
-  }, [email, fetchInitialMessages, handleDatabaseChange]);
-
-  const handleEmailSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-
-      try {
-        const validatedInput = emailSchema.parse({ email });
-
-        setEmail(validatedInput.email);
-        setIsEmailSubmitted(true);
-
-        await fetchInitialMessages(validatedInput.email);
-      } catch (err) {
-        if (err instanceof z.ZodError) {
-          const errorMessage = err.errors[0]?.message ?? 'Invalid email format';
-          toast.error(errorMessage, toastOptions);
-        } else {
-          toast.error('An unexpected error occurred', toastOptions);
-        }
-      }
-    },
-    [email, fetchInitialMessages, setEmail, setIsEmailSubmitted],
-  );
+  }, [ipAddress, fetchInitialMessages, handleDatabaseChange]);
 
   const handleSendMessage = useCallback(async () => {
     if (!inputMessage.trim()) return;
@@ -282,45 +256,94 @@ const Chatbox: React.FC = () => {
 
     const saveAndSendMessage = async () => {
       try {
-        try {
-          await saveChat(email, userMessage);
-        } catch (error) {
-          console.error('Error saving chat:', error);
-        }
+        // Save the user's message
+        await saveChat(ipAddress, userMessage);
 
-        try {
-          await sendMessage(email, userMessage.text);
-        } catch (error) {
-          console.error('Error sending message:', error);
-        }
+        // Send the message to Telegram (if applicable)
+        // await sendMessage(ipAddress, userMessage.text); //uncomment this
 
-        const data = await handleChatRequest(inputMessage);
+        const limiter = await RateLimit();
 
-        if (!data.success) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: Date.now(),
-              text: data.error || 'Failed to send message',
-              sender: 'ai',
-            },
-          ]);
+        if (!limiter.success) {
+          const rateLimited: Message = {
+            id: Date.now(),
+            text: `${limiter.error}. Please try again later.`,
+            sender: 'ai',
+          };
+          await saveChat(ipAddress, rateLimited);
+
+          setMessages((prev) => [...prev, rateLimited]);
 
           return;
         }
 
-        if (data.isAutomated) {
-          const aiMessage: Message = {
+        const { data: authorStatus } = await supabase
+          .from('author_status')
+          .select('last_active')
+          .eq('id', 'author')
+          .single();
+
+        const isAuthorOnline =
+          authorStatus?.last_active &&
+          Date.now() - new Date(authorStatus.last_active).getTime() <
+            5 * 60 * 1000;
+
+        if (isAuthorOnline) {
+          const authorOnlineMessage: Message = {
             id: Date.now(),
-            text: data.message,
+            text: 'Message received. Suraj will respond soon.',
             sender: 'ai',
           };
-          setMessages((prev) => [...prev, aiMessage]);
-          await saveChat(email, aiMessage);
+          await saveChat(ipAddress, authorOnlineMessage);
+
+          setMessages((prev) => [...prev, authorOnlineMessage]);
+
+          return;
         }
+
+        const aiResponse = await handleChatRequest(userMessage.text);
+
+        const aiMessage: Message = {
+          id: Date.now(),
+          text: '',
+          sender: 'ai',
+        };
+
+        setMessages((prev) => [...prev, aiMessage]);
+        let finalText = '';
+
+        for await (const delta of readStreamableValue(aiResponse)) {
+          finalText += delta;
+
+          setMessages((prev) => {
+            const lastMessage = prev[prev.length - 1];
+            if (
+              lastMessage.sender === 'ai' &&
+              lastMessage.id === aiMessage.id
+            ) {
+              return [
+                ...prev.slice(0, -1),
+                { ...lastMessage, text: lastMessage.text + delta },
+              ];
+            }
+            return prev;
+          });
+        }
+
+        const finalAiMessage: Message = {
+          id: aiMessage.id,
+          text: finalText,
+          sender: 'ai',
+        };
+
+        await saveChat(ipAddress, finalAiMessage);
       } catch (error) {
-        console.error('Error sending message:', error);
-        toast.error('Failed to send message', toastOptions);
+        const errorMessage: Message = {
+          id: Date.now(),
+          text: 'An error occurred while processing your request.',
+          sender: 'ai',
+        };
+        setMessages((prev) => [...prev, errorMessage]);
       } finally {
         setIsLoading(false);
       }
@@ -328,7 +351,7 @@ const Chatbox: React.FC = () => {
 
     setIsLoading(true);
     saveAndSendMessage();
-  }, [inputMessage, email]);
+  }, [inputMessage, ipAddress]);
 
   const handleHide = useCallback(() => {
     setChatEnabled(false);
@@ -348,25 +371,28 @@ const Chatbox: React.FC = () => {
   );
 
   const handleDeleteChat = useCallback(async () => {
-    setEmail('');
     setMessages([]);
-    setIsEmailSubmitted(false);
 
     try {
-      await clearChat(email);
+      await clearChat(ipAddress);
     } catch (error) {
       toast.error(`Error deleting chat ${error}`, toastOptions);
     }
     setShowOptions(false);
-  }, [email, setEmail, setIsEmailSubmitted]);
+  }, [ipAddress]);
 
-  const handleDeleteEmail = useCallback(() => {
-    setEmail('');
+  const handleClearChat = useCallback(() => {
     setMessages([]);
-    setIsEmailSubmitted(false);
+
+    const messageCleared: Message = {
+      id: Date.now(),
+      text: 'Chat cleared. Start a new conversation.',
+      sender: 'ai',
+    };
+    setMessages((prev) => [...prev, messageCleared]);
 
     setShowOptions(false);
-  }, [setEmail, setIsEmailSubmitted]);
+  }, []);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -439,14 +465,22 @@ const Chatbox: React.FC = () => {
         >
           {message.sender === 'user' && (
             <Avatar className="mr-2 h-8 w-8">
-              <AvatarImage alt="@user image" src={gravatarURL(email)} />
-              <AvatarFallback>{email.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarImage
+                alt="@user picture"
+                src={'/static/images/user-chat.jpg'}
+              />
+              <AvatarFallback>
+                {ipAddress.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
           )}
 
           {message.sender === 'author' && (
             <Avatar className="mr-2 h-8 w-8">
-              <AvatarImage alt="@author image" src={LOGO_IMAGE_PATH} />
+              <AvatarImage
+                alt="@author image"
+                src={'/static/images/avatar_small.webp'}
+              />
               <AvatarFallback>SR</AvatarFallback>
             </Avatar>
           )}
@@ -510,7 +544,6 @@ const Chatbox: React.FC = () => {
     messages,
     isLoading,
     isAuthorOnline,
-    email,
     selectedMessageId,
     shouldShowTimeSeparator,
     handleMessageClick,
@@ -568,6 +601,7 @@ const Chatbox: React.FC = () => {
                 <span className="font-semibold text-white">
                   Chat with {siteMetadata.headerTitle}
                 </span>
+
                 {newMessage && (
                   <Badge className="ml-1 p-0 text-xs" variant="neutral">
                     New
@@ -622,10 +656,18 @@ const Chatbox: React.FC = () => {
               })}
             >
               <div className="flex flex-col">
-                <h2 className="font-bold text-white">
-                  Chat with {siteMetadata.headerTitle}
-                </h2>
-
+                <div className="flex items-center">
+                  <h2 className="font-bold text-white">
+                    Chat with {siteMetadata.headerTitle}
+                  </h2>
+                  <Link
+                    href="/chat"
+                    className="ml-2 text-xs text-gray-200 hover:text-white flex items-center"
+                  >
+                    Try full chat at
+                    <MdArrowOutward className="h-3 w-3 mr-1" />
+                  </Link>
+                </div>
                 <p className="text-sm text-white">Active {lastOnlineTimeAgo}</p>
               </div>
 
@@ -639,109 +681,71 @@ const Chatbox: React.FC = () => {
               </Button>
             </div>
 
-            {!isEmailSubmitted ? (
-              <form
-                className="flex flex-1 flex-col justify-center p-4"
-                onSubmit={handleEmailSubmit}
-              >
-                <label
-                  className="mb-2 text-sm font-medium text-gray-700"
-                  htmlFor="email"
-                >
-                  Please enter your email to start chatting
-                </label>
+            <ScrollArea className="h-[calc(100%-4rem)] flex-1 overflow-y-auto p-4">
+              {renderedMessages}
+              <div ref={messagesEndRef} />
+            </ScrollArea>
 
-                <Input
-                  required
-                  id="email"
-                  placeholder="your@email.com"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <Button className="mt-4" type="submit">
-                  Start Chatting
-                </Button>
-              </form>
-            ) : (
-              <>
-                <ScrollArea className="h-[calc(100%-4rem)] flex-1 overflow-y-auto p-4">
-                  {renderedMessages}
-                  <div ref={messagesEndRef} />
-                </ScrollArea>
-
-                <div className="border-t border-gray-200 p-2">
-                  <div className="flex space-x-2">
-                    <div className="flex-grow">
-                      <Input
-                        className="w-full"
-                        placeholder="Type your message..."
-                        type="text"
-                        value={inputMessage}
-                        onChange={handleInputChange}
-                        onKeyPress={handleKeyPress}
-                      />
-                    </div>
-
-                    <Button
-                      className="h-10 px-2 py-2"
-                      onClick={handleSendMessage}
-                    >
-                      <Send className="h-4 w-4" />
-                    </Button>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button className="h-10 px-2 py-1">
-                          <HelpCircle className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-72">
-                        {simpleFAQs.map((faq, index) => (
-                          <DropdownMenuItem
-                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                            key={index}
-                            onClick={() =>
-                              handleFAQClick(faq.question, faq.answer)
-                            }
-                          >
-                            {faq.question}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <div className="relative">
-                      <DropdownMenu
-                        open={showOptions}
-                        onOpenChange={setShowOptions}
-                      >
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            className="h-10 w-10"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                            <span className="sr-only">Open options</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                          <DropdownMenuItem onClick={handleDeleteChat}>
-                            <span>Delete Chat</span>
-                          </DropdownMenuItem>
-
-                          <DropdownMenuItem onClick={handleDeleteEmail}>
-                            <span>Delete Email</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
+            <div className="border-t border-gray-200 p-2">
+              <div className="flex space-x-2">
+                <div className="flex-grow">
+                  <Input
+                    className="w-full"
+                    placeholder="Type your message..."
+                    type="text"
+                    value={inputMessage}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                  />
                 </div>
-              </>
-            )}
+
+                <Button className="h-10 px-2 py-2" onClick={handleSendMessage}>
+                  <Send className="h-4 w-4" />
+                </Button>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="h-10 px-2 py-1">
+                      <HelpCircle className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-72">
+                    {simpleFAQs.map((faq, index) => (
+                      <DropdownMenuItem
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        key={index}
+                        onClick={() => handleFAQClick(faq.question, faq.answer)}
+                      >
+                        {faq.question}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <div className="relative">
+                  <DropdownMenu
+                    open={showOptions}
+                    onOpenChange={setShowOptions}
+                  >
+                    <DropdownMenuTrigger asChild>
+                      <Button className="h-10 w-10" size="icon" variant="ghost">
+                        <MoreVertical className="h-4 w-4" />
+                        <span className="sr-only">Open options</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem onClick={handleClearChat}>
+                        <span>Clear Chat</span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem onClick={handleDeleteChat}>
+                        <span>Delete Chat</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

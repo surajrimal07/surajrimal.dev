@@ -22,7 +22,9 @@ import '@/css/resume.css';
 import '@/css/tailwind.css';
 import siteMetadata from '@/data/siteMetadata';
 
-const Chatbox = dynamic(() => import('@/components/ChatBox'));
+const ChatBoxWrapper = dynamic(
+  () => import('@/components/chatbox/chat-box-wrapper'),
+);
 
 const CookieConsent = dynamic(() => import('@/components/CookieConsent'));
 
@@ -154,7 +156,7 @@ export default function RootLayout({
                 <main className="mb-auto">{children}</main>
                 <Footer />
               </SearchProvider>
-              <Chatbox />
+              <ChatBoxWrapper />
               <CookieConsent />
             </SectionContainer>
           </PathProvider>

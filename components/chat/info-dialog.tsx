@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import type { RateLimitResult } from '@/lib/rate-limit';
 import { cn } from '@/lib/utils';
 import {
   AlertTriangle,
@@ -19,7 +20,12 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import { ThemeCustomizer } from './theme-customizer';
 
-export default function InfoDialog({ className }: { className?: string }) {
+interface InfoDialogProps {
+  className?: string;
+  rateLimit: RateLimitResult;
+}
+
+export default function InfoDialog({ className, rateLimit }: InfoDialogProps) {
   return (
     <Dialog>
       <DialogTrigger
@@ -30,6 +36,11 @@ export default function InfoDialog({ className }: { className?: string }) {
       >
         <InfoIcon className="size-4 sm:size-3" />
         <span className="hidden sm:flex">Suraj&apos;s AI</span>
+        <span>*</span>
+        <span className="hidden sm:flex">
+          Remaining:{' '}
+          {Math.min(rateLimit.remaining_soft, rateLimit.remaining_hard)}
+        </span>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
@@ -90,6 +101,41 @@ export default function InfoDialog({ className }: { className?: string }) {
               should answer your questions. I still noticed some hallucinations
               from the AI so don&apos;t trust everything it says.
             </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">
+              Rate limits stats for Suraj&apos;s AI
+            </h3>
+
+            <div className="space-y-2 text-sm text-muted-foreground">
+              {rateLimit.remaining_soft === 0 && (
+                <p className="text-yellow-500">
+                  You have reached daily limit. Please try again in{' '}
+                  {rateLimit.retryAfter
+                    ? `${rateLimit.retryAfter} minutes`
+                    : '24 hours'}
+                  .
+                </p>
+              )}
+
+              {rateLimit.remaining_hard === 0 ? (
+                <p className="text-red-500">
+                  You have reached your lifetime conversation limit. Please
+                  email me at davidparkedme@gmail.com for more information.
+                </p>
+              ) : (
+                <p>
+                  Hard limit: {rateLimit.remaining_hard} requests remaining.
+                </p>
+              )}
+
+              {rateLimit.remaining_soft > 0 && (
+                <p>
+                  Soft limit: {rateLimit.remaining_soft} requests remaining
+                  today.
+                </p>
+              )}
+            </div>
           </div>
           <ThemeCustomizer />
           <div className="pt-2">

@@ -58,8 +58,6 @@ export async function updateMedia(
 }
 
 export async function deleteMedia(id: number) {
-  console.log('deleteMedia', id);
-
   const { data, error } = await supabase
     .from('in_media')
     .delete()

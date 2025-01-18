@@ -11,10 +11,6 @@ interface ChatState {
   toggleChat: () => void;
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
-  email: string;
-  setEmail: (email: string) => void;
-  isEmailSubmitted: boolean;
-  setIsEmailSubmitted: (submitted: boolean) => void;
   // Author status
   isAuthorOnline: boolean;
   lastActiveTime: Date;
@@ -49,13 +45,6 @@ const useChatStore = create<ChatState>()(
       isCollapsed: true,
       setIsCollapsed: (collapsed: boolean) => set({ isCollapsed: collapsed }),
 
-      // Email states
-      email: '',
-      setEmail: (email: string) => set({ email }),
-      isEmailSubmitted: false,
-      setIsEmailSubmitted: (submitted: boolean) =>
-        set({ isEmailSubmitted: submitted }),
-
       // Author status states
       isAuthorOnline: false,
       lastActiveTime: new Date(),
@@ -85,8 +74,6 @@ const useChatStore = create<ChatState>()(
         // Only persist these fields
         chatEnabled: state.chatEnabled,
         isCollapsed: state.isCollapsed,
-        email: state.email,
-        isEmailSubmitted: state.isEmailSubmitted,
       }),
     },
   ),

@@ -1,5 +1,4 @@
 import Chat from '@/components/chat/chat';
-import InfoDialog from '@/components/chat/info-dialog';
 import { getQuestions } from '@/data/questions';
 import { AI } from '@/lib/chat/actions';
 import { generateId } from 'ai';
@@ -19,9 +18,6 @@ export default async function Home() {
       <AI initialAIState={{ messages: [], id: generateId(), location }}>
         <Chat questions={questions} />
       </AI>
-      <div className="absolute left-0 top-0 z-20 m-4 flex sm:hidden">
-        <InfoDialog />
-      </div>
     </main>
   );
 }

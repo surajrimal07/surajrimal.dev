@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' us.umami.is analytics.umami.is va.vercel-scripts.com static.cloudflareinsights.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
-  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://*.supabase.co https://stats.surajrimal.dev https://www.gravatar.com https://seccdn.libravatar.org https://cdn.surajrimal.dev https://cdn.jsdelivr.net http://unpkg.com/@waline/emojis/;
+  img-src 'self' data: blob: https://wakapi.dev https://twitter.github.io https://*.r2.dev https://*.supabase.co https://stats.surajrimal.dev https://www.gravatar.com https://seccdn.libravatar.org https://cdn.surajrimal.dev https://cdn.jsdelivr.net http://unpkg.com/@waline/emojis/ https://robohash.org;
   media-src 'self';
   connect-src * https://wakapi.dev;
   font-src 'self' data:;

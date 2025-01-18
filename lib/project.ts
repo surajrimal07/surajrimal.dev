@@ -46,7 +46,6 @@ export async function getProject(id: string): Promise<Tables<'projects'>> {
 export async function createProject(
   project: Omit<Tables<'projects'>, 'id'>,
 ): Promise<Tables<'projects'>> {
-  console.log('project', project);
 
   const { data, error } = await supabase
     .from('projects')
@@ -65,7 +64,6 @@ export async function updateProject(
   id: string,
   project: Partial<Tables<'projects'>>,
 ): Promise<Tables<'projects'>> {
-  console.log('project', project);
 
   const { data, error } = await supabase
     .from('projects')

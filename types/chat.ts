@@ -8,6 +8,12 @@ export type Question = {
   content: string;
 };
 
+export interface ChatResponse {
+  success: boolean;
+  message: string;
+  isAutomated: boolean;
+}
+
 export type FAQ = {
   question: string;
   answer: string;
@@ -39,4 +45,3 @@ export type DatabaseChangePayload = {
   schema: string;
   table: string;
 };
-

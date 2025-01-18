@@ -33,7 +33,6 @@ export async function initBot() {
 
 export async function launchBot() {
   if (isRunning || bot) {
-    console.log('Bot is already running');
     return;
   }
 
@@ -63,7 +62,6 @@ export async function launchBot() {
 
     await bot.launch();
     isRunning = true;
-    console.log('Telegram Bot has been launched successfully.');
 
     process.once('SIGINT', () => bot?.stop('SIGINT'));
     process.once('SIGTERM', () => bot?.stop('SIGTERM'));
@@ -84,14 +82,14 @@ export async function stopBot() {
 }
 
 // Send message with error handling
-export async function sendMessage(email: string, message: string) {
+export async function sendMessage(ipAddress: string, message: string) {
   if (!bot) {
     await initBot();
   }
 
   try {
     if (bot) {
-      await bot.telegram.sendMessage(channelId, `${email} says ${message}`);
+      await bot.telegram.sendMessage(channelId, `${ipAddress} says ${message}`);
     } else {
       console.error('Bot is not initialized');
     }

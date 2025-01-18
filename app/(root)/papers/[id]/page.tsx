@@ -18,8 +18,6 @@ export default async function PaperDetailPage({
 }) {
   const id = (await params).id;
 
-  console.log('id', id);
-
   const paper = papers.find((p) => p.id === Number.parseInt(id));
 
   if (!paper) {
