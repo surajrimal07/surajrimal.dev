@@ -1,16 +1,24 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+import type Error from 'next/error';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
-export default function GlobalError() {
+export default function GlobalError({ error }: { error: Error }) {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <html lang="en-US">
-      <body className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="w-full max-w-md rounded-lg bg-white p-6 text-center shadow-lg">
+      <body className="flex min-h-screen items-center justify-center bg-black p-4">
+        <div className="w-full max-w-md rounded-xl bg-gradient-to-br from-red-900 via-black to-black p-8 text-center shadow-2xl border border-red-800/50">
           <div className="mb-8">
             <svg
               aria-hidden="true"
-              className="mx-auto h-12 w-12 text-gray-400"
+              className="mx-auto h-16 w-16 text-red-500 animate-pulse"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -24,25 +32,25 @@ export default function GlobalError() {
             </svg>
           </div>
 
-          <h1 className="mb-2 text-xl font-semibold text-gray-900">
-            Something went wrong
+          <h1 className="mb-4 text-3xl font-bold text-red-500">
+            Oops! Something went wrong
           </h1>
 
-          <p className="mb-6 text-gray-600">
+          <p className="mb-8 text-gray-400">
             We&apos;re experiencing technical difficulties. Please try again
             later.
           </p>
 
           <div className="flex justify-center space-x-4">
             <button
-              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-lg bg-red-600 px-6 py-3 text-sm font-medium text-white shadow-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all transform hover:scale-105"
               type="button"
               onClick={() => window.location.reload()}
             >
               Try again
             </button>
             <Link
-              className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-lg border border-red-600 bg-transparent px-6 py-3 text-sm font-medium text-red-500 hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all transform hover:scale-105"
               href="/"
             >
               Return home
