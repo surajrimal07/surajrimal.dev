@@ -46,6 +46,7 @@ export async function handleChatRequest(
 ): Promise<StreamableValue<any, any>> {
   const stream = createStreamableValue<string>();
   try {
+    console.log('system prompt', await systemPrompt(message));
     const { textStream } = streamText({
       model: nebius('meta-llama/Llama-3.2-3B-Instruct'),
       system: await systemPrompt(message),
