@@ -108,7 +108,7 @@ export async function handleChatRequest(
       model: nebius('meta-llama/Llama-3.2-3B-Instruct'),
       system: await systemPrompt(message),
       messages: [{ role: 'user', content: message }],
-      maxTokens: 100,
+      maxTokens: 50,
     });
 
     (async () => {
