@@ -67,6 +67,8 @@ export default function Chat({ questions }: ChatProps) {
 
     try {
       //check rate limit
+      console.time('api-response');
+
       const limits = await RateLimit(true);
       if (!limits.success) {
         throw new RateLimitError(
@@ -78,6 +80,7 @@ export default function Chat({ questions }: ChatProps) {
       }
 
       setRateLimit(limits);
+      console.timeLog('api-response');
 
       // Get the assistant's response
       const result = await continueConversation(value);
@@ -109,6 +112,10 @@ export default function Chat({ questions }: ChatProps) {
         },
       ]);
     }
+
+    console.timeLog('api-response');
+
+    console.timeEnd('api-response');
     setIsLoading(false);
   }
 
