@@ -1,4 +1,4 @@
-import redis from '@/utils/redis';
+import { localCache } from '@/lib/cache';
 import { supabase } from '@/utils/supabase/client';
 
 export interface RateLimitResult {
@@ -9,22 +9,65 @@ export interface RateLimitResult {
   retryAfter?: number;
 }
 
+// Fetch rate limits from Supabase and cache them
+async function getRateLimits() {
+  const cacheKey = 'rate_limits';
+  const cachedLimits = localCache.get(cacheKey);
+
+  // Return cached limits if available
+  if (cachedLimits) {
+    return cachedLimits;
+  }
+
+  // Fetch rate limits from Supabase if not cached
+  const { data, error } = await supabase
+    .from('rate_limits')
+    .select('limit_type, limit_value');
+
+  if (error) {
+    throw new Error('Failed to fetch rate limits');
+  }
+
+  const limits = {
+    soft_daily: 50, // default value
+    hard_lifetime: 200, // default value
+  };
+
+  for (const limit of data) {
+    if (limit.limit_type === 'soft_daily') {
+      limits.soft_daily = limit.limit_value;
+    } else if (limit.limit_type === 'hard_lifetime') {
+      limits.hard_lifetime = limit.limit_value;
+    }
+  }
+
+  // Cache the limits in localCache
+  localCache.set(cacheKey, limits);
+
+  return limits;
+}
+
 export async function checkRateLimit(
   ip: string,
   update = true,
 ): Promise<RateLimitResult> {
-  const redisKey = `ratelimit:${ip}`;
+  // Fetch rate limits (cached or from Supabase)
+  const { soft_daily: softLimit, hard_lifetime: hardLimit } =
+    await getRateLimits();
 
-  // Soft limit check (Redis - daily)
-  const multi = redis.multi();
-  multi.incr(redisKey);
-  multi.expire(redisKey, 24 * 60 * 60);
-  const [dailyCount] = (await multi.exec()) as [number, number];
-  const remaining_soft = Math.max(0, 50 - dailyCount);
+  // Soft limit check - local cache (24 hours)
+  const dailyLimitCacheKey = `daily_limit:${ip}`;
+  const dailyCount = (localCache.get(dailyLimitCacheKey) as number) || 0;
+  const remaining_soft = Math.max(0, softLimit - dailyCount);
 
   // Hard limit check (Supabase - lifetime)
   let lifetimeCount = 0;
   if (update) {
+    // Only update the count if we are updating
+    localCache.set(dailyLimitCacheKey, dailyCount + 1, {
+      ttl: 24 * 60 * 60 * 1000,
+    });
+
     const { data: ipRecord, error: fetchError } = await supabase
       .from('iprecord')
       .select('chat')
@@ -56,12 +99,12 @@ export async function checkRateLimit(
     }
   }
 
-  const remaining_hard = Math.max(0, 150 - lifetimeCount);
+  const remaining_hard = Math.max(0, hardLimit - lifetimeCount);
 
   // Check soft limit
   if (remaining_soft === 0) {
-    const ttl = await redis.ttl(redisKey);
-    const retryAfter = Math.ceil(ttl / 60);
+    const ttl = localCache.getRemainingTTL(dailyLimitCacheKey); // Get remaining TTL in milliseconds
+    const retryAfter = Math.ceil(ttl / (60 * 1000)); // Convert to minutes
     return {
       success: false,
       remaining_soft: 0,
@@ -88,16 +131,3 @@ export async function checkRateLimit(
     remaining_hard,
   };
 }
-// import { Ratelimit } from "@upstash/ratelimit"
-
-// // Create a new ratelimiter, that allows 10 requests per 2 minutes
-// const ratelimit = new Ratelimit({
-//   redis: kv,
-//   limiter: Ratelimit.slidingWindow(10, "2 m"),
-// })
-
-// export async function rateLimit(identifier: string) {
-//   const { success, remaining } = await ratelimit.limit(identifier)
-
-//   return { success, remaining }
-// }

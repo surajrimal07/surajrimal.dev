@@ -28,7 +28,6 @@ export async function continueConversation(
 
   try {
     (async () => {
-      console.log('system prompt', await systemPrompt(input));
       const { textStream } = streamText({
         model: nebius('meta-llama/Llama-3.2-3B-Instruct'),
         system: await systemPrompt(input),

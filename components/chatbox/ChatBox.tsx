@@ -36,6 +36,7 @@ import { readStreamableValue } from 'ai/rsc';
 import Link from 'next/link';
 import { MdArrowOutward } from 'react-icons/md';
 import RateLimit from '../chat/rate-limit';
+import { sendMessage } from '@/lib/telegram';
 
 interface ChatBoxProps {
   ipAddress: string;
@@ -260,7 +261,7 @@ const Chatbox = ({ ipAddress }: ChatBoxProps) => {
         await saveChat(ipAddress, userMessage);
 
         // Send the message to Telegram (if applicable)
-        // await sendMessage(ipAddress, userMessage.text); //uncomment this
+        await sendMessage(ipAddress, userMessage.text);
 
         const limiter = await RateLimit();
 

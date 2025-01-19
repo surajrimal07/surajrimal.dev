@@ -46,6 +46,18 @@ export default function InfoDialog({ className, rateLimit }: InfoDialogProps) {
         <DialogHeader>
           <DialogTitle>Suraj&apos;s AI</DialogTitle>
           <DialogDescription>Welcome to my AI portfolio!</DialogDescription>
+          <div className="text-xs text-muted-foreground">
+            Heavily inspired by{' '}
+            <Link
+              href="https://chat.brodin.dev"
+              className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              chat.brodin.dev
+            </Link>
+            . Special thanks to him.
+          </div>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
