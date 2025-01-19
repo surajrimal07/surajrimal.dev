@@ -244,114 +244,109 @@ const Chatbox = ({ ipAddress }: ChatBoxProps) => {
   }, [ipAddress, fetchInitialMessages, handleDatabaseChange]);
 
   const handleSendMessage = useCallback(async () => {
-    if (!inputMessage.trim()) return;
+    const trimmedMessage = inputMessage.trim();
+    if (!trimmedMessage) return;
 
+    // Create message object once
     const userMessage: Message = {
       id: Date.now(),
-      text: inputMessage.trim(),
+      text: trimmedMessage,
       sender: 'user',
     };
 
+    // Update UI immediately
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage('');
+    setIsLoading(true);
 
-    const saveAndSendMessage = async () => {
-      try {
-        // Save the user's message
-        await saveChat(ipAddress, userMessage);
+    try {
+      const limiter = await RateLimit();
 
-        // Send the message to Telegram (if applicable)
-        await sendMessage(ipAddress, userMessage.text);
+      if (!limiter.success) {
+        const rateLimited: Message = {
+          id: Date.now(),
+          text: "Whoa, easy there big talker! You've hit the rate limit. Give it a moment before asking more.",
+          sender: 'ai',
+        };
+        setMessages((prev) => [...prev, rateLimited]);
+        await saveChat(ipAddress, rateLimited);
+        return;
+      }
 
-        const limiter = await RateLimit();
-
-        if (!limiter.success) {
-          const rateLimited: Message = {
-            id: Date.now(),
-            text: "Whoa, easy there big talker! You've hit the rate limit. Give it a moment before asking more.",
-            sender: 'ai',
-          };
-          await saveChat(ipAddress, rateLimited);
-
-          setMessages((prev) => [...prev, rateLimited]);
-
-          return;
-        }
-
-        const { data: authorStatus } = await supabase
+      // Parallel fetch of author status while saving initial message
+      const [authorStatusResponse] = await Promise.all([
+        supabase
           .from('author_status')
           .select('last_active')
           .eq('id', 'author')
-          .single();
+          .single(),
+        saveChat(ipAddress, userMessage),
+        sendMessage(ipAddress, trimmedMessage).catch((error) => {
+          console.warn('Failed to send telegram', error);
+        }),
+      ]);
 
-        const isAuthorOnline =
-          authorStatus?.last_active &&
-          Date.now() - new Date(authorStatus.last_active).getTime() <
-            5 * 60 * 1000;
+      // Check author status
+      const isAuthorOnline =
+        authorStatusResponse?.data?.last_active &&
+        Date.now() - new Date(authorStatusResponse.data.last_active).getTime() <
+          5 * 60 * 1000;
 
-        if (isAuthorOnline) {
-          const authorOnlineMessage: Message = {
-            id: Date.now(),
-            text: 'Message received. Suraj will respond soon.',
-            sender: 'ai',
-          };
-          await saveChat(ipAddress, authorOnlineMessage);
-
-          setMessages((prev) => [...prev, authorOnlineMessage]);
-
-          return;
-        }
-
-        const aiResponse = await handleChatRequest(userMessage.text);
-
-        const aiMessage: Message = {
+      if (isAuthorOnline) {
+        const authorOnlineMessage: Message = {
           id: Date.now(),
-          text: '',
+          text: 'Message received. Suraj will respond soon.',
           sender: 'ai',
         };
-
-        setMessages((prev) => [...prev, aiMessage]);
-        let finalText = '';
-
-        for await (const delta of readStreamableValue(aiResponse)) {
-          finalText += delta;
-
-          setMessages((prev) => {
-            const lastMessage = prev[prev.length - 1];
-            if (
-              lastMessage.sender === 'ai' &&
-              lastMessage.id === aiMessage.id
-            ) {
-              return [
-                ...prev.slice(0, -1),
-                { ...lastMessage, text: lastMessage.text + delta },
-              ];
-            }
-            return prev;
-          });
-        }
-
-        const finalAiMessage: Message = {
-          id: aiMessage.id,
-          text: finalText,
-          sender: 'ai',
-        };
-
-        await saveChat(ipAddress, finalAiMessage);
-      } catch (error) {
-        const errorMessage: Message = {
-          id: Date.now(),
-          text: 'An error occurred while processing your request.',
-          sender: 'ai',
-        };
-        setMessages((prev) => [...prev, errorMessage]);
-      } finally {
-        setIsLoading(false);
+        setMessages((prev) => [...prev, authorOnlineMessage]);
+        await saveChat(ipAddress, authorOnlineMessage);
+        return;
       }
-    };
 
-    setIsLoading(true);
-    saveAndSendMessage();
+      // Handle AI response
+      const aiResponse = await handleChatRequest(trimmedMessage);
+      const aiMessage: Message = {
+        id: Date.now(),
+        text: '',
+        sender: 'ai',
+      };
+
+      setMessages((prev) => [...prev, aiMessage]);
+
+      // Batch updates for better performance
+      let finalText = '';
+
+      for await (const delta of readStreamableValue(aiResponse)) {
+        finalText += delta;
+
+        // Debounce updates to reduce render cycles
+        setMessages((prev) => {
+          const lastMessage = prev[prev.length - 1];
+          if (lastMessage.sender === 'ai' && lastMessage.id === aiMessage.id) {
+            return [...prev.slice(0, -1), { ...lastMessage, text: finalText }];
+          }
+          return prev;
+        });
+      }
+
+      // Save final message
+      const finalAiMessage: Message = {
+        id: aiMessage.id,
+        text: finalText,
+        sender: 'ai',
+      };
+
+      await saveChat(ipAddress, finalAiMessage);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: Date.now(),
+        text: 'An error occurred while processing your request.',
+        sender: 'ai',
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   }, [inputMessage, ipAddress]);
 
   const handleHide = useCallback(() => {

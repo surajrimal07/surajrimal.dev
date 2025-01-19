@@ -89,6 +89,7 @@ const nextConfig = () => {
   ];
   return plugins.reduce((acc, next) => next(acc), {
     experimental: {
+      webpackMemoryOptimizations: true,
       staleTimes: {
         dynamic: 30,
         static: 180,
@@ -102,9 +103,9 @@ const nextConfig = () => {
       //   },
       // },
     },
-    // compiler: {
-    //   removeConsole: process.env.NODE_ENV === 'production',
-    // },
+    compiler: {
+      removeConsole: process.env.NODE_ENV === 'production',
+    },
     reactStrictMode: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     transpilePackages: ['lucide-react'],
