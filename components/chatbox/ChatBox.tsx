@@ -274,24 +274,21 @@ const Chatbox = ({ ipAddress }: ChatBoxProps) => {
       }
 
       // Parallel fetch of author status while saving initial message
-      const [authorStatusResponse] = await Promise.all([
-        supabase
-          .from('author_status')
-          .select('last_active')
-          .eq('id', 'author')
-          .single(),
-        saveChat(ipAddress, userMessage),
-        sendMessage(ipAddress, trimmedMessage).catch((error) => {
-          console.warn('Failed to send telegram', error);
+      await Promise.all([
+        Promise.allSettled([
+          saveChat(ipAddress, userMessage),
+          sendMessage(ipAddress, trimmedMessage),
+        ]).then((results) => {
+          results.forEach((result, index) => {
+            if (result.status === 'rejected') {
+              const operation = index === 0 ? 'saveChat' : 'sendMessage';
+              console.warn(`${operation} failed:`, result.reason);
+            }
+          });
         }),
       ]);
 
       // Check author status
-      const isAuthorOnline =
-        authorStatusResponse?.data?.last_active &&
-        Date.now() - new Date(authorStatusResponse.data.last_active).getTime() <
-          5 * 60 * 1000;
-
       if (isAuthorOnline) {
         const authorOnlineMessage: Message = {
           id: Date.now(),
