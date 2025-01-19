@@ -4,19 +4,18 @@ import { Separator } from '@/components/ui/separator';
 import { RateLimitError } from '@/lib/chat/error';
 import type { UIState } from '@/lib/chat/type';
 import { useActions, useUIState } from '@/lib/hooks/use-ai';
-import type { RateLimitResult } from '@/lib/rate-limit';
+import { RateLimit, type RateLimitResult } from '@/lib/rate-limit';
 import type { Question } from '@/types/chat';
 import { generateId } from 'ai';
 import { readStreamableValue } from 'ai/rsc';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Content } from './content';
 import { Conversation } from './conversation';
 import { EmptyConversation } from './empty-conversation';
 import InfoDialog from './info-dialog';
 import { Loader } from './loader';
 import { PromptForm } from './prompt-form';
-import RateLimit from './rate-limit';
 
 type ChatProps = {
   questions: Question[];
@@ -28,18 +27,8 @@ export default function Chat({ questions }: ChatProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [rateLimit, setRateLimit] = useState<RateLimitResult>({
     success: false,
-    remaining_soft: 0,
-    remaining_hard: 0,
+    remaining: 50,
   });
-
-  useEffect(() => {
-    async function initRateLimit() {
-      const initialLimit = await RateLimit();
-      setRateLimit(initialLimit);
-    }
-
-    initRateLimit();
-  }, []);
 
   async function addMessage(input: string) {
     const value = input.trim();
@@ -67,20 +56,12 @@ export default function Chat({ questions }: ChatProps) {
 
     try {
       //check rate limit
-      console.time('api-response');
-
-      const limits = await RateLimit(true);
+      const limits = await RateLimit();
       if (!limits.success) {
-        throw new RateLimitError(
-          limits.remaining_soft,
-          limits.remaining_hard,
-          limits.retryAfter,
-          limits.error,
-        );
+        throw new RateLimitError(limits.success, limits.remaining);
       }
 
       setRateLimit(limits);
-      console.timeLog('api-response');
 
       // Get the assistant's response
       const result = await continueConversation(value);
@@ -107,15 +88,12 @@ export default function Chat({ questions }: ChatProps) {
           role: 'error',
           display:
             error instanceof RateLimitError
-              ? `Whoa, easy there big talker! You've hit the rate limit. Give it a moment before asking more. ${error.error}`
+              ? `Whoa, easy there big talker! You've hit the rate limit. Give it a moment before asking more.`
               : 'Oops, something went wrong!',
         },
       ]);
     }
 
-    console.timeLog('api-response');
-
-    console.timeEnd('api-response');
     setIsLoading(false);
   }
 

@@ -28,15 +28,15 @@ import { simpleFAQs } from '@/data/chatFAQ';
 import siteMetadata from '@/data/siteMetadata';
 import { clearChat, saveChat } from '@/lib/chat';
 import { handleChatRequest } from '@/lib/chat/chat-lib';
+import { RateLimit } from '@/lib/rate-limit';
 import useChatStore from '@/lib/store/chatStore';
+import { sendMessage } from '@/lib/telegram';
 import type { DatabaseChangePayload, Message } from '@/types/chat';
 import { supabase } from '@/utils/supabase/client';
 import { toastOptions } from '@/utils/toast';
 import { readStreamableValue } from 'ai/rsc';
 import Link from 'next/link';
 import { MdArrowOutward } from 'react-icons/md';
-import RateLimit from '../chat/rate-limit';
-import { sendMessage } from '@/lib/telegram';
 
 interface ChatBoxProps {
   ipAddress: string;
@@ -268,7 +268,7 @@ const Chatbox = ({ ipAddress }: ChatBoxProps) => {
         if (!limiter.success) {
           const rateLimited: Message = {
             id: Date.now(),
-            text: `${limiter.error}. Please try again later.`,
+            text: "Whoa, easy there big talker! You've hit the rate limit. Give it a moment before asking more.",
             sender: 'ai',
           };
           await saveChat(ipAddress, rateLimited);

@@ -37,10 +37,7 @@ export default function InfoDialog({ className, rateLimit }: InfoDialogProps) {
         <InfoIcon className="size-4 sm:size-3" />
         <span className="hidden sm:flex">Suraj&apos;s AI</span>
         <span>*</span>
-        <span className="hidden sm:flex">
-          Remaining:{' '}
-          {Math.min(rateLimit.remaining_soft, rateLimit.remaining_hard)}
-        </span>
+        <span className="hidden sm:flex">Remaining: {rateLimit.remaining}</span>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
@@ -120,32 +117,13 @@ export default function InfoDialog({ className, rateLimit }: InfoDialogProps) {
             </h3>
 
             <div className="space-y-2 text-sm text-muted-foreground">
-              {rateLimit.remaining_soft === 0 && (
-                <p className="text-yellow-500">
-                  You have reached daily limit. Please try again in{' '}
-                  {rateLimit.retryAfter
-                    ? `${rateLimit.retryAfter} minutes`
-                    : '24 hours'}
-                  .
-                </p>
-              )}
-
-              {rateLimit.remaining_hard === 0 ? (
+              {rateLimit.remaining === 0 ? (
                 <p className="text-red-500">
                   You have reached your lifetime conversation limit. Please
                   email me at davidparkedme@gmail.com for more information.
                 </p>
               ) : (
-                <p>
-                  Hard limit: {rateLimit.remaining_hard} requests remaining.
-                </p>
-              )}
-
-              {rateLimit.remaining_soft > 0 && (
-                <p>
-                  Soft limit: {rateLimit.remaining_soft} requests remaining
-                  today.
-                </p>
+                <p>Remaining conversations: {rateLimit.remaining}</p>
               )}
             </div>
           </div>
