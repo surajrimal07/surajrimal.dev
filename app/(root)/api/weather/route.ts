@@ -24,7 +24,11 @@ export async function GET(request: Request) {
 
     const locationResponse = await fetch(
       `https://api.ip2location.io/?key=${locationAPI}&ip=${ip}&format=json`,
+      {
+        next: { revalidate: 86400 },
+      },
     );
+
     const locationData = await locationResponse.json();
 
     const city =
@@ -32,7 +36,11 @@ export async function GET(request: Request) {
 
     const weatherResponse = await fetch(
       `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${city}&aqi=no`,
+      {
+        next: { revalidate: 3600 },
+      },
     );
+
     const weatherData: WeatherResponse = await weatherResponse.json();
 
     const { temp_c, condition } = weatherData.current;
